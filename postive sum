@@ -9,9 +9,4 @@ function positiveSum(arr) {
   }
  return sum;
  }
-//------------------------------------------------------------------
-function positiveSum(arr) {
-  let b= arr.filter(a => a>=0)
-  let c= b.reduce((a,b)=> a+=b, 0)
-  return c
-  } 
+ 
