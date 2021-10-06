@@ -1,4 +1,3 @@
-// remiveDups redone
 const LinkedList = require("../util/LinkedListX");
 
 function removeDuplicates(list) {
