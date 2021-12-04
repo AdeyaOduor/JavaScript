@@ -1,4 +1,4 @@
-var questions = [
+let questions = [
     {
         question: 'What is the baby of a moth known as?',
         choices: ['baby', 'infant', 'kit', 'larva'],
@@ -26,14 +26,14 @@ var questions = [
     }
 ];
 
-var currentQuestion = 0;
-var correctAnswers = 0;
-var quizOver = false;
+let currentQuestion = 0;
+let correctAnswers = 0;
+let quizOver = false;
 
 window.addEventListener('DOMContentLoaded', function(e){
     displayCurrentQuestion();
 
-    var quizMessage = document.querySelector('.quizMessage');
+    let quizMessage = document.querySelector('.quizMessage');
 
         quizMessage.style.display = 'none';
 
@@ -75,10 +75,10 @@ window.addEventListener('DOMContentLoaded', function(e){
 function displayCurrentQuestion(){
     console.log('In display current Questions');
 
-    var question = questions[currentQuestion].question;
-    var questionClass = document.querySelector('.quizContainer > .question');
-    var choiceList = document.querySelector('.quizContainer > .choiceList');
-    var numChoices = questions[currentQuestion].choices.length;
+    let question = questions[currentQuestion].question;
+    let questionClass = document.querySelector('.quizContainer > .question');
+    let choiceList = document.querySelector('.quizContainer > .choiceList');
+    let numChoices = questions[currentQuestion].choices.length;
 
     //Set the questionClass text to the current question
     questionClass.innerText = question;
@@ -86,10 +86,10 @@ function displayCurrentQuestion(){
     //Remove all current <li> elements (if any)
     choiceList.innerHTML = '';
 
-    var choice;
+    let choice;
     for (i = 0; i < numChoices; i++){
         choice = questions[currentQuestion].choices[i];
-        var li = document.createElement('li');
+        let li = document.createElement('li');
             li.innerHTML = '<li><input type="radio" value="' + i + '" name="dynradio" />' + choice + '</li>'
         choiceList.appendChild(li);
 
@@ -110,4 +110,3 @@ function displayScore(){
 function hideScore(){
     document.querySelector('.result').style.display = 'none';
 }
-//https://developer.mozilla.org/en-US/docs/Web/API/Window/DOMContentLoaded_event
