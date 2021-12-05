@@ -1,4 +1,4 @@
-var BookReader = function() {
+let BookReader = function() {
   this.currentBook = null;
   this.books = {};
 };
