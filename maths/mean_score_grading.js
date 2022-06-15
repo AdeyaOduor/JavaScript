@@ -1,5 +1,4 @@
-//average marks of the following students Then, 
-// this average is used to determine the corresponding grade.
+// Use average marks from students to determine the corresponding grade.
 
 let students = [['David', 80], ['Vinoth', 77], ['Divya', 88], ['Ishitha', 95], ['Thomas', 68]];
 
