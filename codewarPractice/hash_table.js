@@ -1,3 +1,5 @@
+// Hashes verify file integrity
+
 var LinkedList = function(key, value) {
   this.keyValPair = [key, value];
   this.next = null;
