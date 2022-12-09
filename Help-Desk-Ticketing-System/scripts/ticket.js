@@ -1,7 +1,5 @@
-
-
-    var database = firebase.database();
-    var ref = database.ref('ticketRecord');
+var database = firebase.database();
+var ref = database.ref('ticketRecord');
 
 
 var ticketsArray = [];
