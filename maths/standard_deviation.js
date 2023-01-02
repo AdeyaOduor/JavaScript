@@ -1,6 +1,4 @@
 //program to get the standard deviation of an array of numbers.
-
-
 const standardDeviation = (arr, usePopulation = false) => {
   const mean = arr.reduce((acc, val) => acc + val, 0) / arr.length;
   return Math.sqrt(
