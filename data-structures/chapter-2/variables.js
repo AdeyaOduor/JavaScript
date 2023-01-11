@@ -20,6 +20,13 @@ b = b + 5;
 c = c + " String!";
 
 // variable declaration
+var camper = "James";
+var camper = "David";
+console.log(camper); // no error, varaible overriden
+
+let camper = "James";
+let camper = "David";// produce error, variable cannot be overriden
+
 const FCC = "freeCodeCamp";
 let fact = "is cool!";
 
