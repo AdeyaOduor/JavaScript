@@ -19,3 +19,9 @@ a = a + 1;
 b = b + 5;
 c = c + " String!";
 
+// variable declaration
+const FCC = "freeCodeCamp";
+let fact = "is cool!";
+
+fact = "is awesome!";
+console.log(FCC, fact);
