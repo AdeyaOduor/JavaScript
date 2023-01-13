@@ -33,11 +33,11 @@ let fact = "is cool!";
 fact = "is awesome!";
 console.log(FCC, fact);
 
+// The /= operator divides a variable by another number.
 let a = 48;
 let b = 108;
 let c = 33;
 
-// The /= operator divides a variable by another number.
 a /= 12;
 b /= 4;
 c /= 11;
