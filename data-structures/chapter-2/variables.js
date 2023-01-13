@@ -40,7 +40,7 @@ let c = 33;
 
 a /= 12;
 b /= 4;
-c /= 11;
+c /= 11; // output is a=4, b=27 and c=3 repectively
 
 // increment or add one to a variable with the ++ operator.
 let myVar = 87;
