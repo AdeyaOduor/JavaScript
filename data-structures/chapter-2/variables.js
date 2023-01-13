@@ -49,3 +49,5 @@ myVar++; // output 88
 let myVar = 11;
 // decrement or decrease a variable by one with the -- operator.
 myVar--;
+
+const myStr = "I am a \"double quoted\" string inside \"double quotes\"."; // Escaping Literal Quotes in Strings
