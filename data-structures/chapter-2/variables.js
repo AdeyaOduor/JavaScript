@@ -41,3 +41,7 @@ let c = 33;
 a /= 12;
 b /= 4;
 c /= 11;
+
+// increment or add one to a variable with the ++ operator.
+let myVar = 87;
+myVar++; // output 88
