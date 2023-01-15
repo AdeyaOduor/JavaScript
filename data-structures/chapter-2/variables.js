@@ -46,8 +46,8 @@ c /= 11; // output is a=4, b=27 and c=3 repectively
 let myVar = 87;
 myVar++; // output 88
 
-let myVar = 11;
 // decrement or decrease a variable by one with the -- operator.
+let myVar = 11;
 myVar--; //output 10
 
 const myStr = "I am a \"double quoted\" string inside \"double quotes\"."; // Escaping Literal Quotes in Strings
