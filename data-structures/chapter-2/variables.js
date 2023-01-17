@@ -42,6 +42,15 @@ a /= 12;
 b /= 4;
 c /= 11; // output is a=4, b=27 and c=3 repectively
 
+let a = 3;
+let b = 17;
+let c = 12;
+
+/*Compound Assignment With Augmented Addition, multiplication, division and subtraction respectively*/
+a += 12;
+b += 9;
+c += 7;
+
 // increment or add one to a variable with the ++ operator.
 let myVar = 87;
 myVar++; // output 88
