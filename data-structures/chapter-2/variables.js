@@ -81,3 +81,40 @@ let lastNameLength = 0;
 const lastName = "Lovelace";
 
 lastNameLength = lastName.length;
+
+//Quoting Strings with Single Quotes
+var myStr = '<a href="http://www.example.com" target="_blank">Link</a>';
+
+// Concatenating Strings 
+const myStr = "I come first. " + "I come second."; 
+let myStr = "This is the first sentence. "
+myStr += "This is the second sentence.";
+
+const myName = "David";
+const myStr = "My name is " + myName + " and I am well!";
+
+const someAdjective = "worthwhile";
+let myStr = "Learning to code is ";
+myStr += someAdjective;
+
+// Find the Length of a String
+let lastNameLength = 0;
+const lastName = "Lovelace";
+
+lastNameLength = lastName.length;
+
+// Use bracket notation to find the first to Nth character 
+let firstLetterOfLastName = "";
+const lastName = "Lovelace";
+
+firstLetterOfLastName = lastName[0];
+const thirdLetterOfLastName = lastName[2];  
+const lastLetterOfLastName = lastName[lastName.length - 1]; 
+const secondToLastLetterOfLastName = lastName[lastName.length -2]; 
+
+const myNoun = "dog";
+const myAdjective = "big";
+const myVerb = "ran";
+const myAdverb = "quickly";
+
+const wordBlanks = "The " + myAdjective + " " + myNoun + " " + myVerb + " " + myAdverb + ".";; // The big dog ran quickly
