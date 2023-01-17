@@ -49,7 +49,7 @@ let c = 12;
 
 a += 12;
 b += 9;
-c += 7;
+c += 7; // output a=15, b=26, and c=19 respectively
 
 // increment or add one to a variable with the ++ operator.
 let myVar = 87;
