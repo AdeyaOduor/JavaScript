@@ -92,18 +92,18 @@ console.log("Before: " + JSON.stringify(testArr));
 console.log(nextInLine(testArr, 6));
 console.log("After: " + JSON.stringify(testArr));
 
+// strict equality
 function testStrict(val) {
-  if (val === 7) { // Change this line
+  if (val === 7) { 
     return "Equal";
   }
   return "Not Equal";
 }
 
-// Change this value to test
 testStrict(10);
 
 function testNotEqual(val) {
-  if (val!= 99) { // Change this line
+  if (val!= 99) { 
     return "Not Equal";
   }
   return "Equal";
@@ -112,7 +112,7 @@ function testNotEqual(val) {
 testNotEqual(10);
 
 function testStrictNotEqual(val) {
-  if (val!== 17) { // Change this line
+  if (val!== 17) { 
     return "Not Equal";
   }
   return "Equal";
