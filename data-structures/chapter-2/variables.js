@@ -118,3 +118,17 @@ const myVerb = "ran";
 const myAdverb = "quickly";
 
 const wordBlanks = "The " + myAdjective + " " + myNoun + " " + myVerb + " " + myAdverb + ".";; // The big dog ran quickly
+
+// function that convert number to strings
+var countBits = function(number) {
+  var string = number.toString(2);
+  return string.split('').reduce((numBits, char) => {
+    return char === '1' ? numBits + 1 : numBits;
+  }, 0);
+};
+
+var conversion = function(number1, number2) {
+  return countBits(number1 ^ number2);
+};
+
+console.log(conversion(29, 15), 2);
