@@ -69,3 +69,44 @@ function testLessThan(val) {
 
 // Change this value to test
 console.log(testLessThan(10));
+
+function testLessOrEqual(val) {
+  if (val <= 12) {  
+    return "Smaller Than or Equal to 12";
+  }
+  
+  if (val <= 24) {  
+    return "Smaller Than or Equal to 24";
+  }
+
+  return "More Than 24";
+}
+
+// Change this value to test
+console.log(testLessOrEqual(10));
+
+function testLogicalAnd(val) {
+  // Only change code below this line
+
+  if (val <= 50 && val >= 25) {
+    return "Yes";
+  }
+
+  // Only change code above this line
+  return "No";
+}
+
+// Change this value to test
+testLogicalAnd(10);
+
+function testLogicalOr(val) {
+
+  if (val < 10 || val > 20 ) {
+    return "Outside";
+  }
+
+  return "Inside";
+}
+
+// Change this value to test
+testLogicalOr(15);
