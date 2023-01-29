@@ -1,5 +1,5 @@
 function testStrict(val) {
-  if (val === 7) { // Change this line
+  if (val === 7) {
     return "Equal";
   }
   return "Not Equal";
@@ -8,7 +8,7 @@ function testStrict(val) {
 testStrict(10);
 
 function testNotEqual(val) {
-  if (val!= 99) { // Change this line
+  if (val!= 99) { 
     return "Not Equal";
   }
   return "Equal";
@@ -17,7 +17,7 @@ function testNotEqual(val) {
 testNotEqual(10);
 
 function testStrictNotEqual(val) {
-  if (val!== 17) { // Change this line
+  if (val!== 17) { 
     return "Not Equal";
   }
   return "Equal";
