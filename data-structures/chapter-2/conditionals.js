@@ -26,11 +26,11 @@ function testStrictNotEqual(val) {
 testStrictNotEqual(10);
 
 function testGreaterThan(val) {
-  if (val > 100) {  // Change this line
+  if (val > 100) {  
     return "Over 100";
   }
   
-  if (val > 10) {  // Change this line
+  if (val > 10) {  
     return "Over 10";
   }
 
@@ -41,11 +41,11 @@ function testGreaterThan(val) {
 console.log(testGreaterThan(10));
 
 function testGreaterOrEqual(val) {
-  if (val >= 20) {  // Change this line
+  if (val >= 20) {  
     return "20 or Over";
   }
   
-  if (val >= 10) {  // Change this line
+  if (val >= 10) {  
     return "10 or Over";
   }
 
@@ -86,13 +86,11 @@ function testLessOrEqual(val) {
 console.log(testLessOrEqual(10));
 
 function testLogicalAnd(val) {
-  // Only change code below this line
 
   if (val <= 50 && val >= 25) {
     return "Yes";
   }
 
-  // Only change code above this line
   return "No";
 }
 
