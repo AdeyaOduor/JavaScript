@@ -235,9 +235,9 @@ function switchOfStuff(val) {
   return answer;
 }
 
+// Multiple Identical Options in Switch Statements
 function sequentialSizes(val) {
   var answer = "";
-  // Multiple Identical Options in Switch Statements
   switch (val) {
     case 1:
     case 2:
