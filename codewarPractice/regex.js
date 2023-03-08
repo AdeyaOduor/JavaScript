@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>JavaScript function to check whether a given value is an valid email or not</title>
+  <title>JavaScript function to check whether a given value is an valid email and password or not</title>
 </head>
 <body>
 
