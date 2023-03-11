@@ -1,4 +1,4 @@
-//#Source https://bit.ly/2neWfJ2
+//program to convert a comma-separated values (CSV) string to a 2D array
 const csv_to_array = (data, delimiter = ',', omitFirstRow = false) =>
   data
     .slice(omitFirstRow ? data.indexOf('\n') + 1 : 0)
