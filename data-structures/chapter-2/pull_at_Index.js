@@ -1,4 +1,4 @@
-//#Source https://bit.ly/2neWfJ2 
+//program to extract out the values at the specified indexes from a specified array
 const pull_at_Index = (arr, pullArr) => {
   let removed = [];
   let pulled = arr
