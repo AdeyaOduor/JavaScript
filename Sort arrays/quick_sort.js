@@ -43,6 +43,7 @@ const quickSort = (array, left, right) => {
   console.log('quicksorted array is', array);
 
 // write the quickSort algorithm 2
+// Quick sort is a comparison sort, meaning that it can sort items of any type for which a "less-than" relation (formally, a total order) is defined.
 
 function quick_Sort(origArray) {
 	if (origArray.length <= 1) { 
