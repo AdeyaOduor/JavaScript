@@ -41,3 +41,5 @@ const quickSort = (array, left, right) => {
   let array = [4, 7, 1, 9, 3, 8, 0, 2];
   quickSort(array, 0, array.length - 1);
   console.log('quicksorted array is', array);
+
+// write the quickSort algorithm 2
