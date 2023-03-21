@@ -1,4 +1,4 @@
-// write the quickSort algorithm
+// write the quickSort algorithm 1
 
 const swap = (array, left, right) => {
     const temp1 = array[left];
