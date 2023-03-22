@@ -1,3 +1,4 @@
+// program to check whether two numbers are in range 40..60 or in the range 70..100 inclusive
 
 function numbers_ranges(x, y) {
   if ((x >= 40 && x <= 60 && y >= 40 && y <= 60) 
