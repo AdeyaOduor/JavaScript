@@ -16,3 +16,8 @@ function numbers_ranges(x, y) {
 console.log(numbers_ranges(44, 56));
 console.log(numbers_ranges(70, 95));
 console.log(numbers_ranges(50, 89));
+
+/* 
+true
+true
+false */
