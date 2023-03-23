@@ -7,3 +7,5 @@ const random_hex_color_code = () => {
 
 console.log(random_hex_color_code())
 
+/* Use Math.random() to generate a random 24-bit (6 * 4bits) hexadecimal number.
+Use bit shifting and then convert it to an hexadecimal string using Number.prototype.toString(16). */
