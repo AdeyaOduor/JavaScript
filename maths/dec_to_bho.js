@@ -1,3 +1,5 @@
+// Convert a decimal number to binary, hexadecimal or octal number
+
 dec_to_bho  = function(n, base) {
  
     if (n < 0) {
