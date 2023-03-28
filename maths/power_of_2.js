@@ -1,3 +1,5 @@
+// JavaScript function to test if a number is a power of 2
+
 function power_of_2(n) {
  if (typeof n !== 'number') 
       return 'Not a number'; 
