@@ -1,3 +1,5 @@
+// destructuring-via-rest-elements.
+
 function removeFirstTwo(list) {
   const [, , ...shorterList] = list;
   return shorterList;
