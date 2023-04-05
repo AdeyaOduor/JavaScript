@@ -1,4 +1,4 @@
-
+// use-destructuring-assignment-to-pass-an-object-as-a-functions-parameters.txt
 
 const stats = {
   max: 56.78,
