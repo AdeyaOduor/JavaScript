@@ -1,0 +1,8 @@
+<html>
+  <body>
+    <!-- Only change code below this line -->
+<script type="module" src="index.js"></script>
+  </body>
+</html>
+
+<!-- A script that uses this module type can now use the import and export features -->
