@@ -88,3 +88,12 @@ import subtract from "./math_functions.js";
 subtract(7,4);
 /* In the following code, import the default export from the math_functions.js file, 
 found in the same directory as this file. Give the import the name subtract */
+
+<html>
+  <body>
+    
+<script type="module" src="index.js"></script>
+  </body>
+</html>
+
+<!-- A script that uses this module type can now use the import and export features -->
