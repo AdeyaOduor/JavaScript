@@ -35,7 +35,7 @@ const stats = {
   min: -0.75,
   average: 35.85
 };
-// change code below this line
+
 const half = ({max, min}) => ((max + min) / 2.0); // use function argument destructurung
 
 console.log(stats); // should be object
