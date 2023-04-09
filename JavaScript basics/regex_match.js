@@ -54,3 +54,8 @@ let result = movieName.match(numRegex).length;
 let movieName = "2001: A Space Odyssey";
 let noNumRegex = /\D/g; // Change this line
 let result = movieName.match(noNumRegex).length;
+
+// match-all-whitespace
+let sample = "Whitespace is important in separating words";
+let countWhiteSpace = /\s/g; // Change this line
+let result = sample.match(countWhiteSpace);
