@@ -65,6 +65,15 @@ export const lowercaseString = (string) => {
   return string.toLowerCase()
 }
 
+/*Use object property shorthand with object literals to create and return an object 
+with name, age and gender properties. */
+
+const createPerson = (name, age, gender) => {
+  return {name,age,gender};
+};
+
+console.log(createPerson("Zodiac Hasbro", 56, "male")); // returns a proper object
+
 /* import statement allowing the current file to use the uppercaseString and lowercaseString functions you exported.
 These functions are in a file called string_functions.js, which is in the same directory as the current file.*/
 
