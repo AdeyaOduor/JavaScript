@@ -176,7 +176,7 @@ makeServerRequest.catch(error => {
 });
 
 
-// Es6
+// Es6 spread operators
 
 function copyMachine(arr, num) {
   let newArr = [];
