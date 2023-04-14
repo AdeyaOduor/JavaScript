@@ -1,3 +1,4 @@
+/* ES6, released in 2015, added many powerful new features to the language including arrow functions, destructuring, classes, promises, spread operators, and modules.*/
 // destructuring-via-rest-elements.
 
 function removeFirstTwo(list) {
