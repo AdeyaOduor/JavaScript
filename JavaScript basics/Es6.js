@@ -174,3 +174,28 @@ makeServerRequest.then(result => {
 makeServerRequest.catch(error => {
   console.log(error);
 });
+
+
+// Es6
+
+function copyMachine(arr, num) {
+  let newArr = [];
+  while (num >= 1) {
+    // spread operator making a copy of passed argumnets
+    newArr.push([...arr]);
+    // Only change code above this line
+    num--;
+  }
+  return newArr;
+}
+
+console.log(copyMachine([true, false, true], 2));
+
+
+function spreadOut() {
+  let fragment = ['to', 'code'];
+  let sentence = ["learning", ...fragment, "is", "fun"]; // Combining arrays with spread operator
+  return sentence;
+}
+
+console.log(spreadOut());
