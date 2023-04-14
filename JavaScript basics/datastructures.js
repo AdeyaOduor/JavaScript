@@ -124,7 +124,6 @@ console.log(quickCheck(["squash", "onions", "shallots"], "mushrooms"));
 
 function filteredArray(arr, elem) {
   let newArr = [];
-  // change code below this line
 
   for (let i = 0; i < arr.length; i++) {
     if (arr[i].indexOf(elem) == -1) {
@@ -133,7 +132,6 @@ function filteredArray(arr, elem) {
     }
   }
 
-  // change code above this line
   return newArr;
 }
 // change code here to test different cases:
