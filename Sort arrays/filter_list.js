@@ -1,4 +1,4 @@
-  //function taking a list of non-negative integers,strings and returns a new list with the strings filtered out.
+//function taking a list of non-negative integers,strings and returns a new list with the strings filtered out.
 
   function filter_list(l) {
     // Return a new array with the strings filtered out
