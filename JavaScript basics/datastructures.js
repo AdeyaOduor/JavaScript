@@ -147,9 +147,8 @@ let foods = {
   strawberries: 27
 };
 // Access Property Names with Bracket Notation
-
 function checkInventory(scannedItem) {
-  // change code below this line
+  
   return foods[scannedItem];
 }
 
