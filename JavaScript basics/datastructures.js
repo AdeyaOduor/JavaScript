@@ -155,7 +155,7 @@ function checkInventory(scannedItem) {
 // change code below this line to test different cases:
 console.log(checkInventory("apples"));
 
-
+// Use the delete keyword to remove keys from the foods object.
 let foods = {
   apples: 25,
   oranges: 32,
