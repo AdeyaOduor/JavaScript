@@ -165,7 +165,7 @@ let foods = {
   strawberries: 27
 };
 
-// Use the delete keyword to remove keys from the foods object.
+
 delete foods.oranges;
 delete foods.plums;
 delete foods.strawberries;
