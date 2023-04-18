@@ -136,3 +136,22 @@ function filteredArray(arr, elem) {
 }
 // change code here to test different cases:
 console.log(filteredArray([[3, 2, 3], [1, 6, 3], [3, 13, 26], [19, 3, 9]], 3));
+
+
+let foods = {
+  apples: 25,
+  oranges: 32,
+  plums: 28,
+  bananas: 13,
+  grapes: 35,
+  strawberries: 27
+};
+// Access Property Names with Bracket Notation
+
+function checkInventory(scannedItem) {
+  // change code below this line
+  return foods[scannedItem];
+}
+
+// change code below this line to test different cases:
+console.log(checkInventory("apples"));
