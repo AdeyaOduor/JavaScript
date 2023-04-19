@@ -255,7 +255,7 @@ function getArrayOfUsers(obj) {
 
 console.log(getArrayOfUsers(users));
 
-
+// Modify an Array Stored in an Object
 let user = {
   name: "Kenneth",
   age: 28,
@@ -273,10 +273,10 @@ let user = {
 };
 
 function addFriend(userObj, friend) {
-  // change code below this line
+  
   userObj.data.friends.push(friend);
   return userObj.data.friends;
-  // change code above this line
+ 
 }
 
 console.log(addFriend(user, "Pete"));
