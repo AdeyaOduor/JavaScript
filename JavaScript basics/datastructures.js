@@ -227,7 +227,7 @@ function countOnline(usersObj) {
 
 console.log(countOnline(users));
 
-
+// Generate an Array of All Object Keys with Object.keys()
 let users = {
   Alan: {
     age: 27,
@@ -248,9 +248,9 @@ let users = {
 };
 
 function getArrayOfUsers(obj) {
-  // change code below this line
+ 
   return Object.keys(obj);
-  // change code above this line
+  
 }
 
 console.log(getArrayOfUsers(users));
