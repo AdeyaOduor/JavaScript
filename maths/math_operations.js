@@ -16,6 +16,7 @@ function sum(a, b){
     return a - b
   }
 
+// convert celcius to farenheight
 function convertCtoF(celsius) {
   let fahrenheit = celsius * (9 / 5) + 32;
   return fahrenheit;
