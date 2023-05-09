@@ -9,3 +9,9 @@ console.log(reduce_Which(
   (a, b) => a.age - b.age)); 
 /* Use Array.prototype.reduce() in combination with the comparator function to get the appropriate element in the array.
 Omit the second argument, comparator, to use the default one that returns the minimum element in the array. */
+
+function findLongestWordLength(s) {
+  return s
+    .split(' ')
+    .reduce((longest, word) => Math.max(longest, word.length), 0);
+}
