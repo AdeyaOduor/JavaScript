@@ -15,3 +15,13 @@ function findLongestWordLength(s) {
     .split(' ')
     .reduce((longest, word) => Math.max(longest, word.length), 0);
 }
+
+function largestOfFour(arr) {
+  return arr.map(Function.apply.bind(Math.max, null));
+}
+
+function largestOfFour(arr, finalArr = []) {
+  return !arr.length
+    ? finalArr
+    : largestOfFour(arr.slice(1), finalArr.concat(Math.max(...arr[0])))
+}
