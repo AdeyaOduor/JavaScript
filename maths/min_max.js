@@ -21,6 +21,7 @@ function largestOfFour(arr) {
   return arr.map(Function.apply.bind(Math.max, null));
 }
 
+// largest 2
 function largestOfFour(arr, finalArr = []) {
   return !arr.length
     ? finalArr
