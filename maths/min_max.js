@@ -16,6 +16,7 @@ function findLongestWordLength(s) {
     .reduce((longest, word) => Math.max(longest, word.length), 0);
 }
 
+// largest 1
 function largestOfFour(arr) {
   return arr.map(Function.apply.bind(Math.max, null));
 }
