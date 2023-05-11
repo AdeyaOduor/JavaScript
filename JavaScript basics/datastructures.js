@@ -289,3 +289,7 @@ Return the resulting array. The input arrays should remain the same after the fu
 function frankenSplice(arr1, arr2, n) {
   return [...arr2.slice(0, n), ...arr1, ...arr2.slice(n)];
 }
+
+
+/* Remove all falsy values from an array. Return a new array; do not mutate the original array.
+Falsy values in JavaScript are false, null, 0, "", undefined, and NaN.*/ 
