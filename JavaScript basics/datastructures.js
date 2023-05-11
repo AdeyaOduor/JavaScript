@@ -46,6 +46,7 @@ const myArray = [["John", 23], ["dog", 3]];
 myArray.shift();
 
 myArray.unshift(["Paul", 35]); // output [["Paul", 35]["John", 23], ["dog", 3]]
+
 // reinitializing_variables_inside_loop.js
 function zeroArray(m, n) {
   let newArray = [];
