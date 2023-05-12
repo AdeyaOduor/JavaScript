@@ -27,3 +27,6 @@ function largestOfFour(arr, finalArr = []) {
     ? finalArr
     : largestOfFour(arr.slice(1), finalArr.concat(Math.max(...arr[0])))
 }
+
+/*Count the number of entries that are smaller than the new value num
+The new value would be inserted after these values*/
