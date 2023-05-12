@@ -67,6 +67,9 @@ console.log("You have entered an invalid email address!");
 }
 }
 
+/*Return true if the string in the first element of the array contains all of the letters of the string in the 
+second element of the array. */
+
 valid_email('me-info@example.com');
 
 <!DOCTYPE html>
