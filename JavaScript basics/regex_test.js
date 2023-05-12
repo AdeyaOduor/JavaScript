@@ -51,9 +51,15 @@ console.log(is_url("http://www.example.com"));
 console.log(is_url("https://www.example.com"));
 console.log(is_url("www.example.com"));
 
+/*Return true if the string in the first element of the array contains all of the letters of the string in the 
+second element of the array. */
+function mutation([elem1, elem2]) {
+  const regex = new RegExp(`[^${elem1}]`, 'i');
+  return !regex.test(elem2);
+}
+mutation(["hello", "hey"]);
 
  // pattern that matches e-mail addresses.
-
 function valid_email(str)
 {
 var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;  
@@ -67,10 +73,8 @@ console.log("You have entered an invalid email address!");
 }
 }
 
-/*Return true if the string in the first element of the array contains all of the letters of the string in the 
-second element of the array. */
-
 valid_email('me-info@example.com');
+
 
 <!DOCTYPE html>
 <html>
