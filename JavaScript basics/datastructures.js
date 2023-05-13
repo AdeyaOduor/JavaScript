@@ -109,11 +109,6 @@ function chunkArrayInGroups(arr, size) {
 
 chunkArrayInGroups(["a", "b", "c", "d"], 2);
 
-// fibonaci using reduce method
-let myArray = [1, 2, 3];
-let arraySum = myArray.reduce((previous, current) =>  previous + current);
-console.log(`Sum of array values is: ${arraySum}`); //output= Sum of array values is: 6
-
 /* push_unshift methods */
 function mixedNumbers(arr) {
   // add 'I', 2, 'three' to the beginning of the array
