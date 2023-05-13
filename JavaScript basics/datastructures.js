@@ -81,7 +81,7 @@ arr.splice(1, 4);// removes 4 elements from index 1 in arr
 console.log(arr); // output [ 2, 5, 2, 1 ]
 
 function htmlColorNames(arr) {
-  /* remove the first two elements of the array and add 'DarkSalmon' and 'BlanchedAlmond' in their respective places.*/
+/* remove the first two elements of the array and add 'DarkSalmon' and 'BlanchedAlmond' in their respective places.*/
   arr.splice(0, 2, "DarkSalmon", "BlanchedAlmond");
   
   return arr;
@@ -96,6 +96,9 @@ console.log(
     "FireBrick"
   ])
 );
+
+/*Write a function that splits an array (first argument) into groups the length of size (second argument) 
+and returns them as a two-dimensional array.*/
 
 // fibonaci using reduce method
 let myArray = [1, 2, 3];
