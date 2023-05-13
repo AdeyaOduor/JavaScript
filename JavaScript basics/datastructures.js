@@ -75,8 +75,8 @@ console.log(popShift(["challenge", "is", "not", "complete"]));
 
 /* splice methods */
 const arr = [2, 4, 5, 1, 7, 5, 2, 1];
-// removes 4 elements from index 1 in arr
-arr.splice(1, 4);
+
+arr.splice(1, 4);// removes 4 elements from index 1 in arr
 
 console.log(arr); // output [ 2, 5, 2, 1 ]
 
