@@ -294,7 +294,7 @@ function frankenSplice(arr1, arr2, n) {
   return [...arr2.slice(0, n), ...arr1, ...arr2.slice(n)];
 }
 
-// recursive solutions
+// finding an element using recursive method
 function findElement(arr, func) {
   return arr.find(func);
 }
