@@ -180,7 +180,6 @@ delete foods.strawberries;
 console.log(foods);
 
 // Check if an Object has a Property
-
 let users = {
   Alan: {
     age: 27,
