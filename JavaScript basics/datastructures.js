@@ -208,7 +208,6 @@ function isEveryoneHere(userObj) {
 }
 
 // Iterate Through the Keys of an Object with a for...in Statement
-
 const users = {
   Alan: {
     online: false
