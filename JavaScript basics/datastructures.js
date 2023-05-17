@@ -129,7 +129,6 @@ console.log(quickCheck(["squash", "onions", "shallots"], "mushrooms"));
 
 
 // Iterate Through All an Array's Items Using For Loops
-
 function filteredArray(arr, elem) {
   let newArr = [];
 
