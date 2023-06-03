@@ -85,8 +85,6 @@ testStrictNotEqual(10);
 
 // Functions that returns strings representing respective cup of tea
 const prepareGreenTea = () => 'greenTea';
-
-// Function that returns a string representing a cup of black tea
 const prepareBlackTea = () => 'blackTea';
 
 /*
