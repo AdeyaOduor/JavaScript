@@ -83,7 +83,7 @@ function testStrictNotEqual(val) {
 
 testStrictNotEqual(10);
 
-// Function that returns a string representing a cup of green tea
+// Functions that returns strings representing respective cup of tea
 const prepareGreenTea = () => 'greenTea';
 
 // Function that returns a string representing a cup of black tea
