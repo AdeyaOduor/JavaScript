@@ -86,7 +86,6 @@ testStrictNotEqual(10);
 // Functions that returns strings representing respective cup of tea
 const prepareGreenTea = () => 'greenTea';
 const prepareBlackTea = () => 'blackTea';
-
 /*
 Given a function (representing the tea type) and number of cups needed, the
 following function returns an array of strings (each representing a cup of
@@ -102,10 +101,8 @@ const getTea = (prepareTea, numOfCups) => {
   return teaCups;
 };
 
-// Only change code below this line
 const tea4GreenTeamFCC = getTea(prepareGreenTea, 27); // :)
 const tea4BlackTeamFCC = getTea(prepareBlackTea, 13); // :)
-// Only change code above this line
 
 console.log(
   tea4GreenTeamFCC,
