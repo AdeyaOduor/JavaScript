@@ -155,7 +155,6 @@ var fixedValue = 4;
 function incrementer(value) {
   return value + 1;
 
-  // Add your code above this line
 }
 
 var differentValue = incrementer(fixedValue); // Should equal 5
