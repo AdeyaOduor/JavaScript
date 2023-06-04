@@ -148,11 +148,15 @@ const finalTabs = socialWindow
 console.log(finalTabs.tabs);
 
 /* Fill in the code for the function incrementer so it returns the value of the global variable fixedValue increased by one.*/
+// the global variable
 var fixedValue = 4;
 
-function incrementer() {
-  return fixedValue + 1;
+// Add your code below this line
+function incrementer(value) {
+  return value + 1;
+
+  // Add your code above this line
 }
 
-var newValue = incrementer(); // Should equal 5
+var differentValue = incrementer(fixedValue); // Should equal 5
 console.log(fixedValue); // Should print 4
