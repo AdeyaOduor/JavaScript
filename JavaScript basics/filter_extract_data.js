@@ -112,10 +112,8 @@ const watchList = [
   }
 ];
 
-// Only change code below this line
 const filteredList = watchList
   .filter(({ imdbRating }) => imdbRating >= 8.0)
   .map(({ Title: title, imdbRating: rating }) => ({ title, rating }));
-// Only change code above this line
 
 console.log(filteredList);
