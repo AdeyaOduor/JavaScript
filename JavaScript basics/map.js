@@ -118,3 +118,14 @@ const ratings = watchList.map(item => ({
 }));
 
 console.log(JSON.stringify(ratings));
+
+// Implement map on a Prototype
+Array.prototype.myMap = function (callback) {
+  const newArray = [];
+
+  this.forEach((element, index, originalArr) =>
+    newArray.push(callback(element, index, originalArr))
+  );
+  // Only change code above this line
+  return newArray;
+};
