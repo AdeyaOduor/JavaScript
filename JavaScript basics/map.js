@@ -112,13 +112,9 @@ const watchList = [
   }
 ];
 
-// Only change code below this line
-
 const ratings = watchList.map(item => ({
   title: item["Title"],
   rating: item["imdbRating"]
 }));
-
-// Only change code above this line
 
 console.log(JSON.stringify(ratings));
