@@ -1,4 +1,4 @@
-// The global variable
+// The map Method to Extract Data from an Array
 const watchList = [
   {
     "Title": "Inception",
