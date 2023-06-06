@@ -24,7 +24,6 @@ console.log(a); // should be 6
 console.log(b); // should be 8
 
 // use-destructuring-assignment-to-pass-an-object-as-a-functions-parameters.txt
-
 const stats = {
   max: 56.78,
   standard_deviation: 4.34,
