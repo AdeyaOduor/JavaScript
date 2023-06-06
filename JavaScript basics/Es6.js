@@ -71,7 +71,6 @@ console.log(createPerson("Zodiac Hasbro", 56, "male")); // returns a proper obje
 
 /* import statement allowing the current file to use the uppercaseString and lowercaseString functions you exported.
 These functions are in a file called string_functions.js, which is in the same directory as the current file.*/
-
 import { uppercaseString, lowercaseString  } from './string_functions.js';  
 
 uppercaseString("hello");
