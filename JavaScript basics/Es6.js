@@ -9,7 +9,6 @@ const source = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const sourceWithoutFirstTwo = removeFirstTwo(source)
 
 // use-destructuring-assignment-to-assign-variables-from-arrays.txt
-
 let a = 8, b = 6;
 
  [a,b] = [b,a];
