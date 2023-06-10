@@ -118,7 +118,7 @@ const filteredList = watchList
 
 console.log(filteredList);
 
-// Only change code below this line
+// filter method on prototype
 Array.prototype.myFilter = function(callback) {
 const newArray = [];
 
@@ -127,6 +127,6 @@ if(callback(this[i], i , this)){
 newArray.push(this[i])
 }
 }
-// Only change code above this line
+
 return newArray;
 };
