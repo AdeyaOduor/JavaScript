@@ -17,7 +17,8 @@ function timesFive(num) {
 }
 
 
-/*A function can include the return statement but it does not have to. In the case that the function doesn't have a return statement, when you call it, the function processes the inner code but the returned value is undefined.*/
+/*A function can include the return statement but it does not have to. In the case that the 
+function doesn't have a return statement, when you call it, the function processes the inner code but the returned value is undefined.*/
 var sum = 0;
 
 function addThree() {
@@ -161,7 +162,8 @@ var differentValue = incrementer(fixedValue); // Should equal 5
 console.log(fixedValue); // Should print 4
 
 // Refactor global variables out of functions
-var bookList = ["The Hound of the Baskervilles", "On The Electrodynamics of Moving Bodies", "Philosophiæ Naturalis Principia Mathematica", "Disquisitiones Arithmeticae"];
+var bookList = ["The Hound of the Baskervilles", "On The Electrodynamics of Moving Bodies", "Philosophiæ Naturalis Principia Mathematica",
+                "Disquisitiones Arithmeticae"];
 
 /* This function should add a book to the list and return the list */
 // New parameters should come before bookName
@@ -181,7 +183,8 @@ var newestBookList = remove(add(bookList, 'A Brief History of Time'), 'On The El
 
 console.log(bookList);
 
-// Remove Elements from an Array Using slice Instead of splice
+// Remove Elements from an Array Using slice Instead of splice, limiting the provided cities array to a length of 3, 
+// and return a new array with only the first three items.
 function nonMutatingSplice(cities) {
   return cities.slice(0,3);
 }
