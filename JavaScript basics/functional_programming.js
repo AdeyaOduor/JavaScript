@@ -180,3 +180,9 @@ var newerBookList = remove(bookList, 'On The Electrodynamics of Moving Bodies');
 var newestBookList = remove(add(bookList, 'A Brief History of Time'), 'On The Electrodynamics of Moving Bodies');
 
 console.log(bookList);
+
+// Remove Elements from an Array Using slice Instead of splice
+function nonMutatingSplice(cities) {
+  return cities.slice(0,3);
+}
+const inputCities = ["Chicago", "Delhi", "Islamabad", "London", "Berlin"];
