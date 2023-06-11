@@ -190,6 +190,7 @@ function nonMutatingSplice(cities) {
 }
 const inputCities = ["Chicago", "Delhi", "Islamabad", "London", "Berlin"];
 
+// Combine Two Arrays Using the concat Method
 function nonMutatingConcat(original, attach) {
   // Only change code below this line
   return original.concat(attach);
