@@ -150,7 +150,6 @@ const finalTabs = socialWindow
 console.log(finalTabs.tabs);
 
 /* Fill in the code for the function incrementer so it returns the value of the global variable fixedValue increased by one.*/
-// the global variable
 var fixedValue = 4;
 
 function incrementer(value) {
