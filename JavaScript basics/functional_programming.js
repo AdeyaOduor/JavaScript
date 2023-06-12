@@ -17,8 +17,8 @@ function timesFive(num) {
 }
 
 
-/*A function can include the return statement but it does not have to. In the case that the 
-function doesn't have a return statement, when you call it, the function processes the inner code but the returned value is undefined.*/
+/*A function can include the return statement but it does not have to. In the case that the function doesn't have a return statement, 
+when you call it, the function processes the inner code but the returned value is undefined.*/
 var sum = 0;
 
 function addThree() {
@@ -45,7 +45,7 @@ processed = processArg(7); // Equal to 2
 Add the number to the end of the array, then remove the first element of the array.
 The nextInLine function should then return the element that was removed.*/
 function nextInLine(arr, item) {
-  // Your code here
+  
   arr.push(item);
   return arr.shift(); 
 }
@@ -164,8 +164,7 @@ console.log(fixedValue); // Should print 4
 var bookList = ["The Hound of the Baskervilles", "On The Electrodynamics of Moving Bodies", "Philosophiæ Naturalis Principia Mathematica",
                 "Disquisitiones Arithmeticae"];
 
-/* This function should add a book to the list and return the list */
-// New parameters should come before bookName
+/* This function should add a book to the list and return the list, New parameters should come before bookName */
 function add(list, bookName) {
   return [...list, bookName];
 }
