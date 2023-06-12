@@ -170,8 +170,7 @@ function add(list, bookName) {
   return [...list, bookName];
 }
 
-/* This function should remove a book from the list and return the list */
-// New parameters should come before the bookName one
+/* This function should remove a book from the list and return the list, New parameters should come before the bookName one */
 function remove(list, bookName) {
   return list.filter(book => book !== bookName);
 }
