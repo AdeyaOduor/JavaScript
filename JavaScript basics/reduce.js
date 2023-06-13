@@ -1,3 +1,4 @@
+// Reduce Method to Analyze Data
 const watchList = [
   {
     "Title": "Inception",
