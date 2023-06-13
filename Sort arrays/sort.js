@@ -1,5 +1,4 @@
 // write the quickSort algorithm 1
-
 const swap = (array, left, right) => {
     const temp1 = array[left];
     const temp2 = array[right];
@@ -42,9 +41,9 @@ const quickSort = (array, left, right) => {
   quickSort(array, 0, array.length - 1);
   console.log('quicksorted array is', array);
 
-// write the quickSort algorithm 2
-// Quick sort is a comparison sort, meaning that it can sort items of any type for which a "less-than" relation (formally, a total order) is defined.
-
+/* QuickSort algorithm 2
+ Quick sort is a comparison sort, meaning that it can sort items of any type for which a "less-than" relation (formally, a total order)
+is defined. */
 function quick_Sort(origArray) {
 	if (origArray.length <= 1) { 
 		return origArray;
@@ -74,3 +73,10 @@ console.log("Original array: " + myArray);
 var sortedArray = quick_Sort(myArray);
 console.log("Sorted array: " + sortedArray);
 
+// Sort an Array Alphabetically using the sort Method
+function alphabeticalOrder(arr) {
+  return arr.sort(function(a, b) {
+    return a === b ? 0 : a > b ? 1 : -1;
+  });
+}
+alphabeticalOrder(["a", "d", "c", "a", "z", "g"]);
