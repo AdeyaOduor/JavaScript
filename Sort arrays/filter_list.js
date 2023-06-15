@@ -18,6 +18,7 @@ function firstNonConsecutive (arr) {
     return null;
 }
 
+// Split a String into an Array Using the split Method
 function splitify(str) {
   // Only change code below this line
   return str.split(/\W/);
