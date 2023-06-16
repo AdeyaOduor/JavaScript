@@ -37,8 +37,8 @@ function testGreaterThan(val) {
   return "10 or Under";
 }
 
-// Change this value to test
-console.log(testGreaterThan(10));
+console.log(testGreaterThan(10)); // Change this value to test
+
 
 function testGreaterOrEqual(val) {
   if (val >= 20) {  
