@@ -1,3 +1,4 @@
+// Apply Functional Programming to Convert Strings to URL Slugs
 function urlSlug(title) {
   return title
     .split(" ")
