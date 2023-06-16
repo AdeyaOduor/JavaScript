@@ -67,8 +67,8 @@ function testLessThan(val) {
   return "55 or Over";
 }
 
-// Change this value to test
-console.log(testLessThan(10));
+console.log(testLessThan(10)); // Change this value to test
+
 
 function testLessOrEqual(val) {
   if (val <= 12) {  
