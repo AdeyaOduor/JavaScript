@@ -106,8 +106,7 @@ function testLogicalOr(val) {
   return "Inside";
 }
 
-// Change this value to test
-testLogicalOr(15);
+testLogicalOr(15); // Change this value to test
 
 
 function testElse(val) {
