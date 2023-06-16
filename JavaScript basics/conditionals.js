@@ -52,8 +52,8 @@ function testGreaterOrEqual(val) {
   return "Less than 10";
 }
 
-// Change this value to test
-console.log(testGreaterOrEqual(10));
+console.log(testGreaterOrEqual(10)); // Change this value to test
+
 
 function testLessThan(val) {
   if (val < 25) {  
