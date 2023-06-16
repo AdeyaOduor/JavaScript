@@ -4,8 +4,8 @@ function testStrict(val) {
   }
   return "Not Equal";
 }
-// Change this value to test
-testStrict(10);
+
+testStrict(10); // Change this value to test
 
 function testNotEqual(val) {
   if (val!= 99) { 
