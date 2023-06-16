@@ -82,8 +82,8 @@ function testLessOrEqual(val) {
   return "More Than 24";
 }
 
-// Change this value to test
-console.log(testLessOrEqual(10));
+console.log(testLessOrEqual(10)); // Change this value to test
+
 
 function testLogicalAnd(val) {
 
@@ -94,8 +94,8 @@ function testLogicalAnd(val) {
   return "No";
 }
 
-// Change this value to test
-testLogicalAnd(10);
+testLogicalAnd(10); // Change this value to test
+
 
 function testLogicalOr(val) {
 
