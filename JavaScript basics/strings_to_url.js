@@ -1,4 +1,4 @@
-// Apply Functional Programming to Convert Strings to URL Slugs
+// Functional Programming to Convert Strings to URL Slugs
 function urlSlug(title) {
   return title
     .split(" ")
@@ -6,5 +6,5 @@ function urlSlug(title) {
     .join("-")
     .toLowerCase();
 }
-// Only change code above this line
+
 urlSlug("A Mind Needs Books Like A Sword Needs A Whetstone");
