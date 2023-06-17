@@ -24,3 +24,14 @@ function convertCtoF(celsius) {
 
 // Change the inputs below to test your code
 convertCtoF(30);
+
+
+function sumAll(arr) {
+  let sumBetween = 0;
+  for (let i = Math.min(...arr); i <= Math.max(...arr); i++) {
+    sumBetween += i;
+  }
+  return sumBetween;
+}
+
+sumAll([1, 4]);
