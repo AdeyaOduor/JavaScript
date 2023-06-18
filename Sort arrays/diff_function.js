@@ -12,3 +12,7 @@ function diffArray(arr1, arr2) {
     return a.filter(item => b.indexOf(item) === -1);
   }
 }
+
+function destroyer(arr, ...valsToRemove) {
+  return arr.filter(elem => !valsToRemove.includes(elem));
+}
