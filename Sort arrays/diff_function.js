@@ -13,7 +13,10 @@ function diffArray(arr1, arr2) {
   }
 }
 
-/*Remove all elements from the initial array that are of the same value as these arguments.*/
+/*Remove all elements from the initial array that are of the same value as these arguments. 
+    Using spread operator to retrieve the arguments.
+    Return the filtered array, using includes().
+*/
 function destroyer(arr, ...valsToRemove) {
   return arr.filter(elem => !valsToRemove.includes(elem));
 }
