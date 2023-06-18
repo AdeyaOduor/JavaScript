@@ -21,8 +21,9 @@ function destroyer(arr, ...valsToRemove) {
   return arr.filter(elem => !valsToRemove.includes(elem));
 }
 
+/*an algorithm that will take an array for the first argument and return an array with all the 
+objects that matches all the properties and values in the Object passed as second parameter.*/
 function whatIsInAName(collection, source) {
-  
   const sourceKeys = Object.keys(source);
 
   return collection
