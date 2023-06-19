@@ -133,8 +133,7 @@ function testElseIf(val) {
   }
 }
 
-// Change this value to test
-testElseIf(7);
+testElseIf(7); // Change this value to test
 
 function orderMyLogic(val) {
   if(val < 5) {
