@@ -258,7 +258,7 @@ sequentialSizes(1);
 
 function chainToSwitch(val) {
   var answer = "";
-  // changing else if to switch
+// changing else if to switch
   
   switch(val) {
     case "bob":
@@ -282,11 +282,11 @@ function chainToSwitch(val) {
   return answer;  
 }
 
-// Change this value to test
-chainToSwitch(7);
+chainToSwitch(7); // Change this value to test
+
 
 function isLess(a, b) {
-  // Returning Boolean Values from Functions
+// Returning Boolean Values from Functions
   return a < b;
 }
 
