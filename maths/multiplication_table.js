@@ -1,7 +1,8 @@
 /* program to generate a multiplication table
-upto a range in javascript*/
-
-// take number input from the user
+upto a range in javascript
+Method
+take number input from the user
+*/
 const number = parseInt(prompt('Enter an integer: '));
 
 // take range input from the user
