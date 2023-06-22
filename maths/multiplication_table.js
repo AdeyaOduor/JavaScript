@@ -2,13 +2,12 @@
 upto a range in javascript
 Method
 take number input from the user
+take range input from the user
+create a multiplication table
 */
 const number = parseInt(prompt('Enter an integer: '));
-
-// take range input from the user
 const range = parseInt(prompt('Enter a range: '));
 
-//creating a multiplication table
 for(let i = 1; i <= range; i++) {
     const result = i * number;
     console.log(`${number} * ${i} = ${result}`);
