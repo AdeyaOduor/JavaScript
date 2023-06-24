@@ -1,3 +1,4 @@
+// Flatten a nested array, accounting for varying levels of nesting.
 function steamrollArray(arr) {
   let flattened = [];
 
