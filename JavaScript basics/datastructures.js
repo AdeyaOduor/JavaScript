@@ -1,6 +1,6 @@
 /* Datastructure is a programmatic way of storing data for efficient use */
 
-// creating ana aray with a string and an integer
+// creating an aray with a string and an integer
 const myArray = ["Quincy", 1];
 const myArray = [["Bulls", 23], ["White Sox", 45]]; // nested array
 const myArray = [50, 60, 70];
