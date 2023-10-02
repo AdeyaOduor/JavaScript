@@ -19,7 +19,7 @@ function trackerApp() {
     console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
 
     // Make API call to OpenWeatherMap
-    fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=<YOUR_API_KEY>&units=metric`)
+    fetch(`https://www.googleapis.com/geolocation/v1/geolocate?lat=${latitude}&lon=${longitude}&appid=<YOUR_API_KEY>&units=metric`)
       .then(response => response.json())
       .then(data => {
         setWeather(data);
@@ -48,3 +48,20 @@ function trackerApp() {
 }
 
 export default trackerApp;
+
+https://www.googleapis.com/geolocation/v1/geolocate?key=YOUR_API_KEY
+
+    {
+      "homeMobileCountryCode": 310,
+      "homeMobileNetworkCode": 410,
+      "radioType": "gsm",
+      "carrier": "Vodafone",
+      "considerIp": true,
+      "cellTowers": [
+        // See the Cell Tower Objects section below.
+      ],
+      "wifiAccessPoints": [
+        // See the WiFi Access Point Objects section below.
+      ]
+    }
+  
