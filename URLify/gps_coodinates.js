@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function WeatherApp() {
+function trackerApp() {
   const [location, setLocation] = useState(null);
   const [weather, setWeather] = useState(null);
 
@@ -47,4 +47,4 @@ function WeatherApp() {
   );
 }
 
-export default WeatherApp;
+export default trackerApp;
