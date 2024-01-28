@@ -4,7 +4,7 @@ function factorial(x, runningTotal = 1 ) {
    return x == 0 ? runningTotal : factorial( x-1, x*runningTotal);
 }
 
-console.log(factorial(10))
+console.log(factorial(10)) // output 3628800
 
 // recursive
 function factorialize(num) {
