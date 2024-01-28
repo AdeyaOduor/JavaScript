@@ -23,6 +23,9 @@ if (avg < 40) {
 } else if (avg < 100) {
     console.log("Grade : A");
 }
+// Output
+// Average grade: 81.6
+// Grade : A
 
 // method2
 function grades(students) {
