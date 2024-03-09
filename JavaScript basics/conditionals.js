@@ -148,6 +148,8 @@ function orderMyLogic(val) {
     return "Greater than or equal to 10";
   }
 }
+orderMyLogic(7);
+-----------------------------------------------------------------------------------------
 
 //else if conditionals
 function testSize(num) {
@@ -165,7 +167,8 @@ function testSize(num) {
   }
 
 }
-
+testSize(19);
+----------------------------------------------------------------------------------------------
 // multiple else if conditionals
 const names = ["Hole-in-one!", "Eagle", "Birdie", "Par", "Bogey", "Double Bogey", "Go Home!"];
 
