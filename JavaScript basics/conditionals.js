@@ -6,6 +6,7 @@ function testStrict(val) {
 }
 
 testStrict(10); // Change this value to test
+--------------------------------------------------------------------------
 
 function testNotEqual(val) {
   if (val!= 99) { 
@@ -15,6 +16,7 @@ function testNotEqual(val) {
 }
 
 testNotEqual(10);
+--------------------------------------------------------------------------
 
 function testStrictNotEqual(val) {
   if (val!== 17) { 
@@ -24,6 +26,7 @@ function testStrictNotEqual(val) {
 }
 
 testStrictNotEqual(10);
+---------------------------------------------------------------------------
 
 function testGreaterThan(val) {
   if (val > 100) {  
@@ -38,6 +41,7 @@ function testGreaterThan(val) {
 }
 
 console.log(testGreaterThan(10)); // Change this value to test
+------------------------------------------------------------------------------
 
 
 function testGreaterOrEqual(val) {
