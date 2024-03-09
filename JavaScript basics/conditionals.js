@@ -57,7 +57,7 @@ function testGreaterOrEqual(val) {
 }
 
 console.log(testGreaterOrEqual(10)); // Change this value to test
-
+---------------------------------------------------------------------------------
 
 function testLessThan(val) {
   if (val < 25) {  
@@ -72,7 +72,7 @@ function testLessThan(val) {
 }
 
 console.log(testLessThan(10)); // Change this value to test
-
+------------------------------------------------------------------------------------
 
 function testLessOrEqual(val) {
   if (val <= 12) {  
@@ -87,7 +87,7 @@ function testLessOrEqual(val) {
 }
 
 console.log(testLessOrEqual(10)); // Change this value to test
-
+--------------------------------------------------------------------------------
 
 function testLogicalAnd(val) {
 
@@ -99,7 +99,7 @@ function testLogicalAnd(val) {
 }
 
 testLogicalAnd(10); // Change this value to test
-
+-------------------------------------------------------------------------------------
 
 function testLogicalOr(val) {
 
