@@ -193,6 +193,7 @@ function golfScore(par, strokes) {
 }
 
 golfScore(5, 4); // Change these values to test
+--------------------------------------------------------------------------------------------------
 
 function caseInSwitch(val) {
   let answer = "";
@@ -218,7 +219,7 @@ function caseInSwitch(val) {
 }
 
 caseInSwitch(3);
-
+-----------------------------------------------------------------------------------------------------------
 function switchOfStuff(val) {
   let answer = "";
 
@@ -238,7 +239,7 @@ function switchOfStuff(val) {
 
   return answer;
 }
-
+-----------------------------------------------------------------------------------------------------------
 // Multiple Identical Options in Switch Statements
 function sequentialSizes(val) {
   var answer = "";
@@ -262,7 +263,7 @@ function sequentialSizes(val) {
 
 }
 sequentialSizes(1);
-
+--------------------------------------------------------------------------------------------------------
 function chainToSwitch(val) {
   var answer = "";
 // changing else if to switch
@@ -290,7 +291,7 @@ function chainToSwitch(val) {
 }
 
 chainToSwitch(7); // Change this value to test
-
+---------------------------------------------------------------------------------------------------
 
 function isLess(a, b) {
 // Returning Boolean Values from Functions
