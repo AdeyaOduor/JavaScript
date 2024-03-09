@@ -111,7 +111,7 @@ function testLogicalOr(val) {
 }
 
 testLogicalOr(15); // Change this value to test
-
+---------------------------------------------------------------------------------
 
 function testElse(val) {
   let result = "";
@@ -126,7 +126,7 @@ function testElse(val) {
 }
 
 testElse(4);
-
+---------------------------------------------------------------------------------------
 function testElseIf(val) {
   if (val > 10) {
     return "Greater than 10";
@@ -138,7 +138,7 @@ function testElseIf(val) {
 }
 
 testElseIf(7); // Change this value to test
-
+----------------------------------------------------------------------------------------
 function orderMyLogic(val) {
   if(val < 5) {
     return "Less than 5";
