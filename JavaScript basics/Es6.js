@@ -58,8 +58,36 @@ const lowercaseString = (string) => {
   return string.toLowerCase();
 }
 
-// Example in data transformation
+// Example in data transformation from a csv file to uppercase
+const fs = require('fs');
+const csv = require('csv-parser');
 
+// Read and transform data from CSV
+fs.createReadStream('data.csv')
+  .pipe(csv())
+  .on('data', (row) => {
+    // Perform transformations on each row of data
+    const transformedData = transformData(row);
+
+    // Output the transformed data
+    console.log(transformedData);
+  })
+  .on('end', () => {
+    console.log('Data transformation complete');
+  });
+
+// Function to perform data transformation
+function transformData(row) {
+  // Perform desired transformations on the row
+  // Example: Convert row values to uppercase
+  const transformedRow = {};
+  for (const key in row) {
+    if (row.hasOwnProperty(key)) {
+      transformedRow[key] = row[key].toUpperCase();
+    }
+  }
+  return transformedRow;
+}
 ----------------------------------------------------------------------------------------------------------------------------------
 /*Use object property shorthand with object literals to create and return an object 
 with name, age and gender properties. */
