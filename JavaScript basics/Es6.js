@@ -123,21 +123,14 @@ export function lowercaseString(string) {
   <h1 id="output">Hello, World!</h1>
 
   <script type="module" src="string_functions.js"></script>
-<script type="module">
-  // Your code here
-  uppercaseString("hello");
-  lowercaseString("WORLD!");
-</script>
+// <script type="module">
+//   // Your code here
+//   uppercaseString("hello");
+//   lowercaseString("WORLD!");
+// </script>
 </body>
 </html>
 ---------------------------------------------------------------------------------------------------------------------------------
-
-/* The code in this file requires the contents of the file: string_functions.js, that is in the same directory as the current file. 
-Use the import * as syntax to import everything from the file into an object called stringFunctions */
-import * as stringFunctions from "./string_functions.js";
-
-stringFunctions.uppercaseString("hello");
-stringFunctions.lowercaseString("WORLD!");
 
 /* In the following code, import the default export from the math_functions.js file, 
 found in the same directory as this file. Give the import the name subtract */
