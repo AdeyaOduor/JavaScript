@@ -33,20 +33,8 @@ const groupAnagrams = (strArr) => {
 /* TEST */
 
 const inputAnagrams = [
-  'motherinlaw', 
-  'debit card', 
-  'dormitory', 
-  'theearthquakes', 
-  'astronomer', 
-  'punishments', 
-  'schoolmaster', 
-  'hitlerwoman',
-  'badcredit',
-  'dirtyroom',
-  'thequeershakes',
-  'moonstarrer',
-  'ninethumps',
-  'theclassroom'
+  'motherinlaw', 'debit card', 'dormitory', 'theearthquakes', 'astronomer', 'punishments', 'schoolmaster', 'hitlerwoman',
+  'badcredit','dirtyroom','thequeershakes', 'moonstarrer','ninethumps','theclassroom'
 ];
 
 const sortedAnagrams = [
