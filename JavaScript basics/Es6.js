@@ -99,10 +99,37 @@ console.log(createPerson("Zodiac Hasbro", 56, "male")); // returns a proper obje
 
 /* import statement allowing the current file to use the uppercaseString and lowercaseString functions you exported.
 These functions are in a file called string_functions.js, which is in the same directory as the current file.*/
-import { uppercaseString, lowercaseString  } from './string_functions.js';  
+import { uppercaseString, lowercaseString } from './string_functions.js';
 
-uppercaseString("hello");
-lowercaseString("WORLD!");
+console.log(uppercaseString("hello"));
+console.log(lowercaseString("WORLD!"));
+
+// string_functions.js file on import
+export function uppercaseString(string) {
+  return string.toUpperCase();
+}
+
+export function lowercaseString(string) {
+  return string.toLowerCase();
+}
+// inside the html file
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JavaScript in HTML</title>
+</head>
+<body>
+  <h1 id="output">Hello, World!</h1>
+
+  <script type="module" src="string_functions.js"></script>
+<script type="module">
+  // Your code here
+  uppercaseString("hello");
+  lowercaseString("WORLD!");
+</script>
+</body>
+</html>
+---------------------------------------------------------------------------------------------------------------------------------
 
 /* The code in this file requires the contents of the file: string_functions.js, that is in the same directory as the current file. 
 Use the import * as syntax to import everything from the file into an object called stringFunctions */
