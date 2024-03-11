@@ -8,17 +8,10 @@ function removeFirstTwo(list) {
 
 const source = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const sourceWithoutFirstTwo = removeFirstTwo(source) // Output [3, 4, 5, 6, 7, 8, 9, 10].
-------------------------------------------------------------------------------------------------------------------------------
+
 // use-destructuring-assignment-to-assign-variables-from-arrays.txt
 let a = 8, b = 6;
 
- [a,b] = [b,a];
-
-console.log(a); // should be 6
-console.log(b); // should be 8
-
-// use-destructuring-assignment-to-assign-variables-from-arrays.
-let a = 8, b = 6;
  [a,b] = [b,a];
 
 console.log(a); // should be 6
@@ -38,6 +31,7 @@ const half = ({max, min}) => ((max + min) / 2.0); // use function argument destr
 
 console.log(stats); // should be object
 console.log(half(stats)); // should be 28.015
+------------------------------------------------------------------------------------------------------------------------------
     
 // create-strings-using-template-literals.
 /*Use template literal syntax with backticks to create an array of list element (li) strings. Each list element's text should be one of the array elements from the failure property on the result object and 
