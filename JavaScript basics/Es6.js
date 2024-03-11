@@ -124,7 +124,6 @@ export function lowercaseString(string) {
 
   <script type="module" src="string_functions.js"></script>
 // <script type="module">
-//   // Your code here
 //   uppercaseString("hello");
 //   lowercaseString("WORLD!");
 // </script>
