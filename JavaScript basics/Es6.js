@@ -34,28 +34,33 @@ console.log(half(stats)); // should be 28.015
 ------------------------------------------------------------------------------------------------------------------------------
     
 // create-strings-using-template-literals.
-/*Use template literal syntax with backticks to create an array of list element (li) strings. Each list element's text should be one of the array elements from the failure property on the result object and 
-have a class attribute with the value text-warning. The makeList function should return the array of list item strings. 
+/*Use template literal syntax with backticks to create an array of list element (li) strings. Each list element's text should be 
+one of the array elements from the failure property on the result object and have a class attribute with the value text-warning. 
+The makeList function should return the array of list item strings in non-module environment. 
 */
 const result = {
   success: ["max-length", "no-amd", "prefer-arrow-functions"],
   failure: ["no-var", "var-on-top", "linebreak"],
   skipped: ["no-extra-semi", "no-dup-keys"]
 };
+
 function makeList(arr) {
   return arr.map(val => `<li class="text-warning">${val}</li>`);
 }
 
 const failuresList = makeList(result.failure);
 
-export const uppercaseString = (string) => {
+const uppercaseString = (string) => {
   return string.toUpperCase();
 }
 
-export const lowercaseString = (string) => {
-  return string.toLowerCase()
+const lowercaseString = (string) => {
+  return string.toLowerCase();
 }
 
+// Example in data transformation
+
+----------------------------------------------------------------------------------------------------------------------------------
 /*Use object property shorthand with object literals to create and return an object 
 with name, age and gender properties. */
 const createPerson = (name, age, gender) => {
