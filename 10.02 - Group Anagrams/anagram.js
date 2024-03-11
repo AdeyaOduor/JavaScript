@@ -38,20 +38,8 @@ const inputAnagrams = [
 ];
 
 const sortedAnagrams = [
-  "ninethumps", 
-  "punishments", 
-  "dormitory", 
-  "dirtyroom", 
-  "astronomer", 
-  "moonstarrer", 
-  "motherinlaw", 
-  "hitlerwoman", 
-  "thequeershakes", 
-  "schoolmaster", 
-  "theclassroom", 
-  "badcredit", 
-  "theearthquakes", 
-  "debit card"
+  "ninethumps", "punishments", "dormitory", "dirtyroom", "astronomer", "moonstarrer", "motherinlaw", "hitlerwoman", 
+  "thequeershakes", "schoolmaster", "theclassroom", "badcredit", "theearthquake", "debit card"
 ];
 
 // groupAnagrams can be called
