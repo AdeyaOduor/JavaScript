@@ -158,10 +158,40 @@ class Thermostat {
   }
 }
 
-const thermos = new Thermostat(76); // Setting in Fahrenheit scale
-let temp = thermos.temperature; // 24.44 in Celsius
+const thermos = new Thermostat(76); 
+let temp = thermos.temperature; 
 thermos.temperature = 26;
-temp = thermos.temperature; // 26 in Celsius
+temp = thermos.temperature; // Output 26 in Celsius
+
+// Example 1
+class Thermostat {
+  constructor(fahrenheit) {
+    this._tempInCelsius = (5 / 9) * (fahrenheit - 32);
+  }
+
+  get temperature() {
+    return this._tempInCelsius;
+  }
+
+  set temperature(newTemp) {
+    this._tempInCelsius = newTemp;
+  }
+}
+
+// Prompt the user to enter a temperature in Fahrenheit
+const fahrenheitInput = prompt("Enter the temperature in Fahrenheit:");
+
+// Convert the user input to a number
+const fahrenheit = parseFloat(fahrenheitInput);
+
+// Create a new instance of the Thermostat class
+const thermos = new Thermostat(fahrenheit);
+
+// Retrieve the temperature in Celsius
+const celsius = thermos.temperature;
+
+// Display the converted temperature to the user
+console.log(`Temperature in Celsius: ${celsius.toFixed(2)}`);
 
 /* Use the class keyword to create a Thermostat class. The constructor accepts a Fahrenheit temperature.
 
@@ -175,15 +205,7 @@ Note: When you implement this, you will track the temperature inside the class i
 This is the power of a getter and a setter. You are creating an API for another user, who can get the correct result regardless of which one you track.
 
 In other words, you are abstracting implementation details from the user. */
-
-
-<!-- A script that uses this module type can now use the import and export features -->
-<html>
-  <body>
-    
-<script type="module" src="index.js"></script>
-  </body>
-</html>
+-------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /* Create a new promise called makeServerRequest. 
 Pass in a function with resolve and reject parameters to the constructor, and Handle a Fulfilled Promise with then. */
