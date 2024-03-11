@@ -1,4 +1,5 @@
-/* ES6, released in 2015, added many powerful new features to the language including arrow functions, destructuring, classes, promises, spread operators, and modules.*/
+/* ES6, released in 2015, added many powerful new features to the language including arrow functions, 
+destructuring, classes, promises, spread operators, and modules.*/
 // destructuring-via-rest-elements.
 function removeFirstTwo(list) {
   const [, , ...shorterList] = list;
@@ -6,8 +7,8 @@ function removeFirstTwo(list) {
 }
 
 const source = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-const sourceWithoutFirstTwo = removeFirstTwo(source)
-
+const sourceWithoutFirstTwo = removeFirstTwo(source) // Output [3, 4, 5, 6, 7, 8, 9, 10].
+------------------------------------------------------------------------------------------------------------------------------
 // use-destructuring-assignment-to-assign-variables-from-arrays.txt
 let a = 8, b = 6;
 
