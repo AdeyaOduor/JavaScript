@@ -98,6 +98,20 @@ const createPerson = (name, age, gender) => {
 console.log(createPerson("Zodiac Hasbro", 56, "male")); // returns a proper object
 ----------------------------------------------------------------------------------------------------------------------------------
 
+// Imports and exports
+
+// main.js
+import { subtract } from './math_functions.js';
+
+console.log(subtract(7, 4));
+
+// Export math_functions.js
+function subtract(a, b) {
+  return a - b;
+}
+
+console.log(subtract(7, 4));
+
 /* import statement allowing the current file to use the uppercaseString and lowercaseString functions you exported.
 These functions are in a file called string_functions.js, which is in the same directory as the current file.*/
 import { uppercaseString, lowercaseString } from './string_functions.js';
@@ -130,12 +144,6 @@ export function lowercaseString(string) {
 </body>
 </html>
 ---------------------------------------------------------------------------------------------------------------------------------
-
-/* In the following code, import the default export from the math_functions.js file, 
-found in the same directory as this file. Give the import the name subtract */
-import subtract from "./math_functions.js";  
-
-subtract(7,4);
 
 // getters_setters
 class Thermostat {
