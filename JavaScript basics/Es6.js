@@ -242,20 +242,32 @@ makeServerRequest.then(result => {
 makeServerRequest.catch(error => {
   console.log(error);
 });
-
+--------------------------------------------------------------------------------------------------------------------
 
 // Es6 spread operators
 
 function copyMachine(arr, num) {
   let newArr = [];
   while (num >= 1) {
-    // spread operator making a copy of passed argumnets
-    newArr.push([...arr]);
-    
+    newArr.push(arr.slice());
     num--;
   }
   return newArr;
 }
+
+// Sample student data
+const studentData = [
+  { name: 'John', age: 18 },
+  { name: 'Emily', age: 19 },
+  { name: 'Michael', age: 20 }
+];
+
+// Create 1000 copies of the student data
+const testData = copyMachine(studentData, 1000);
+
+// Use the generated test data for testing or simulations
+console.log(testData.length); // Output: 1000
+console.log(testData[0]); // Output: { name: 'John', age: 18 }
 
 console.log(copyMachine([true, false, true], 2));
 
