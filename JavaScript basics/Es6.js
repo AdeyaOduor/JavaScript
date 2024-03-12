@@ -243,7 +243,7 @@ makeServerRequest.catch(error => {
   console.log(error);
 });
 
-//
+// combined version of the code that handles both successful and unsuccessful server responses using Promises:
 const makeServerRequest = (responseFromServer) => {
   return new Promise((resolve, reject) => {
     if (responseFromServer) {
