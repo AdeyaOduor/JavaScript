@@ -137,10 +137,7 @@ export function lowercaseString(string) {
   <h1 id="output">Hello, World!</h1>
 
   <script type="module" src="string_functions.js"></script>
-// <script type="module">
-//   uppercaseString("hello");
-//   lowercaseString("WORLD!");
-// </script>
+
 </body>
 </html>
 ---------------------------------------------------------------------------------------------------------------------------------
