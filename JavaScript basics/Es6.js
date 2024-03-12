@@ -268,8 +268,6 @@ const testData = copyMachine(studentData, 1000);
 // Use the generated test data for testing or simulations
 console.log(testData.length); // Output: 1000
 console.log(testData[0]); // Output: { name: 'John', age: 18 }
-
-console.log(copyMachine([true, false, true], 2));
 ------------------------------------------------------------------------------------------------------------------------
 
 function spreadOut() {
