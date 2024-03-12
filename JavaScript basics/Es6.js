@@ -270,7 +270,7 @@ console.log(testData.length); // Output: 1000
 console.log(testData[0]); // Output: { name: 'John', age: 18 }
 
 console.log(copyMachine([true, false, true], 2));
-
+------------------------------------------------------------------------------------------------------------------------
 
 function spreadOut() {
   let fragment = ['to', 'code'];
