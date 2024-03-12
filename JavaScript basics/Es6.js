@@ -242,6 +242,33 @@ makeServerRequest.then(result => {
 makeServerRequest.catch(error => {
   console.log(error);
 });
+
+//
+const makeServerRequest = (responseFromServer) => {
+  return new Promise((resolve, reject) => {
+    if (responseFromServer) {
+      resolve("We got the data");
+    } else {
+      reject("Data not received");
+    }
+  });
+};
+
+makeServerRequest(true)
+  .then(result => {
+    console.log(result);
+  })
+  .catch(error => {
+    console.log(error);
+  });
+
+makeServerRequest(false)
+  .then(result => {
+    console.log(result);
+  })
+  .catch(error => {
+    console.log(error);
+  });
 --------------------------------------------------------------------------------------------------------------------
 
 // Es6 spread operators
