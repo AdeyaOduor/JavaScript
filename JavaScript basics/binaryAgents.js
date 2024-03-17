@@ -11,3 +11,18 @@ binaryAgent("01000001 01110010 01100101 01101110 00100111 01110100 00100000
 
 // The binary values in the input string are converted into their respective ASCII characters, resulting in the following text string.
 // "Aren't bonfires fun?!".
+
+function stringToBinary(str) {
+  let binaryCodes = '';
+  
+  for (let i = 0; i < str.length; i++) {
+    const asciiCode = str.charCodeAt(i);
+    const binaryCode = asciiCode.toString(2).padStart(8, '0');
+    binaryCodes += binaryCode + ' ';
+  }
+  
+  return binaryCodes.trim();
+}
+
+console.log(stringToBinary("Hello, world!"));
+//
