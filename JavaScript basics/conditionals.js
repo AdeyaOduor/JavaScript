@@ -296,7 +296,7 @@ function isLess(a, b) {
 }
 
 console.log(isLess(20, 15)); // Change these values to test
-
+----------------------------------------------------------------------------------------------------
 
 // conditionals OR
 function abTest(a, b) {
@@ -307,5 +307,7 @@ function abTest(a, b) {
   return Math.round(Math.pow(Math.sqrt(a) + Math.sqrt(b), 2));
 }
 
-abTest(2, 2); // Change values below to test your code
+abTest(2, 2); // The output will be 8 because the square root of 2 is approximately 1.414, and the sum of the two square roots is approximately 2.828. 
+// Squaring 2.828 gives approximately 7.999, which is then rounded to the nearest whole number, 
+// resulting in 8. This value is returned by the abTest function and printed to the console.
 
