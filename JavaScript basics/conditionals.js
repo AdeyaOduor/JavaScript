@@ -102,15 +102,13 @@ testLogicalAnd(10); // Change this value to test
 -------------------------------------------------------------------------------------
 
 function testLogicalOr(val) {
-
-  if (val < 10 || val > 20 ) {
+  if (val < 10 || val > 20) {
     return "Outside";
   }
-
   return "Inside";
 }
 
-testLogicalOr(15); // Change this value to test
+console.log(testLogicalOr(1));// Change this value to test
 ---------------------------------------------------------------------------------
 
 function testElse(val) {
