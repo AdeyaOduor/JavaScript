@@ -25,7 +25,7 @@ function testStrictNotEqual(val) {
   return "Equal";
 }
 
-testStrictNotEqual(10);
+console.log(testStrictNotEqual(10));
 ---------------------------------------------------------------------------
 
 function testGreaterThan(val) {
@@ -98,7 +98,7 @@ function testLogicalAnd(val) {
   return "No";
 }
 
-testLogicalAnd(10); // Change this value to test
+console.log(testLogicalAnd(10)); // Change this value to test
 -------------------------------------------------------------------------------------
 
 function testLogicalOr(val) {
@@ -123,7 +123,7 @@ function testElse(val) {
   return result;
 }
 
-testElse(4);
+console.log(testElse(4));
 ---------------------------------------------------------------------------------------
 function testElseIf(val) {
   if (val > 10) {
@@ -135,7 +135,7 @@ function testElseIf(val) {
   }
 }
 
-testElseIf(7); // Change this value to test
+console.log(testElseIf(7)); // Change this value to test
 ----------------------------------------------------------------------------------------
 function orderMyLogic(val) {
   if(val < 5) {
