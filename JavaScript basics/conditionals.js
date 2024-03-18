@@ -196,7 +196,7 @@ golfScore(5, 4); // Change these values to test
 function caseInSwitch(val) {
   let answer = "";
 
-   switch(val) {
+  switch(val) {
     case 1:
       answer = "alpha";
       break;
@@ -210,13 +210,11 @@ function caseInSwitch(val) {
       answer = "delta";
       break;
   }
-  return answer;  
-
 
   return answer;
 }
 
-caseInSwitch(3);
+console.log(caseInSwitch(3));
 -----------------------------------------------------------------------------------------------------------
 function switchOfStuff(val) {
   let answer = "";
