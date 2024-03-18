@@ -5,7 +5,7 @@ function testStrict(val) {
   return "Not Equal";
 }
 
-testStrict(10); // Change this value to test
+console.log(testStrict(10)); // Change this value to test
 --------------------------------------------------------------------------
 
 function testNotEqual(val) {
@@ -15,7 +15,7 @@ function testNotEqual(val) {
   return "Equal";
 }
 
-testNotEqual(10);
+console.log(testNotEqual(10));
 --------------------------------------------------------------------------
 
 function testStrictNotEqual(val) {
