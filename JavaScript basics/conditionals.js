@@ -260,6 +260,43 @@ function sequentialSizes(val) {
 
 }
 sequentialSizes(1);
+------------------------------------------------------------------------------------------------------------
+
+  function analyzeScore(score) {
+  let grade = '';
+
+  switch (true) {
+    case (score >= 80):
+      grade = 'A';
+      break;
+    case (score >= 75):
+      grade = 'B';
+      break;
+    case (score >= 65):
+      grade = 'C';
+      break;
+    case (score >= 45):
+      grade = 'D';
+      break;
+    case (score >= 30):
+      grade = 'E';
+      break;
+    default:
+      grade = 'F';
+  }
+
+  return grade;
+}
+
+// Example usage
+const score1 = 85;
+const grade1 = analyzeScore(score1);
+console.log(`Score: ${score1}, Grade: ${grade1}`);
+
+const score2 = 72;
+const grade2 = analyzeScore(score2);
+console.log(`Score: ${score2}, Grade: ${grade2}`);
+
 --------------------------------------------------------------------------------------------------------
 function chainToSwitch(val) {
   var answer = "";
