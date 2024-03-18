@@ -259,7 +259,7 @@ function sequentialSizes(val) {
   return answer;
 
 }
-sequentialSizes(1);
+console.log(sequentialSizes(1));
 ------------------------------------------------------------------------------------------------------------
 
   function analyzeScore(score) {
@@ -324,7 +324,7 @@ function chainToSwitch(val) {
   return answer;  
 }
 
-chainToSwitch(7); // Change this value to test
+console.log(chainToSwitch(7)); // Change this value to test
 ---------------------------------------------------------------------------------------------------
 
 function isLess(a, b) {
