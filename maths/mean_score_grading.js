@@ -34,7 +34,7 @@ if (avg < 40) {
 // Output
 // Average grade: 81.6
 // Grade : A
-
+-------------------------------------------------------------------------------------------------------------------------------------
 // method2
 function grades(students) {
   students.forEach(function(student) {
