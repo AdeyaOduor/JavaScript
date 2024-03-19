@@ -7,14 +7,19 @@ function sum(a, b){
   function division(a, b){
     return a / b
   }
-
-  // return remainder of divisio
   function modulus(a, b){
     return a % b
   }
   function subtraction(a, b){
     return a - b
   }
+// Call the functions with sample inputs and log the results to the console
+console.log(sum(5, 3)); // Output: 8
+console.log(multiply(4, 6)); // Output: 24
+console.log(division(10, 2)); // Output: 5
+console.log(modulus(7, 3)); // Output: 1 as the remainder of division
+console.log(subtraction(9, 4)); // Output: 5
+--------------------------------------------------------------------------------------------------------------------------
 
 // convert celcius to farenheight
 function convertCtoF(celsius) {
