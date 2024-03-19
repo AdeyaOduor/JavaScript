@@ -14,12 +14,20 @@ console.log("Average grade: " + avg);
 
 if (avg < 40) {
     console.log("Grade : F");
-} else if (avg < 50) {
+} else if (avg < 45) {
     console.log("Grade : D");
-} else if (avg < 60) {
+} else if (avg < 50) {
     console.log("Grade : C");
-} else if (avg < 80) {
+} else if (avg < 55) {
+    console.log("Grade : C+");
+} else if (avg < 60) {
+    console.log("Grade : B-");
+} else if (avg < 65) {
     console.log("Grade : B");
+} else if (avg < 70) {
+    console.log("Grade : B+");
+} else if (avg < 80) {
+    console.log("Grade : A-");
 } else if (avg < 100) {
     console.log("Grade : A");
 }
