@@ -47,7 +47,7 @@ const results = [
 ];
 
 // Log the results to the console
-console.log(results); // Output 
+console.log(results); // Output [ 5, 6, 0.6666666666666666, 2, -1 ]
 --------------------------------------------------------------------------------------------------------------------------
 
 // convert celcius to farenheight
