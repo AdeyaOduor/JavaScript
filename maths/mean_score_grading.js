@@ -42,7 +42,7 @@ function grades(students) {
     let grade = "";
 
     if (avg <= 30) {
-      grade = "F";
+      grade = "E";
     } else if (avg <= 40) {
       grade = "D";
     } else if (avg <= 50) {
