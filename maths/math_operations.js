@@ -80,4 +80,4 @@ function sumAll(arr) {
   return sumBetween;
 }
 
-sumAll([1, 4]);
+console.log(sumAll([1, 4])); // Output is 10
