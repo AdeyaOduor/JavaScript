@@ -50,13 +50,26 @@ const results = [
 console.log(results); // Output [ 5, 6, 0.6666666666666666, 2, -1 ]
 --------------------------------------------------------------------------------------------------------------------------
 
-// convert celcius to farenheight
+// convert celcius to farenheight and vice versa
 function convertCtoF(celsius) {
   let fahrenheit = celsius * (9 / 5) + 32;
   return fahrenheit;
 }
 
-console.log(convertCtoF(30)); // Change the inputs below to test your code
+console.log(convertCtoF(30)); // Change the inputs below to test your code, Output is 86
+
+// OR
+
+function fahrenheitToCelsius(fahrenheit) {
+  const celsius = (fahrenheit - 32) * (5 / 9);
+  return celsius;
+}
+
+// Example usage
+const fahrenheit = 88;
+const celsius = fahrenheitToCelsius(fahrenheit);
+console.log(`${fahrenheit} degrees Fahrenheit is equal to ${celsius.toFixed(2)} degrees Celsius.`); // Output is 31.11
+-----------------------------------------------------------------------------------------------------------------------------
 
 // Sum All Numbers in a Range
 function sumAll(arr) {
