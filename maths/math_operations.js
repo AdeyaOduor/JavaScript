@@ -56,7 +56,7 @@ function convertCtoF(celsius) {
   return fahrenheit;
 }
 
-convertCtoF(30); // Change the inputs below to test your code
+console.log(convertCtoF(30)); // Change the inputs below to test your code
 
 // Sum All Numbers in a Range
 function sumAll(arr) {
