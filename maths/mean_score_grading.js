@@ -73,3 +73,65 @@ let students = [
 ];
 
 grades(students);
+------------------------------------------------------------------------------------------------------------------------------
+    // Capture inputs from a csv file and compute averages
+
+const fs = require('fs');
+const csv = require('csv-parser');
+
+function gradesFromCSV(csvFilePath) {
+  const students = [];
+
+  fs.createReadStream(csvFilePath)
+    .pipe(csv())
+    .on('data', (row) => {
+      const student = {
+        name: row.name,
+        grades: parseGrades(row),
+      };
+      students.push(student);
+    })
+    .on('end', () => {
+      calculateGrades(students);
+    });
+}
+
+function parseGrades(row) {
+  const grades = [];
+  Object.keys(row).forEach((key) => {
+    if (key !== 'name') {
+      grades.push(parseFloat(row[key]));
+    }
+  });
+  return grades;
+}
+
+function calculateGrades(students) {
+  students.forEach(function(student) {
+    let avg = (student.grades.reduce((acc, cur) => acc + cur)) / student.grades.length;
+    let grade = "";
+
+    if (avg <= 30) {
+      grade = "E";
+    } else if (avg <= 40) {
+      grade = "D";
+    } else if (avg <= 50) {
+      grade = "C";
+    } else if (avg <= 59) {
+      grade = "B-";
+    } else if (avg <= 65) {
+      grade = "B";
+    } else if (avg <= 75) {
+      grade = "B+";
+    } else if (avg <= 85) {
+      grade = "A-";
+    } else if (avg <= 100) {
+      grade = "A";
+    }
+
+    console.log(`student: ${student.name}, average score: ${Math.round(avg)}, grade: ${grade}`);
+  });
+}
+
+const csvFilePath = 'students.csv';
+gradesFromCSV(csvFilePath);
