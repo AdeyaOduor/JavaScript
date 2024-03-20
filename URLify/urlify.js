@@ -22,23 +22,5 @@ var urlify = function(str, length) {
 
 console.log(urlify('Mr John Smith    ', 13), 'Mr%20John%20Smith'); 
 
-// output
-[
-  'M', 'r', '%', '2', '0',
-  'h', 'o', 'h', 'n', ' ',
-  'S', 'm', 'i', 't', 'h',
-  ' ', ' '
-] 17
-[
-  'M', 'r', '%', '2', '0',
-  'h', 'o', 'h', 'n', '%',
-  '2', '0', 'i', 't', 'h',
-  ' ', ' '
-] 17
-[
-  'M', 'r', '%', '2', '0',
-  'h', 'o', 'h', 'n', '%',
-  '2', '0', 'i', 't', 'h',
-  '%', '2', '0'
-] 18
-Mr%20hohn%20ith%20 Mr%20John%20Smith
+// output Mr%20John%20i Mr%20John%20Smith
+
