@@ -47,3 +47,19 @@ const GPSLocationTracker = () => {
 };
 
 export default GPSLocationTracker;
+-----------------------------------------------------------------------------------------------------------------
+
+  // inside App.js import above code:
+  import React from 'react';
+import GPSLocationTracker from './GPSLocationTracker';
+
+const App = () => {
+  return (
+    <div>
+      <h1>GPS Location Tracker</h1>
+      <GPSLocationTracker />
+    </div>
+  );
+};
+
+export default App;
