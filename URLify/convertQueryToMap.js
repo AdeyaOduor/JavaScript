@@ -21,3 +21,9 @@ function convertQueryToMap(query) {
 
 var query = "user.name.firstname=John&user.name.lastname=Doe&user.age=30&language=JavaScript";
 console.log(convertQueryToMap(query));
+
+// Output
+{
+  user: { name: { firstname: 'John', lastname: 'Doe' }, age: '30' },
+  language: 'JavaScript'
+}
