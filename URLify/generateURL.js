@@ -21,4 +21,4 @@ const queryParams = {
 };
 
 const url = generateURL(baseUrl, queryParams);
-console.log(url);
+console.log(url); //Output https://example.com/api?search=apple&category=fruits&page=1
