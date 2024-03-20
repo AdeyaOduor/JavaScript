@@ -43,5 +43,5 @@ function urlify(str, len) {
   return s;
 }
 
-console.log(urlify("Mr John Smith   ", 13));
+console.log(urlify("Mr John Smith   ", 13)); //Output Mr%20John%20Smith
 
