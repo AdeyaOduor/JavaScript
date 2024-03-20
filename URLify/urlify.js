@@ -20,7 +20,5 @@ var urlify = function(str, length) {
   return strArr.join('');
 };
 
-console.log(urlify('Mr John Smith    ', 13), 'Mr%20John%20Smith'); 
-
-// output Mr%20John%20i Mr%20John%20Smith
+console.log(urlify('Mr John Smith    ', 13), 'Mr%20John%20Smith'); // output Mr%20John%20i Mr%20John%20Smith
 
