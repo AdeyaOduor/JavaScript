@@ -1,10 +1,12 @@
 /* Datastructure is a programmatic way of storing data for efficient use */
 
-// creating an aray with a string and an integer
-const myArray = ["Quincy", 1];
-const myArray = [["Bulls", 23], ["White Sox", 45]]; // nested array
-const myArray = [50, 60, 70];
-const myData = myArray[0]; // 50
+// creating an aray with strings and integers and accessing arrays with myData
+const myArray1 = ["Quincy", 1];
+const myArray2 = [["Bulls", 23], ["White Sox", 45]]; // nested array
+const myArray3 = [50, 60, 70];
+const myData = myArray3[2];
+console.log(myData);
+--------------------------------------------------------------------------------------
 
 // Modify Array Data With Indexes
 const myArray = [18, 64, 99];
