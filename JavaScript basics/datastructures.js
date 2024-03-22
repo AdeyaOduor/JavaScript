@@ -23,10 +23,15 @@ const arr = [
   [[10, 11, 12], 13, 14]
 ];
 
-const subarray = arr[3]; //output [[10, 11, 12], 13, 14]
-const nestedSubarray = arr[3][0]; // output [10, 11, 12]
-const element = arr[3][0][1]; //output 11
-const myData = arr[2][1]; //8
+const subarray = arr[3];
+const nestedSubarray = arr[3][0];
+const element = arr[3][0][1];
+const myData = arr[2][1];
+
+console.log("subarray:", subarray);
+console.log("nestedSubarray:", nestedSubarray);
+console.log("element:", element);
+console.log("myData:", myData);
 
 // append data to the end of an array is via the push() function.
 const arr1 = [1, 2, 3];
