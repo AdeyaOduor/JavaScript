@@ -68,6 +68,10 @@ myArray3.shift();
 
 myArray3.unshift(["Paul", 35]);
 console.log(myArray3);
+
+// [ [ 'John', 23 ] ]
+// [ [ 'dog', 3 ] ]
+// [ [ 'Paul', 35 ], [ 'dog', 3 ] ]
 ----------------------------------------------------------------------------------------------
 
 // reinitializing_variables_inside_loop.js
