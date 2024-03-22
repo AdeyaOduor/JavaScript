@@ -32,6 +32,12 @@ console.log("subarray:", subarray);
 console.log("nestedSubarray:", nestedSubarray);
 console.log("element:", element);
 console.log("myData:", myData);
+
+// Output
+// subarray: [ [ 10, 11, 12 ], 13, 14 ]
+// nestedSubarray: [ 10, 11, 12 ]
+// element: 11
+// myData: 8
 ------------------------------------------------------------------------------------------
 
 // append data to the end of an array is via the push() function.
