@@ -10,8 +10,10 @@ console.log(myData);
 
 // Modify Array Data With Indexes
 const myArray = [18, 64, 99];
+myArray[0] = 45;
 
-myArray[0] = 45; // [45, 64, 99]
+console.log(myArray); // [ 45, 64, 99 ]
+---------------------------------------------------------------------------------------
 
 // Access Multi-Dimensional Arrays With Indexes
 const arr = [
