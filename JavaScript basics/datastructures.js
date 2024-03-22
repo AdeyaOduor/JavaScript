@@ -51,20 +51,24 @@ console.log(arr2); // [ 'Stimpson', 'J', 'cat', [ 'happy', 'joy' ] ]
 ------------------------------------------------------------------------------------------
 
 // .pop() removes the last element from an array and returns that element.
-const myArray = [["John", 23], ["cat", 2]];
+const myArray1 = [["John", 23], ["cat", 2]];
 
-const removedFromMyArray = myArray.pop();
+const removedFromMyArray1 = myArray1.pop();
+console.log(myArray1);
 
 // .shift() removes the first element
-const myArray = [["John", 23], ["dog", 3]];
+const myArray2 = [["John", 23], ["dog", 3]];
 
-const removedFromMyArray = myArray.shift();
+const removedFromMyArray2 = myArray2.shift();
+console.log(myArray2);
 
 // .unshift() adds the element at the beginning of the array.
-const myArray = [["John", 23], ["dog", 3]];
-myArray.shift();
+const myArray3 = [["John", 23], ["dog", 3]];
+myArray3.shift();
 
-myArray.unshift(["Paul", 35]); // output [["Paul", 35]["John", 23], ["dog", 3]]
+myArray3.unshift(["Paul", 35]);
+console.log(myArray3);
+----------------------------------------------------------------------------------------------
 
 // reinitializing_variables_inside_loop.js
 function zeroArray(m, n) {
