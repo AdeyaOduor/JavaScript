@@ -54,24 +54,19 @@ console.log(arr2); // [ 'Stimpson', 'J', 'cat', [ 'happy', 'joy' ] ]
 const myArray1 = [["John", 23], ["cat", 2]];
 
 const removedFromMyArray1 = myArray1.pop();
-console.log(myArray1);
+console.log(myArray1); // [ [ 'John', 23 ] ]
 
 // .shift() removes the first element
 const myArray2 = [["John", 23], ["dog", 3]];
 
 const removedFromMyArray2 = myArray2.shift();
-console.log(myArray2);
+console.log(myArray2); // [ [ 'dog', 3 ] ]
 
 // .unshift() adds the element at the beginning of the array.
 const myArray3 = [["John", 23], ["dog", 3]];
-myArray3.shift();
 
 myArray3.unshift(["Paul", 35]);
-console.log(myArray3);
-
-// [ [ 'John', 23 ] ]
-// [ [ 'dog', 3 ] ]
-// [ [ 'Paul', 35 ], [ 'dog', 3 ] ]
+console.log(myArray3); // [ [ 'Paul', 35 ], [ 'John', 23 ], [ 'dog', 3 ] ]
 ----------------------------------------------------------------------------------------------
 
 // reinitializing_variables_inside_loop.js
