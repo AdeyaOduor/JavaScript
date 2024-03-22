@@ -32,6 +32,7 @@ console.log("subarray:", subarray);
 console.log("nestedSubarray:", nestedSubarray);
 console.log("element:", element);
 console.log("myData:", myData);
+------------------------------------------------------------------------------------------
 
 // append data to the end of an array is via the push() function.
 const arr1 = [1, 2, 3];
