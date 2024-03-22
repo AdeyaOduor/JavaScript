@@ -42,10 +42,13 @@ console.log("myData:", myData);
 
 // append data to the end of an array is via the push() function.
 const arr1 = [1, 2, 3];
-arr1.push(4); //output [1,2,3,4]
+arr1.push(4); 
+console.log(arr1);
 
 const arr2 = ["Stimpson", "J", "cat"];
-arr2.push(["happy", "joy"]); // ["Stimpson", "J", "cat", ["happy", "joy"]].
+arr2.push(["happy", "joy"]); 
+console.log(arr2);
+------------------------------------------------------------------------------------------
 
 // .pop() removes the last element from an array and returns that element.
 const myArray = [["John", 23], ["cat", 2]];
