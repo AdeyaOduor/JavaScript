@@ -110,13 +110,10 @@ function htmlColorNames(arr) {
 
 console.log(
   htmlColorNames([
-    "DarkGoldenRod",
-    "WhiteSmoke",
-    "LavenderBlush",
-    "PaleTurqoise",
-    "FireBrick"
+    "DarkGoldenRod","WhiteSmoke","LavenderBlush","PaleTurqoise","FireBrick"
   ])
 );
+------------------------------------------------------------------------------------------------------------------------------
 
 /*Write a function that splits an array (first argument) into groups the length of size (second argument) 
 and returns them as a two-dimensional array.*/
@@ -129,6 +126,7 @@ function chunkArrayInGroups(arr, size) {
 }
 
 chunkArrayInGroups(["a", "b", "c", "d"], 2);
+-------------------------------------------------------------------------------------------------------------------------------
 
 /* push_unshift methods */
 function mixedNumbers(arr) {
