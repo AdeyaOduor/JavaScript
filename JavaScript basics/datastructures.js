@@ -74,7 +74,7 @@ function popShift(arr) {
   return [shifted, popped];
 }
 
-console.log(popShift(["challenge", "is", "not", "complete"]));
+console.log(popShift(["challenge", "is", "not", "complete"])); // [ 'challenge', 'complete' ]
 -----------------------------------------------------------------------------------------------------------------------
 
 // reinitializing_variables_inside_loop.js
@@ -93,15 +93,6 @@ function zeroArray(m, n) {
 let matrix = zeroArray(3, 3);
 console.log(matrix); // output [ [ 3, 3, 3 ], [ 3, 3, 3 ], [ 3, 3, 3 ] ]
 ---------------------------------------------------------------------------------------------------------------------------
-
-// pop_shift methods
-function popShift(arr) {
-  let popped = arr.pop(); // remove the last element from arr
-  let shifted = arr.shift(); // remove first element from arr
-  return [shifted, popped];
-}
-
-console.log(popShift(["challenge", "is", "not", "complete"]));
 
 /* splice methods */
 const arr = [2, 4, 5, 1, 7, 5, 2, 1];
