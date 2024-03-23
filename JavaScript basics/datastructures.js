@@ -76,6 +76,16 @@ function popShift(arr) {
 
 console.log(popShift(["challenge", "is", "not", "complete"])); // [ 'challenge', 'complete' ]
 
+function mixedNumbers(arr) {
+  // add 'I', 2, 'three' to the beginning of the array
+  arr.unshift("I", 2, "three");
+  arr.push(7, "VIII", 9);
+  //  adding 7, 'VIII', 9 to the end so that the returned array contains representations of the numbers 1-9 in order.
+  return arr;
+}
+
+console.log(mixedNumbers(["IV", 5, "six"]));
+
 /* splice methods */
 const arr = [2, 4, 5, 1, 7, 5, 2, 1];
 
