@@ -125,7 +125,7 @@ function chunkArrayInGroups(arr, size) {
   return newArr;
 }
 
-console.log(chunkArrayInGroups(["a", "b", "c", "d"], 2));
+console.log(chunkArrayInGroups(["a", "b", "c", "d"], 2)); // [ [ 'a', 'b' ], [ 'c', 'd' ] ]
 -------------------------------------------------------------------------------------------------------------------------------
 
 // Check For The Presence of an Element With indexOf()
