@@ -78,7 +78,7 @@ function mixedNumbers(arr) {
   return arr;
 }
 
-console.log(mixedNumbers(["IV", 5, "six"]));
+console.log(mixedNumbers(["IV", 5, "six"])); // ['I',     2,'three', 'IV',5,       'six',7,       'VIII',9]
 
 /* splice methods */
 const arr = [2, 4, 5, 1, 7, 5, 2, 1];
