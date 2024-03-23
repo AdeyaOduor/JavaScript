@@ -67,6 +67,14 @@ const myArray3 = [["John", 23], ["dog", 3]];
 
 myArray3.unshift(["Paul", 35]);
 console.log(myArray3); // [ [ 'Paul', 35 ], [ 'John', 23 ], [ 'dog', 3 ] ]
+
+function popShift(arr) {
+  let popped = arr.pop(); // remove the last element from arr
+  let shifted = arr.shift(); // remove first element from arr
+  return [shifted, popped];
+}
+
+console.log(popShift(["challenge", "is", "not", "complete"]));
 -----------------------------------------------------------------------------------------------------------------------
 
 // reinitializing_variables_inside_loop.js
