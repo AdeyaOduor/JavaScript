@@ -125,20 +125,8 @@ function chunkArrayInGroups(arr, size) {
   return newArr;
 }
 
-chunkArrayInGroups(["a", "b", "c", "d"], 2);
+console.log(chunkArrayInGroups(["a", "b", "c", "d"], 2));
 -------------------------------------------------------------------------------------------------------------------------------
-
-/* push_unshift methods */
-function mixedNumbers(arr) {
-  // add 'I', 2, 'three' to the beginning of the array
-  arr.unshift("I", 2, "three");
-  arr.push(7, "VIII", 9);
-  //  adding 7, 'VIII', 9 to the end so that the returned array contains representations of the numbers 1-9 in order.
-  return arr;
-}
-
-console.log(mixedNumbers(["IV", 5, "six"]));
-
 
 // Check For The Presence of an Element With indexOf()
 function quickCheck(arr, elem) {
