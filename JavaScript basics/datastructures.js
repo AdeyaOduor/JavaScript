@@ -67,7 +67,7 @@ const myArray3 = [["John", 23], ["dog", 3]];
 
 myArray3.unshift(["Paul", 35]);
 console.log(myArray3); // [ [ 'Paul', 35 ], [ 'John', 23 ], [ 'dog', 3 ] ]
-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
 
 // reinitializing_variables_inside_loop.js
 function zeroArray(m, n) {
@@ -83,7 +83,8 @@ function zeroArray(m, n) {
   return newArray;
 }
 let matrix = zeroArray(3, 3);
-console.log(matrix); // output [ [ 0, 0 ], [ 0, 0 ], [ 0, 0 ] ] 
+console.log(matrix); // output [ [ 3, 3, 3 ], [ 3, 3, 3 ], [ 3, 3, 3 ] ]
+---------------------------------------------------------------------------------------------------------------------------
 
 // pop_shift methods
 function popShift(arr) {
