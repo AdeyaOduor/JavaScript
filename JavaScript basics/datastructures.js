@@ -75,6 +75,13 @@ function popShift(arr) {
 }
 
 console.log(popShift(["challenge", "is", "not", "complete"])); // [ 'challenge', 'complete' ]
+
+/* splice methods */
+const arr = [2, 4, 5, 1, 7, 5, 2, 1];
+
+arr.splice(1, 4);// removes 4 elements from index 1 in arr
+
+console.log(arr); // output [ 2, 5, 2, 1 ]
 -----------------------------------------------------------------------------------------------------------------------
 
 // reinitializing_variables_inside_loop.js
@@ -93,13 +100,6 @@ function zeroArray(m, n) {
 let matrix = zeroArray(3, 3);
 console.log(matrix); // output [ [ 3, 3, 3 ], [ 3, 3, 3 ], [ 3, 3, 3 ] ]
 ---------------------------------------------------------------------------------------------------------------------------
-
-/* splice methods */
-const arr = [2, 4, 5, 1, 7, 5, 2, 1];
-
-arr.splice(1, 4);// removes 4 elements from index 1 in arr
-
-console.log(arr); // output [ 2, 5, 2, 1 ]
 
 function htmlColorNames(arr) {
 /* remove the first two elements of the array and add 'DarkSalmon' and 'BlanchedAlmond' in their respective places.*/
