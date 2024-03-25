@@ -314,6 +314,13 @@ function frankenSplice(arr1, arr2, n) {
   return [...arr2.slice(0, n), ...arr1, ...arr2.slice(n)];
 }
 
+let arr1 = [5, 6, 7];
+let arr2 = [1, 2, 3, 4];
+let n = 2;
+
+console.log(frankenSplice(arr1, arr2, n));
+---------------------------------------------------------------------------------------------------------------------------------
+
 // finding an element using recursive method
 function findElement(arr, func) {
   return arr.find(func);
