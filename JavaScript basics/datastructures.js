@@ -304,6 +304,7 @@ function addFriend(userObj, friend) {
 }
 
 console.log(addFriend(user, "Pete"));
+--------------------------------------------------------------------------------------------------------------------------------
 
 /*You are given two arrays and an index.
 Copy each element of the first array into the second array, in order.
