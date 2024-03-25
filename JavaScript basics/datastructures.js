@@ -190,6 +190,7 @@ delete foods.plums;
 delete foods.strawberries;
 
 console.log(foods);
+------------------------------------------------------------------------------------------------------------------------------------
 
 // Check if an Object has a Property
 let users = {
