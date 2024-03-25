@@ -326,7 +326,8 @@ function findElement(arr, func) {
   return arr.find(func);
 }
 
-findElement([1, 2, 3, 4], num => num % 2 === 0);
+console.log(findElement([1, 2, 3, 4], num => num % 2 === 0));
+----------------------------------------------------------------------------------------------------------------------------------
 
 /* Remove all falsy values from an array. Return a new array; do not mutate the original array.
 Falsy values in JavaScript are false, null, 0, "", undefined, and NaN.*/ 
