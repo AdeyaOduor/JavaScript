@@ -156,7 +156,6 @@ function filteredArray(arr, elem) {
 console.log(filteredArray([[3, 2, 3], [1, 6, 3], [3, 13, 26], [19, 3, 9]], 3));
 -------------------------------------------------------------------------------------------------------------------------------
 
-
 let foods = {
   apples: 25,
   oranges: 32,
@@ -173,6 +172,7 @@ function checkInventory(scannedItem) {
 
 // change code below this line to test different cases:
 console.log(checkInventory("apples"));
+----------------------------------------------------------------------------------------------------------------------------------
 
 // Use the delete keyword to remove keys from the foods object.
 let foods = {
