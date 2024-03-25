@@ -213,10 +213,14 @@ let users = {
 };
 
 function isEveryoneHere(userObj) {
+  let names = Object.keys(userObj);
   return ["Alan", "Jeff", "Sarah", "Ryan"].every(name =>
-    userObj.hasOwnProperty(name)
+    names.includes(name)
   );
 }
+
+console.log(isEveryoneHere(users));
+---------------------------------------------------------------------------------------------------------------------------------------
 
 // Iterate Through the Keys of an Object with a for...in Statement
 const users = {
