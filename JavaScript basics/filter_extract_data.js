@@ -117,7 +117,7 @@ const filteredList = watchList
   .map(({ Title: title, imdbRating: rating }) => ({ title, rating }));
 
 console.log(filteredList);
-
+-------------------------------------------------------------------------------------------
 // filter method on prototype
 Array.prototype.myFilter = function(callback) {
 const newArray = [];
