@@ -4,21 +4,23 @@ function reusableFunction() {
 }
 
 reusableFunction();
-
+-------------------------------------------------------------
 // Passing Values to Functions with Arguments
 function functionWithArgs(one, two) {
   console.log(one + two);
 }
 functionWithArgs(7, 3); //This will console log 10.
-
-/* a function timesFive that accepts one argument, multiplies it by 5, and returns the new value.*/
+--------------------------------------------------------------
+/* a function timesFive that accepts one argument, multiplies 
+it by 5, and returns the new value.*/
 function timesFive(num) {
   return num * 5;
 }
-
-
-/*A function can include the return statement but it does not have to. In the case that the function doesn't have a return statement, 
-when you call it, the function processes the inner code but the returned value is undefined.*/
+----------------------------------------------------------------
+/*A function can include the return statement but it does not have 
+to. In the case that the function doesn't have a return statement, 
+when you call it, the function processes the inner code but the 
+returned value is undefined.*/
 var sum = 0;
 
 function addThree() {
