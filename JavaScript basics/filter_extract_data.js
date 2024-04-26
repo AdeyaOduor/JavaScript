@@ -130,7 +130,7 @@ newArray.push(this[i])
 
 return newArray;
 };
-
+---------------------------------------------------------------------------------------------------------------------------------
 /* slice method in the sliceArray function to return part of the anim array given the provided beginSlice and endSlice indices*/
 function sliceArray(anim, beginSlice, endSlice) {
   return anim.slice(beginSlice, endSlice);
