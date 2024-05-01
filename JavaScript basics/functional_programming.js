@@ -87,12 +87,10 @@ function testStrictNotEqual(val) {
 }
 
 testStrictNotEqual(10);
-
-/*
-Given a function (representing the tea type) and number of cups needed, the
+------------------------------------------------------------------------------
+/* Given a function (representing the tea type) and number of cups needed, the
 following function returns an array of strings (each representing a cup of
-a specific type of tea).
-*/
+a specific type of tea).*/
 const prepareGreenTea = () => 'greenTea';
 const prepareBlackTea = () => 'blackTea';
 
