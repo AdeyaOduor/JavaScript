@@ -31,8 +31,8 @@ function addFive() {
   sum = sum + 5;
 }
 
-addThree();
-addFive(); // output is 8
+addThree(); // output is undefined
+addFive(); // output is undefined
 ---------------------------------------------------------------------------------------------------
 let processed = 0;
 
