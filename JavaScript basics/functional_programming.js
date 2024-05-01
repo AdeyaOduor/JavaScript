@@ -33,7 +33,7 @@ function addFive() {
 
 addThree();
 addFive(); // output is 8
-
+---------------------------------------------------------------------------------------------------
 let processed = 0;
 
 function processArg(num) {
