@@ -16,6 +16,8 @@ it by 5, and returns the new value.*/
 function timesFive(num) {
   return num * 5;
 }
+
+console.log(timesFive(2)); // 10
 ----------------------------------------------------------------
 /*A function can include the return statement but it does not have 
 to. In the case that the function doesn't have a return statement, 
