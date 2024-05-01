@@ -87,6 +87,16 @@ arr.splice(1, 4);// removes 4 elements from index 1 in arr
 
 console.log(arr); // output [ 2, 5, 2, 1 ]
 -----------------------------------------------------------------------------------------------------------------------
+  // Accessing Object Properties with Dot Notation
+const testObj = {
+  "hat": "ballcap",
+  "shirt": "jersey",
+  "shoes": "cleats"
+};
+
+const hatValue = testObj.hat;      
+const shirtValue = testObj.shirt; 
+------------------------------------------------------------------------------------------------------------------------
 
 // reinitializing_variables_inside_loop.js
 function zeroArray(m, n) {
@@ -336,3 +346,4 @@ function bouncer(arr) {
 }
 
 console.log(bouncer([7, "ate", "", false, 9]));
+
