@@ -159,9 +159,9 @@ function incrementer(value) {
 
 }
 
-var differentValue = incrementer(fixedValue); // Should equal 5
-console.log(fixedValue); // Should print 4
-
+var differentValue = incrementer(fixedValue); 
+console.log(differentValue); // Should print 5
+--------------------------------------------------------------------------------------------------------------------------------------
 // Refactor global variables out of functions
 var bookList = ["The Hound of the Baskervilles", "On The Electrodynamics of Moving Bodies", "Philosophiæ Naturalis Principia Mathematica",
                 "Disquisitiones Arithmeticae"];
