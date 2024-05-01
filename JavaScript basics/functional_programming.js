@@ -42,7 +42,7 @@ function processArg(num) {
 
 // Call the processArg function with an argument of 7 and assign its return value to the variable processed.
 processed = processArg(7); // Equal to 2
-
+--------------------------------------------------------------------------------------------------------------
 /*a function nextInLine which takes an array (arr) and a number (item) as arguments.
 Add the number to the end of the array, then remove the first element of the array.
 The nextInLine function should then return the element that was removed.*/
