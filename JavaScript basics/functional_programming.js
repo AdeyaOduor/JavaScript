@@ -68,8 +68,8 @@ function testStrict(val) {
   return "Not Equal";
 }
 
-testStrict(10);
-
+console.log(testStrict(10));
+---------------------------------------
 function testNotEqual(val) {
   if (val!= 99) { 
     return "Not Equal";
@@ -77,8 +77,8 @@ function testNotEqual(val) {
   return "Equal";
 }
 
-testNotEqual(10);
-
+console.log(testNotEqual(10));
+---------------------------------------------
 function testStrictNotEqual(val) {
   if (val!== 17) { 
     return "Not Equal";
