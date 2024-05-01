@@ -111,7 +111,7 @@ console.log(
   tea4GreenTeamFCC,
   tea4BlackTeamFCC
 );
-
+----------------------------------------------------------------------
 // tabs is an array of titles of each site open within the window
 const Window = function(tabs) {
   this.tabs = tabs; // We keep a record of the array inside the object
