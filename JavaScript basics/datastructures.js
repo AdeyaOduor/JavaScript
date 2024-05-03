@@ -238,7 +238,7 @@ function isEveryoneHere(userObj) {
   );
 }
 
-console.log(isEveryoneHere(users));
+console.log(isEveryoneHere(users)); // true
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 // Iterate Through the Keys of an Object with a for...in Statement
