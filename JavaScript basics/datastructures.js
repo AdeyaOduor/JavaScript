@@ -155,8 +155,8 @@ console.log(chunkArrayInGroups(["a", "b", "c", "d"], 2)); // [ [ 'a', 'b' ], [ '
 function quickCheck(arr, elem) {
   return arr.indexOf(elem) != -1;
 }
-console.log(quickCheck(["squash", "onions", "shallots"], "mushrooms"));
-
+console.log(quickCheck(["squash", "onions", "shallots"], "mushrooms")); //false
+--------------------------------------------------------------------------------
 // Iterate Through All an Array's Items Using For Loops
 function filteredArray(arr, elem) {
   let newArr = [];
