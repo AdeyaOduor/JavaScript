@@ -190,7 +190,7 @@ function checkInventory(scannedItem) {
 }
 
 // change code below this line to test different cases:
-console.log(checkInventory("apples"));
+console.log(checkInventory("apples")); // 25
 ----------------------------------------------------------------------------------------------------------------------------------
 
 // Use the delete keyword to remove keys from the foods object.
