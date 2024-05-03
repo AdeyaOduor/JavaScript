@@ -266,7 +266,7 @@ function countOnline(usersObj) {
   
 }
 
-console.log(countOnline(users));
+console.log(countOnline(users)); // 1
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 // Generate an Array of All Object Keys with Object.keys()
