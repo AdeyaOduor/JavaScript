@@ -337,7 +337,10 @@ let arr1 = [5, 6, 7];
 let arr2 = [1, 2, 3, 4];
 let n = 2;
 
-console.log(frankenSplice(arr1, arr2, n));
+console.log(frankenSplice(arr1, arr2, n)); /* [
+  1, 2, 5, 6,
+  7, 3, 4
+] */
 ---------------------------------------------------------------------------------------------------------------------------------
 
 // finding an element using recursive method
