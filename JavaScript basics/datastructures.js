@@ -322,7 +322,7 @@ function addFriend(userObj, friend) {
  
 }
 
-console.log(addFriend(user, "Pete"));
+console.log(addFriend(user, "Pete")); // [ 'Sam', 'Kira', 'Tomo', 'Pete' ]
 --------------------------------------------------------------------------------------------------------------------------------
 
 /*You are given two arrays and an index.
