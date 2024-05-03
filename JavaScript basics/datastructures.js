@@ -295,7 +295,7 @@ function getArrayOfUsers(obj) {
   
 }
 
-console.log(getArrayOfUsers(users));
+console.log(getArrayOfUsers(users)); // [ 'Alan', 'Jeff', 'Sarah', 'Ryan' ]
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 // Modify an Array Stored in an Object
