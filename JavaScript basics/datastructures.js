@@ -208,7 +208,7 @@ delete foods.oranges;
 delete foods.plums;
 delete foods.strawberries;
 
-console.log(foods);
+console.log(foods); // { apples: 25, bananas: 13, grapes: 35 }
 ------------------------------------------------------------------------------------------------------------------------------------
 
 // Check if an Object has a Property
