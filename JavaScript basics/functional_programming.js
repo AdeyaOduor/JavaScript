@@ -181,7 +181,7 @@ var newerBookList = remove(bookList, 'On The Electrodynamics of Moving Bodies');
 var newestBookList = remove(add(bookList, 'A Brief History of Time'), 'On The Electrodynamics of Moving Bodies');
 
 console.log(bookList);
-
+-------------------------------------------------------------------------------------------------------------------------------------------
 // Remove Elements from an Array Using slice Instead of splice, limiting the provided cities array to a length of 3, 
 // and return a new array with only the first three items.
 function nonMutatingSplice(cities) {
