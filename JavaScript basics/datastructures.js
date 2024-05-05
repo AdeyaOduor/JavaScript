@@ -5,7 +5,7 @@ const myArray1 = ["Quincy", 1];
 const myArray2 = [["Bulls", 23], ["White Sox", 45]]; // nested array
 const myArray3 = [50, 60, 70];
 const myData = myArray3[2];
-console.log(myData);
+console.log(myData); // 70
 --------------------------------------------------------------------------------------
 
 // Modify Array Data With Indexes
