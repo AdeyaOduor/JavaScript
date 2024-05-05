@@ -119,6 +119,22 @@ const filteredList = watchList
 console.log(filteredList);
 -------------------------------------------------------------------------------------------
 // filter method on prototype
+  /* 
+    Array.prototype.myFilter adds the myFilter method to the Array prototype. This means that all arrays in your JavaScript code will have access to this method.
+
+    The myFilter method takes a single parameter, callback, which is a function. This callback function will be applied to each element in the array during the filtering process.
+
+    Inside the myFilter method, a new array named newArray is created to store the filtered elements.
+
+    The for loop iterates over each element of the array (this). For each element, the callback function is called with three arguments:
+        this[i]: The current element being processed.
+        i: The index of the current element.
+        this: The original array being filtered.
+
+    If the callback function returns a truthy value (i.e., a value that is considered true in a boolean context), the current element is pushed into the newArray using the push() method.
+
+    After iterating through all the elements, the newArray containing the filtered elements is returned from the myFilter method.
+*/
 Array.prototype.myFilter = function(callback) {
 const newArray = [];
 
@@ -130,6 +146,20 @@ newArray.push(this[i])
 
 return newArray;
 };
+
+/* real world example */
+const products = [
+  { name: 'Product 1', price: 10, category: 'A' },
+  { name: 'Product 2', price: 20, category: 'B' },
+  { name: 'Product 3', price: 15, category: 'A' },
+  { name: 'Product 4', price: 25, category: 'C' },
+];
+
+const filteredProducts = products.myFilter(product => product.price > 15 && product.category === 'A');
+
+console.log(filteredProducts); /* [
+  { name: 'Product 3', price: 15, category: 'A' }
+]*/
 ---------------------------------------------------------------------------------------------------------------------------------
 /* slice method in the sliceArray function to return part of the anim array given the provided beginSlice and endSlice indices*/
 function sliceArray(anim, beginSlice, endSlice) {
