@@ -235,7 +235,7 @@ function switchOfStuff(val) {
 
   return answer;
 }
-console.log(switchOfStuff("c"));
+console.log(switchOfStuff("c")); // cat
 -----------------------------------------------------------------------------------------------------------
 // Multiple Identical Options in Switch Statements
 function sequentialSizes(val) {
