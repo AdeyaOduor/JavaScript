@@ -4,7 +4,7 @@ function factorial(x, runningTotal = 1 ) {
 }
 
 console.log(factorial(10)) // output 3628800
-
+------------------------------------------------------------------------------
 // recursive
 function factorialize(num) {
   if (num === 0) {
@@ -13,7 +13,7 @@ function factorialize(num) {
   return num * factorialize(num - 1);
 }
 
-factorialize(5);
+console.log(factorialize(5)); // 120
 
 /* Notice at the first line we have the terminal condition, i.e a condition to check the end of the recursion. 
 If num == 0, then we return 1, i.e. effectively ending the recursion and informing the stack to propagate this 
