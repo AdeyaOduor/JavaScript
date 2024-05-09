@@ -215,4 +215,4 @@ function nonMutatingPush(original, newItem) {
 
 const first = [1, 2, 3];
 const second = [4, 5];
-nonMutatingPush(first, second);
+nonMutatingPush(first, second); // [ 1, 2, 3, 4, 5 ]
