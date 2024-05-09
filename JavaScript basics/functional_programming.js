@@ -188,16 +188,18 @@ function nonMutatingSplice(cities) {
   return cities.slice(0,3);
 }
 const inputCities = ["Chicago", "Delhi", "Islamabad", "London", "Berlin"];
-
+----------------------------------------------------------------------------------------------------
 // Combine Two Arrays Using the concat Method
 function nonMutatingConcat(original, attach) {
-  
   return original.concat(attach);
 }
 
 const first = [1, 2, 3];
 const second = [4, 5];
-nonMutatingConcat(first, second);
+const concatenatedArray = nonMutatingConcat(first, second);
+
+console.log(concatenatedArray); // [ 1, 2, 3, 4, 5 ]
+------------------------------------------------------------------------------------------------
 
 // Add Elements to the End of an Array Using concat Instead of push
 function nonMutatingPush(original, newItem) {
