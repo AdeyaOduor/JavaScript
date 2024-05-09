@@ -169,8 +169,8 @@ function sliceArray(anim, beginSlice, endSlice) {
 const inputAnim = ["Cat", "Dog", "Tiger", "Zebra", "Ant"];
 const slicedArray = sliceArray(inputAnim, 1, 4);
 
-console.log(slicedArray);
-
+console.log(slicedArray); // [ 'Dog', 'Tiger', 'Zebra' ]
+------------------------------------------------------------------------------
 /* Given the array arr, iterate through and remove each element 
 starting from the first element (the 0 index) until the function 
  returns true when the iterated element is passed through it.
