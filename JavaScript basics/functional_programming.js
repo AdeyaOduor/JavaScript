@@ -185,9 +185,13 @@ console.log(bookList);
 // Remove Elements from an Array Using slice Instead of splice, limiting the provided cities array to a length of 3, 
 // and return a new array with only the first three items.
 function nonMutatingSplice(cities) {
-  return cities.slice(0,3);
+  return cities.slice(0, 3);
 }
+
 const inputCities = ["Chicago", "Delhi", "Islamabad", "London", "Berlin"];
+const slicedCities = nonMutatingSplice(inputCities);
+
+console.log(slicedCities); // [ 'Chicago', 'Delhi', 'Islamabad' ]
 ----------------------------------------------------------------------------------------------------
 // Combine Two Arrays Using the concat Method
 function nonMutatingConcat(original, attach) {
