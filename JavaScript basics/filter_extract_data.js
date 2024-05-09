@@ -165,7 +165,11 @@ console.log(filteredProducts); /* [
 function sliceArray(anim, beginSlice, endSlice) {
   return anim.slice(beginSlice, endSlice);
 }
+
 const inputAnim = ["Cat", "Dog", "Tiger", "Zebra", "Ant"];
+const slicedArray = sliceArray(inputAnim, 1, 4);
+
+console.log(slicedArray);
 
 /* Given the array arr, iterate through and remove each element 
 starting from the first element (the 0 index) until the function 
