@@ -9,6 +9,9 @@ let twinkleStar = "Twinkle, twinkle, little star";
 let starRegex = /twinkle/gi;
 let result = twinkleStar.match(starRegex);
 
+console.log(result); // ["Twinkle", "twinkle"]
+------------------------------------------------------------------------------------------
+
 let quoteSample =
   "Beware of bugs in the above code; I have only proved it correct, not tried it.";
 let vowelRegex = /[aeiou]/gi; // Change this line
