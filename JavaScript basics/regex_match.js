@@ -14,9 +14,12 @@ console.log(result); // ["Twinkle", "twinkle"]
 
 let quoteSample =
   "Beware of bugs in the above code; I have only proved it correct, not tried it.";
-let vowelRegex = /[aeiou]/gi; // Change this line
-let result = quoteSample.match(vowelRegex); // Change this line
+let vowelRegex = /[aeiou]/gi;
+let result = quoteSample.match(vowelRegex);
 
+console.log(result); /* ["e", "a", "e", "o", "u", "i", "e", "a", "o", "e", "i", "o", "e", "i", 
+"c", "o", "r", "e", "c", "i", "o", "n", "o", "i", "e", "i"]*/
+----------------------------------------------------------------------------------------------
 let quoteSample = "The quick brown fox jumps over the lazy dog.";
 let alphabetRegex = /[a-z]/gi; // Change this line
 let result = quoteSample.match(alphabetRegex); // Change this line
