@@ -1,36 +1,34 @@
 // Create person object
 const Person = function(firstAndLast) {
-  
-
-  let [firstName, lastName] = firstAndLast.split(' ');
+  this._firstName = firstAndLast.split(' ')[0];
+  this._lastName = firstAndLast.split(' ')[1];
 
   this.getFirstName = function() {
-    return firstName;
+    return this._firstName;
   };
 
   this.getLastName = function() {
-    return lastName;
+    return this._lastName;
   };
 
   this.getFullName = function() {
-    return `${firstName} ${lastName}`;
+    return `${this._firstName} ${this._lastName}`;
   };
 
   this.setFirstName = function(first) {
-    firstName = first;
-    return firstName;
+    this._firstName = first;
+    return this._firstName;
   };
 
   this.setLastName = function(last) {
-    lastName = last;
-    return lastName;
-  }
+    this._lastName = last;
+    return this._lastName;
+  };
 
   this.setFullName = function(firstAndLast) {
-    firstName = firstAndLast.split(' ')[0];
-    lastName = firstAndLast.split(' ')[1];
-    return `${firstName} ${lastName}`;
-  }
-
+    this._firstName = firstAndLast.split(' ')[0];
+    this._lastName = firstAndLast.split(' ')[1];
+    return `${this._firstName} ${this._lastName}`;
+  };
 };
 
