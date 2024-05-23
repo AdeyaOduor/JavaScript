@@ -50,7 +50,7 @@ let myRegex = /s+/g; // this is the solution
 let result = difficultSpelling.match(myRegex);
 
 
-console.log(result);
+console.log(result); /*[ 'ss', 'ss' ]*/
 -------------------------------------------------------------------------------------------------
 // match-characters-that-occur-zero-or-more-times
 
