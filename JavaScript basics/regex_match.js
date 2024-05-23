@@ -58,6 +58,8 @@ let chewieQuote = "Aaaaaaaaaaaaaaaarrrgh!";
 let chewieRegex = /Aa*/; // Change this line
 let result = chewieQuote.match(chewieRegex);
 
+console.log(result);
+------------------------------------------------------------------------------------------------
 // match-all-letters-and-numbers
 
 let quoteSample = "The five boxing wizards jump quickly.";
