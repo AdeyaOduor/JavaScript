@@ -58,7 +58,12 @@ let chewieQuote = "Aaaaaaaaaaaaaaaarrrgh!";
 let chewieRegex = /Aa*/; // Change this line
 let result = chewieQuote.match(chewieRegex);
 
-console.log(result);
+console.log(result); /*[
+  'Aaaaaaaaaaaaaaaa',
+  index: 0,
+  input: 'Aaaaaaaaaaaaaaaarrrgh!',
+  groups: undefined
+]*/
 ------------------------------------------------------------------------------------------------
 // match-all-letters-and-numbers
 
