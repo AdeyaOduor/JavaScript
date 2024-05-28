@@ -78,7 +78,7 @@ console.log(result); // 31
 let quoteSample = "The five boxing wizards jump quickly.";
 let nonAlphabetRegex = /\W/g; // Change this line
 let result = quoteSample.match(nonAlphabetRegex).length;
-
+------------------------------------------------------------------------------------------------
 // match-all-numbers
 
 let movieName = "2001: A Space Odyssey";
