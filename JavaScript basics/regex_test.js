@@ -9,6 +9,8 @@ console.log(result); // true
 let waldoIsHiding = "Somewhere Waldo is hiding in this text.";
 let waldoRegex = /Waldo/; // Change this line
 let result = waldoRegex.test(waldoIsHiding);
+console.log(result); // true
+---------------------------------------------------------------------------------
 
 let petString = "James has a pet cat.";
 let petRegex = /dog|cat|bird|fish/; // Change this line
