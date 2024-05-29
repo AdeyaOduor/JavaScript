@@ -21,11 +21,13 @@ console.log(result); // true
 let myString = "freeCodeCamp";
 let fccRegex = /freeCodeCamp/i;
 let result = fccRegex.test(myString);
+console.log(result); // true
 
 let exampleStr = "Let's have fun with regular expressions!";
 let unRegex = /.un/; // Change this line
 let result = unRegex.test(exampleStr);
-
+console.log(result); // true
+-------------------------------------------------------------------------------
 // restrict-possible-usernames
 
 let username = "JackOfAllTrades";
