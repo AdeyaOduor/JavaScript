@@ -55,10 +55,10 @@ function is_url(str)
         }
 }
 
-console.log(is_url("http://www.example.com"));
-console.log(is_url("https://www.example.com"));
-console.log(is_url("www.example.com"));
-
+console.log(is_url("http://www.example.com")); // true
+console.log(is_url("https://www.example.com")); // true
+console.log(is_url("www.example.com")); // true
+-----------------------------------------------------------------------------------------------------------------------------
 /*Return true if the string in the first element of the array contains all of the letters of the string in the 
 second element of the array. */
 function mutation([elem1, elem2]) {
