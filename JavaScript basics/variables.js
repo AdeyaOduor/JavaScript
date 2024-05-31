@@ -23,12 +23,12 @@ console.log(camper); // no error, varaible overriden
 
 let camper = "James";
 let camper = "David";// produce error, variable cannot be overriden
-
+----------------------------------------------------------------------------------
 const FCC = "freeCodeCamp";
 let fact = "is cool!";
 
 fact = "is awesome!";
-console.log(FCC, fact);
+console.log(FCC, fact); // freeCodeCamp is awesome!
 ----------------------------------------------------------------------------------
 // The /= operator divides a variable by another number.
 let a = 48;
