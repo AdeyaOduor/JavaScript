@@ -7,4 +7,4 @@ function urlSlug(title) {
     .toLowerCase();
 }
 
-urlSlug("A Mind Needs Books Like A Sword Needs A Whetstone");
+console.log(urlSlug("A Mind Needs Books Like A Sword Needs A Whetstone"));
