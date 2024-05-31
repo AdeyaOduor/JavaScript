@@ -29,7 +29,7 @@ let fact = "is cool!";
 
 fact = "is awesome!";
 console.log(FCC, fact);
-
+----------------------------------------------------------------------------------
 // The /= operator divides a variable by another number.
 let a = 48;
 let b = 108;
