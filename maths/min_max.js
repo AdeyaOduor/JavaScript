@@ -7,6 +7,10 @@ console.log(reduce_Which([10, 30, 20], (a, b) => b - a));
 console.log(reduce_Which(
   [{ name: 'Kevin', age: 16 }, { name: 'John', age: 20 }, { name: 'Ani', age: 19 }],
   (a, b) => a.age - b.age)); 
+/*1
+30
+{ name: 'Kevin', age: 16 }*/
+------------------------------------------------------------------------------------------------------------------------
 /* Use Array.prototype.reduce() in combination with the comparator function to get the appropriate element in the array.
 Omit the second argument, comparator, to use the default one that returns the minimum element in the array. */
 
