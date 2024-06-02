@@ -113,8 +113,8 @@ function is_email(str)
         }
 }
 
-console.log(is_email("admin@example.com"));
-console.log(is_email("mysite@.org.org "));
+console.log(is_email("admin@example.com")); // true
+console.log(is_email("mysite@.org.org ")); // false
 
 function validate(password) {
   return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{6,}$/.test(password);
