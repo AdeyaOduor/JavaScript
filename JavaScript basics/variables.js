@@ -38,7 +38,7 @@ let c = 33;
 a /= 12;
 b /= 4;
 c /= 11; // output is a=4, b=27 and c=3 repectively
-
+------------------------------------------------------------------------------------------------------
 /*Compound Assignment With Augmented Addition, multiplication, division and subtraction respectively*/
 let a = 3;
 let b = 17;
