@@ -81,8 +81,9 @@ console.log("You have entered an invalid email address!");
 }
 }
 
-valid_email('me-info@example.com');
-
+valid_email('me-info@example.com'); //Valid email address!
+valid_email('me-info*example.com'); //You have entered an invalid email address!
+---------------------------------------------------------------------------------------------------------------
 
 <!DOCTYPE html>
 <html>
