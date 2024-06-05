@@ -36,4 +36,4 @@ console.log(url); //Output https://example.com/api?search=apple&category=fruits&
  the generateURL function with these parameters and store the generated URL in the url variable. Finally, we log the URL to the console.
 
  When you run this code, it will dynamically generate the URL by combining the base URL with the query parameters and display the resulting URL 
- in the console. You can modify the baseUrl and queryParams variables to match your specific use case.
+ in the console. You can modify the baseUrl and queryParams variables to match your specific use case.*/
