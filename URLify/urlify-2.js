@@ -8,4 +8,4 @@ const replaceUrlSpaces = (str) => {
   return convertToArray.join('');
 }
 
- console.log(replaceUrlSpaces("Sai Charan P"));
+ console.log(replaceUrlSpaces("Sai Charan P")); // Sai%20Charan%20P
