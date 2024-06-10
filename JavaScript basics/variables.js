@@ -137,9 +137,7 @@ function myLocalScope() {
   var myVar = 5;
   console.log(myVar);
 }
-myLocalScope();
-
-console.log(myVar);
+myLocalScope(); // 5
 --------------------------------------------------------------------------------------------------
 /* It is possible to have both local and global variables with the same name. When you do this, 
 the local variable takes precedence over the global variable.*/
