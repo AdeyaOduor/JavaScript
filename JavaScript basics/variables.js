@@ -112,8 +112,8 @@ var conversion = function(number1, number2) {
   return countBits(number1 ^ number2);
 };
 
-console.log(conversion(29, 15), 2);
-
+console.log(conversion(29, 15), 2); // 2 2
+---------------------------------------------------------------------------------
 // global variables
 let myGlobal = 10;
 
