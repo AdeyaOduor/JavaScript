@@ -65,15 +65,16 @@ var myStr = '<a href="http://www.example.com" target="_blank">Link</a>';
 const myStr = "I come first. " + "I come second."; 
 let myStr = "This is the first sentence. "
 myStr += "This is the second sentence."; // error myStr declared twice
--------------------------------------------------------------------------
+
 const myName = "David";
 const myStr = "My name is " + myName + " and I am well!";
 console.log(myStr); // My name is David and I am well!
--------------------------------------------------------------------------
+
 const someAdjective = "worthwhile";
 let myStr = "Learning to code is ";
 myStr += someAdjective;
-
+console.log(myStr); // Learning to code is worthwhile
+--------------------------------------------------------------------------
 // Find the Length of a String
 let lastNameLength = 0;
 const lastName = "Lovelace";
