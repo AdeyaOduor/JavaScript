@@ -55,12 +55,12 @@ myVar++; // output 88
 // decrement or decrease a variable by one with the -- operator.
 let myVar = 11;
 myVar--; //output 10
-
+-----------------------------------------------------------------------------------------------------------------
 const myStr = "I am a \"double quoted\" string inside \"double quotes\"."; // Escaping Literal Quotes in Strings
 
 //Quoting Strings with Single Quotes
 var myStr = '<a href="http://www.example.com" target="_blank">Link</a>';
-
+------------------------------------------------------------------------
 // Concatenating Strings 
 const myStr = "I come first. " + "I come second."; 
 let myStr = "This is the first sentence. "
