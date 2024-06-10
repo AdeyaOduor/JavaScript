@@ -91,14 +91,15 @@ firstLetterOfLastName = lastName[0];
 const thirdLetterOfLastName = lastName[2];  
 const lastLetterOfLastName = lastName[lastName.length - 1]; 
 const secondToLastLetterOfLastName = lastName[lastName.length -2]; 
-
+---------------------------------------------------------------------------
 const myNoun = "dog";
 const myAdjective = "big";
 const myVerb = "ran";
 const myAdverb = "quickly";
 
-const wordBlanks = "The " + myAdjective + " " + myNoun + " " + myVerb + " " + myAdverb + ".";; // The big dog ran quickly
-
+const wordBlanks = "The " + myAdjective + " " + myNoun + " " + myVerb + " " + myAdverb + ".";
+console.log(wordBlanks); // The big dog ran quickly
+-------------------------------------------------------------------------------------------------------------------------
 // function that convert number to strings
 var countBits = function(number) {
   var string = number.toString(2);
