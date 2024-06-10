@@ -68,6 +68,7 @@ myStr += "This is the second sentence.";
 
 const myName = "David";
 const myStr = "My name is " + myName + " and I am well!";
+console.log(myStr); // My name is David and I am well!
 -------------------------------------------------------------------------
 const someAdjective = "worthwhile";
 let myStr = "Learning to code is ";
