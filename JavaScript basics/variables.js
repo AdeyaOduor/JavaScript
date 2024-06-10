@@ -64,8 +64,8 @@ var myStr = '<a href="http://www.example.com" target="_blank">Link</a>';
 // Concatenating Strings 
 const myStr = "I come first. " + "I come second."; 
 let myStr = "This is the first sentence. "
-myStr += "This is the second sentence.";
-
+myStr += "This is the second sentence."; // error myStr declared twice
+-------------------------------------------------------------------------
 const myName = "David";
 const myStr = "My name is " + myName + " and I am well!";
 console.log(myStr); // My name is David and I am well!
