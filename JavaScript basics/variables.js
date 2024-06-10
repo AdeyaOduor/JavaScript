@@ -149,5 +149,6 @@ function myOutfit() {
   return outerWear;
 }
 
-console.log(myOutfit());
-console.log(outerWear);
+console.log(myOutfit()); // sweater
+console.log(outerWear); // T-Shirt
+
