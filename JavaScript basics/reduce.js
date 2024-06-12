@@ -121,4 +121,4 @@ function getRating(watchList) {
   return averageRating;
 }
 
-console.log(getRating(watchList));
+console.log(getRating(watchList)); // 8.675
