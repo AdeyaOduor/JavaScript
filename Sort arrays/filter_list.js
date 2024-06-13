@@ -16,7 +16,8 @@ function firstNonConsecutive (arr) {
     }
     return null;
 }
-
+console.log(firstNonConsecutive([1, 2, 2, 3, 4, 4, 5])); 
+------------------------------------------------------------------------------------------------------------
 // Split a String into an Array Using the split Method
 function splitify(str) {
   
