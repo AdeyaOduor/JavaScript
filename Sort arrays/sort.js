@@ -40,6 +40,7 @@ const quickSort = (array, left, right) => {
   let array = [4, 7, 1, 9, 3, 8, 0, 2];
   quickSort(array, 0, array.length - 1);
   console.log('quicksorted array is', array);
+---------------------------------------------------------------------------------------------------------------------------------------
 
 /* QuickSort algorithm 2
  Quick sort is a comparison sort, meaning that it can sort items of any type for which a "less-than" relation (formally, a total order)
