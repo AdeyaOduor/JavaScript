@@ -39,7 +39,7 @@ const quickSort = (array, left, right) => {
   
   let array = [4, 7, 1, 9, 3, 8, 0, 2];
   quickSort(array, 0, array.length - 1);
-  console.log('quicksorted array is', array);
+  console.log('quicksorted array is', array); 
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 /* QuickSort algorithm 2
@@ -73,6 +73,8 @@ var myArray = [3, 0, 2, 5, -1, 4, 1 ];
 console.log("Original array: " + myArray);
 var sortedArray = quick_Sort(myArray);
 console.log("Sorted array: " + sortedArray);
+/*Original array: 3,0,2,5,-1,4,1
+Sorted array: -1,0,1,2,3,4,5*/
 ---------------------------------------------------------------------------------------------------------------------------
 // Sort an Array Alphabetically using the sort Method
 function alphabeticalOrder(arr) {
