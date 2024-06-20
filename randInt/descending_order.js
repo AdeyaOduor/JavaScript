@@ -10,4 +10,4 @@ function descendingOrder() {
    return str_arr;
 }
 
-console.log(descendingOrder());
+console.log(descendingOrder()); //022489
