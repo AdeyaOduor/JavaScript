@@ -9,9 +9,8 @@ console.log(num);
    console.log('Good Work');
   else
    console.log('Not matched, the number was '+gnum);
- 
+--------------------------------------------------------------------------------------------------------- 
 // Get a random integer from given ranges
-
 rand = function(min, max) {
   if (min==null && max==null)
     return 0;    
