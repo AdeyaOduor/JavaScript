@@ -62,3 +62,55 @@ const App = () => {
 };
 
 export default App;
+---------------------------------------------------------------------
+//Image handling with GPS coordinates
+import React, { useState, useEffect } from "react";
+import exifr from "exifr";
+import "./styles.css";
+
+export default function App() {
+  const [file, setFile] = useState("");
+  const [imgSrc, setImgSrc] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  const handleChange = (event) => {
+    setFile(event.target.files[0]);
+  };
+
+  const readFile = async () => {
+    if (!file) {
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.addEventListener("load", () => {
+      setImgSrc(reader.result);
+      setLoading(false);
+    });
+
+    reader.readAsDataURL(file);
+
+    try {
+      const { latitude, longitude } = await exifr.gps(file);
+      console.log(latitude, longitude);
+    } catch (e) {
+      console.error("No GPS Meta Data\nTry another picture");
+      throw new Error("No GPS Meta Data\nTry another picture");
+    }
+  };
+
+  useEffect(() => {
+    readFile();
+  }, [file]);
+
+  return (
+    <div className="App">
+      <h1>Load an Image</h1>
+      <h2>Only React</h2>
+      <input type="file" onChange={handleChange} />
+      {!loading && <img id="output" src={imgSrc} alt="Preview" />}
+    </div>
+  );
+}  
+  
