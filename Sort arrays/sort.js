@@ -93,4 +93,5 @@ function nonMutatingSort(arr) {
   });
   
 }
-nonMutatingSort(globalArray);
+
+console.log(nonMutatingSort(globalArray));
