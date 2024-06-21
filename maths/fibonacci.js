@@ -19,5 +19,5 @@ function sumFibs(num) {
   return result;
 }
 
-// test here
-sumFibs(4);
+// sumFibs(4);
+console.log(sumFibs(4)); //5
