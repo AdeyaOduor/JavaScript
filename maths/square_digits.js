@@ -8,3 +8,4 @@
     }
     return parseInt(result)
   }
+console.log(squareDigits(9119)); // Output: 811181
