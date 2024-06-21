@@ -7,5 +7,5 @@ const standardDeviation = (arr, usePopulation = false) => {
   );
 };
 
-console.log(standardDeviation([10, 2, 38, 23, 38, 23, 21]));
-console.log(standardDeviation([10, 2, 38, 23, 38, 23, 21], true));
+console.log(standardDeviation([10, 2, 38, 23, 38, 23, 21])); // 13.284434142114991
+console.log(standardDeviation([10, 2, 38, 23, 38, 23, 21], true)); // 12.29899614287479
