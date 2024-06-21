@@ -9,6 +9,6 @@ const pull_at_Index = (arr, pullArr) => {
   return removed;
 };
 let arra1 = ['a', 'b', 'c', 'd', 'e', 'f'];
-console.log(pull_at_Index(arra1, [1, 3]));
+console.log(pull_at_Index(arra1, [1, 3])); // [ 'b', 'd' ]
 let arra2 =  [1, 2, 3, 4, 5, 6, 7];
 console.log(pull_at_Index(arra2, [4]));
