@@ -94,4 +94,4 @@ function nonMutatingSort(arr) {
   
 }
 
-console.log(nonMutatingSort(globalArray));
+console.log(nonMutatingSort(globalArray)); // [ 2, 3, 5, 6, 9 ]
