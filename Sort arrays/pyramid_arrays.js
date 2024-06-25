@@ -18,3 +18,16 @@ console.log(pyramid(1)); // [[1]]
 console.log(pyramid(2)); // [[1], [1, 1]]
 console.log(pyramid(3)); // [[1], [1, 1], [1, 1, 1]]
 -------------------------------------------------------------------------------------
+function pyramid(n) {
+  if (n < 0) {
+    throw new Error("Input must be a non-negative integer");
+  }
+
+  const result = [];
+
+  for (let i = 1; i <= n; i++) {
+    result.push(Array(i).fill(1));
+  }
+
+  return result;
+}
