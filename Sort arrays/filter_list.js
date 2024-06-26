@@ -7,7 +7,7 @@ function filter_list(l) {
     });
     return filt;
   }
-console.log(filter_list([1, 2, 2, 3, 4, 4, 5]));  
+console.log(filter_list([1, 2, 2, 3, 4, 4, 5]));  /*[ 1, 2, 2, 3, 4, 4, 5]*/
 -------------------------------------------------------------------------------------------------------------
 // find first non consecutive number in an array
 function firstNonConsecutive (arr) {
