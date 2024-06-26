@@ -70,11 +70,9 @@ function quick_Sort(origArray) {
 
 var myArray = [3, 0, 2, 5, -1, 4, 1 ];
 
-console.log("Original array: " + myArray);
+console.log("Original array: " + myArray); //Original array: 3,0,2,5,-1,4,1
 var sortedArray = quick_Sort(myArray);
-console.log("Sorted array: " + sortedArray);
-/*Original array: 3,0,2,5,-1,4,1
-Sorted array: -1,0,1,2,3,4,5*/
+console.log("Sorted array: " + sortedArray);// Sorted array: -1,0,1,2,3,4,5
 ---------------------------------------------------------------------------------------------------------------------------
 // Sort an Array Alphabetically using the sort Method
 function alphabeticalOrder(arr) {
