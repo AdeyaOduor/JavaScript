@@ -25,4 +25,4 @@ function splitify(str) {
   
 }
 
-console.log(splitify("Hello World,I-am code")); 
+console.log(splitify("Hello World,I-am code")); //[ 'Hello', 'World', 'I', 'am', 'code' ]
