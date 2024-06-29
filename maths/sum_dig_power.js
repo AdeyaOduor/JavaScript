@@ -37,7 +37,8 @@ console.log(sumDigPow(1, 100));
     For each number i in the range, it is converted to a string s.
     A variable c is initialized to store the sum of the powered digits.
     Another for loop is used to iterate through the digits of the current number i.
-    For each digit, the function calculates its contribution by raising it to the power of its position (starting from 1) using the Math.pow() function.
+    For each digit, the function calculates its contribution by raising it to the power of its position (starting from 1) 
+    using the Math.pow() function.
     The contribution of each digit is added to the c variable.
     After the loop, the function checks if the sum of the powered digits (c) is equal to the original number i.
     If the condition is true, the current number i is added to the l array.
@@ -48,12 +49,14 @@ equal to the original number. These numbers are often referred to as "narcissist
 For example, if you call sumDigPow(1, 100), the function will return an array containing the numbers [1, 2, 3, 4, 5, 6, 7, 8, 9, 89], as these are the 
 only numbers in the range [1, 100] that satisfy the given condition.
 
-The code provided, which finds the numbers where the sum of the digits raised to their respective positions is equal to the original number (known as "narcissistic" or "Armstrong" numbers), can be applied in a few real-world scenarios:
+The code provided, which finds the numbers where the sum of the digits raised to their respective positions is equal to the original number (known as 
+"narcissistic" or "Armstrong" numbers), can be applied in a few real-world scenarios:
 
     Detecting fraud in financial transactions:
         In the financial industry, credit card numbers and other account identifiers often follow specific patterns or rules.
         The sum of the digits raised to their respective positions can be used as a check to detect potentially fraudulent transactions.
-        If the sum of the digits in a credit card number does not match the original number, it could be a sign of a fraudulent transaction, and the system can flag it for further investigation.
+        If the sum of the digits in a credit card number does not match the original number, it could be a sign of a fraudulent transaction, and the 
+        system can flag it for further investigation.
 
     Verifying numerical identifiers:
         Many government-issued IDs, such as national ID numbers, social security numbers, or vehicle registration numbers, follow specific patterns.
@@ -63,12 +66,16 @@ The code provided, which finds the numbers where the sum of the digits raised to
     Error detection in data entry:
         When entering numerical data, such as product codes, inventory numbers, or customer IDs, there is a risk of human error.
         The sum of the digits raised to their respective positions can be used as a check to detect potential data entry errors.
-        If the sum of the digits in an entered number does not match the original number, it could indicate a typing mistake or a data entry error, prompting the user to double-check the input.
+        If the sum of the digits in an entered number does not match the original number, it could indicate a typing mistake or a data entry error, 
+        prompting the user to double-check the input.
 
     Cryptographic applications:
-        In certain cryptographic algorithms, the manipulation of numerical values, including the sum of the digits raised to their respective positions, can be used as part of the encryption or decryption process.
-        This technique can be employed in secure communication systems, digital signatures, or other cryptographic applications where the integrity of numerical data is crucial.
+        In certain cryptographic algorithms, the manipulation of numerical values, including the sum of the digits raised to their respective positions, 
+        can be used as part of the encryption or decryption process.
+        This technique can be employed in secure communication systems, digital signatures, or other cryptographic applications where the integrity of 
+        numerical data is crucial.
 
-By incorporating the logic from the provided code, developers can build applications or systems that leverage the concept of "narcissistic" or "Armstrong" numbers to enhance data validation, fraud detection, and overall data integrity in various industries and use cases.
+By incorporating the logic from the provided code, developers can build applications or systems that leverage the concept of "narcissistic" or 
+"Armstrong" numbers to enhance data validation, fraud detection, and overall data integrity in various industries and use cases.
 
 */
