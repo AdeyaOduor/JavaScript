@@ -79,3 +79,31 @@ By incorporating the logic from the provided code, developers can build applicat
 "Armstrong" numbers to enhance data validation, fraud detection, and overall data integrity in various industries and use cases.
 
 */
+
+// Function to check if a credit card number is valid
+function isValidCreditCardNumber(cardNumber) {
+  // Remove any non-digit characters from the card number
+  cardNumber = cardNumber.replace(/\D/g, '');
+
+  // Check if the card number is between 12 and 19 digits long
+  if (cardNumber.length < 12 || cardNumber.length > 19) {
+    return false;
+  }
+
+  // Calculate the sum of the digits raised to their respective positions
+  let sum = 0;
+  for (let i = 0; i < cardNumber.length; i++) {
+    let digit = parseInt(cardNumber.charAt(i));
+    sum += Math.pow(digit, i + 1);
+  }
+
+  // Check if the sum matches the original card number
+  return sum === parseInt(cardNumber);
+}
+
+// Example usage
+let validCardNumber = '371449635398431';
+let invalidCardNumber = '371449635398430';
+
+console.log(isValidCreditCardNumber(validCardNumber)); // true
+console.log(isValidCreditCardNumber(invalidCardNumber)); // false
