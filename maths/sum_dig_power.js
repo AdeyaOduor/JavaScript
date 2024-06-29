@@ -107,3 +107,20 @@ let invalidCardNumber = '371449635398430';
 
 console.log(isValidCreditCardNumber(validCardNumber)); // true
 console.log(isValidCreditCardNumber(invalidCardNumber)); // false
+
+/*In this example, the isValidCreditCardNumber function takes a credit card number as input and checks if it is a valid "narcissistic" or 
+"Armstrong" number. Here's how it works:
+
+    The function first removes any non-digit characters from the input card number using a regular expression.
+    It then checks if the card number is between 12 and 19 digits long, as this is a common length range for credit card numbers.
+    The function calculates the sum of the digits raised to their respective positions, similar to the code provided earlier.
+    Finally, it checks if the calculated sum matches the original card number. If so, the function returns true, indicating a valid card number; 
+    otherwise, it returns false.
+
+In a real-world fraud detection system, this function could be integrated into the payment processing pipeline to validate the integrity of credit 
+card numbers before authorizing a transaction. 
+If the function returns false, the system can flag the transaction as potentially fraudulent and take appropriate actions, such as triggering additional 
+verification steps or denying the transaction.
+
+By incorporating this validation technique, the fraud detection system can leverage the properties of "narcissistic" or "Armstrong" numbers to enhance 
+the overall security and reliability of the payment processing workflow.*/
