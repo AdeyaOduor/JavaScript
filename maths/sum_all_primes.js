@@ -4,8 +4,7 @@ function sumPrimes(num) {
   // primes array with 0 and 1 set to false
   var primes = [false, false];
   
-  // add every number up to given number to the primes array
-  // and set true until proven false
+  // add every number up to given number to the primes array, and set true until proven false
   for (let i = 2; i <= num; i++) {
     primes[i] = true;
   }
