@@ -9,9 +9,7 @@ function sumPrimes(num) {
     primes[i] = true;
   }
 
-  /* square root of given value is the limit for looping
-     ignore any numbers known to be false
-     find primes using the Sieve of Eratosthenes
+  /* square root of given value is the limit for looping ignore any numbers known to be false, find primes using the Sieve of Eratosthenes
      loop from 2 to limit and check if prime */
   let limit = Math.sqrt(num);
   for (let j = 2; j < num; j++) {
