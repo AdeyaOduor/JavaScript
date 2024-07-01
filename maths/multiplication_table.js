@@ -14,10 +14,9 @@ for(let i = 1; i <= range; i++) {
 }
 --------------------------------------------------------------------------------------
     /*
+    The function below starts by initializing an empty string called table to store the multiplication table.
 
-    The function starts by initializing an empty string called table to store the multiplication table.
-
-    It then uses a for loop to iterate from 1 to 10, representing the 10 rows of the multiplication table.
+    It then uses a for loop to iterate from 1 to 25, representing the 25 rows of the multiplication table.
 
     Inside the loop, for each iteration, the function concatenates a string that includes the current number i, 
     the number argument, and the result of multiplying i and number. This string is then added to the table variable.
