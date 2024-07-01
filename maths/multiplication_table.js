@@ -12,9 +12,7 @@ for(let i = 1; i <= range; i++) {
     const result = i * number;
     console.log(`${number} * ${i} = ${result}`);
 }
-
-
-// or
+--------------------------------------------------------------------------------------
 const multiTable = (number) => {
   let table = '';
   
