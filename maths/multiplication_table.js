@@ -13,6 +13,19 @@ for(let i = 1; i <= range; i++) {
     console.log(`${number} * ${i} = ${result}`);
 }
 --------------------------------------------------------------------------------------
+    /*
+
+    The function starts by initializing an empty string called table to store the multiplication table.
+
+    It then uses a for loop to iterate from 1 to 10, representing the 10 rows of the multiplication table.
+
+    Inside the loop, for each iteration, the function concatenates a string that includes the current number i, 
+    the number argument, and the result of multiplying i and number. This string is then added to the table variable.
+
+    After each row (except the last one), the function adds a newline character \n to the table string to separate the rows.
+
+    Finally, the function returns the completed table string.
+*/
 const multiTable = (number) => {
   let table = '';
   
