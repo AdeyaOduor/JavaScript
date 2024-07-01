@@ -57,3 +57,9 @@ console.log('38.2%:', fibonacciRetracements[1]);
 console.log('50%:', fibonacciRetracements[2]);
 console.log('61.8%:', fibonacciRetracements[3]);
 console.log('76.4%:', fibonacciRetracements[4]);
+/*Fibonacci Retracement Levels:
+23.6%: 84.72
+38.2%: 87.64
+50%: 90
+61.8%: 92.36
+76.4%: 95.28*/
