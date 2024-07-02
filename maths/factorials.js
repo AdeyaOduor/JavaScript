@@ -19,3 +19,20 @@ console.log(factorialize(5)); // 120
 If num == 0, then we return 1, i.e. effectively ending the recursion and informing the stack to propagate this 
 value to the upper levels. If we do not have this condition, the recursion would go on until the stack space gets 
 consumed, thereby resulting in a Stack Overflow */
+/**
+ * Calculates the factorial of a given number.
+ * @param {number} n - The number to calculate the factorial for.
+ * @returns {number} The factorial of the given number.
+ */
+function factorial(n) {
+  if (n === 0 || n === 1) {
+    return 1;
+  }
+  return n * factorial(n - 1);
+}
+
+// Example usage
+const numFriends = 5;
+const numPermutations = factorial(numFriends);
+
+console.log(`There are ${numPermutations} possible ways to arrange the ${numFriends} friends in a line.`);
