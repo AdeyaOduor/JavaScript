@@ -50,3 +50,25 @@ const results = [
 
 // Log the results to the console
 console.log(results); // Output [ 60, 60, 2520, 360360, 6056820 ]
+---------------------------------------------------------------------------------------------------
+
+ /**
+ * Calculates the Least Common Multiple (LCM) of a set of numbers.
+ * @param {number[]} numbers - An array of numbers.
+ * @returns {number} The Least Common Multiple of the given numbers.
+ */
+function findLCM(numbers) {
+  // Helper function to find the Greatest Common Divisor (GCD)
+  function gcd(a, b) {
+    return b ? gcd(b, a % b) : a;
+  }
+
+  // Calculate the LCM
+  return numbers.reduce((lcm, num) => (lcm * num) / gcd(lcm, num), numbers[0]);
+}
+
+// Example usage
+const resourceUsageFrequencies = [4, 6, 8]; // Printer: 4 hours, Conference room: 6 hours, Shared vehicle: 8 hours
+const schedulingInterval = findLCM(resourceUsageFrequencies);
+
+console.log(`The optimal scheduling interval is ${schedulingInterval} hours.`);
