@@ -72,3 +72,25 @@ const resourceUsageFrequencies = [4, 6, 8]; // Printer: 4 hours, Conference room
 const schedulingInterval = findLCM(resourceUsageFrequencies);
 
 console.log(`The optimal scheduling interval is ${schedulingInterval} hours.`);
+
+/*
+In this example, the findLCM function takes an array of numbers (in this case, the usage frequencies of the shared resources) 
+and calculates the Least Common Multiple using the following steps:
+
+    The gcd function calculates the Greatest Common Divisor (GCD) of two numbers using the Euclidean algorithm.
+    The reduce method is used to iterate through the array of numbers and calculate the LCM using the formula (lcm * num) / gcd(lcm, num).
+
+The example usage demonstrates how you can use the findLCM function to determine the optimal scheduling interval for the shared resources. 
+In this case, the LCM of the usage frequencies (4, 6, and 8) is 24, so the optimal scheduling interval is 24 hours.
+
+This approach ensures that all resources can be scheduled without any conflicts, as the scheduling interval is the least common multiple of 
+their individual usage frequencies. This can be particularly useful in scenarios where multiple resources need to be coordinated, such as in 
+project management, production planning, or event scheduling.
+
+The LCM has various other real-world applications, such as in:
+
+    Electronics and electrical engineering: Determining the appropriate gear ratios for gears and pulleys.
+    Computer science: Calculating the least common multiple of hash functions or hash table sizes.
+    Finance: Determining the optimal investment periods for different financial instruments.
+    Biology: Analyzing the reproductive cycles of different organisms.
+*/
