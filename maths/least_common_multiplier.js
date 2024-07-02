@@ -94,3 +94,24 @@ The LCM has various other real-world applications, such as in:
     Finance: Determining the optimal investment periods for different financial instruments.
     Biology: Analyzing the reproductive cycles of different organisms.
 */
+
+/**
+ * Calculates the Least Common Multiple (LCM) of a set of numbers.
+ * @param {number[]} numbers - An array of numbers.
+ * @returns {number} The Least Common Multiple of the given numbers.
+ */
+function findLCM(numbers) {
+  // Helper function to find the Greatest Common Divisor (GCD)
+  function gcd(a, b) {
+    return b ? gcd(b, a % b) : a;
+  }
+
+  // Calculate the LCM
+  return numbers.reduce((lcm, num) => (lcm * num) / gcd(lcm, num), numbers[0]);
+}
+
+// Example usage
+const investmentPeriods = [3, 6, 12]; // Instrument A: 3 months, Instrument B: 6 months, Instrument C: 12 months
+const optimalInvestmentPeriod = findLCM(investmentPeriods);
+
+console.log(`The optimal investment period is ${optimalInvestmentPeriod} months.`);
