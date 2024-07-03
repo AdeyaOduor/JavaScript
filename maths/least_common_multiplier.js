@@ -120,3 +120,51 @@ const investmentPeriods = [3, 6, 12]; // Instrument A: 3 months, Instrument B: 6
 const optimalInvestmentPeriod = findLCM(investmentPeriods);
 
 console.log(`The optimal investment period is ${optimalInvestmentPeriod} months.`);
+----------------------------------------------------------------------------------------------------------------------
+
+ /**
+ * Calculates the Least Common Multiple (LCM) of two numbers.
+ * @param {number} a - The first number.
+ * @param {number} b - The second number.
+ * @returns {number} The LCM of the two numbers.
+ */
+function lcm(a, b) {
+  // Calculate the LCM using the formula: LCM(a, b) = (a * b) / GCD(a, b)
+  function gcd(x, y) {
+    return y ? gcd(y, x % y) : x;
+  }
+  return (a * b) / gcd(a, b);
+}
+
+/**
+ * Generates a hash table using the LCM.
+ * @param {number[]} keys - An array of keys to be used in the hash table.
+ * @param {number} tableSize - The desired size of the hash table.
+ * @returns {Object} The generated hash table.
+ */
+function generateHashTable(keys, tableSize) {
+  // Create an empty hash table
+  const hashTable = {};
+
+  // Iterate through the keys and assign them to the hash table
+  for (const key of keys) {
+    const hashIndex = key % tableSize;
+    const hashValue = key / lcm(key, tableSize);
+
+    if (hashTable[hashIndex]) {
+      // Collision handling (e.g., chaining, linear/quadratic probing)
+      hashTable[hashIndex].push({ key, value: hashValue });
+    } else {
+      hashTable[hashIndex] = [{ key, value: hashValue }];
+    }
+  }
+
+  return hashTable;
+}
+
+// Example usage
+const keys = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+const tableSize = 11;
+const hashTable = generateHashTable(keys, tableSize);
+
+console.log(hashTable);
