@@ -1,6 +1,18 @@
 function findOdd(arr) {
     return arr.find((item, index) => arr.filter(el => el == item).length % 2)
   }
+function findOdd(arr) {
+    return arr.find((item, index) => arr.filter(el => el == item).length % 2)
+  };
+
+// Sample customer visit data
+const customerVisits = [10, 8, 12, 6, 15, 8, 12, 6, 15, 6];
+
+// Find the customer segment with an odd number of visits
+const oddVisits = findOdd(customerVisits);
+
+console.log("Customers with an odd number of visits:", oddVisits); // 10
+-----------------------------------------------------------------------------------------------------
 
 // method 2
 function odds(values){
