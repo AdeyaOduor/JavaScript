@@ -22,7 +22,8 @@ function sumFibs(num) {
 // sumFibs(4);
 console.log(sumFibs(4)); //5
 ----------------------------------------------------------------------------------------------
-  /*One application of the Fibonacci sequence is in the field of technical analysis for stock price prediction. 
+  /*
+  One application of the Fibonacci sequence is in the field of technical analysis for stock price prediction. 
   Technical analysts often use Fibonacci retracement levels to identify potential support and resistance levels in stock prices.
   
   In the following example, the fibonacci function calculates the Fibonacci sequence up to a given number of terms. The calculateFibonacciRetracements 
@@ -32,8 +33,7 @@ console.log(sumFibs(4)); //5
 These Fibonacci retracement levels can be used by traders and analysts to identify potential support and resistance levels in the stock price. 
 For instance, if the current stock price is approaching one of the Fibonacci retracement levels, it may indicate a potential support or resistance 
 level, which could be used to make trading decisions.*/
-
-  
+ 
 // Function to calculate the Fibonacci sequence up to a given number of terms
 function fibonacci(n) {
   if (n <= 1) {
