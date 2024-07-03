@@ -38,11 +38,7 @@ const numPermutations = factorial(numFriends);
 
 console.log(`There are ${numPermutations} possible ways to arrange the ${numFriends} friends in a line.`);
 -----------------------------------------------------------------------------------------------------------------------------
-   /**
- * Calculates the factorial of a given number in probablity and statistics.
- * @param {number} n - The number to calculate the factorial for.
- * @returns {number} The factorial of the given number.
- */
+   // Calculates the factorial of a given number in probablity and statistics.
 function factorial(n) {
   if (n === 0 || n === 1) {
     return 1;
