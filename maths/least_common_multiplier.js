@@ -168,3 +168,14 @@ const tableSize = 11;
 const hashTable = generateHashTable(keys, tableSize);
 
 console.log(hashTable);
+/*
+In this example, the lcm function calculates the Least Common Multiple of two numbers using the formula LCM(a, b) = (a * b) / GCD(a, b), 
+where GCD is the Greatest Common Divisor.
+
+The generateHashTable function takes an array of keys and the desired size of the hash table, and generates the hash table using the LCM. 
+The hash index is calculated using the modulo operator %, and the hash value is calculated as key / lcm(key, tableSize).
+
+The example usage demonstrates how to generate a hash table with the keys [10, 20, 30, 40, 50, 60, 70, 80, 90, 100] and a table size of 11.
+
+The output of this code will be an object representing the generated hash table, where the keys are the hash indices, and the values are arrays 
+of objects containing the key and its corresponding hash value.*/
