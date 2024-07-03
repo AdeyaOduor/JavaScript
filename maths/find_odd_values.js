@@ -1,8 +1,5 @@
 function findOdd(arr) {
     return arr.find((item, index) => arr.filter(el => el == item).length % 2)
-  }
-function findOdd(arr) {
-    return arr.find((item, index) => arr.filter(el => el == item).length % 2)
   };
 
 // Sample customer visit data
@@ -12,6 +9,20 @@ const customerVisits = [10, 8, 12, 6, 15, 8, 12, 6, 15, 6];
 const oddVisits = findOdd(customerVisits);
 
 console.log("Customers with an odd number of visits:", oddVisits); // 10
+
+/*
+By identifying the customer segment with an odd number of visits, you can then further investigate this group to understand why they might 
+be visiting the store in a different pattern compared to the rest of the customers. This could lead to valuable insights, such as:
+
+    The odd-visit customers might be a niche or underserved segment that the business could target with specific marketing campaigns or product 
+    offerings.
+    The odd-visit customers might have unique needs or preferences that the business could address to improve their overall experience and 
+    potentially increase their loyalty.
+    The odd-visit pattern could be indicative of a specific life event or circumstance that affects this group of customers, which the business
+    could learn from to better serve all of its customers.
+
+By leveraging the findOdd function in your data analysis, you can efficiently identify these potentially interesting customer segments and dive 
+deeper into understanding their behavior and needs. This type of insight can then be used to inform strategic decision-making and drive business growth.*/
 -----------------------------------------------------------------------------------------------------
 
 // method 2
