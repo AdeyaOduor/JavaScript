@@ -22,7 +22,8 @@ be visiting the store in a different pattern compared to the rest of the custome
     could learn from to better serve all of its customers.
 
 By leveraging the findOdd function in your data analysis, you can efficiently identify these potentially interesting customer segments and dive 
-deeper into understanding their behavior and needs. This type of insight can then be used to inform strategic decision-making and drive business growth.*/
+deeper into understanding their behavior and needs. This type of insight can then be used to inform strategic decision-making and drive business 
+growth.*/
 -----------------------------------------------------------------------------------------------------
 
 // method 2
