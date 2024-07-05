@@ -41,3 +41,21 @@ Real World Applications include:
         In the realm of taxation, the array of numbers could represent different tax brackets or income thresholds that need to be considered when calculating tax liabilities.
         This could help streamline the process of computing taxes for individuals or businesses.
 */
+// Tax Calculations
+const taxBrackets = [];
+for (let i = 10; i <= 300; i += 10) {
+  taxBrackets.push(i * 1000); // Assuming the income is in dollars
+}
+
+console.log(taxBrackets);
+/* [
+   10000,  20000,  30000,  40000,
+   50000,  60000,  70000,  80000,
+   90000, 100000, 110000, 120000,
+  130000, 140000, 150000, 160000,
+  170000, 180000, 190000, 200000,
+  210000, 220000, 230000, 240000,
+  250000, 260000, 270000, 280000,
+  290000, 300000
+]
+*/
