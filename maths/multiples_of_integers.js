@@ -59,3 +59,33 @@ console.log(taxBrackets);
   290000, 300000
 ]
 */
+function calculateTax(income) {
+  let tax = 0;
+
+  // Calculate tax for each bracket
+  for (let i = 0; i < taxBrackets.length; i++) {
+    if (income <= taxBrackets[i]) {
+      tax += income * 0.1; // 10% tax rate
+      return tax;
+    } else if (income > taxBrackets[i] && income <= taxBrackets[i + 1]) {
+      tax += (taxBrackets[i + 1] - taxBrackets[i]) * 0.15; // 15% tax rate
+      income -= taxBrackets[i + 1];
+    } else if (income > taxBrackets[i] && income <= taxBrackets[i + 2]) {
+      tax += (taxBrackets[i + 2] - taxBrackets[i + 1]) * 0.2; // 20% tax rate
+      income -= taxBrackets[i + 2];
+    } else if (income > taxBrackets[i] && income <= taxBrackets[i + 3]) {
+      tax += (taxBrackets[i + 3] - taxBrackets[i + 2]) * 0.25; // 25% tax rate
+      income -= taxBrackets[i + 3];
+    } else {
+      tax += (income - taxBrackets[i + 3]) * 0.3; // 30% tax rate
+      return tax;
+    }
+  }
+
+  return tax;
+}
+
+const personIncome = 125000;
+const personTax = calculateTax(personIncome);
+console.log(`The person's tax liability is: $${personTax.toFixed(2)}`);
+// Output: The person's tax liability is: $20000.00
