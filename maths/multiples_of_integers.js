@@ -43,7 +43,7 @@ Real World Applications include:
 */
 // Tax Calculations
 const taxBrackets = [];
-for (let i = 10; i <= 300; i += 10) {
+for (let i = 10; i <= 300; i += 15) {
   taxBrackets.push(i * 1000); // Assuming the income is in dollars
 }
 
@@ -88,4 +88,4 @@ function calculateTax(income) {
 const personIncome = 125000;
 const personTax = calculateTax(personIncome);
 console.log(`The person's tax liability is: $${personTax.toFixed(2)}`);
-// Output: The person's tax liability is: $20000.00
+// Output: The person's tax liability is: $21000.00
