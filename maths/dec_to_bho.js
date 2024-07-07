@@ -73,3 +73,10 @@ Decimal: 168, Binary: 10101000, Hexadecimal: A8, Octal: 250
 Decimal: 1, Binary: 1, Hexadecimal: 1, Octal: 1
 
 Decimal: 100, Binary: 1100100, Hexadecimal: 64,Octal: 144*/
+
+// Parsing an Ethernet frame header to convert numerical values between different representations, making it easier to understand and work with the protocol data.
+const ethernetHeader = {
+  destinationMAC: dec_to_bho(0x01234567, 'H'), // Hexadecimal MAC address
+  sourceMAC: dec_to_bho(0x89ABCDEF, 'H'),
+  etherType: dec_to_bho(0x0800, 'H') // Hexadecimal Ethernet type
+};
