@@ -53,3 +53,15 @@ Real world applications:
     Educational and teaching purposes: The dec_to_bho function can also be useful in educational settings, such as computer science or programming 
     courses, where students need to learn about different number representations and how to convert between them.
 */
+// Example Convert IP address: 192.168.1.100 components to decimal,
+const ipComponents = [192, 168, 1, 100];
+
+// Convert each component to binary, hexadecimal, and octal
+for (let i = 0; i < ipComponents.length; i++) {
+  const decimal = ipComponents[i];
+  console.log(`Decimal: ${decimal}`);
+  console.log(`Binary: ${dec_to_bho(decimal, 'B')}`);
+  console.log(`Hexadecimal: ${dec_to_bho(decimal, 'H')}`);
+  console.log(`Octal: ${dec_to_bho(decimal, 'O')}`);
+  console.log();
+}
