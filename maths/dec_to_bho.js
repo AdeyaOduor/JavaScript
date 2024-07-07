@@ -86,4 +86,11 @@ function processTCPPacket(packet) {
   // Use the tcpFlags binary representation to implement the TCP state machine
   // and handle the packet based on the current connection state
 }
+// Use the dec_to_bho function to validate the IP header checksum
+const ipHeader = {
+  version: dec_to_bho(4, 'B'), // Binary IP version
+  headerLength: dec_to_bho(5, 'B'), // Binary IP header length
+  totalLength: dec_to_bho(1500, 'H'), // Hexadecimal total packet length
+  checksum: dec_to_bho(0xABCD, 'H') // Hexadecimal IP header checksum
+};
 
