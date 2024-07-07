@@ -80,3 +80,10 @@ const ethernetHeader = {
   sourceMAC: dec_to_bho(0x89ABCDEF, 'H'),
   etherType: dec_to_bho(0x0800, 'H') // Hexadecimal Ethernet type
 };
+// Implementing a TCP state machine
+function processTCPPacket(packet) {
+  const tcpFlags = dec_to_bho(packet.flags, 'B'); // Convert TCP flags to binary
+  // Use the tcpFlags binary representation to implement the TCP state machine
+  // and handle the packet based on the current connection state
+}
+
