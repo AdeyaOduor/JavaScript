@@ -65,3 +65,11 @@ for (let i = 0; i < ipComponents.length; i++) {
   console.log(`Octal: ${dec_to_bho(decimal, 'O')}`);
   console.log();
 }
+/*
+Decimal: 192, Binary: 11000000, Hexadecimal: C0, Octal: 300
+
+Decimal: 168, Binary: 10101000, Hexadecimal: A8, Octal: 250
+
+Decimal: 1, Binary: 1, Hexadecimal: 1, Octal: 1
+
+Decimal: 100, Binary: 1100100, Hexadecimal: 64,Octal: 144*/
