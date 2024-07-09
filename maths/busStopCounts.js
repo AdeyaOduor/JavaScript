@@ -1,7 +1,7 @@
 let number = function(busStops){
   return busStops.map(x => x[0] - x[1]).reduce( (x, y) => x + y);
 }
-/*
+--------------------------------------------------------------------------------------------------------
 // Assuming you have an API that returns the number of passengers getting on and off at each bus stop
 function getBusStopData(routeId) {
   // Make an API call to fetch the bus stop data for the given route
@@ -30,7 +30,8 @@ getBusStopData(routeId)
   .catch(error => {
     console.error('Error fetching bus stop data:', error);
   });
-  */
+  
+---------------------------------------------------------------------------------------------------------------------------------------
 // method 2
 var number = function(busStops){ //need a variable to hold the total number of ppl on the bus
      let totalCount = 0; //sample tests are arrays, need a loop to iterate through the array
