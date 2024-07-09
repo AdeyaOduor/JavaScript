@@ -27,3 +27,24 @@ const transformedData = sourceData.map(row => transformRow(row));
 
 const stockPriceData = csv_to_array(fetchCSVData('stock_prices.csv'), ',', true);
 // Visualize the stock price data in a custom charting application
+---------------------------------------------------------------------------------------
+
+  // Extract the CSV data
+const rawSalesData = fetchCSVData('sales_data.csv');
+
+// Parse the CSV data into a nested array
+const salesData = csv_to_array(rawSalesData, ',', true);
+
+// Transform the data
+const transformedSalesData = salesData.map(row => {
+  return {
+    productId: parseInt(row[0]),
+    productName: row[1],
+    quantity: parseInt(row[2]),
+    price: parseFloat(row[3]),
+    date: new Date(row[4])
+  };
+});
+
+// Load the transformed data into a database
+saveDataToDatabase(transformedSalesData);
