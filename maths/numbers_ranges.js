@@ -62,3 +62,6 @@ for (const reading of sensorReadings) {
     console.log("Anomaly detected: Temperature =", reading.temperature, ", Humidity =", reading.humidity);
   }
 }
+/*
+Anomaly detected: Temperature = 62 , Humidity = 65
+Anomaly detected: Temperature = 35 , Humidity = 30*/
