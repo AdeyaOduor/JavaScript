@@ -21,16 +21,24 @@ getBusStopData(routeId)
     const netPassengerChange = number(busStopData);
     console.log(`Net change in passengers for route ${routeId}: ${netPassengerChange}`);
 
-    // Use the net passenger change data for various purposes, such as:
-    // - Optimizing bus schedules
-    // - Predicting passenger load
-    // - Capacity planning
-    // - Passenger flow analysis
   })
   .catch(error => {
     console.error('Error fetching bus stop data:', error);
   });
-  
+  /*
+  The number function can be used to calculate the net change in the number of passengers at each bus stop, which can be 
+  useful for various purposes, such as:
+
+    Optimizing Bus Schedules: By analyzing the net change in passengers at each stop, the transportation authorities can identify the busiest 
+    stops and adjust bus schedules accordingly to better accommodate passenger demand. This can help improve the efficiency of the bus network 
+    and reduce overcrowding.
+
+    Predicting Passenger Load: The net change in passengers at each stop can be used to predict the expected passenger load on the bus as it travels along the route. This information can be displayed to users, allowing them to make informed decisions about their travel plans, such as choosing a less crowded bus or arriving at a stop earlier to get a seat.
+
+    Capacity Planning: The data collected from the number function can be used to plan the required bus capacity for different routes and times of the day. Transportation planners can use this information to determine the appropriate number and size of buses to deploy, ensuring that there is sufficient capacity to meet passenger demand.
+
+    Passenger Flow Analysis: By analyzing the net change in passengers at each stop, transportation authorities can gain insights into passenger flow patterns within the bus network. This can help them identify bottlenecks, plan for infrastructure improvements, and make more informed decisions about resource allocation.
+*/
 ---------------------------------------------------------------------------------------------------------------------------------------
 // method 2
 var number = function(busStops){ //need a variable to hold the total number of ppl on the bus
