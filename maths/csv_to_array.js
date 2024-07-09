@@ -11,3 +11,6 @@ console.log(csv_to_array('head1,head2\na,b\nc,d', ',', true));
 /* [ [ 'a', 'b' ], [ 'c', 'd' ] ]
 [ [ 'a', 'b' ], [ 'c', 'd' ] ]
 [ [ 'a', 'b' ], [ 'c', 'd' ] ]*/
+
+const salesData = csv_to_array(fetchCSVData('sales_data.csv'), ',', true);
+// Analyze the sales data and generate visualizations
