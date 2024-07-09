@@ -46,3 +46,19 @@ examples:
         In web or mobile applications that involve user input, this function could be used to validate the entered values, ensuring they fall within 
         the expected ranges. This can be particularly useful for form validations or user settings.
  */
+// Example sensor data
+const sensorReadings = [
+  { temperature: 55, humidity: 52 },
+  { temperature: 72, humidity: 78 },
+  { temperature: 45, humidity: 48 },
+  { temperature: 62, humidity: 65 },
+  { temperature: 85, humidity: 90 },
+  { temperature: 35, humidity: 30 }
+];
+
+// Detect anomalies
+for (const reading of sensorReadings) {
+  if (!numbers_ranges(reading.temperature, reading.humidity)) {
+    console.log("Anomaly detected: Temperature =", reading.temperature, ", Humidity =", reading.humidity);
+  }
+}
