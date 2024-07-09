@@ -33,11 +33,17 @@ getBusStopData(routeId)
     stops and adjust bus schedules accordingly to better accommodate passenger demand. This can help improve the efficiency of the bus network 
     and reduce overcrowding.
 
-    Predicting Passenger Load: The net change in passengers at each stop can be used to predict the expected passenger load on the bus as it travels along the route. This information can be displayed to users, allowing them to make informed decisions about their travel plans, such as choosing a less crowded bus or arriving at a stop earlier to get a seat.
+    Predicting Passenger Load: The net change in passengers at each stop can be used to predict the expected passenger load on the bus as it 
+    travels along the route. This information can be displayed to users, allowing them to make informed decisions about their travel plans, such 
+    as choosing a less crowded bus or arriving at a stop earlier to get a seat.
 
-    Capacity Planning: The data collected from the number function can be used to plan the required bus capacity for different routes and times of the day. Transportation planners can use this information to determine the appropriate number and size of buses to deploy, ensuring that there is sufficient capacity to meet passenger demand.
+    Capacity Planning: The data collected from the number function can be used to plan the required bus capacity for different routes and times of 
+    the day. Transportation planners can use this information to determine the appropriate number and size of buses to deploy, ensuring that there 
+    is sufficient capacity to meet passenger demand.
 
-    Passenger Flow Analysis: By analyzing the net change in passengers at each stop, transportation authorities can gain insights into passenger flow patterns within the bus network. This can help them identify bottlenecks, plan for infrastructure improvements, and make more informed decisions about resource allocation.
+    Passenger Flow Analysis: By analyzing the net change in passengers at each stop, transportation authorities can gain insights into passenger 
+    flow patterns within the bus network. This can help them identify bottlenecks, plan for infrastructure improvements, and make more informed 
+    decisions about resource allocation.
 */
 ---------------------------------------------------------------------------------------------------------------------------------------
 // method 2
