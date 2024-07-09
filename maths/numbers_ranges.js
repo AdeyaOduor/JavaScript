@@ -65,3 +65,59 @@ for (const reading of sensorReadings) {
 /*
 Anomaly detected: Temperature = 62 , Humidity = 65
 Anomaly detected: Temperature = 35 , Humidity = 30*/
+
+// Example
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Registration</title>
+  <style>
+    .error { color: red; }
+  </style>
+</head>
+<body>
+  <h1>User Registration</h1>
+  <form id="registrationForm">
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age" required>
+    <span id="ageError" class="error"></span>
+    <br>
+    <label for="income">Annual Income:</label>
+    <input type="number" id="income" name="income" required>
+    <span id="incomeError" class="error"></span>
+    <br>
+    <button type="submit">Register</button>
+  </form>
+
+  <script>
+    function numbers_ranges(x, y) {
+      if ((x >= 18 && x <= 65 && y >= 20000 && y <= 150000) 
+          || 
+          (x >= 65 && x <= 100 && y >= 20000 && y <= 100000))
+         {
+        return true;
+         } 
+        else 
+         {
+        return false;
+      }
+    }
+
+    const form = document.getElementById('registrationForm');
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const age = parseInt(document.getElementById('age').value);
+      const income = parseInt(document.getElementById('income').value);
+
+      if (!numbers_ranges(age, income)) {
+        document.getElementById('ageError').textContent = 'Age must be between 18 and 100 years.';
+        document.getElementById('incomeError').textContent = 'Annual income must be between $20,000 and $150,000.';
+      } else {
+        // Form is valid, submit the data
+        form.submit();
+      }
+    });
+  </script>
+</body>
+</html>
