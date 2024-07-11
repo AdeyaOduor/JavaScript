@@ -107,3 +107,34 @@ between a given range of numbers. Here are some examples of how this function co
         Solving mathematical problems that involve the sum of a range of integers, such as finding the sum of the first n natural numbers or the 
         sum of the squares of the first n integers.
 */
+
+//Example 1
+const dailySales = [
+  100, 120, 150, 80, 90, 110, 130,
+  140, 160, 170, 180, 190, 200, 210,
+  220, 230, 240, 250, 260, 270, 280,
+  290, 300, 310, 320, 330, 340, 350, 360, 370
+];
+
+function sumAll(arr) {
+  let sumBetween = 0;
+  for (let i = Math.min(...arr); i <= Math.max(...arr); i++) {
+    sumBetween += i;
+  }
+  return sumBetween;
+}
+
+// Calculate total sales per week
+const weeklySales = [];
+for (let i = 0; i < dailySales.length; i += 7) {
+  weeklySales.push(sumAll(dailySales.slice(i, i + 7)));
+}
+
+console.log("Weekly Sales:");
+weeklySales.forEach((sale, index) => {
+  console.log(`Week ${index + 1}: $${sale}`);
+});
+
+// Calculate total sales for the entire period
+const totalSales = sumAll(dailySales);
+console.log(`\nTotal Sales: $${totalSales}`);
