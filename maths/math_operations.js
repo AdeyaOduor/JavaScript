@@ -147,3 +147,34 @@ Week 4: $19520
 Week 5: $4015
 
 Total Sales: $65475*/
+// Example 2
+function sumAll(arr) {
+  let sumBetween = 0;
+  for (let i = Math.min(...arr); i <= Math.max(...arr); i++) {
+    sumBetween += i;
+  }
+  return sumBetween;
+}
+
+// Sample hourly power generation data (in kWh)
+const dailyPowerGeneration = [
+  // Day 1
+  5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60,
+  55, 50, 45, 40, 35, 30, 25, 20, 15, 10, 5, 0,
+  // Day 2
+  0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55,
+  60, 55, 50, 45, 40, 35, 30, 25, 20, 15, 10, 5,
+  // Day 3
+  5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60,
+  55, 50, 45, 40, 35, 30, 25, 20, 15, 10, 5, 0,
+  // Day 4
+  0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55,
+  60, 55, 50, 45, 40, 35, 30, 25, 20, 15, 10, 5,
+  // Day 5
+  5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60
+];
+
+// Calculate the total energy production over 5 days
+const totalEnergyProduction = sumAll(dailyPowerGeneration);
+
+console.log(`Total energy production over 5 days: ${totalEnergyProduction} kWh`);
