@@ -108,6 +108,7 @@ between a given range of numbers. Here are some examples of how this function co
         sum of the squares of the first n integers.
 */
 
+
 //Example 1
 const dailySales = [
   100, 120, 150, 80, 90, 110, 130,
@@ -145,8 +146,9 @@ Week 2: $12425
 Week 3: $15250
 Week 4: $19520
 Week 5: $4015
-
 Total Sales: $65475*/
+
+
 // Example 2
 function sumAll(arr) {
   let sumBetween = 0;
@@ -177,4 +179,5 @@ const dailyPowerGeneration = [
 // Calculate the total energy production over 5 days
 const totalEnergyProduction = sumAll(dailyPowerGeneration);
 
-console.log(`Total energy production over 5 days: ${totalEnergyProduction} kWh`);
+console.log(`Total energy production over 5 days: ${totalEnergyProduction} kWh`); // Total energy production over 5 days: 1830 kWh
+
