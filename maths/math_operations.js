@@ -138,3 +138,12 @@ weeklySales.forEach((sale, index) => {
 // Calculate total sales for the entire period
 const totalSales = sumAll(dailySales);
 console.log(`\nTotal Sales: $${totalSales}`);
+/*
+Weekly Sales:
+Week 1: $8165
+Week 2: $12425
+Week 3: $15250
+Week 4: $19520
+Week 5: $4015
+
+Total Sales: $65475*/
