@@ -80,3 +80,14 @@ for (let year = 1; year <= 10; year++) {
   portfolioValue = stockValue + bondValue + realEstateValue;
   console.log(`Year ${year}: $${portfolioValue.toFixed(2)}`);
 }
+/*
+Year 1: $318000.00
+Year 2: $1072168.80
+Year 3: $3833638.18
+Year 4: $14540316.75
+Year 5: $58513238.01
+Year 6: $249893214.27
+Year 7: $1132862475.79
+Year 8: $5452860579.04
+Year 9: $27873907616.73
+Year 10: $151355791622.51*/
