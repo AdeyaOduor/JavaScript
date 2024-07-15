@@ -78,4 +78,4 @@ const totalPositiveCashFlow = positiveSum(
   annualIncomeAndExpenses.map(item => item.income - item.expenses)
 );
 
-console.log(`The client's total positive cash flow for the next 10 years is: $${totalPositiveCashFlow}`);
+console.log(`The client's total positive cash flow for the next 10 years is: $${totalPositiveCashFlow}`); // $385000
