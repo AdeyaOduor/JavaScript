@@ -44,7 +44,7 @@ Here are a few examples of how this function could be applied in real-world scen
         In the context of biological or medical data, you might have an array of measurements or test results (e.g., blood pressure, heart rate, or enzyme levels). The positiveSum function could be used to calculate the total positive values, which could represent the cumulative or average positive measurements for a patient or a group of patients.
         This information can be used for disease diagnosis, treatment monitoring, or population-level health assessments.
 */
-
+// Example 1
 function positiveSum(arr) {
   let b = arr.filter(a => a >= 0);
   let c = b.reduce((a, b) => a += b, 0);
