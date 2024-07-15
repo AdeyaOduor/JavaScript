@@ -29,19 +29,27 @@ Here are a few examples of how this function could be applied in real-world scen
         cash flow during this period to ensure their financial goals are achievable.
 
     Inventory Management:
-        In an inventory management system, you might have an array of stock levels or inventory quantities. The positiveSum function could be used to calculate the total positive inventory, which represents the items that are currently available for sale or distribution.
-        This information can be used to assess the overall health of the inventory, identify any stock shortages, and plan for future inventory orders or production.
+        In an inventory management system, you might have an array of stock levels or inventory quantities. The positiveSum function could be used 
+        to calculate the total positive inventory, which represents the items that are currently available for sale or distribution.
+        This information can be used to assess the overall health of the inventory, identify any stock shortages, and plan for future inventory orders 
+        or production.
 
     Sensor Data Analysis:
-        In the context of sensor data analysis (e.g., for environmental monitoring, industrial automation, or IoT applications), you might have an array of sensor readings or measurements. The positiveSum function could be used to calculate the total positive values, which could represent the cumulative amount of a particular substance, energy, or resource detected by the sensors.
-        This information can be used to identify trends, detect anomalies, or trigger alerts based on the overall positive sensor readings.
+        In the context of sensor data analysis (e.g., for environmental monitoring, industrial automation, or IoT applications), you might have an array 
+        of sensor readings or measurements. The positiveSum function could be used to calculate the total positive values, which could represent the 
+        cumulative amount of a particular substance, energy, or resource detected by the sensors.This information can be used to identify trends, detect 
+        anomalies, or trigger alerts based on the overall positive sensor readings.
 
     Population Statistics:
-        When working with population data, you might have an array of values representing the population sizes of different regions or demographic groups. The positiveSum function could be used to calculate the total positive population, which represents the sum of all the non-negative population values.
-        This information can be useful for demographic analysis, urban planning, resource allocation, and other applications that require understanding the overall population dynamics.
+        When working with population data, you might have an array of values representing the population sizes of different regions or demographic 
+        groups. The positiveSum function could be used to calculate the total positive population, which represents the sum of all the non-negative 
+        population values.This information can be useful for demographic analysis, urban planning, resource allocation, and other applications that 
+        require understanding the overall population dynamics.
 
     Biological and Medical Data Analysis:
-        In the context of biological or medical data, you might have an array of measurements or test results (e.g., blood pressure, heart rate, or enzyme levels). The positiveSum function could be used to calculate the total positive values, which could represent the cumulative or average positive measurements for a patient or a group of patients.
+        In the context of biological or medical data, you might have an array of measurements or test results (e.g., blood pressure, heart rate, 
+        or enzyme levels). The positiveSum function could be used to calculate the total positive values, which could represent the cumulative or 
+        average positive measurements for a patient or a group of patients.
         This information can be used for disease diagnosis, treatment monitoring, or population-level health assessments.
 */
 // Example 1
