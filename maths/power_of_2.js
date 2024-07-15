@@ -28,12 +28,16 @@ console.log(power); // output is 8
 Let's explore a few examples:
 
     Scientific and Engineering Calculations:
-        In science and engineering, many calculations involve raising numbers to powers, such as calculations in physics (e.g., energy, force, power), chemistry (e.g., reaction rates, equilibrium constants), and mathematics (e.g., exponential growth and decay, logarithmic functions).
-        The raiseToPower function could be used to automate these calculations, making them more efficient and less prone to human error.
+        In science and engineering, many calculations involve raising numbers to powers, such as calculations in 
+        physics (e.g., energy, force, power), chemistry (e.g., reaction rates, equilibrium constants), and mathematics 
+        (e.g., exponential growth and decay, logarithmic functions).The raiseToPower function could be used to automate these calculations, 
+        making them more efficient and less prone to human error.
 
     Financial Modeling and Projections:
-        In financial planning and analysis, the raiseToPower function can be used to calculate compound interest, future value, and other financial metrics that involve exponential growth or decay.
-        For example, when calculating the future value of an investment or the growth of a portfolio, the raiseToPower function can be used to accurately project the end value based on the initial investment, interest rate, and time period.
+        In financial planning and analysis, the raiseToPower function can be used to calculate compound interest, future value, and other 
+        financial metrics that involve exponential growth or decay. For example, when calculating the future value of an investment or the growth 
+        of a portfolio, the raiseToPower function can be used to accurately project the end value based on the initial investment, interest rate, 
+        and time period.
 
     Cryptography and Encryption:
         In the field of cryptography, raising numbers to powers is a fundamental operation in various encryption algorithms, such as the RSA (Rivest-Shamir-Adleman) algorithm.
