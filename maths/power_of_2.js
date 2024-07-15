@@ -59,3 +59,24 @@ Let's explore a few examples:
         or the application of power transformations (e.g., Box-Cox transformation) to improve the linearity of data. The raiseToPower function could 
         be integrated into data analysis and visualization tools to provide users with a convenient way to apply these transformations to their data.
 */
+//Example
+// Define the raiseToPower function
+function raiseToPower(base, exponent) {
+  return Math.pow(base, exponent);
+}
+
+// Define the initial portfolio value and annual growth rates
+const initialPortfolioValue = 100000; // $100,000
+const stockGrowthRate = 0.08; // 8% annual growth
+const bondGrowthRate = 0.04; // 4% annual growth
+const realEstateGrowthRate = 0.06; // 6% annual growth
+
+// Calculate the future portfolio value over 10 years
+let portfolioValue = initialPortfolioValue;
+for (let year = 1; year <= 10; year++) {
+  const stockValue = portfolioValue * raiseToPower(1 + stockGrowthRate, year);
+  const bondValue = portfolioValue * raiseToPower(1 + bondGrowthRate, year);
+  const realEstateValue = portfolioValue * raiseToPower(1 + realEstateGrowthRate, year);
+  portfolioValue = stockValue + bondValue + realEstateValue;
+  console.log(`Year ${year}: $${portfolioValue.toFixed(2)}`);
+}
