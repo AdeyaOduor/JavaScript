@@ -38,3 +38,30 @@ Here are a few examples of how this function could be applied in real-world scen
         In the context of biological or medical data, you might have an array of measurements or test results (e.g., blood pressure, heart rate, or enzyme levels). The positiveSum function could be used to calculate the total positive values, which could represent the cumulative or average positive measurements for a patient or a group of patients.
         This information can be used for disease diagnosis, treatment monitoring, or population-level health assessments.
 */
+
+function positiveSum(arr) {
+  let b = arr.filter(a => a >= 0);
+  let c = b.reduce((a, b) => a += b, 0);
+  return c;
+}
+
+// Client's projected annual income and expenses (in USD)
+const annualIncomeAndExpenses = [
+  { year: 2024, income: 75000, expenses: 50000 },
+  { year: 2025, income: 80000, expenses: 52000 },
+  { year: 2026, income: 85000, expenses: 54000 },
+  { year: 2027, income: 90000, expenses: 56000 },
+  { year: 2028, income: 95000, expenses: 58000 },
+  { year: 2029, income: 100000, expenses: 60000 },
+  { year: 2030, income: 105000, expenses: 62000 },
+  { year: 2031, income: 110000, expenses: 64000 },
+  { year: 2032, income: 115000, expenses: 66000 },
+  { year: 2033, income: 120000, expenses: 68000 }
+];
+
+// Calculate the total positive cash flow
+const totalPositiveCashFlow = positiveSum(
+  annualIncomeAndExpenses.map(item => item.income - item.expenses)
+);
+
+console.log(`The client's total positive cash flow for the next 10 years is: $${totalPositiveCashFlow}`);
