@@ -39,6 +39,11 @@ Let's explore a few examples:
         of a portfolio, the raiseToPower function can be used to accurately project the end value based on the initial investment, interest rate, 
         and time period.
 
+        Imagine you are a financial analyst working for a investment firm. One of your responsibilities is to create a financial model to project the 
+        future value of an investment portfolio over a 10-year period. The portfolio consists of a mix of stocks, bonds, and real estate investments.
+        To calculate the future value of the portfolio, you need to apply compound interest calculations. This is where the raiseToPower function can 
+        come in handy.
+
     Cryptography and Encryption:
         In the field of cryptography, raising numbers to powers is a fundamental operation in various encryption algorithms, such as the RSA 
         (Rivest-Shamir-Adleman) algorithm. The raiseToPower function could be used as a building block in implementing these encryption algorithms, 
