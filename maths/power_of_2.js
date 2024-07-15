@@ -24,8 +24,9 @@ let base = 2;
 let exp = 3;
 let power = raiseToPower(base, exp);
 console.log(power); // output is 8
+
 /*
-Let's explore a few examples:
+Real World applications:
 
     Scientific and Engineering Calculations:
         In science and engineering, many calculations involve raising numbers to powers, such as calculations in 
@@ -65,7 +66,6 @@ Let's explore a few examples:
         be integrated into data analysis and visualization tools to provide users with a convenient way to apply these transformations to their data.
 */
 //Example
-// Define the raiseToPower function
 function raiseToPower(base, exponent) {
   return Math.pow(base, exponent);
 }
