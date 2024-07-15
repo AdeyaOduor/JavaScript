@@ -19,8 +19,14 @@ function positiveSum(arr) {
 Here are a few examples of how this function could be applied in real-world scenarios:
 
     Financial Accounting and Budgeting:
-        In financial accounting, you might have an array of income and expense values, and you want to quickly calculate the total positive income (i.e., the sum of all positive values) to determine the overall financial health of a business or individual.
-        When creating a budget, you can use the positiveSum function to calculate the total expected positive cash flow (e.g., from sales, investments, or other sources of income) to ensure that it covers the expected expenses.
+        In financial accounting, you might have an array of income and expense values, and you want to quickly calculate the 
+        total positive income (i.e., the sum of all positive values) to determine the overall financial health of a business or individual.
+        When creating a budget, you can use the positiveSum function to calculate the total expected positive cash flow (e.g., from sales, 
+        investments, or other sources of income) to ensure that it covers the expected expenses.
+
+        Imagine you are a financial advisor working with a client who is planning for their retirement. As part of the planning process, 
+        you have gathered the client's projected income and expense values for the next 10 years. You want to calculate the client's total positive 
+        cash flow during this period to ensure their financial goals are achievable.
 
     Inventory Management:
         In an inventory management system, you might have an array of stock levels or inventory quantities. The positiveSum function could be used to calculate the total positive inventory, which represents the items that are currently available for sale or distribution.
