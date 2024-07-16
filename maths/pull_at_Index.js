@@ -44,3 +44,55 @@ Let's explore a few examples:
         In game development, the pull_at_Index function can be useful for managing game state and manipulating in-game data structures, such as inventories, skill trees, or level progression.
         By using the pull_at_Index function, developers can efficiently remove and retain specific game elements based on player actions or game events, enabling more dynamic and customizable gameplay experiences.
 */
+
+// Sample customer order data
+const orders = [
+  { id: 1, customer: "John Doe", product: "Laptop", quantity: 1, price: 999.99 },
+  { id: 2, customer: "Jane Smith", product: "Smartphone", quantity: 2, price: 499.99 },
+  { id: 3, customer: "Mike Johnson", product: "Laptop", quantity: 1, price: 999.99 },
+  { id: 4, customer: "Sarah Lee", product: "Tablet", quantity: 3, price: 299.99 },
+  { id: 5, customer: "David Brown", product: "Smartphone", quantity: 1, price: 499.99 }
+];
+
+// Define the pull_at_Index function
+const pull_at_Index = (arr, pullArr) => {
+  let removed = [];
+  let pulled = arr
+    .map((v, i) => (pullArr.includes(i) ? removed.push(v) : v))
+    .filter((v, i) => !pullArr.includes(i));
+  arr.length = 0;
+  pulled.forEach(v => arr.push(v));
+  return removed;
+};
+
+// Identify the indices of the sensitive information to be removed
+const indicesToRemove = [1, 3]; // Remove customer name and address
+
+// Use the pull_at_Index function to remove the sensitive information
+const sensitiveInfo = pull_at_Index(orders, indicesToRemove);
+
+// Calculate the total revenue and top-selling products
+let totalRevenue = 0;
+const productSales = {};
+for (const order of orders) {
+  totalRevenue += order.quantity * order.price;
+  productSales[order.product] = (productSales[order.product] || 0) + order.quantity;
+}
+
+const topProducts = Object.entries(productSales)
+  .sort((a, b) => b[1] - a[1])
+  .map(([product, sales]) => ({ product, sales }))
+  .slice(0, 3);
+
+// Generate the report
+console.log("Order Data Report:");
+console.log(`Total Revenue: $${totalRevenue.toFixed(2)}`);
+console.log("Top-Selling Products:");
+for (const { product, sales } of topProducts) {
+  console.log(`- ${product}: ${sales} units sold`);
+}
+
+console.log("\nSensitive Information Removed:");
+for (const sensitiveData of sensitiveInfo) {
+  console.log(sensitiveData);
+}
