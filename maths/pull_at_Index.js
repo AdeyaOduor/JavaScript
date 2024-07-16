@@ -105,3 +105,26 @@ console.log("\nSensitive Information Removed:");
 for (const sensitiveData of sensitiveInfo) {
   console.log(sensitiveData);
 }
+
+/*
+Order Data Report:
+Total Revenue: $2499.97
+Top-Selling Products:
+- Laptop: 2 units sold
+- Smartphone: 1 units sold
+
+Sensitive Information Removed:
+{
+  id: 2,
+  customer: 'Jane Smith',
+  product: 'Smartphone',
+  quantity: 2,
+  price: 499.99
+}
+{
+  id: 4,
+  customer: 'Sarah Lee',
+  product: 'Tablet',
+  quantity: 3,
+  price: 299.99
+}*/
