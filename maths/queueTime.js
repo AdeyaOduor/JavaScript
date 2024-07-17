@@ -5,7 +5,7 @@ function queueTime(customers, n) {
   return Math.max(...customers.reduce((acc, c) => { let i = acc.indexOf(Math.min(...acc)); acc[i] = acc[i] + c;  return acc; },Array(n).fill(0)))
  }
 
-
+--------------------------------------------------------------------------------------------------------------------------------------------------
 // Suppose the bank has 3 teller stations
 const n = 3;
 
