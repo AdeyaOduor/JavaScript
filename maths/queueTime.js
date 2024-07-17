@@ -29,3 +29,22 @@ function queueTime(customers, n) {
     )
   );
 }
+/*
+In this example, we have 5 customers who arrive at the bank and join the queue. The bank has 3 teller stations, so n = 3.
+
+The queueTime function works as follows:
+
+    It initializes an array acc with n elements, all set to 0. This represents the current wait time at each teller station.
+    It then iterates through the customers array, adding the current customer's service time to the teller station with the minimum current wait time.
+    After processing all customers, the function returns the maximum value in the acc array, which represents the maximum time it takes for all customers
+    to be served.
+
+In the example, the function will return 9, which is the maximum time it takes for all 5 customers to be served. This means that the last customer 
+will have to wait 9 minutes before being served.
+
+This type of scenario is common in many service-oriented businesses, such as banks, supermarkets, or theme parks, where customers arrive at different 
+times and need to be served by a limited number of resources (teller stations, checkout counters, or ride queues). The queueTime function can be used 
+to optimize the resource allocation and provide better service to customers.
+
+By understanding the real-world application of the queueTime function, you can see how it can be used to solve practical problems in various industries, 
+helping to improve customer experience and optimize the use of limited resources.*/
