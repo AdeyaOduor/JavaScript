@@ -30,7 +30,22 @@ function standardDeviation(arr, usePopulation = false) {
       (arr.length - (usePopulation ? 0 : 1))
   );
 }
-/**/
+/*
+In this example, the standardDeviation function is used to calculate the standard deviation of the product weights. The result shows that the standard deviation of the product weights is 0.45.
+
+This information can be used in several ways:
+
+    Quality control: The standard deviation can help you understand the variability in the product weights. If the standard deviation is too high, it may indicate quality control issues in the manufacturing process that need to be addressed.
+
+    Compliance with specifications: You can compare the standard deviation to the acceptable weight range specified for the product. If the standard deviation suggests that a significant number of products are outside the acceptable range, it could indicate a need to adjust the manufacturing process.
+
+    Process improvement: By monitoring the standard deviation over time, you can track changes in the variability of product weights and identify opportunities for process improvements to reduce the variability.
+
+    Customer satisfaction: Consistent product weights can contribute to customer satisfaction, as customers expect a certain level of quality and uniformity in the products they purchase. The standard deviation can help you ensure that product quality meets customer expectations.
+
+    Inventory management: The standard deviation can also inform inventory management decisions, as it can help you predict the potential range of product weights and adjust inventory levels accordingly.
+
+By using the standardDeviation function in this real-world quality control scenario, you can gain valuable insights into the manufacturing process and make informed decisions to improve product quality, customer satisfaction, and overall business performance.*/
 -------------------------------------------------------------------------------------------------------------------
 //program to get the variance of an array of numbers.
   
