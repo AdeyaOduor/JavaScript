@@ -57,3 +57,9 @@ function squareDigits(num) {
   }
   return parseInt(result);
 }
+
+/*
+Frequency of squared digits: [
+  1, 6, 2, 2, 6,
+  2, 6, 0, 2, 4
+]*/
