@@ -110,3 +110,20 @@ function calculateVariance(arr) {
 
   return variance;
 }
+
+/*
+In this example, the calculateVariance function is used to compute the variance of the daily returns for the investment. The result shows that the variance of the investment returns is 0.0001.
+
+This information can be used in several ways:
+
+    Risk assessment: The variance of the investment returns can be used as a measure of the risk associated with the investment. Higher variance generally indicates higher risk, which can be an important factor in investment decisions.
+
+    Portfolio diversification: By calculating the variance of the returns for various investments in your portfolio, you can identify the investments with the highest risk. This can help you diversify your portfolio and reduce the overall risk.
+
+    Performance comparison: You can compare the variance of returns for different investments to evaluate their relative performance and risk profiles. This can inform your investment allocation decisions.
+
+    Trading strategies: Variance and other statistical measures of investment returns can be used to develop trading strategies, such as volatility-based trading or risk-adjusted return optimization.
+
+    Regulatory compliance: Financial institutions may be required to report on the risk characteristics of their investment portfolios, and the variance of returns can be an important metric for regulatory compliance.
+
+By using the calculateVariance function in this real-world investment management scenario, you can gain valuable insights into the risk characteristics of your investment portfolio, which can help you make more informed investment decisions and better manage the overall risk of your portfolio.*/
