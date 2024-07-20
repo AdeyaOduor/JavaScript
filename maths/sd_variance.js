@@ -84,3 +84,29 @@ the returns for each investment, which can help you make more informed investmen
 
 console.log(calculateVariance([10, 2, 38, 23, 38, 23, 21])); // 151.26530612244895
 // console.log(calculateVariance([10, 2, 38, 23, 38, 23, 21], true)); // 151.26530612244895
+--------------------------------------------------------------------------------------------------
+// Suppose we have a dataset of daily returns for an investment
+const investmentReturns = [
+  0.012, -0.005, 0.008, 0.003, 0.009,
+  0.006, -0.002, 0.011, 0.004, 0.007,
+  // 355 more daily returns...
+];
+
+// Calculate the variance of the investment returns
+const investmentVariance = calculateVariance(investmentReturns);
+
+console.log('Variance of investment returns:', investmentVariance.toFixed(4));
+// Output: Variance of investment returns: 0.0001
+
+function calculateVariance(arr) {
+  // Calculate the mean of the array
+  const mean = arr.reduce((sum, val) => sum + val, 0) / arr.length;
+
+  // Calculate the squared differences from the mean
+  const squaredDifferences = arr.map(val => Math.pow(val - mean, 2));
+
+  // Calculate the variance
+  const variance = squaredDifferences.reduce((sum, val) => sum + val, 0) / arr.length;
+
+  return variance;
+}
