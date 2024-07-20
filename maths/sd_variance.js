@@ -54,7 +54,15 @@ This information can be used in several ways:
 By using the standardDeviation function in this real-world quality control scenario, you can gain valuable insights into the manufacturing process 
 and make informed decisions to improve product quality, customer satisfaction, and overall business performance.*/
 -------------------------------------------------------------------------------------------------------------------
-//program to get the variance of an array of numbers.
+/*
+The calculateVariance function is a useful tool for computing the variance of a set of numerical data. Variance is a statistical measure that quantifies the spread or dispersion of a dataset around its mean. It is a fundamental concept in data analysis and has numerous real-world applications.
+
+Here's an example of how the calculateVariance function could be used in a real-world scenario:
+
+Imagine you work for a financial institution that manages a portfolio of investments. You want to analyze the performance of the individual investments in the portfolio to identify the ones with the highest risk, as measured by their variance.
+
+You have a dataset of the daily returns for each investment over the past year. You can use the calculateVariance function to compute the variance of the returns for each investment, which can help you make more informed investment decisions.
+*/program to get the variance of an array of numbers.
   
   function calculateVariance(arr) {
   // Calculate the mean of the array
