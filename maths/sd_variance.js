@@ -14,14 +14,13 @@ console.log(standardDeviation([10, 2, 38, 23, 38, 23, 21], true)); // 12.2989961
 const productWeights = [
   123.45, 124.12, 122.98, 123.87, 124.05,
   123.76, 124.01, 123.92, 123.84, 123.91,
-  // 90 more product weights...
 ];
 
 // Calculate the standard deviation of the product weights
 const standardDev = standardDeviation(productWeights);
 
 console.log('Standard deviation of product weights:', standardDev.toFixed(2));
-// Output: Standard deviation of product weights: 0.45
+// Standard deviation of product weights: 0.34
 
 function standardDeviation(arr, usePopulation = false) {
   const mean = arr.reduce((acc, val) => acc + val, 0) / arr.length;
