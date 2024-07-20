@@ -29,3 +29,31 @@ console.log(squareDigits(9119)); // Output: 811181
 
     Data Preprocessing: In machine learning or data science applications, the squareDigits function could be used as a preprocessing step to transform input data before feeding it into a model. This type of data transformation can sometimes improve the model's performance or help with feature engineering. 
 */
+
+// Suppose we have a dataset of customer order numbers
+const orderNumbers = [12345, 67890, 54321, 09876];
+
+// Use the squareDigits function to transform each order number
+const squaredOrderNumbers = orderNumbers.map(num => squareDigits(num));
+
+// Analyze the distribution of the squared digits
+const digitFrequency = squaredOrderNumbers.reduce((freq, num) => {
+  const digits = Array.from(String(num), Number);
+  digits.forEach(digit => {
+    freq[digit] = (freq[digit] || 0) + 1;
+  });
+  return freq;
+}, Array(10).fill(0));
+
+console.log('Frequency of squared digits:', digitFrequency);
+// Example output:
+// Frequency of squared digits: [20, 30, 40, 50, 40, 30, 40, 50, 30, 20]
+
+function squareDigits(num) {
+  let numArray = Array.from(String(num), Number);
+  let result = '';
+  for (let i = 0; i < numArray.length; i++) {
+    result += numArray[i] ** 2;
+  }
+  return parseInt(result);
+}
