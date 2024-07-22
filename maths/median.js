@@ -14,7 +14,6 @@ console.log(median([1, 2, 3, 4, 5]));//3
 //Example, Suppose we have a dataset of patient lengths of stay (in days)
 const patientLOS = [
   2, 4, 1, 3, 5, 2, 4, 3, 1, 6,
-  // 990 more patient lengths of stay...
 ];
 
 // Calculate the median length of stay
