@@ -122,3 +122,34 @@ const totalExpenses = addTogether(...monthlyExpenses);
 console.log('Total monthly expenses:', totalExpenses);
 // Output: Total monthly expenses: 1450
 -------------------------------------------------------------------------------------------
+const add = (a, b) => a + b;
+const subtract = (a, b) => a - b;
+const multiply = (a, b) => a * b;
+const divide = (a, b) => b !== 0 ? a / b : undefined;
+
+// Extended addTogether function
+const addTogether = (a, ...arr) => {
+  // Check the first argument type
+  if (typeof a !== "number") return undefined;
+
+  // Define the operation to use
+  let operation = add;
+  if (arr.length > 0) {
+    operation = arr.shift();
+    if (typeof operation !== "function") {
+      return undefined;
+    }
+  }
+
+  // Base case: apply the operation to the first argument
+  if (arr.length === 0) {
+    return operation(a);
+  }
+
+  // Recursive case: apply the operation to the first argument and the next argument
+  return operation(a, arr[0]) && addTogether(operation(a, arr[0]), ...arr.slice(1));
+};
+
+// Calculate 5 + 3 - 2 * 4 / 2
+const result = addTogether(5, 3, subtract, 2, multiply, 4, divide, 2);
+console.log(result);
