@@ -10,7 +10,7 @@ const median = arr => {
 };
 console.log(median([5, 6, 50, 1, -5])); //5
 console.log(median([1, 2, 3, 4, 5]));//3
-
+---------------------------------------------------------------------------------------------------------
 //Example, Suppose we have a dataset of patient lengths of stay (in days)
 const patientLOS = [
   2, 4, 1, 3, 5, 2, 4, 3, 1, 6,
