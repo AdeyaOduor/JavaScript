@@ -62,8 +62,7 @@ Here are some of the real-world applications of the median in this hospital scen
     and effective care.
 
     Regulatory compliance: Hospitals may be required to report on various metrics related to patient outcomes, including the median 
-    length of stay, for regulatory or accreditation purposes.
-to assess its relative performance and identify opportunities for improvement.
+    length of stay, for regulatory or accreditation purposes. to assess its relative performance and identify opportunities for improvement.
 
     Patient experience: The median LOS can be used as a proxy for patient satisfaction, as shorter stays may indicate more efficient and 
     effective care.
