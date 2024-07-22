@@ -120,4 +120,5 @@ const monthlyExpenses = [1200, 250, 75, 150, 80];
 const totalExpenses = addTogether(...monthlyExpenses);
 
 console.log('Total monthly expenses:', totalExpenses);
-// Output: Total monthly expenses: 1755
+// Output: Total monthly expenses: 1450
+-------------------------------------------------------------------------------------------
