@@ -106,15 +106,6 @@ const addT = a => b =>
   : a + b
 ---------------------------------------------------------------------------------
 // Suppose we have a list of monthly expenses
-const monthlyExpenses = [1200, 250, 75, 150, 80];
-
-// Use the addTogether function to calculate the total expenses
-const totalExpenses = addTogether(...monthlyExpenses);
-
-console.log('Total monthly expenses:', totalExpenses);
-// Output: Total monthly expenses: 1755
-
-// The addTogether function
 const addTogether = ( a, ...arr ) =>
   typeof a !== "number" ? undefined
   : arr.length === 0 ? addT( a )
@@ -123,3 +114,10 @@ const addTogether = ( a, ...arr ) =>
 const addT = a => b =>
   typeof b !== "number"  ? undefined
   : a + b
+
+// Now use the addTogether function
+const monthlyExpenses = [1200, 250, 75, 150, 80];
+const totalExpenses = addTogether(...monthlyExpenses);
+
+console.log('Total monthly expenses:', totalExpenses);
+// Output: Total monthly expenses: 1755
