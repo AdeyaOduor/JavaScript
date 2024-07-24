@@ -104,7 +104,7 @@ const message = 'Hello, World!';
 const key = 'MySecretKey';
 
 const encryptedMessage = encrypt(message, key);
-console.log('Encrypted message:', encryptedMessage);
+console.log('Encrypted message:', encryptedMessage); //?	^E#$d!
 
 const decryptedMessage = decrypt(encryptedMessage, key);
 console.log('Decrypted message:', decryptedMessage);
