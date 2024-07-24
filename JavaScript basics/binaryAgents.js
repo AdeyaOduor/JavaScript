@@ -108,3 +108,19 @@ console.log('Encrypted message:', encryptedMessage); //?	^E#$d!
 
 const decryptedMessage = decrypt(encryptedMessage, key);
 console.log('Decrypted message:', decryptedMessage);
+/*
+In this example, the binaryAgent function is used to convert between binary and text representations. 
+The encrypt and decrypt functions demonstrate a simple encryption/decryption algorithm using the XOR operation.
+
+Here's how the example works:
+
+    The encrypt function takes a message and a key as input.
+    It converts the message and key to binary representations using the split(), map(), and join() methods.
+    It then performs the encryption by applying the XOR operation between the message bits and the key bits.
+    The encrypted binary data is converted back to text using the binaryAgent function.
+
+The decrypt function works in a similar way, but it applies the XOR operation between the encrypted message and the key to 
+recover the original message.
+
+Note that this is a very simple example, and in a real-world scenario, you would likely use more advanced encryption algorithms 
+and key management techniques to ensure the security of your data.*/
