@@ -57,3 +57,54 @@ function stringToBinary(str) {
 console.log(stringToBinary("Hello, world!"));
 // Output
 // "01001000 01100101 01101100 01101100 01101111 00101100 00100000 01110111 01101111 01110010 01101100 01100100 00100001".
+---------------------------------------------------------------------------------------------------------------------------
+  // Function to convert binary to text
+function binaryAgent(str) {
+  return str.split(' ').map(function(binary) {
+    return String.fromCharCode(parseInt(binary, 2));
+  }).join('');
+}
+
+// Example encryption function using binaryAgent
+function encrypt(message, key) {
+  // Convert the message and key to binary
+  const messageBinary = message.split('').map(char => char.charCodeAt(0).toString(2).padStart(8, '0')).join(' ');
+  const keyBinary = key.split('').map(char => char.charCodeAt(0).toString(2).padStart(8, '0')).join(' ');
+
+  // Perform the encryption
+  const encryptedBinary = messageBinary.split(' ').map((char, i) => {
+    const messageBit = parseInt(char, 2);
+    const keyBit = parseInt(keyBinary.split(' ')[i], 2);
+    return (messageBit ^ keyBit).toString(2).padStart(8, '0');
+  }).join(' ');
+
+  // Convert the encrypted binary back to text
+  return binaryAgent(encryptedBinary);
+}
+
+// Example decryption function using binaryAgent
+function decrypt(encryptedMessage, key) {
+  // Convert the encrypted message and key to binary
+  const encryptedBinary = encryptedMessage.split('').map(char => char.charCodeAt(0).toString(2).padStart(8, '0')).join(' ');
+  const keyBinary = key.split('').map(char => char.charCodeAt(0).toString(2).padStart(8, '0')).join(' ');
+
+  // Perform the decryption
+  const decryptedBinary = encryptedBinary.split(' ').map((char, i) => {
+    const encryptedBit = parseInt(char, 2);
+    const keyBit = parseInt(keyBinary.split(' ')[i], 2);
+    return (encryptedBit ^ keyBit).toString(2).padStart(8, '0');
+  }).join(' ');
+
+  // Convert the decrypted binary back to text
+  return binaryAgent(decryptedBinary);
+}
+
+// Example usage
+const message = 'Hello, World!';
+const key = 'MySecretKey';
+
+const encryptedMessage = encrypt(message, key);
+console.log('Encrypted message:', encryptedMessage);
+
+const decryptedMessage = decrypt(encryptedMessage, key);
+console.log('Decrypted message:', decryptedMessage);
