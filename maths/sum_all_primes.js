@@ -34,29 +34,39 @@ function sumPrimes(num) {
 
 sumPrimes(977);
 
-/* Above is a Sieve of Eratosthenes algorithm to find the sum of all prime numbers up to a given number. This algorithm is a well-known and efficient method for finding prime numbers, and it has several real-world applications. Here are a few examples:
+/* Above is a Sieve of Eratosthenes algorithm to find the sum of all prime numbers up to a given number. 
+This algorithm is a well-known and efficient method for finding prime numbers, and it has several real-world applications. Here are a few examples:
 
     Cryptography:
         In cryptography, prime numbers are essential for generating secure keys and encryption algorithms.
         The RSA (Rivest-Shamir-Adleman) algorithm, a widely used public-key cryptographic system, relies on the use of large prime numbers.
-        The code provided can be used to generate large prime numbers or calculate the sum of primes, which can be useful in the implementation of RSA and other cryptographic algorithms.
+        The code provided can be used to generate large prime numbers or calculate the sum of primes, which can be useful in the implementation of 
+        RSA and other cryptographic algorithms.
 
     Number Theory and Mathematics:
         Prime numbers have been a subject of fascination in number theory and mathematics for centuries.
-        Mathematicians and researchers often study the distribution and properties of prime numbers, and the code provided can be used to explore these concepts.
-        For example, the code can be used to generate prime numbers or calculate the sum of primes up to a given limit, which can be useful in various mathematical and analytical tasks.
+        Mathematicians and researchers often study the distribution and properties of prime numbers, and the code provided can be used to explore these 
+        concepts.
+        For example, the code can be used to generate prime numbers or calculate the sum of primes up to a given limit, which can be useful in various 
+        mathematical and analytical tasks.
 
     Pseudorandom Number Generation:
         Pseudorandom number generators (PRNGs) often use prime numbers as part of their underlying algorithms to generate random numbers.
-        The code provided can be used to generate a list of prime numbers, which can then be incorporated into PRNG algorithms to enhance the randomness and security of the generated numbers.
-        These random numbers have applications in simulations, gaming, cryptography, and other areas where randomness is important.
+        The code provided can be used to generate a list of prime numbers, which can then be incorporated into PRNG algorithms to enhance the randomness
+        and security of the generated numbers. These random numbers have applications in simulations, gaming, cryptography, and other areas where 
+        randomness is important.
 
     Data Compression and Encoding:
         Prime numbers can be used in data compression and encoding techniques, such as the Huffman coding algorithm.
-        The code provided can be used to generate prime numbers, which can then be used as part of these compression and encoding algorithms to optimize the storage and transmission of data.
+        The code provided can be used to generate prime numbers, which can then be used as part of these compression and encoding algorithms to optimize
+        the storage and transmission of data.
 
     Optimization and Algorithm Design:
-        The Sieve of Eratosthenes algorithm used in the provided code is a fundamental algorithm in computer science and has numerous applications in optimization and algorithm design.
-        Researchers and developers can use the code as a starting point to explore and understand the Sieve of Eratosthenes algorithm, which can then be applied to various optimization problems, such as finding the smallest set of prime factors for a given number or identifying prime numbers in a range.
+        The Sieve of Eratosthenes algorithm used in the provided code is a fundamental algorithm in computer science and has numerous applications in 
+        optimization and algorithm design. Researchers and developers can use the code as a starting point to explore and understand the Sieve of 
+        Eratosthenes algorithm, which can then be applied to various optimization problems, such as finding the smallest set of prime factors for a 
+        given number or identifying prime numbers in a range.
 
-These are just a few examples of how the code provided, which implements the Sieve of Eratosthenes algorithm to find the sum of prime numbers up to a given limit, can be applied in real-world scenarios. The versatility of prime numbers and the underlying algorithm makes this code a valuable tool for a wide range of applications, from cryptography and number theory to data compression and algorithm design.*/
+These are just a few examples of how the code provided, which implements the Sieve of Eratosthenes algorithm to find the sum of prime numbers up to a 
+given limit, can be applied in real-world scenarios. The versatility of prime numbers and the underlying algorithm makes this code a valuable tool for 
+a wide range of applications, from cryptography and number theory to data compression and algorithm design.*/
