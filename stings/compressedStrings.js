@@ -153,3 +153,18 @@ axios.post('http://localhost:3000/data', { data: compressedData })
   .catch((error) => {
     console.error('Error sending data:', error);
   });
+
+/*
+In this example, the client-side code compresses the text data using the compressString function and sends it to the server using an HTTP POST request. The server-side code receives the compressed data, decompresses it using the decompressString function, and then processes the decompressed data as needed.
+
+The benefits of using this compression algorithm in a network communication scenario include:
+
+    Reduced data transfer: By compressing the data before sending it over the network, you can significantly reduce the amount of data being transmitted, resulting in faster transfer times and lower bandwidth usage.
+
+    Improved network efficiency: Reducing the data size can improve the overall efficiency of the network, especially in scenarios with limited bandwidth or high network congestion.
+
+    Lower data usage: For mobile applications or scenarios with data caps, the reduced data transfer can lead to lower overall data usage, which can be important for users.
+
+    Lower server load: By reducing the amount of data that needs to be processed on the server-side, the compression can help lower the server's computational load and improve its overall performance.
+
+Of course, the actual performance benefits will depend on the specific use case, the size and complexity of the data being transmitted, and the network conditions. But in general, integrating a simple string compression algorithm like the one presented here can be a valuable optimization technique for network-based applications.*/
