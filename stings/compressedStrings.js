@@ -76,3 +76,78 @@ This compression algorithm can be useful in various real-world scenarios, such a
     Caching and memory optimization: In applications where memory usage is critical, such as in-memory databases or caching systems, 
     you can use this compression algorithm to reduce the memory footprint of your data structures.
 */
+
+// Server-side code
+const express = require('express');
+const app = express();
+
+// Decompression function
+function decompressString(compressed) {
+  let decompressed = '';
+
+  for (let i = 0; i < compressed.length; i += 2) {
+    const char = compressed[i];
+    const count = parseInt(compressed[i + 1]);
+
+    decompressed += char.repeat(count);
+  }
+
+  return decompressed;
+}
+
+// API endpoint to receive compressed data
+app.post('/data', (req, res) => {
+  const compressedData = req.body.data;
+  const decompressedData = decompressString(compressedData);
+
+  console.log('Received compressed data:', compressedData);
+  console.log('Decompressed data:', decompressedData);
+
+  // Process the decompressed data as needed
+  // ...
+
+  res.sendStatus(200);
+});
+
+app.listen(3000, () => {
+  console.log('Server listening on port 3000');
+});
+
+// Client-side code
+const axios = require('axios');
+
+/**
+ * Compresses a string using a simple run-length encoding algorithm.
+ */
+function compressString(input) {
+  let compressed = '';
+  let currentChar = '';
+  let currentCount = 0;
+
+  for (let i = 0; i < input.length; i++) {
+    if (input[i] !== currentChar) {
+      if (currentCount > 0) {
+        compressed += currentChar + currentCount;
+      }
+      currentChar = input[i];
+      currentCount = 1;
+    } else {
+      currentCount++;
+    }
+  }
+
+  compressed += currentChar + currentCount;
+  return compressed;
+}
+
+// Example usage
+const originalData = 'The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.';
+const compressedData = compressString(originalData);
+
+axios.post('http://localhost:3000/data', { data: compressedData })
+  .then(() => {
+    console.log('Data sent successfully!');
+  })
+  .catch((error) => {
+    console.error('Error sending data:', error);
+  });
