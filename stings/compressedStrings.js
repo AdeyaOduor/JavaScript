@@ -55,3 +55,24 @@ console.log('Compressed text:', compressedText);
 
 const decompressedText = decompressString(compressedText);
 console.log('Decompressed text:', decompressedText);
+
+/*
+In this example, the compressString function takes an input string and compresses it using a simple run-length encoding algorithm. 
+The algorithm replaces consecutive occurrences of the same character with a single character and its count.
+
+The decompressString function takes the compressed string and decompresses it back to the original form.
+
+This compression algorithm can be useful in various real-world scenarios, such as:
+
+    File compression: You can use this algorithm to compress text-based files, such as log files, configuration files, or even source 
+    code, to reduce the file size and save storage space.
+
+    Network communication: When transferring text-based data over a network, you can compress the data using this algorithm to reduce 
+    the amount of data being transmitted, improving network efficiency and reducing the overall data usage.
+
+    Data storage: You can store compressed data in a database or other storage systems to reduce the amount of space required, while 
+    still being able to decompress the data when needed.
+
+    Caching and memory optimization: In applications where memory usage is critical, such as in-memory databases or caching systems, 
+    you can use this compression algorithm to reduce the memory footprint of your data structures.
+*/
