@@ -1,10 +1,9 @@
-/**
- * Compresses a string using a simple run-length encoding algorithm.
- * This algorithm replaces consecutive occurrences of the same character
- * with a single character and its count.
- *
- * @param {string} input - The input string to be compressed.
- * @returns {string} - The compressed string.
+/*
+  Compresses a string using a simple run-length encoding algorithm. This algorithm replaces consecutive occurrences of the 
+  same character with a single character and its count.
+  
+  @param {string} input - The input string to be compressed.
+  @returns {string} - The compressed string.
  */
 function compressString(input) {
   let compressed = '';
