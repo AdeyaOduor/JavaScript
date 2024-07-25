@@ -68,7 +68,9 @@ This compression algorithm can be useful in various real-world scenarios, such a
     code, to reduce the file size and save storage space.
 
     Network communication: When transferring text-based data over a network, you can compress the data using this algorithm to reduce 
-    the amount of data being transmitted, improving network efficiency and reducing the overall data usage.
+    the amount of data being transmitted, improving network efficiency and reducing the overall data usage. Imagine you have a client-server 
+    application where the client needs to send text-based data to the server. To optimize the network communication, you can use the string 
+    compression algorithm to reduce the size of the data being transmitted.
 
     Data storage: You can store compressed data in a database or other storage systems to reduce the amount of space required, while 
     still being able to decompress the data when needed.
