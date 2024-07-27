@@ -59,3 +59,14 @@ const queryParams = {
 
 const url = generateURL(baseUrl, queryParams);
 // URL: https://api.example.com/users?name=John%20Doe&email=john%40example.com&page=3&limit=20
+
+// SEO
+const baseUrl = 'https://example.com/blog';
+const queryParams = {
+  category: 'javascript',
+  author: 'john-doe',
+  slug: 'how-to-write-clean-code'
+};
+
+const url = generateURL(baseUrl, queryParams);
+// URL: https://example.com/blog?category=javascript&author=john-doe&slug=how-to-write-clean-code
