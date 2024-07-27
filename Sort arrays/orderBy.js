@@ -17,3 +17,19 @@ const users = [{ name: 'Peter', age: 43 }, { name: 'David', age: 41 }, { name: '
 
 console.log(orderBy(users, ['name', 'age'], ['asc', 'desc'])); 
 console.log(orderBy(users, ['name', 'age']));
+
+const products = [
+  { id: 1, name: 'Product A', price: 10, category: 'Electronics' },
+  { id: 2, name: 'Product B', price: 20, category: 'Clothing' },
+  { id: 3, name: 'Product C', price: 15, category: 'Electronics' },
+  { id: 4, name: 'Product D', price: 25, category: 'Clothing' },
+];
+
+// Sort products by price in ascending order, then by category in descending order
+const sortedProducts = orderBy(products, ['price', 'category'], ['asc', 'desc']);
+// sortedProducts = [
+//   { id: 1, name: 'Product A', price: 10, category: 'Electronics' },
+//   { id: 3, name: 'Product C', price: 15, category: 'Electronics' },
+//   { id: 2, name: 'Product B', price: 20, category: 'Clothing' },
+//   { id: 4, name: 'Product D', price: 25, category: 'Clothing' },
+// ]
