@@ -107,3 +107,55 @@ For instance, you could use the queryMap object to:
     Preserve User Preferences: When the user navigates to a different page, you can update the URL with the current filter and sorting options, 
     preserving the user's preferences.
 */
+
+// Express.js API endpoint
+app.get('/artists', (req, res) => {
+  // Convert the query string to a map
+  const queryMap = convertQueryToMap(req.query);
+
+  // Extract the query parameters
+  const { genre, sortBy, page = 1, limit = 10 } = queryMap;
+
+  // Fetch the artists from the database
+  const artists = fetchArtists({
+    genre,
+    sortBy,
+    page,
+    limit
+  });
+
+  // Return the artists as a JSON response
+  res.json(artists);
+});
+
+// Function to convert query string to map
+function convertQueryToMap(query) {
+  return query.split("&").reduce((map, params) => {
+    var [props, value] = params.split("=");
+
+    if (!value) return map;
+
+    var propsArr = props.split(".");
+    var lastProp = propsArr.pop();
+    var deepestObject = propsArr.reduce((obj, key) => {
+      if (!obj[key]) {
+        obj[key] = {};
+      }
+      return obj[key];
+    }, map);
+
+    deepestObject[lastProp] = decodeURIComponent(value);
+
+    return map;
+  }, {});
+}
+
+// Hypothetical function to fetch artists from the database
+function fetchArtists({ genre, sortBy, page, limit }) {
+  // Implement the logic to fetch artists based on the provided parameters. This could involve querying a database or some other data source
+  return [
+    { id: 1, name: 'Artist 1', genre: 'rock' },
+    { id: 2, name: 'Artist 2', genre: 'pop' },
+    // ... more artists
+  ];
+}
