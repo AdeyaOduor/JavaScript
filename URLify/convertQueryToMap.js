@@ -55,3 +55,35 @@ Here are some real-world use cases where this function could be applied:
     string, such as the source of the visit, campaign details, or user segments. The convertQueryToMap function can be used to extract and analyze 
     this data for various purposes, such as marketing, user behavior analysis, or performance optimization.
 */
+
+// In web application
+
+// Function to convert query string to map
+function convertQueryToMap(query) {
+  return query.split("&").reduce((map, params) => {
+    var [props, value] = params.split("=");
+
+    if (!value) return map;
+
+    var propsArr = props.split(".");
+    var lastProp = propsArr.pop();
+    var deepestObject = propsArr.reduce((obj, key) => {
+      if (!obj[key]) {
+        obj[key] = {};
+      }
+      return obj[key];
+    }, map);
+
+    deepestObject[lastProp] = decodeURIComponent(value);
+
+    return map;
+  }, {});
+}
+
+// Example usage
+const currentURL = window.location.href;
+const queryString = currentURL.split("?")[1];
+const queryMap = convertQueryToMap(queryString);
+
+console.log(queryMap);
+// Output: { category: "electronics", brand: "apple", sortBy: "price", page: "2" }
