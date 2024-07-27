@@ -36,3 +36,13 @@ const contacts = [
 
 // Sort contacts by creation date in descending order, then by name in ascending order
 const sortedContacts = orderBy(contacts, ['createdAt', 'name'], ['desc', 'asc']);
+
+const flights = [
+  { id: 1, from: 'New York', to: 'Los Angeles', duration: 6, price: 400 },
+  { id: 2, from: 'London', to: 'Paris', duration: 1.5, price: 150 },
+  { id: 3, from: 'Tokyo', to: 'Seoul', duration: 2.5, price: 300 },
+  { id: 4, from: 'Sydney', to: 'Melbourne', duration: 1, price: 80 },
+];
+
+// Sort flights by price in ascending order, then by duration in descending order
+const sortedFlights = orderBy(flights, ['price', 'duration'], ['asc', 'desc']);
