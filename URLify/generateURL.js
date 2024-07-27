@@ -48,3 +48,14 @@ const queryParams = {
 
 const url = generateURL(baseUrl, queryParams);
 // URL: https://example.com/products?category=electronics&brand=apple&sortBy=price&page=2
+
+const baseUrl = 'https://api.example.com/users';
+const queryParams = {
+  name: 'John Doe',
+  email: 'john@example.com',
+  page: 3,
+  limit: 20
+};
+
+const url = generateURL(baseUrl, queryParams);
+// URL: https://api.example.com/users?name=John%20Doe&email=john%40example.com&page=3&limit=20
