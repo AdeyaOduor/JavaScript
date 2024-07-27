@@ -159,3 +159,15 @@ function fetchArtists({ genre, sortBy, page, limit }) {
     // ... more artists
   ];
 }
+
+/*
+In this example, we've defined an Express.js API endpoint for /artists. When a client makes a request to this endpoint, the server-side code first 
+uses the convertQueryToMap function to convert the query string into a JavaScript object.
+
+The extracted query parameters, such as genre, sortBy, page, and limit, are then used to fetch the relevant artists from the database (or some other 
+data source) using the fetchArtists function.
+
+Finally, the API endpoint returns the artists as a JSON response.
+
+By using the convertQueryToMap function, the API implementation becomes more flexible and maintainable. If the client wants to add or modify the query 
+parameters, the API can easily accommodate those changes without requiring extensive modifications to the endpoint code.*/
