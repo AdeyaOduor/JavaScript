@@ -85,5 +85,25 @@ const currentURL = window.location.href;
 const queryString = currentURL.split("?")[1];
 const queryMap = convertQueryToMap(queryString);
 
-console.log(queryMap);
-// Output: { category: "electronics", brand: "apple", sortBy: "price", page: "2" }
+console.log(queryMap); // Output: { category: "electronics", brand: "apple", sortBy: "price", page: "2" }
+
+/*
+In this example, we first define the convertQueryToMap function, which takes a query string as input and returns a 
+JavaScript object with the key-value pairs extracted from the query.
+
+Then, we get the current URL of the web application, extract the query string portion, and pass it to the convertQueryToMap 
+function. The resulting queryMap object contains the parsed parameters, making it easy to access and use them in the application's logic.
+
+For instance, you could use the queryMap object to:
+
+    Filter Products: Retrieve the category and brand values from the queryMap and use them to filter the available products in the application.
+
+    Sort Products: Get the sortBy value from the queryMap and apply the corresponding sorting logic to the product list.
+
+    Handle Pagination: Use the page value from the queryMap to determine which page of the product list to display.
+
+    Update the UI: Reflect the current filter and sorting options in the user interface, based on the values in the queryMap.
+
+    Preserve User Preferences: When the user navigates to a different page, you can update the URL with the current filter and sorting options, 
+    preserving the user's preferences.
+*/
