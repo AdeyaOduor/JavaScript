@@ -27,9 +27,12 @@ const products = [
 
 // Sort products by price in ascending order, then by category in descending order
 const sortedProducts = orderBy(products, ['price', 'category'], ['asc', 'desc']);
-// sortedProducts = [
-//   { id: 1, name: 'Product A', price: 10, category: 'Electronics' },
-//   { id: 3, name: 'Product C', price: 15, category: 'Electronics' },
-//   { id: 2, name: 'Product B', price: 20, category: 'Clothing' },
-//   { id: 4, name: 'Product D', price: 25, category: 'Clothing' },
-// ]
+
+const contacts = [
+  { id: 1, name: 'John Doe', email: 'john@example.com', createdAt: '2023-01-01' },
+  { id: 2, name: 'Jane Smith', email: 'jane@example.com', createdAt: '2023-03-15' },
+  { id: 3, name: 'Bob Johnson', email: 'bob@example.com', createdAt: '2023-02-10' },
+];
+
+// Sort contacts by creation date in descending order, then by name in ascending order
+const sortedContacts = orderBy(contacts, ['createdAt', 'name'], ['desc', 'asc']);
