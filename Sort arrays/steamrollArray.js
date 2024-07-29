@@ -17,4 +17,23 @@ function steamrollArray(arr) {
 const nestedData = [1, [2, [3, 4], 5], [6, [7, 8]]];
 const flatData = steamrollArray(nestedData); // flatData = [1, 2, 3, 4, 5, 6, 7, 8]
 
+const sensorData = [
+  {
+    id: 1,
+    readings: [
+      { timestamp: '2023-07-29', value: 10 },
+      { timestamp: '2023-07-30', value: 12 }
+    ]
+  },
+  {
+    id: 2,
+    readings: [
+      { timestamp: '2023-07-29', value: 8 },
+      { timestamp: '2023-07-30', value: 9 },
+      { timestamp: '2023-07-31', value: 11 }
+    ]
+  }
+];
 
+const flatSensorData = steamrollArray(sensorData);
+// flatSensorData is an array containing all the sensor readings
