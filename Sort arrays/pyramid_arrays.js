@@ -34,3 +34,20 @@ function pyramid(n) {
     The created subarray is then pushed into the result array.
     Finally, the function returns the result array.
 */
+const pyramid = n => {
+  if (n < 0) {
+    throw new Error("Input must be a non-negative integer");
+  }
+
+  const result = [];
+  for (let i = 1; i <= n; i++) {
+    result.push(Array(i).fill(1));
+  }
+  return result;
+};
+
+// Example: Generate the first 5 rows of Pascal's triangle
+const pascalTriangle = pyramid(5);
+console.log(pascalTriangle);
+// Output:
+// [[1], [1, 1], [1, 2, 1], [1, 3, 3, 1], [1, 4, 6, 4, 1]]
