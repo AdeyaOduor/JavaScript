@@ -17,6 +17,8 @@ function steamrollArray(arr) {
 const nestedData = [1, [2, [3, 4], 5], [6, [7, 8]]];
 const flatData = steamrollArray(nestedData); // flatData = [1, 2, 3, 4, 5, 6, 7, 8]
 
+// In an IoT or sensor network context, the steamrollArray function could be used to flatten complex,
+// nested data structures (e.g., sensor readings, device configurations) into a format that is more easily processed or transmitted.
 const sensorData = [
   {
     id: 1,
