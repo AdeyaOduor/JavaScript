@@ -15,6 +15,10 @@ function diffArray(arr1, arr2) {
     return a.filter(item => b.indexOf(item) === -1);
   }
 }
+const array1 = [1, 2, 3, 5];
+const array2 = [1, 2, 3, 4, 6];
+console.log(diffArray(array1, array2));
+// Output: [4, 5, 6] in data comparison and synchronization
 --------------------------------------------------------------------------------------------------------------------------------------
 /*Remove all elements from the initial array that are of the same value as these arguments. 
     Using spread operator to retrieve the arguments.
