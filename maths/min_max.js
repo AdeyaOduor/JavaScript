@@ -19,6 +19,29 @@ const minValue = reduce_Which(numbers);
 // Find the maximum value
 const maxValue = reduce_Which(numbers, (a, b) => b - a);
 // maxValue = 9
+
+const locations = [
+  { name: 'Location A', latitude: 37.7749, longitude: -122.4194 },
+  { name: 'Location B', latitude: 40.7128, longitude: -74.0060 },
+  { name: 'Location C', latitude: 51.5074, longitude: -0.1278 },
+  { name: 'Location D', latitude: 48.8566, longitude: 2.3522 }
+];
+
+// Calculate the distance between each location and a reference point
+const referencePoint = { latitude: 39.9526, longitude: -75.1652 };
+const distances = locations.map(loc => calculateDistance(referencePoint, loc));
+
+// Find the closest location
+const closestLocation = reduce_Which(locations, (a, b) => distances[locations.indexOf(a)] - distances[locations.indexOf(b)]);
+// closestLocation = { name: 'Location B', latitude: 40.7128, longitude: -74.0060 }
+
+// Find the farthest location
+const farthestLocation = reduce_Which(locations, (a, b) => distances[locations.indexOf(b)] - distances[locations.indexOf(a)]);
+// farthestLocation = { name: 'Location C', latitude: 51.5074, longitude: -0.1278 }
+
+function calculateDistance(p1, p2) {
+  // Implementation of distance calculation formula
+}
 ------------------------------------------------------------------------------------------------------------------------
 /* Use Array.prototype.reduce() in combination with the comparator function to get the appropriate element in the array.
 Omit the second argument, comparator, to use the default one that returns the minimum element in the array. */
