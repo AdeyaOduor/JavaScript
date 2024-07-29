@@ -10,6 +10,15 @@ console.log(reduce_Which(
 /*1
 30
 { name: 'Kevin', age: 16 }*/
+const numbers = [5, 2, 8, 1, 9];
+
+// Find the minimum value
+const minValue = reduce_Which(numbers);
+// minValue = 1
+
+// Find the maximum value
+const maxValue = reduce_Which(numbers, (a, b) => b - a);
+// maxValue = 9
 ------------------------------------------------------------------------------------------------------------------------
 /* Use Array.prototype.reduce() in combination with the comparator function to get the appropriate element in the array.
 Omit the second argument, comparator, to use the default one that returns the minimum element in the array. */
