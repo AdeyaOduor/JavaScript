@@ -14,3 +14,9 @@ const squareList = arr => {
 
 const squaredIntegers = squareList([-3, 4.8, 5, 3, -3.2]);
 console.log(squaredIntegers); // [ 25, 9 ]
+
+/* The `squareList` function could be used to validate and clean user input, ensuring that only positive 
+integer values are accepted and processed further.*/
+const userInput = [-2.3, 4, 0, 6.7, -1, 3.14];
+const squaredPositiveIntegers = squareList(userInput); //[16, 9, 81]
+
