@@ -47,3 +47,34 @@ function whatIsInAName(collection, source) {
       .every(key => obj.hasOwnProperty(key) &&
         obj[key] === source[key]));
 }
+
+//Example Filtering and Searching in User Interfaces:
+const whatIsInAName = (collection, source) => {
+  const sourceKeys = Object.keys(source);
+  return collection.filter(obj =>
+    sourceKeys.every(key => obj.hasOwnProperty(key) && obj[key] === source[key])
+  );
+};
+
+const items = [
+  { id: 1, name: 'Item A', category: 'electronics', price: 9.99 },
+  { id: 2, name: 'Item B', category: 'clothing', price: 19.99 },
+  { id: 3, name: 'Item C', category: 'electronics', price: 14.99 },
+  { id: 4, name: 'Item D', category: 'books', price: 7.99 },
+];
+
+// Filtering and searching in a UI
+const searchInput = document.getElementById('search');
+const resultsContainer = document.getElementById('results');
+
+searchInput.addEventListener('input', () => {
+  const searchTerm = searchInput.value.toLowerCase();
+  const filteredItems = whatIsInAName(items, { name: searchTerm });
+  resultsContainer.innerHTML = '';
+
+  filteredItems.forEach(item => {
+    const itemElement = document.createElement('div');
+    itemElement.textContent = item.name;
+    resultsContainer.appendChild(itemElement);
+  });
+});
