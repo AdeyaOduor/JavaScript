@@ -126,6 +126,6 @@ Array.prototype.myMap = function (callback) {
   this.forEach((element, index, originalArr) =>
     newArray.push(callback(element, index, originalArr))
   );
-  // Only change code above this line
+
   return newArray;
 };
