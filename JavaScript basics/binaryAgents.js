@@ -40,6 +40,21 @@ binaryAgent("01000001 01110010 01100101 01101110 00100111 01110100
     Example use case: Providing a tool or utility for learning about binary data representation and encoding/decoding processes in computer science or 
     programming courses.
 */
+
+// Assume you have the binary data as a string
+const binaryData = "00000001 00000010 00000011 00000100 00000101";
+
+// Split the binary data into individual 8-bit sequences
+const binaryValues = binaryData.split(" ");
+
+// Define a function to decode the binary value to a decimal number
+function decodeBinary(binaryString) {
+  return parseInt(binaryString, 2);
+}
+
+// Use myMap to decode the binary values
+const sensorReadings = binaryValues.myMap(decodeBinary);
+console.log(sensorReadings); // Output: [1, 2, 3, 4, 5]
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
 function stringToBinary(str) {
