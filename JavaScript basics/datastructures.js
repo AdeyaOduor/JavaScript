@@ -96,6 +96,8 @@ const testObj = {
 
 const hatValue = testObj.hat;      
 const shirtValue = testObj.shirt; 
+console.log(hatValue);
+console.log(shirtValue);
 ------------------------------------------------------------------------------------------------------------------------
 // Accessing Object Properties with Bracket Notation
 const testObj = {
