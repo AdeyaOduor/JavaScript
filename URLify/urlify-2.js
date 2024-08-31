@@ -36,7 +36,7 @@ Finally, the code console.log(replaceUrlSpaces("Sai Charan P")); calls the repla
 The replaceUrlSpaces function you provided is useful for converting spaces in a string to %20, which is the URL encoding for spaces. 
 This functionality has several real-life applications, particularly in web development and data processing:*/
 
-// Example1
+// Example1: When constructing URLs for API requests, spaces in query parameters must be encoded to ensure the URL is valid.
 const query = "search term with spaces";
 const encodedQuery = replaceUrlSpaces(query);
 const apiUrl = `https://api.example.com/search?q=${encodedQuery}`;
