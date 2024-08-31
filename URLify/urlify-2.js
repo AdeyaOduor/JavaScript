@@ -59,4 +59,7 @@ const formUrl = `https://api.example.com/submit?name=${encodedName}&message=${en
 console.log(formUrl); // Output: "https://api.example.com/submit?name=John%20Doe&message=Hello%20World"
 
 // Example4: When generating download links for files whose names contain spaces, encoding ensures that the link works correctly.
+const fileName = "My Document.pdf";
+const downloadLink = `https://example.com/download/${replaceUrlSpaces(fileName)}`;
+console.log(downloadLink); // Output: "https://example.com/download/My%20Document.pdf"
 
