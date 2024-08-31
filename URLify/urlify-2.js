@@ -58,3 +58,5 @@ const encodedMessage = replaceUrlSpaces(formData.message);
 const formUrl = `https://api.example.com/submit?name=${encodedName}&message=${encodedMessage}`;
 console.log(formUrl); // Output: "https://api.example.com/submit?name=John%20Doe&message=Hello%20World"
 
+// Example4: When generating download links for files whose names contain spaces, encoding ensures that the link works correctly.
+
