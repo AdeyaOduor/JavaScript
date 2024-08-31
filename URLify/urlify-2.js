@@ -42,3 +42,7 @@ const encodedQuery = replaceUrlSpaces(query);
 const apiUrl = `https://api.example.com/search?q=${encodedQuery}`;
 console.log(apiUrl);
 // Output: "https://api.example.com/search?q=search%20term%20with%20spaces"
+
+// Example2: In web applications, user-generated content often includes spaces. When creating links or redirecting users, it’s essential to encode these spaces to prevent errors.
+
+
