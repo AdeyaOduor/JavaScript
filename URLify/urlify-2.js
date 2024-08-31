@@ -63,3 +63,5 @@ const fileName = "My Document.pdf";
 const downloadLink = `https://example.com/download/${replaceUrlSpaces(fileName)}`;
 console.log(downloadLink); // Output: "https://example.com/download/My%20Document.pdf"
 
+// Example5: When redirecting users based on input data, ensuring the URL is properly formatted can prevent issues with navigation.
+
