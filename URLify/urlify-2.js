@@ -48,4 +48,13 @@ const link = `https://example.com/books/${replaceUrlSpaces(userInput)}`;
 console.log(link); // Output: "https://example.com/books/My%20Favorite%20Books"
 
 // Example3: When users submit forms with text fields that may contain spaces, the data must be encoded before sending it to the server.
+const formData = {
+  name: "John Doe",
+  message: "Hello World"
+};
+
+const encodedName = replaceUrlSpaces(formData.name);
+const encodedMessage = replaceUrlSpaces(formData.message);
+const formUrl = `https://api.example.com/submit?name=${encodedName}&message=${encodedMessage}`;
+console.log(formUrl); // Output: "https://api.example.com/submit?name=John%20Doe&message=Hello%20World"
 
