@@ -31,4 +31,9 @@ const replaceUrlSpaces = (str) => {
         The resulting string is then returned by the replaceUrlSpaces function.
 
 Finally, the code console.log(replaceUrlSpaces("Sai Charan P")); calls the replaceUrlSpaces function with the string 
-"Sai Charan P" as an argument, and logs the result to the console.*/
+"Sai Charan P" as an argument, and logs the result to the console.
+
+The replaceUrlSpaces function you provided is useful for converting spaces in a string to %20, which is the URL encoding for spaces. 
+This functionality has several real-life applications, particularly in web development and data processing:*/
+
+// Example1
