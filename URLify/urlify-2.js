@@ -37,3 +37,8 @@ The replaceUrlSpaces function you provided is useful for converting spaces in a 
 This functionality has several real-life applications, particularly in web development and data processing:*/
 
 // Example1
+const query = "search term with spaces";
+const encodedQuery = replaceUrlSpaces(query);
+const apiUrl = `https://api.example.com/search?q=${encodedQuery}`;
+console.log(apiUrl);
+// Output: "https://api.example.com/search?q=search%20term%20with%20spaces"
