@@ -40,9 +40,11 @@ This functionality has several real-life applications, particularly in web devel
 const query = "search term with spaces";
 const encodedQuery = replaceUrlSpaces(query);
 const apiUrl = `https://api.example.com/search?q=${encodedQuery}`;
-console.log(apiUrl);
-// Output: "https://api.example.com/search?q=search%20term%20with%20spaces"
+console.log(apiUrl); // Output: "https://api.example.com/search?q=search%20term%20with%20spaces"
 
 // Example2: In web applications, user-generated content often includes spaces. When creating links or redirecting users, it’s essential to encode these spaces to prevent errors.
+const userInput = "My Favorite Books";
+const link = `https://example.com/books/${replaceUrlSpaces(userInput)}`;
+console.log(link); // Output: "https://example.com/books/My%20Favorite%20Books"
 
 
