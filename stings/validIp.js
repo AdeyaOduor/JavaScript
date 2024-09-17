@@ -1,11 +1,28 @@
-// The isValidIP function checks if a given string is a valid IPv4 address. Validating IP addresses is 
-// crucial in various real-world applications, particularly in networking, web development, and cybersecurity.
+/* The isValidIP function checks if a given string is a valid IPv4 address. Validating IP addresses is 
+   crucial in various real-world applications, particularly in networking, web development, and cybersecurity.*/
 
 function isValidIP(str) {
     return str.split('.').filter(function(v){return v==Number(v).toString() && Number(v)<256}).length==4;
   }
 
-// In security applications, validating IP addresses can be crucial for access control mechanisms (e.g., allowing or denying access based on IP address).
+/* In security applications, validating IP addresses can be crucial for access control mechanisms (e.g., 
+   allowing or denying access based on IP address).*/
+const allowedIPs = ["192.168.1.10", "10.0.0.5"];
+
+function checkAccess(ipAddress) {
+    if (!isValidIP(ipAddress)) {
+        console.log("Invalid IP address.");
+        return;
+    }
+    if (allowedIPs.includes(ipAddress)) {
+        console.log("Access granted.");
+    } else {
+        console.log("Access denied.");
+    }
+}
+
+checkAccess("192.168.1.10"); // Access granted
+checkAccess("999.999.999.999"); // Invalid IP address
 -----------------------------------------------------------------------------------------------------------------
 // Example
     <!DOCTYPE html>
