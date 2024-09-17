@@ -81,4 +81,9 @@ checkAccess("999.999.999.999"); // Invalid IP address
 --------------------------------------------------------------------------------------------
    /* Example 2
    Implementing API input validation for an IP address using Node.js and Express. 
-   This application includes an endpoint where users can submit an IP address, which is then validated using the isValidIP funct*/
+   This application includes an endpoint where users can submit an IP address, which is then validated using the isValidIP funct
+   
+   mkdir ip-validator-api
+cd ip-validator-api
+npm init -y
+npm install express */
