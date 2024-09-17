@@ -24,7 +24,7 @@ function checkAccess(ipAddress) {
 checkAccess("192.168.1.10"); // Access granted
 checkAccess("999.999.999.999"); // Invalid IP address
 -----------------------------------------------------------------------------------------------------------------
-// Example
+// Example 1
     <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,3 +78,7 @@ checkAccess("999.999.999.999"); // Invalid IP address
 
 </body>
 </html>
+--------------------------------------------------------------------------------------------
+   /* Example 2
+   Implementing API input validation for an IP address using Node.js and Express. 
+   This application includes an endpoint where users can submit an IP address, which is then validated using the isValidIP funct*/
