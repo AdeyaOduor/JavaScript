@@ -86,4 +86,37 @@ checkAccess("999.999.999.999"); // Invalid IP address
    mkdir ip-validator-api
 cd ip-validator-api
 npm init -y
-npm install express */
+npm install express 
+*/
+
+const express = require('express');
+const app = express();
+const port = 3000;
+
+// Middleware to parse JSON bodies
+app.use(express.json());
+
+// Function to validate IPv4 addresses
+function isValidIP(str) {
+    return str.split('.').filter(function(v) {
+        return v == Number(v).toString() && Number(v) < 256;
+    }).length == 4;
+}
+
+// API endpoint to validate IP address
+app.post('/api/validate-ip', (req, res) => {
+    const { ipAddress } = req.body;
+
+    // Validate the IP address
+    if (!ipAddress || !isValidIP(ipAddress)) {
+        return res.status(400).json({ error: "Invalid IP address." });
+    }
+
+    // If valid, respond with a success message
+    res.json({ message: `IP Address ${ipAddress} is valid.` });
+});
+
+// Start the server
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+});
