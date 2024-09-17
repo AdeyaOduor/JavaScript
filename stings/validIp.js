@@ -4,6 +4,8 @@
 function isValidIP(str) {
     return str.split('.').filter(function(v){return v==Number(v).toString() && Number(v)<256}).length==4;
   }
+
+// In security applications, validating IP addresses can be crucial for access control mechanisms (e.g., allowing or denying access based on IP address).
 -----------------------------------------------------------------------------------------------------------------
 // Example
     <!DOCTYPE html>
