@@ -24,7 +24,9 @@ function checkAccess(ipAddress) {
 checkAccess("192.168.1.10"); // Access granted
 checkAccess("999.999.999.999"); // Invalid IP address
 -----------------------------------------------------------------------------------------------------------------
-// Example 1
+/* Example 1
+This application allows users to enter an IP address, and it validates the input to ensure it's a valid IPv4 address.
+   */
     <!DOCTYPE html>
 <html lang="en">
 <head>
