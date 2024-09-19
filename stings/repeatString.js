@@ -9,3 +9,13 @@ function repeatStringNumTimes(str, num) {
 // Example 1
 const placeholder = repeatStringNumTimes("Lorem Ipsum ", 3);
 console.log(placeholder); // Output: "Lorem Ipsum Lorem Ipsum Lorem Ipsum "
+
+function promptUser(message, times) {
+    return repeatStringNumTimes(message + "\n", times);
+}
+// Example 2
+const prompts = promptUser("Please enter your name:", 2);
+console.log(prompts);
+// Output:
+// "Please enter your name:
+// Please enter your name:"
