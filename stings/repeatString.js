@@ -5,3 +5,7 @@ This functionality has several practical applications in programming, particular
 function repeatStringNumTimes(str, num) {
   return num > 0 ? str + repeatStringNumTimes(str, num - 1) : '';
 }
+
+// Example 1
+const placeholder = repeatStringNumTimes("Lorem Ipsum ", 3);
+console.log(placeholder); // Output: "Lorem Ipsum Lorem Ipsum Lorem Ipsum "
