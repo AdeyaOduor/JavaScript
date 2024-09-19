@@ -8,3 +8,8 @@ function titleCase(str) {
     .toLowerCase()
     .replace(/(^|\s)\S/g, L => L.toUpperCase());
 }
+
+// Example 1
+const blogPostTitle = "the quick brown fox jumps over the lazy dog";
+const formattedTitle = titleCase(blogPostTitle);
+console.log(formattedTitle); // Output: "The Quick Brown Fox Jumps Over The Lazy Dog"
