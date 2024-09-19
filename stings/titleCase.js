@@ -13,3 +13,7 @@ function titleCase(str) {
 const blogPostTitle = "the quick brown fox jumps over the lazy dog";
 const formattedTitle = titleCase(blogPostTitle);
 console.log(formattedTitle); // Output: "The Quick Brown Fox Jumps Over The Lazy Dog"
+// Example 2
+const productName = "apple macbook pro 16-inch";
+const formattedProductName = titleCase(productName);
+console.log(formattedProductName); // Output: "Apple Macbook Pro 16-Inch"
