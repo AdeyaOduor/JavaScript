@@ -15,3 +15,8 @@ let fileName = "report";
 fileName = incrementString(fileName); // Output: "report1"
 fileName = incrementString(fileName); // Output: "report2"
 console.log(fileName); // Output: "report2"
+
+// Example: Version Control for Software Releases
+let version = "v1.0";
+version = incrementString(version); // Output: "v1.1"
+console.log(version); // Output: "v1.1"
