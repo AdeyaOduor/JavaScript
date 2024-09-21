@@ -8,3 +8,11 @@ function confirmEnding(str, target) {
 }
 
 confirmEnding("Bastian", "n");
+
+// Example 1
+function isValidImageFile(fileName) {
+    return confirmEnding(fileName, ".jpg") || confirmEnding(fileName, ".png") || confirmEnding(fileName, ".gif");
+}
+
+const fileName = "profile_picture.jpg";
+console.log(isValidImageFile(fileName)); // Output: true
