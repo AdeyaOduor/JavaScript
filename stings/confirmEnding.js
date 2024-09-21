@@ -16,3 +16,11 @@ function isValidImageFile(fileName) {
 
 const fileName = "profile_picture.jpg";
 console.log(isValidImageFile(fileName)); // Output: true
+
+// Exmple 2
+function isValidEmail(email) {
+    return confirmEnding(email, "@example.com");
+}
+
+const userEmail = "user@example.com";
+console.log(isValidEmail(userEmail)); // Output: true
