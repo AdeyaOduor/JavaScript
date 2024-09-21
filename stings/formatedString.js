@@ -18,3 +18,12 @@ const participants = [
 
 const formattedParticipants = list(participants);
 console.log(formattedParticipants); // Output: "Alice, Bob & Charlie"
+
+// Example 2
+const notifiedUsers = [
+    { name: "Alice" },
+    { name: "Bob" }
+];
+
+const notificationMessage = `The following users have been notified: ${list(notifiedUsers)}.`;
+console.log(notificationMessage); // Output: "The following users have been notified: Alice & Bob."
