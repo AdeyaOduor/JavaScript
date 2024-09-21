@@ -9,3 +9,12 @@ function list(names) {
     if(len==0) return '';
     return names.slice(0, len-1).map(p=>p.name).join(", ") + (len>1 ? ' & ' : '') + names[len-1].name;
   }
+// Example 1
+const participants = [
+    { name: "Alice" },
+    { name: "Bob" },
+    { name: "Charlie" }
+];
+
+const formattedParticipants = list(participants);
+console.log(formattedParticipants); // Output: "Alice, Bob & Charlie"
