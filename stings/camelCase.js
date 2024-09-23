@@ -11,7 +11,7 @@ Complete the method/function so that it converts dash/underscore delimited words
      });
 }
 
-// Example, API Response Formatting:
+// Example, API Response Formatting help maintain consistency in your application.
   const apiResponse = {
     user_id: 123,
     user_name: "John Doe",
@@ -26,7 +26,7 @@ const formattedResponse = {
 
 console.log(formattedResponse); // Output: { userId: 123, userName: "John Doe", accountStatus: "active" }
 
-// Example, Database Field Mapping
+// Example, Database Field Mapping  for better readability in your code.
 function mapFields(dbRecord) {
     return {
         userId: dbRecord.user_id,
@@ -39,7 +39,7 @@ const dbRecord = { user_id: 1, created_at: "2023-01-01", updated_at: "2023-01-02
 const mappedRecord = mapFields(dbRecord);
 console.log(mappedRecord); // Output: { userId: 1, createdAt: "2023-01-01", updatedAt: "2023-01-02" }
 
-// Example, Configuration File Parsing
+// Example, Configuration File Parsing enhancing code readability and maintanability
 function parseConfig(config) {
     return {
         apiKey: config.api_key,
@@ -50,3 +50,16 @@ function parseConfig(config) {
 const config = { api_key: "12345", db_url: "localhost:27017" };
 const parsedConfig = parseConfig(config);
 console.log(parsedConfig); // Output: { apiKey: "12345", dbUrl: "localhost:27017" }
+
+// Example,User Input Normalization making the data more manageable and consistent.
+  const userSettings = {
+    "theme_color": "dark",
+    "notification_sound": "enabled"
+};
+
+const normalizedSettings = {
+    themeColor: userSettings.theme_color,
+    notificationSound: userSettings.notification_sound
+};
+
+console.log(normalizedSettings); // Output: { themeColor: "dark", notificationSound: "enabled" }
