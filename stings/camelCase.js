@@ -10,3 +10,18 @@ Complete the method/function so that it converts dash/underscore delimited words
           return match.charAt(1).toUpperCase();
      });
 }
+
+// Example, API Response Formatting:
+  const apiResponse = {
+    user_id: 123,
+    user_name: "John Doe",
+    account_status: "active"
+};
+
+const formattedResponse = {
+    userId: apiResponse.user_id,
+    userName: apiResponse.user_name,
+    accountStatus: apiResponse.account_status
+};
+
+console.log(formattedResponse); // Output: { userId: 123, userName: "John Doe", accountStatus: "active" }
