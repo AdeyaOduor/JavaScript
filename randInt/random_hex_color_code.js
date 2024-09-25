@@ -18,3 +18,13 @@ console.log(random_hex_color_code());
 
 // Example 1: In web apps to change the background color dynamically for aesthetic purposes or to enhance user experience.
 document.body.style.backgroundColor = random_hex_color_code();
+
+// Example 2: Random Themes for Applications 
+function applyRandomTheme() {
+    const primaryColor = random_hex_color_code();
+    const secondaryColor = random_hex_color_code();
+    document.body.style.setProperty('--primary-color', primaryColor);
+    document.body.style.setProperty('--secondary-color', secondaryColor);
+}
+
+applyRandomTheme();
