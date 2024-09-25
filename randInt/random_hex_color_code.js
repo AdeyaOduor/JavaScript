@@ -28,3 +28,9 @@ function applyRandomTheme() {
 }
 
 applyRandomTheme();
+
+// Example 3: Data Visualization
+const dataSeries = ["Series A", "Series B", "Series C"];
+const colors = dataSeries.map(() => random_hex_color_code());
+
+console.log(colors); // Output: Array of random hex colors for each series
