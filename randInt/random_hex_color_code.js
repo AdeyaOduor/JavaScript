@@ -7,11 +7,14 @@ Use Math.random() to generate a random 24-bit (6 * 4bits) hexadecimal number.
 Use bit shifting and then convert it to an hexadecimal string using Number.prototype.toString(16).*/
 
 const random_hex_color_code = () => {
-  let n = (Math.random() * 0xfffff * 1000000).toString(16);
-  return '#' + n.slice(0, 6);
+  // Generate a random number between 0 and 0xFFFFFF
+  let n = Math.floor(Math.random() * 0xFFFFFF);
+  // Convert to hexadecimal and ensure it's 6 digits long
+  return '#' + n.toString(16).padStart(6, '0');
 };
 
-console.log(random_hex_color_code())
+// Example: Log a random hex color code
+console.log(random_hex_color_code());
 
-//Example 1: In web apps to change the background color dynamically for aesthetic purposes or to enhance user experience.
+// Example 1: In web apps to change the background color dynamically for aesthetic purposes or to enhance user experience.
 document.body.style.backgroundColor = random_hex_color_code();
