@@ -1,4 +1,7 @@
-// program to generate a random hexadecimal color code.
+/* program to generate a random hexadecimal color code.
+
+The random_hex_color_code function generates random hexadecimal color codes, 
+which can be applied in various real-world applications, especially in web development, graphic design, and data visualization. */
 
 const random_hex_color_code = () => {
   let n = (Math.random() * 0xfffff * 1000000).toString(16);
