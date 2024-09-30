@@ -17,3 +17,8 @@ console.log(userProfile.fullName); // Output: "JohnDoe"
 const phoneNumber = "123 456 7890";
 const formattedNumber = noSpace(phoneNumber);
 console.log(formattedNumber); // Output: "1234567890"
+
+// Example 3: Data Cleaning for CSV Files
+const rawData = "name, age, country";
+const cleanedData = noSpace(rawData);
+console.log(cleanedData); // Output: "name,age,country"
