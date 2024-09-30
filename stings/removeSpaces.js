@@ -12,3 +12,8 @@ const userProfile = {
 
 userProfile.fullName = noSpace(userProfile.fullName);
 console.log(userProfile.fullName); // Output: "JohnDoe"
+
+// Example 2: Formatting Phone Numbers
+const phoneNumber = "123 456 7890";
+const formattedNumber = noSpace(phoneNumber);
+console.log(formattedNumber); // Output: "1234567890"
