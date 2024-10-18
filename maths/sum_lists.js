@@ -104,7 +104,7 @@ const addTogether = ( a, ...arr ) =>
 const addT = a => b =>
   typeof b !== "number"  ? undefined
   : a + b
----------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------
 // Suppose we have a list of monthly expenses
 const addTogether = ( a, ...arr ) =>
   typeof a !== "number" ? undefined
@@ -121,7 +121,7 @@ const totalExpenses = addTogether(...monthlyExpenses);
 
 console.log('Total monthly expenses:', totalExpenses);
 // Output: Total monthly expenses: 1450
--------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------
 const add = (a, b) => a + b;
 const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
