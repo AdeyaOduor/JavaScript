@@ -9,7 +9,7 @@ const standardDeviation = (arr, usePopulation = false) => {
 
 console.log(standardDeviation([10, 2, 38, 23, 38, 23, 21])); // 13.284434142114991
 console.log(standardDeviation([10, 2, 38, 23, 38, 23, 21], true)); // 12.29899614287479
---------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------
 // Suppose we have a dataset of product weights
 const productWeights = [
   123.45, 124.12, 122.98, 123.87, 124.05,
@@ -53,7 +53,7 @@ This information can be used in several ways:
 
 By using the standardDeviation function in this real-world quality control scenario, you can gain valuable insights into the manufacturing process 
 and make informed decisions to improve product quality, customer satisfaction, and overall business performance.*/
--------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------------------------------------------
 /*
 The calculateVariance function is a useful tool for computing the variance of a set of numerical data. Variance is a statistical measure that 
 quantifies the spread or dispersion of a dataset around its mean. It is a fundamental concept in data analysis and has numerous real-world applications.
@@ -84,7 +84,7 @@ the returns for each investment, which can help you make more informed investmen
 
 console.log(calculateVariance([10, 2, 38, 23, 38, 23, 21])); // 151.26530612244895
 // console.log(calculateVariance([10, 2, 38, 23, 38, 23, 21], true)); // 151.26530612244895
---------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------
 // Suppose we have a dataset of daily returns for an investment
 const investmentReturns = [
   0.012, -0.005, 0.008, 0.003, 0.009,
