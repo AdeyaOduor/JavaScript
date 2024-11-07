@@ -31,7 +31,7 @@ const half = ({max, min}) => ((max + min) / 2.0); // use function argument destr
 
 console.log(stats); // should be object
 console.log(half(stats)); // should be 28.015
-------------------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------------------
     
 // create-strings-using-template-literals.
 /*Use template literal syntax with backticks to create an array of list element (li) strings. Each list element's text should be 
@@ -88,7 +88,7 @@ function transformData(row) {
   }
   return transformedRow;
 }
-----------------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------------
 /*Use object property shorthand with object literals to create and return an object 
 with name, age and gender properties. */
 const createPerson = (name, age, gender) => {
@@ -96,7 +96,7 @@ const createPerson = (name, age, gender) => {
 };
 
 console.log(createPerson("Zodiac Hasbro", 56, "male")); // returns a proper object
-----------------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------------
 
 // Imports and exports
 
@@ -111,7 +111,7 @@ function subtract(a, b) {
 }
 
 console.log(subtract(7, 4));
----------------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------------
 /* import statement allowing the current file to use the uppercaseString and lowercaseString functions you exported.
 These functions are in a file called string_functions.js, which is in the same directory as the current file.*/
 import { uppercaseString, lowercaseString } from './string_functions.js';
@@ -140,7 +140,7 @@ export function lowercaseString(string) {
 
 </body>
 </html>
----------------------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------------------
 
 // getters_setters
 class Thermostat {
@@ -202,7 +202,7 @@ Note: When you implement this, you will track the temperature inside the class i
 This is the power of a getter and a setter. You are creating an API for another user, who can get the correct result regardless of which one you track.
 
 In other words, you are abstracting implementation details from the user. */
--------------------------------------------------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /* Create a new promise called makeServerRequest. 
 Pass in a function with resolve and reject parameters to the constructor, and Handle a Fulfilled Promise with then. */
@@ -221,7 +221,7 @@ const makeServerRequest = new Promise((resolve, reject) => {
 makeServerRequest.then(result => {
   console.log(result);
 });
--------------------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------------------
 // Handle a Rejected Promise with catch
 
 const makeServerRequest = new Promise((resolve, reject) => {
@@ -269,7 +269,7 @@ makeServerRequest(false)
   .catch(error => {
     console.log(error);
   });
---------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 // Es6 spread operators
 
@@ -295,7 +295,7 @@ const testData = copyMachine(studentData, 1000);
 // Use the generated test data for testing or simulations
 console.log(testData.length); // Output: 1000
 console.log(testData[0]); // Output: { name: 'John', age: 18 }
-------------------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------------------------------
 
 function spreadOut() {
   let fragment = ['to', 'code'];
