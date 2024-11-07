@@ -6,7 +6,7 @@ function testStrict(val) {
 }
 
 console.log(testStrict(10)); // Change this value to test
---------------------------------------------------------------------------
+// --------------------------------------------------------------------------
 
 function testNotEqual(val) {
   if (val!= 99) { 
@@ -16,7 +16,7 @@ function testNotEqual(val) {
 }
 
 console.log(testNotEqual(10));
---------------------------------------------------------------------------
+// --------------------------------------------------------------------------
 
 function testStrictNotEqual(val) {
   if (val!== 17) { 
@@ -26,7 +26,7 @@ function testStrictNotEqual(val) {
 }
 
 console.log(testStrictNotEqual(10));
----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 function testGreaterThan(val) {
   if (val > 100) {  
@@ -41,7 +41,7 @@ function testGreaterThan(val) {
 }
 
 console.log(testGreaterThan(10)); // Change this value to test
-------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 
 
 function testGreaterOrEqual(val) {
@@ -57,7 +57,7 @@ function testGreaterOrEqual(val) {
 }
 
 console.log(testGreaterOrEqual(10)); // Change this value to test
----------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------
 
 function testLessThan(val) {
   if (val < 25) {  
@@ -72,7 +72,7 @@ function testLessThan(val) {
 }
 
 console.log(testLessThan(10)); // Change this value to test
-------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 
 function testLessOrEqual(val) {
   if (val <= 12) {  
@@ -87,7 +87,7 @@ function testLessOrEqual(val) {
 }
 
 console.log(testLessOrEqual(10)); // Change this value to test
---------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
 
 function testLogicalAnd(val) {
 
@@ -99,7 +99,7 @@ function testLogicalAnd(val) {
 }
 
 console.log(testLogicalAnd(10)); // Change this value to test
--------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 
 function testLogicalOr(val) {
   if (val < 10 || val > 20) {
@@ -109,7 +109,7 @@ function testLogicalOr(val) {
 }
 
 console.log(testLogicalOr(1));// Change this value to test
----------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------
 
 function testElse(val) {
   let result = "";
@@ -124,7 +124,7 @@ function testElse(val) {
 }
 
 console.log(testElse(4));
----------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------
 function testElseIf(val) {
   if (val > 10) {
     return "Greater than 10";
@@ -136,7 +136,7 @@ function testElseIf(val) {
 }
 
 console.log(testElseIf(7)); // Change this value to test
-----------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------
 function orderMyLogic(val) {
   if(val < 5) {
     return "Less than 5";
@@ -147,7 +147,7 @@ function orderMyLogic(val) {
   }
 }
 console.log(orderMyLogic(7));
------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------
 
 //else if conditionals
 function testSize(num) {
@@ -166,7 +166,7 @@ function testSize(num) {
 
 }
 console.log(testSize(19));
-----------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------
 // multiple else if conditionals
 const names = ["Hole-in-one!", "Eagle", "Birdie", "Par", "Bogey", "Double Bogey", "Go Home!"];
 
@@ -191,7 +191,7 @@ function golfScore(par, strokes) {
 }
 
 console.log(golfScore(5, 4)); // Birdie
---------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------
 
 function caseInSwitch(val) {
   let answer = "";
@@ -215,7 +215,7 @@ function caseInSwitch(val) {
 }
 
 console.log(caseInSwitch(3)); // gamma
------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 function switchOfStuff(val) {
   let answer = "";
 
@@ -236,7 +236,7 @@ function switchOfStuff(val) {
   return answer;
 }
 console.log(switchOfStuff("c")); // cat
------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------
 // Multiple Identical Options in Switch Statements
 function sequentialSizes(val) {
   var answer = "";
@@ -260,7 +260,7 @@ function sequentialSizes(val) {
 
 }
 console.log(sequentialSizes(1));
-------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------------------
 
   function analyzeScore(score) {
   let grade = '';
@@ -297,7 +297,7 @@ const score2 = 72;
 const grade2 = analyzeScore(score2);
 console.log(`Score: ${score2}, Grade: ${grade2}`);
 
---------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------
 function chainToSwitch(val) {
   var answer = "";
 // changing else if to switch
@@ -325,7 +325,7 @@ function chainToSwitch(val) {
 }
 
 console.log(chainToSwitch(7)); // Change this value to test
----------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------
 
 function isLess(a, b) {
 // Returning Boolean Values from Functions
@@ -333,7 +333,7 @@ function isLess(a, b) {
 }
 
 console.log(isLess(20, 15)); // Change these values to test
-----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------
 
 // conditionals OR
 function abTest(a, b) {
