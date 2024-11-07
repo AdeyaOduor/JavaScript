@@ -55,7 +55,7 @@ function decodeBinary(binaryString) {
 // Use myMap to decode the binary values
 const sensorReadings = binaryValues.myMap(decodeBinary);
 console.log(sensorReadings); // Output: [1, 2, 3, 4, 5]
----------------------------------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------------------------------
 
 function stringToBinary(str) {
   let binaryCodes = '';
@@ -72,7 +72,7 @@ function stringToBinary(str) {
 console.log(stringToBinary("Hello, world!"));
 // Output
 // "01001000 01100101 01101100 01101100 01101111 00101100 00100000 01110111 01101111 01110010 01101100 01100100 00100001".
----------------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------------
   // Function to convert binary to text
 function binaryAgent(str) {
   return str.split(' ').map(function(binary) {
