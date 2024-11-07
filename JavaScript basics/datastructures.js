@@ -6,14 +6,14 @@ const myArray2 = [["Bulls", 23], ["White Sox", 45]]; // nested array
 const myArray3 = [50, 60, 70];
 const myData = myArray3[2];
 console.log(myData); // 70
---------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------
 
 // Modify Array Data With Indexes
 const myArray = [18, 64, 99];
 myArray[0] = 45;
 
 console.log(myArray); // [ 45, 64, 99 ]
----------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------
 
 // Access Multi-Dimensional Arrays With Indexes
 const arr = [
@@ -32,7 +32,7 @@ console.log("subarray:", subarray); // subarray: [ [ 10, 11, 12 ], 13, 14 ]
 console.log("nestedSubarray:", nestedSubarray); // nestedSubarray: [ 10, 11, 12 ]
 console.log("element:", element); // element: 11
 console.log("myData:", myData); // myData: 8
-------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------
 
 // append data to the end of an array is via the push() function.
 const arr1 = [1, 2, 3];
@@ -42,7 +42,7 @@ console.log(arr1); // [ 1, 2, 3, 4 ]
 const arr2 = ["Stimpson", "J", "cat"];
 arr2.push(["happy", "joy"]); 
 console.log(arr2); // [ 'Stimpson', 'J', 'cat', [ 'happy', 'joy' ] ]
-------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------
 
 // .pop() removes the last element from an array and returns that element.
 const myArray1 = [["John", 23], ["cat", 2]];
@@ -86,7 +86,7 @@ const arr = [2, 4, 5, 1, 7, 5, 2, 1];
 arr.splice(1, 4);// removes 4 elements from index 1 in arr
 
 console.log(arr); // output [ 2, 5, 2, 1 ]
------------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------------
   // Accessing Object Properties with Dot Notation
 const testObj = {
   "hat": "ballcap",
@@ -98,7 +98,7 @@ const hatValue = testObj.hat;
 const shirtValue = testObj.shirt; 
 console.log(hatValue); // ballcap
 console.log(shirtValue); // jersey
-------------------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------------------------------
 // Accessing Object Properties with Bracket Notation
 const testObj = {
   "an entree": "hamburger",
@@ -108,7 +108,7 @@ const testObj = {
 
 const entreeValue = testObj["an entree"];   
 const drinkValue = testObj["the drink"];   
----------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------------------
 // reinitializing_variables_inside_loop.js
 function zeroArray(m, n) {
   let newArray = [];
@@ -124,7 +124,7 @@ function zeroArray(m, n) {
 }
 let matrix = zeroArray(3, 3);
 console.log(matrix); // output [ [ 3, 3, 3 ], [ 3, 3, 3 ], [ 3, 3, 3 ] ]
----------------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------------
 
 function htmlColorNames(arr) {
 /* remove the first two elements of the array and add 'DarkSalmon' and 'BlanchedAlmond' in their respective places.*/
@@ -138,7 +138,7 @@ console.log(
     "DarkGoldenRod","WhiteSmoke","LavenderBlush","PaleTurqoise","FireBrick"
   ])
 );
-------------------------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------------------------------------
 
 /*Write a function that splits an array (first argument) into groups the length of size (second argument) 
 and returns them as a two-dimensional array.*/
@@ -151,14 +151,14 @@ function chunkArrayInGroups(arr, size) {
 }
 
 console.log(chunkArrayInGroups(["a", "b", "c", "d"], 2)); // [ [ 'a', 'b' ], [ 'c', 'd' ] ]
--------------------------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------------------------
 
 // Check For The Presence of an Element With indexOf()
 function quickCheck(arr, elem) {
   return arr.indexOf(elem) != -1;
 }
 console.log(quickCheck(["squash", "onions", "shallots"], "mushrooms")); //false
---------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
 // Iterate Through All an Array's Items Using For Loops
 function filteredArray(arr, elem) {
   let newArr = [];
@@ -175,7 +175,7 @@ function filteredArray(arr, elem) {
 
 // Change code here to test different cases:
 console.log(filteredArray([[3, 2, 3], [1, 6, 3], [3, 13, 26], [19, 3, 9]], 3));
--------------------------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------------------------
 
 let foods = {
   apples: 25,
@@ -193,7 +193,7 @@ function checkInventory(scannedItem) {
 
 // change code below this line to test different cases:
 console.log(checkInventory("apples")); // 25
-----------------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------------
 
 // Use the delete keyword to remove keys from the foods object.
 let foods = {
@@ -211,7 +211,7 @@ delete foods.plums;
 delete foods.strawberries;
 
 console.log(foods); // { apples: 25, bananas: 13, grapes: 35 }
-------------------------------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------------------------------------------
 
 // Check if an Object has a Property
 let users = {
@@ -241,7 +241,7 @@ function isEveryoneHere(userObj) {
 }
 
 console.log(isEveryoneHere(users)); // true
----------------------------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------------------------
 
 // Iterate Through the Keys of an Object with a for...in Statement
 const users = {
@@ -269,7 +269,7 @@ function countOnline(usersObj) {
 }
 
 console.log(countOnline(users)); // 1
----------------------------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------------------------
 
 // Generate an Array of All Object Keys with Object.keys()
 let users = {
@@ -298,7 +298,7 @@ function getArrayOfUsers(obj) {
 }
 
 console.log(getArrayOfUsers(users)); // [ 'Alan', 'Jeff', 'Sarah', 'Ryan' ]
----------------------------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------------------------
 
 // Modify an Array Stored in an Object
 let user = {
@@ -325,7 +325,7 @@ function addFriend(userObj, friend) {
 }
 
 console.log(addFriend(user, "Pete")); // [ 'Sam', 'Kira', 'Tomo', 'Pete' ]
---------------------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------------------
 
 /*You are given two arrays and an index.
 Copy each element of the first array into the second array, in order.
@@ -343,7 +343,7 @@ console.log(frankenSplice(arr1, arr2, n)); /* [
   1, 2, 5, 6,
   7, 3, 4
 ] */
----------------------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------------------
 
 // finding an element using recursive method
 function findElement(arr, func) {
@@ -351,7 +351,7 @@ function findElement(arr, func) {
 }
 
 console.log(findElement([1, 2, 3, 4], num => num % 2 === 0)); // 2
-----------------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------------
 
 /* Remove all falsy values from an array. Return a new array; do not mutate the original array.
 Falsy values in JavaScript are false, null, 0, "", undefined, and NaN.*/ 
