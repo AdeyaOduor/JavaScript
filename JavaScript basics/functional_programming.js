@@ -4,13 +4,13 @@ function reusableFunction() {
 }
 
 reusableFunction();
--------------------------------------------------------------
+// -------------------------------------------------------------
 // Passing Values to Functions with Arguments
 function functionWithArgs(one, two) {
   console.log(one + two);
 }
 functionWithArgs(7, 3); //This will console log 10.
---------------------------------------------------------------
+// --------------------------------------------------------------
 /* a function timesFive that accepts one argument, multiplies 
 it by 5, and returns the new value.*/
 function timesFive(num) {
@@ -18,7 +18,7 @@ function timesFive(num) {
 }
 
 console.log(timesFive(2)); // 10
-----------------------------------------------------------------
+// ----------------------------------------------------------------
 /*A function can include the return statement but it does not have 
 to. In the case that the function doesn't have a return statement, 
 when you call it, the function processes the inner code but the 
@@ -35,7 +35,7 @@ function addFive() {
 
 addThree(); // output is undefined
 addFive(); // output is undefined
----------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------
 let processed = 0;
 
 function processArg(num) {
@@ -44,7 +44,7 @@ function processArg(num) {
 
 // Call the processArg function with an argument of 7 and assign its return value to the variable processed.
 processed = processArg(7); // Equal to 2
---------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------
 /*a function nextInLine which takes an array (arr) and a number (item) as arguments.
 Add the number to the end of the array, then remove the first element of the array.
 The nextInLine function should then return the element that was removed.*/
@@ -59,7 +59,7 @@ var testArr = [1,2,3,4,5];
 console.log("Before: " + JSON.stringify(testArr)); // Before: [1,2,3,4,5]
 console.log(nextInLine(testArr, 6)); //1
 console.log("After: " + JSON.stringify(testArr)); // After: [2,3,4,5,6]
------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 // strict equality
 function testStrict(val) {
   if (val === 7) { 
@@ -69,7 +69,7 @@ function testStrict(val) {
 }
 
 console.log(testStrict(10));
----------------------------------------
+// ---------------------------------------
 function testNotEqual(val) {
   if (val!= 99) { 
     return "Not Equal";
@@ -78,7 +78,7 @@ function testNotEqual(val) {
 }
 
 console.log(testNotEqual(10));
----------------------------------------------
+// ---------------------------------------------
 function testStrictNotEqual(val) {
   if (val!== 17) { 
     return "Not Equal";
@@ -87,7 +87,7 @@ function testStrictNotEqual(val) {
 }
 
 testStrictNotEqual(10);
-------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 /* Given a function (representing the tea type) and number of cups needed, the
 following function returns an array of strings (each representing a cup of
 a specific type of tea).*/
@@ -111,7 +111,7 @@ console.log(
   tea4GreenTeamFCC,
   tea4BlackTeamFCC
 );
-----------------------------------------------------------------------
+// ----------------------------------------------------------------------
 // tabs is an array of titles of each site open within the window
 const Window = function(tabs) {
   this.tabs = tabs; // We keep a record of the array inside the object
@@ -150,7 +150,7 @@ const finalTabs = socialWindow
   .join(videoWindow.tabClose(2)) // Close third tab in video window, and join
   .join(workWindow.tabClose(1).tabOpen());
 console.log(finalTabs.tabs);
--------------------------------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------------------------------------
 /* Fill in the code for the function incrementer so it returns the value of the global variable fixedValue increased by one.*/
 var fixedValue = 4;
 
@@ -161,7 +161,7 @@ function incrementer(value) {
 
 var differentValue = incrementer(fixedValue); 
 console.log(differentValue); // Should print 5
---------------------------------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------------------------------------
 // Refactor global variables out of functions
 var bookList = ["The Hound of the Baskervilles", "On The Electrodynamics of Moving Bodies", "Philosophiæ Naturalis Principia Mathematica",
                 "Disquisitiones Arithmeticae"];
@@ -181,7 +181,7 @@ var newerBookList = remove(bookList, 'On The Electrodynamics of Moving Bodies');
 var newestBookList = remove(add(bookList, 'A Brief History of Time'), 'On The Electrodynamics of Moving Bodies');
 
 console.log(bookList);
--------------------------------------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------------------------------------
 // Remove Elements from an Array Using slice Instead of splice, limiting the provided cities array to a length of 3, 
 // and return a new array with only the first three items.
 function nonMutatingSplice(cities) {
@@ -192,7 +192,7 @@ const inputCities = ["Chicago", "Delhi", "Islamabad", "London", "Berlin"];
 const slicedCities = nonMutatingSplice(inputCities);
 
 console.log(slicedCities); // [ 'Chicago', 'Delhi', 'Islamabad' ]
-----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------
 // Combine Two Arrays Using the concat Method
 function nonMutatingConcat(original, attach) {
   return original.concat(attach);
@@ -203,7 +203,7 @@ const second = [4, 5];
 const concatenatedArray = nonMutatingConcat(first, second);
 
 console.log(concatenatedArray); // [ 1, 2, 3, 4, 5 ]
-------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------
 
 // Add Elements to the End of an Array Using concat Instead of push
 function nonMutatingPush(original, newItem) {
