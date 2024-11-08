@@ -117,7 +117,7 @@ const filteredList = watchList
   .map(({ Title: title, imdbRating: rating }) => ({ title, rating }));
 
 console.log(filteredList);
--------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------
 // filter method on prototype
   /* 
     Array.prototype.myFilter adds the myFilter method to the Array prototype. This means that all arrays in your JavaScript code will have access to this method.
@@ -160,7 +160,7 @@ const filteredProducts = products.myFilter(product => product.price > 15 && prod
 console.log(filteredProducts); /* [
   { name: 'Product 3', price: 15, category: 'A' }
 ]*/
----------------------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------------------
 /* slice method in the sliceArray function to return part of the anim array given the provided beginSlice and endSlice indices*/
 function sliceArray(anim, beginSlice, endSlice) {
   return anim.slice(beginSlice, endSlice);
@@ -170,7 +170,7 @@ const inputAnim = ["Cat", "Dog", "Tiger", "Zebra", "Ant"];
 const slicedArray = sliceArray(inputAnim, 1, 4);
 
 console.log(slicedArray); // [ 'Dog', 'Tiger', 'Zebra' ]
-------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 /* Given the array arr, iterate through and remove each element 
 starting from the first element (the 0 index) until the function 
  returns true when the iterated element is passed through it.
