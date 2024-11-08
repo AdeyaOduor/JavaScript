@@ -118,7 +118,7 @@ const ratings = watchList.map(item => ({
 }));
 
 console.log(JSON.stringify(ratings));
----------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
 // Implement map on a Prototype
 Array.prototype.Map = function (callback) {
   const newArray = [];
@@ -133,7 +133,7 @@ Array.prototype.Map = function (callback) {
 const numbers = [1, 2, 3, 4, 5];
 const squaredNumbers2 = numbers.map(num => num * num);
 console.log(squaredNumbers2); // Output: [1, 4, 9, 16, 25]
--------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 // Define the myMap function
 Array.prototype.myMap = function (callback) {
   const newArray = [];
