@@ -72,3 +72,12 @@ console.log(printList(sumLinkedLists(poly1, poly2))); // Outputs the sum
 // In systems that require custom data types, such as in certain game engines or simulations, using linked lists allows you to handle operations without worrying about overflow or precision errors.
 
 // Example:
+// Example of using linked lists for game scores
+var score1 = new LinkedList(4); // Represents 4 points
+score1.next = new LinkedList(5); // Represents 45 points
+
+var score2 = new LinkedList(2); // Represents 2 points
+score2.next = new LinkedList(7); // Represents 27 points
+
+// Total score: 45 + 27 = 72
+console.log(printList(sumLinkedLists(score1, score2))); // Output: 2 -> 7 (represents 72)
