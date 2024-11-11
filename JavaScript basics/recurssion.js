@@ -87,3 +87,12 @@ console.log(printList(sumLinkedLists(score1, score2))); // Output: 2 -> 7 (repre
 // In algorithms that require processing numbers from least significant digit to most significant digit, such as certain types of sorting or searching algorithms, linked lists are ideal.
 
 // Example:
+// Linked lists for binary numbers
+var binary1 = new LinkedList(1); // Represents 1 (binary)
+binary1.next = new LinkedList(0); // Represents 10 (binary)
+
+var binary2 = new LinkedList(1); // Represents 1 (binary)
+binary2.next = new LinkedList(1); // Represents 11 (binary)
+
+// Sum: 10 (2) + 11 (3) = 100 (binary 5)
+console.log(printList(sumLinkedLists(binary1, binary2))); // Output: 0 -> 0 -> 1 (represents 100)
