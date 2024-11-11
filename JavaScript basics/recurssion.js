@@ -49,3 +49,9 @@ var num2 = new LinkedList(1); // Represents 1
 
 // Sum: 99 + 1 = 100
 console.log(printList(sumLinkedLists(num1, num2))); // Output: 0 -> 0 -> 1 (represents 100)
+
+// 2. Data Structure for Polynomial Arithmetic
+
+// Linked lists can be used to represent polynomials, where each node represents a coefficient and an exponent. The sumLinkedLists function can be adapted to add two polynomial expressions.
+
+// Example:
