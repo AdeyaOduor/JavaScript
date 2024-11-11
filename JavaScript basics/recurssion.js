@@ -55,3 +55,14 @@ console.log(printList(sumLinkedLists(num1, num2))); // Output: 0 -> 0 -> 1 (repr
 // Linked lists can be used to represent polynomials, where each node represents a coefficient and an exponent. The sumLinkedLists function can be adapted to add two polynomial expressions.
 
 // Example:
+// Polynomial: 2x^2 + 3x + 5 represented as a linked list
+var poly1 = new LinkedList(2);
+poly1.next = new LinkedList(3);
+poly1.next.next = new LinkedList(5); // Represents 2x^2 + 3x + 5
+
+// Polynomial: 4x^2 + 1 represented as a linked list
+var poly2 = new LinkedList(4);
+poly2.next = new LinkedList(1); // Represents 4x^2 + 1
+
+// Sum: (2x^2 + 3x + 5) + (4x^2 + 1) = 6x^2 + 3x + 6
+console.log(printList(sumLinkedLists(poly1, poly2))); // Outputs the sum
