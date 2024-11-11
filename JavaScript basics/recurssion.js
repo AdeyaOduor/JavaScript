@@ -34,3 +34,10 @@ d.next = e
 e.next = f
 
 printList(sumLinkedLists(a,d))
+
+// The sumLinkedLists function is designed to add two numbers represented as linked lists. Each node contains a single digit, and the digits are stored in reverse order. This approach has several real-world applications, particularly in scenarios where large numbers are handled or when using linked lists for data structure manipulation. Here are some practical applications with examples:
+// 1. Handling Large Numbers in Financial Applications
+
+// In financial applications, you might need to perform arithmetic operations on very large numbers, such as account balances or transaction amounts, which can exceed standard number limits.
+
+// Example:
