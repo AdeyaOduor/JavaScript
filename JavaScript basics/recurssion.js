@@ -81,3 +81,9 @@ score2.next = new LinkedList(7); // Represents 27 points
 
 // Total score: 45 + 27 = 72
 console.log(printList(sumLinkedLists(score1, score2))); // Output: 2 -> 7 (represents 72)
+
+// 4. Reverse Order Calculations in Computational Algorithms
+
+// In algorithms that require processing numbers from least significant digit to most significant digit, such as certain types of sorting or searching algorithms, linked lists are ideal.
+
+// Example:
