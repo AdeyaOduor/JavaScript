@@ -41,3 +41,11 @@ printList(sumLinkedLists(a,d))
 // In financial applications, you might need to perform arithmetic operations on very large numbers, such as account balances or transaction amounts, which can exceed standard number limits.
 
 // Example:
+// Linked lists representing large numbers
+var num1 = new LinkedList(9);
+num1.next = new LinkedList(9); // Represents 99
+
+var num2 = new LinkedList(1); // Represents 1
+
+// Sum: 99 + 1 = 100
+console.log(printList(sumLinkedLists(num1, num2))); // Output: 0 -> 0 -> 1 (represents 100)
