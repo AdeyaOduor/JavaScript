@@ -102,3 +102,12 @@ console.log(printList(sumLinkedLists(binary1, binary2))); // Output: 0 -> 0 -> 1
 // In programming languages that do not support large integers natively, linked lists can be used to implement multi-precision arithmetic libraries, allowing operations on numbers of arbitrary size.
 
 // Example:
+// Multi-precision addition example
+var largeNum1 = new LinkedList(9);
+largeNum1.next = new LinkedList(9);
+largeNum1.next.next = new LinkedList(9); // Represents 999
+
+var largeNum2 = new LinkedList(1); // Represents 1
+
+// Sum: 999 + 1 = 1000
+console.log(printList(sumLinkedLists(largeNum1, largeNum2))); // Output: 0 -> 0 -> 0 -> 1 (represents 1000)
