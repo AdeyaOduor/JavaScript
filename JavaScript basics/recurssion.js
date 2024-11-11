@@ -66,3 +66,9 @@ poly2.next = new LinkedList(1); // Represents 4x^2 + 1
 
 // Sum: (2x^2 + 3x + 5) + (4x^2 + 1) = 6x^2 + 3x + 6
 console.log(printList(sumLinkedLists(poly1, poly2))); // Outputs the sum
+
+// 3. Implementing Arithmetic in Custom Data Types
+
+// In systems that require custom data types, such as in certain game engines or simulations, using linked lists allows you to handle operations without worrying about overflow or precision errors.
+
+// Example:
