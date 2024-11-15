@@ -14,6 +14,9 @@ console.log(filter_list([1, 2, 2, 3, 4, 4, 5]));  /*[ 1, 2, 2, 3, 4, 4, 5]*/
 // When analyzing datasets, it’s common to encounter mixed data types. Filtering out non-numeric values ensures that only valid numbers are processed.
 
 // Example:
+const data = [1, 'apple', 2, 'banana', 3, null, 4];
+const numericData = filter_list(data);
+console.log(numericData); // Output: [1, 2, 3, 4]
 // -------------------------------------------------------------------------------------------------------------
 // find first non consecutive number in an array
 function firstNonConsecutive (arr) {
