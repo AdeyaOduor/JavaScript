@@ -16,7 +16,17 @@ console.log(filter_list([1, 2, 2, 3, 4, 4, 5]));  /*[ 1, 2, 2, 3, 4, 4, 5]*/
 // Example:
 const data = [1, 'apple', 2, 'banana', 3, null, 4];
 const numericData = filter_list(data);
-console.log(numericData); // Output: [1, 2, 3, 4]
+
+function filter_list(l) {
+    // Return a new array with the strings filtered out
+    var filt = l.filter(function(x) {
+      if (typeof(x) === 'number')
+        return x;
+    });
+    return filt;
+  }
+  
+console.log(numericData);// Output: [1, 2, 3, 4]
 // -------------------------------------------------------------------------------------------------------------
 // find first non consecutive number in an array
 function firstNonConsecutive (arr) {
