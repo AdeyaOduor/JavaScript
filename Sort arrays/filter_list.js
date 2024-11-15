@@ -33,6 +33,9 @@ console.log(numericData);// Output: [1, 2, 3, 4]
 // In applications that accept user input, you may want to filter out invalid inputs (e.g., strings, special characters) before performing calculations or storing data.
 
 // Example:
+const userInput = [10, 'hello', 20, 'world', 30];
+const validNumbers = filter_list(userInput);
+console.log(validNumbers); // Output: [10, 20, 30]
 // -------------------------------------------------------------------------------------------------------------
 // find first non consecutive number in an array
 function firstNonConsecutive (arr) {
