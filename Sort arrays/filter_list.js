@@ -42,6 +42,9 @@ console.log(validNumbers); // Output: [10, 20, 30]
 // When handling financial transactions, you might receive a list of amounts that may include erroneous entries. Filtering helps in keeping only valid transaction amounts for processing.
 
 // Example:
+const transactions = [100, 'error', 250, null, 300];
+const validTransactions = filter_list(transactions);
+console.log(validTransactions); // Output: [100, 250, 300]
 // -------------------------------------------------------------------------------------------------------------
 // find first non consecutive number in an array
 function firstNonConsecutive (arr) {
