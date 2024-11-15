@@ -51,6 +51,11 @@ console.log(validTransactions); // Output: [100, 250, 300]
 // When computing statistics like averages or sums, you need to ensure that only numeric values are included in the calculations.
 
 // Example:
+const scores = [85, 'N/A', 90, 78, 'missing', 88];
+const validScores = filter_list(scores);
+const averageScore = validScores.reduce((a, b) => a + b, 0) / validScores.length;
+console.log(averageScore); // Output: 85.25
+
 // -------------------------------------------------------------------------------------------------------------
 // find first non consecutive number in an array
 function firstNonConsecutive (arr) {
