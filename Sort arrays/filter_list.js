@@ -13,7 +13,7 @@ console.log(filter_list([1, 2, 2, 3, 4, 4, 5]));  /*[ 1, 2, 2, 3, 4, 4, 5]*/
 
 // When analyzing datasets, it’s common to encounter mixed data types. Filtering out non-numeric values ensures that only valid numbers are processed.
 
-// Example:
+// Example 1:
 const data = [1, 'apple', 2, 'banana', 3, null, 4];
 const numericData = filter_list(data);
 
@@ -27,6 +27,12 @@ function filter_list(l) {
   }
   
 console.log(numericData);// Output: [1, 2, 3, 4]
+
+// Example 2:
+const surveyResponses = [5, 'not answered', 4, 'skip', 3, 2];
+const validResponses = filter_list(surveyResponses);
+// Use validResponses to create a bar chart
+console.log(validResponses); // Output: [5, 4, 3, 2]
 
 // 2. User Input Validation
 
