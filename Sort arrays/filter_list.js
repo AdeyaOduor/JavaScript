@@ -8,7 +8,7 @@ function filter_list(l) {
     return filt;
   }
 console.log(filter_list([1, 2, 2, 3, 4, 4, 5]));  /*[ 1, 2, 2, 3, 4, 4, 5]*/
--------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------
 // find first non consecutive number in an array
 function firstNonConsecutive (arr) {
     for (let i = 1; i < arr.length; i++) {
@@ -17,7 +17,7 @@ function firstNonConsecutive (arr) {
     return null;
 }
 console.log(firstNonConsecutive([1, 2, 2, 3, 4, 4, 5])); //2
-------------------------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------------------
 // Split a String into an Array Using the split Method
 function splitify(str) {
   
