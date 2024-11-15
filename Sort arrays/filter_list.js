@@ -36,6 +36,12 @@ console.log(numericData);// Output: [1, 2, 3, 4]
 const userInput = [10, 'hello', 20, 'world', 30];
 const validNumbers = filter_list(userInput);
 console.log(validNumbers); // Output: [10, 20, 30]
+
+// 3. Processing Financial Transactions
+
+// When handling financial transactions, you might receive a list of amounts that may include erroneous entries. Filtering helps in keeping only valid transaction amounts for processing.
+
+// Example:
 // -------------------------------------------------------------------------------------------------------------
 // find first non consecutive number in an array
 function firstNonConsecutive (arr) {
