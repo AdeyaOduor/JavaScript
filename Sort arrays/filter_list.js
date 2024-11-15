@@ -70,6 +70,18 @@ console.log(averageScore); // Output: 85.25
 const sensorReadings = [23.5, 'error', 24.1, 25.0, 'offline', 22.9];
 const validReadings = filter_list(sensorReadings);
 console.log(validReadings); // Output: [23.5, 24.1, 25.0, 22.9]
+
+// 6. Preparing Data for Machine Learning
+
+// In machine learning preprocessing, it’s important to filter out non-numeric features from the dataset to ensure that only relevant numerical data is used for model training.
+
+// Example:
+const dataset = [3.5, 'string', 2.1, 'text', 4.8];
+const filteredDataset = filter_list(dataset);
+// Use filteredDataset for training a model
+console.log(filteredDataset); // Output: [3.5, 2.1, 4.8]
+
+
 // -------------------------------------------------------------------------------------------------------------
 // find first non consecutive number in an array
 function firstNonConsecutive (arr) {
