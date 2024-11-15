@@ -62,6 +62,14 @@ const validScores = filter_list(scores);
 const averageScore = validScores.reduce((a, b) => a + b, 0) / validScores.length;
 console.log(averageScore); // Output: 85.25
 
+// 5. Filtering Sensor Data
+
+// In IoT applications, sensor readings might be mixed with error messages or invalid data points. Filtering these out ensures that only valid readings are analyzed.
+
+// Example:
+const sensorReadings = [23.5, 'error', 24.1, 25.0, 'offline', 22.9];
+const validReadings = filter_list(sensorReadings);
+console.log(validReadings); // Output: [23.5, 24.1, 25.0, 22.9]
 // -------------------------------------------------------------------------------------------------------------
 // find first non consecutive number in an array
 function firstNonConsecutive (arr) {
