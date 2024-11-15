@@ -27,6 +27,12 @@ function filter_list(l) {
   }
   
 console.log(numericData);// Output: [1, 2, 3, 4]
+
+// 2. User Input Validation
+
+// In applications that accept user input, you may want to filter out invalid inputs (e.g., strings, special characters) before performing calculations or storing data.
+
+// Example:
 // -------------------------------------------------------------------------------------------------------------
 // find first non consecutive number in an array
 function firstNonConsecutive (arr) {
