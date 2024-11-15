@@ -5,7 +5,7 @@ function array_diff(a, b) {
 
 console.log(array_diff([1, 2], [1]));  // Output: [2]
 console.log(array_diff([3, 4], [3]));  // Output: [4]
------------------------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------------------------
 /*Compare two arrays and return a new array with any items only found in one of the two given arrays, but not both. In other words, 
 return the symmetric difference of the two arrays.*/
 function diffArray(arr1, arr2) {
@@ -26,7 +26,7 @@ console.log(diffArray(array1, array2));
 
 console.log(array1.filter(item => array2.includes(item)));
 // Output: [3, 4, 5] in filtering and transformation
---------------------------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------------------------
 /*Remove all elements from the initial array that are of the same value as these arguments. 
     Using spread operator to retrieve the arguments.
     Return the filtered array, using includes().
@@ -34,7 +34,7 @@ console.log(array1.filter(item => array2.includes(item)));
 function destroyer(arr, ...valsToRemove) {
   return arr.filter(elem => !valsToRemove.includes(elem));
 }
----------------------------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------------------------
 /*an algorithm that will take an array for the first argument and return an array with all the 
 objects that matches all the properties and values in the Object passed as second parameter.
 
