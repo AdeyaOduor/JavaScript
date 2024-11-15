@@ -45,6 +45,12 @@ console.log(validNumbers); // Output: [10, 20, 30]
 const transactions = [100, 'error', 250, null, 300];
 const validTransactions = filter_list(transactions);
 console.log(validTransactions); // Output: [100, 250, 300]
+
+// 4. Generating Statistics
+
+// When computing statistics like averages or sums, you need to ensure that only numeric values are included in the calculations.
+
+// Example:
 // -------------------------------------------------------------------------------------------------------------
 // find first non consecutive number in an array
 function firstNonConsecutive (arr) {
