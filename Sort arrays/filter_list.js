@@ -8,6 +8,12 @@ function filter_list(l) {
     return filt;
   }
 console.log(filter_list([1, 2, 2, 3, 4, 4, 5]));  /*[ 1, 2, 2, 3, 4, 4, 5]*/
+
+// 1. Data Cleaning in Analytics
+
+// When analyzing datasets, it’s common to encounter mixed data types. Filtering out non-numeric values ensures that only valid numbers are processed.
+
+// Example:
 // -------------------------------------------------------------------------------------------------------------
 // find first non consecutive number in an array
 function firstNonConsecutive (arr) {
