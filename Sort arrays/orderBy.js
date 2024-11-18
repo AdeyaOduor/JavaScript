@@ -7,6 +7,8 @@
  1. Sorting User Data in Applications
 In web applications, you often need to display user data (e.g., usernames, registration dates) in a sorted manner.
 
+2. Sorting Product Listings in E-commerce
+In e-commerce platforms, products can be sorted by price, rating, or availability.
 */
 
 const orderBy = (arr, props, orders) =>
