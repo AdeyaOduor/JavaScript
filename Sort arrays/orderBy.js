@@ -9,6 +9,9 @@ In web applications, you often need to display user data (e.g., usernames, regis
 
 2. Sorting Product Listings in E-commerce
 In e-commerce platforms, products can be sorted by price, rating, or availability.
+
+3. Sorting Orders in a Management System
+In order management systems, sorting orders by date and status can help in tracking and managing them effectively.
 */
 
 const orderBy = (arr, props, orders) =>
