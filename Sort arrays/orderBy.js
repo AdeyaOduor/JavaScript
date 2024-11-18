@@ -12,6 +12,9 @@ In e-commerce platforms, products can be sorted by price, rating, or availabilit
 
 3. Sorting Orders in a Management System
 In order management systems, sorting orders by date and status can help in tracking and managing them effectively.
+
+4. Sorting Student Records in Educational Software
+In educational applications, student records might need to be sorted by GPA and then by last name.
 */
 
 const orderBy = (arr, props, orders) =>
