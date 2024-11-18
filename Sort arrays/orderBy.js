@@ -53,6 +53,24 @@ const products = [
 
 // Sort products by price in ascending order, then by category in descending order
 const sortedProducts = orderBy(products, ['price', 'category'], ['asc', 'desc']);
+// --------------------------------------------------------------------------------------
+const products = [
+  { name: 'Laptop', price: 999, rating: 4.5 },
+  { name: 'Phone', price: 699, rating: 4.7 },
+  { name: 'Tablet', price: 499, rating: 4.3 }
+];
+
+const sortedProducts = orderBy(products, ['price', 'rating'], ['asc', 'desc']);
+console.log(sortedProducts);
+/*
+Output:
+[
+  { name: 'Tablet', price: 499, rating: 4.3 },
+  { name: 'Phone', price: 699, rating: 4.7 },
+  { name: 'Laptop', price: 999, rating: 4.5 }
+]
+*/
+// ----------------------------------------------------------------------------------------------------------------------------------------
 
 const contacts = [
   { id: 1, name: 'John Doe', email: 'john@example.com', createdAt: '2023-01-01' },
