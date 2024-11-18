@@ -75,6 +75,24 @@ Output:
 */
 // ----------------------------------------------------------------------------------------------------------------------------------------
 
+const orders = [
+  { id: 1, date: '2023-03-01', status: 'shipped' },
+  { id: 2, date: '2023-02-28', status: 'pending' },
+  { id: 3, date: '2023-03-02', status: 'delivered' }
+];
+
+const sortedOrders = orderBy(orders, ['date', 'status'], ['asc', 'desc']);
+console.log(sortedOrders);
+/*
+Output:
+[
+  { id: 2, date: '2023-02-28', status: 'pending' },
+  { id: 1, date: '2023-03-01', status: 'shipped' },
+  { id: 3, date: '2023-03-02', status: 'delivered' }
+]
+*/
+// ----------------------------------------------------------------------------------------
+
 const contacts = [
   { id: 1, name: 'John Doe', email: 'john@example.com', createdAt: '2023-01-01' },
   { id: 2, name: 'Jane Smith', email: 'jane@example.com', createdAt: '2023-03-15' },
