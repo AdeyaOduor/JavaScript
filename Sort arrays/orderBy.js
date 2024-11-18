@@ -24,6 +24,24 @@ const users = [{ name: 'Peter', age: 43 }, { name: 'David', age: 41 }, { name: '
 console.log(orderBy(users, ['name', 'age'], ['asc', 'desc'])); 
 console.log(orderBy(users, ['name', 'age']));
 
+const users = [
+  { name: 'Alice', age: 30, registrationDate: '2023-01-15' },
+  { name: 'Bob', age: 25, registrationDate: '2023-02-10' },
+  { name: 'Charlie', age: 35, registrationDate: '2023-01-20' }
+];
+
+const sortedUsers = orderBy(users, ['age', 'registrationDate'], ['asc', 'desc']);
+console.log(sortedUsers);
+/*
+Output:
+[
+  { name: 'Bob', age: 25, registrationDate: '2023-02-10' },
+  { name: 'Alice', age: 30, registrationDate: '2023-01-15' },
+  { name: 'Charlie', age: 35, registrationDate: '2023-01-20' }
+]
+*/
+// ----------------------------------------------------------------------------------------------------------------------------
+
 const products = [
   { id: 1, name: 'Product A', price: 10, category: 'Electronics' },
   { id: 2, name: 'Product B', price: 20, category: 'Clothing' },
