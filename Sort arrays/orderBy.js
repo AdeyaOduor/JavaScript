@@ -96,14 +96,23 @@ Output:
 */
 // ----------------------------------------------------------------------------------------
 
-const contacts = [
-  { id: 1, name: 'John Doe', email: 'john@example.com', createdAt: '2023-01-01' },
-  { id: 2, name: 'Jane Smith', email: 'jane@example.com', createdAt: '2023-03-15' },
-  { id: 3, name: 'Bob Johnson', email: 'bob@example.com', createdAt: '2023-02-10' },
+cconst students = [
+  { name: 'John Doe', gpa: 3.5 },
+  { name: 'Jane Smith', gpa: 3.8 },
+  { name: 'Alice Johnson', gpa: 3.5 }
 ];
 
-// Sort contacts by creation date in descending order, then by name in ascending order
-const sortedContacts = orderBy(contacts, ['createdAt', 'name'], ['desc', 'asc']);
+const sortedStudents = orderBy(students, ['gpa', 'name'], ['desc', 'asc']);
+console.log(sortedStudents);
+/*
+Output:
+[
+  { name: 'Jane Smith', gpa: 3.8 },
+  { name: 'Alice Johnson', gpa: 3.5 },
+  { name: 'John Doe', gpa: 3.5 }
+]
+*/
+// ---------------------------------------------------------------------------------------------
 
 const flights = [
   { id: 1, from: 'New York', to: 'Los Angeles', duration: 6, price: 400 },
