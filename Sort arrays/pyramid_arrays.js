@@ -30,6 +30,10 @@ function pyramid(n) {
 const pyramidData = pyramid(5);
 console.log(pyramidData);
 /*
+1. Data Visualization in Graphical User Interfaces
+
+In applications that visualize data hierarchies or structures, 
+such as organizational charts or hierarchical data displays, the pyramid can represent levels of data.
 Output:
 [
   [1],
