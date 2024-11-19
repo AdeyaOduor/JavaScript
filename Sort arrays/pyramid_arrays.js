@@ -26,6 +26,21 @@ function pyramid(n) {
 
   return result;
 }
+
+const pyramidData = pyramid(5);
+console.log(pyramidData);
+/*
+Output:
+[
+  [1],
+  [1, 1],
+  [1, 1, 1],
+  [1, 1, 1, 1],
+  [1, 1, 1, 1, 1]
+]
+*/
+
+// -----------------------------------------------------------------------------------------------------------
 /*
     The function first checks if the input n is a non-negative integer. If not, it throws an error.
     It initializes an empty array result to store the subarrays.
