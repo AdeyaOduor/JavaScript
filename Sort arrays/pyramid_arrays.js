@@ -1,11 +1,11 @@
 // Write a function that when given a number >= 0, returns an Array of ascending length subarrays.
 
 function pyramid(n) {
-  const res = [];
-  for(let i = 0; i < n; i++){
-    res.push([...Array(i+1)].fill(1))
+  const res = []; // Initialize an empty array to hold the pyramid structure
+  for(let i = 0; i < n; i++){ // Loop from 0 to n-1
+    res.push([...Array(i+1)].fill(1)); // Create a new array filled with 1s and push it to res
   }
-  return res;
+  return res; // Return the resulting pyramid structure
 }
 console.log(pyramid(0)); // []
 console.log(pyramid(1)); // [[1]]
