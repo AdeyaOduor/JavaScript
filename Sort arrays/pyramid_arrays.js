@@ -46,7 +46,7 @@ Output:
 
 // -----------------------------------------------------------------------------------------------------------
 /*
-    The function first checks if the input n is a non-negative integer. If not, it throws an error.
+    The following function first checks if the input n is a non-negative integer. If not, it throws an error.
     It initializes an empty array result to store the subarrays.
     It then uses a for loop to iterate from 1 to n. For each iteration, it creates a new subarray of 
     length i and fills it with the value 1 using the Array(i).fill(1) syntax.
