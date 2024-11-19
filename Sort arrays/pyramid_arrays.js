@@ -7,10 +7,14 @@ function pyramid(n) {
   }
   return res; // Return the resulting pyramid structure
 }
-console.log(pyramid(0)); // []
-console.log(pyramid(1)); // [[1]]
-console.log(pyramid(2)); // [[1], [1, 1]]
-console.log(pyramid(3)); // [[1], [1, 1], [1, 1, 1]]
+console.log(pyramid(4)); 
+/*
+[
+  [1],
+  [1, 1],
+  [1, 1, 1],
+  [1, 1, 1, 1]
+]*/
 // ---------------------------------------------------------------------------------------------------
   
 function pyramid(n) {
