@@ -1,46 +1,56 @@
 // quickSort algorithm 1
+// Function to swap two elements in an array
 const swap = (array, left, right) => {
-    const temp1 = array[left];
-    const temp2 = array[right];
-    array[left] = temp2;
-    array[right] = temp1;
-  };
-  
-  const partition = (array, left, right) => {
-    const pivotIndex = Math.floor((left + right) / 2);
-    const pivot = array[pivotIndex]; 
-    while(left <= right) {
-      while(array[left] < pivot) {
-        left++;
-      }
-      while(pivot < array[right]) {
-        right--;
-      }
-      if (left <= right) {
-        console.log(`swap ${array[left]} and ${array[right]}`);
-        swap(array, left, right);
-        console.log(array);
-        left++;
-        right--;
-      }
-    }
-    return left;
-  };
+    const temp = array[left];
+    array[left] = array[right];
+    array[right] = temp;
+};
 
-// quickSort algorithm 2
-const quickSort = (array, left, right) => {
-    const index = partition(array, left, right);
-    if (left < index - 1) {
-      quickSort(array, left, index - 1);
+// Function to partition the array around a pivot
+const partition = (array, left, right) => {
+    const pivotIndex = Math.floor((left + right) / 2);
+    const pivotValue = array[pivotIndex];
+    let i = left;
+    let j = right;
+
+    while (i <= j) {
+        // Move the left index to the right until we find an element greater than the pivot
+        while (array[i] < pivotValue) {
+            i++;
+        }
+        // Move the right index to the left until we find an element less than the pivot
+        while (array[j] > pivotValue) {
+            j--;
+        }
+        // Swap the elements and move the indices
+        if (i <= j) {
+            swap(array, i, j);
+            i++;
+            j--;
+        }
     }
-    if (index < right) {
-      quickSort(array, index, right);
+    return i; // Return the index where the partitioning ended
+};
+
+// Main QuickSort function
+const quickSort = (array, left = 0, right = array.length - 1) => {
+    if (left < right) {
+        const index = partition(array, left, right); // Partition the array
+        quickSort(array, left, index - 1); // Recursively sort the left subarray
+        quickSort(array, index, right); // Recursively sort the right subarray
     }
-  };
-  
-  let array = [4, 7, 1, 9, 3, 8, 0, 2];
-  quickSort(array, 0, array.length - 1);
-  console.log('quicksorted array is', array); 
+};
+
+// Example usage in big data analysis
+const analyzeData = (data) => {
+    console.log('Original Data:', data);
+    quickSort(data); // Sort the data using QuickSort
+    console.log('Sorted Data:', data);
+};
+
+// Simulated large dataset for analysis
+let bigDataArray = [42, 31, 24, 5, 12, 67, 89, 2, 45, 78, 23, 56, 91, 10, 33];
+analyzeData(bigDataArray);
 // ---------------------------------------------------------------------------------------------------------------------------------------
 
 /* QuickSort algorithm 2
