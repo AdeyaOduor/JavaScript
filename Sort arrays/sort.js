@@ -1,4 +1,4 @@
-// write the quickSort algorithm 1
+// quickSort algorithm 1
 const swap = (array, left, right) => {
     const temp1 = array[left];
     const temp2 = array[right];
@@ -27,6 +27,7 @@ const swap = (array, left, right) => {
     return left;
   };
 
+// quickSort algorithm 2
 const quickSort = (array, left, right) => {
     const index = partition(array, left, right);
     if (left < index - 1) {
