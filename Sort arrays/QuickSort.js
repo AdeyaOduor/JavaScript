@@ -127,7 +127,70 @@ const myArray = [3, 0, 2, 5, -1, 4, 1];
 console.log("Original array:", myArray); // Output: Original array: [3, 0, 2, 5, -1, 4, 1]
 const sortedArray = quickSort(myArray);
 console.log("Sorted array:", sortedArray); // Output: Sorted array: [-1, 0, 1, 2, 3, 4, 5]
+-------------------------------------------------------------------------------------------
+const mysql = require('mysql2');
 
+/**
+ * QuickSort algorithm to sort an array.
+ * @param {Array} array - The array to be sorted.
+ * @returns {Array} - The sorted array.
+ */
+function quickSort(array) {
+    if (array.length <= 1) {
+        return array;
+    }
+
+    const pivot = array[array.length - 1];
+    const left = [];
+    const right = [];
+
+    for (let i = 0; i < array.length - 1; i++) {
+        if (array[i] <= pivot) {
+            left.push(array[i]);
+        } else {
+            right.push(array[i]);
+        }
+    }
+
+    return [...quickSort(left), pivot, ...quickSort(right)];
+}
+
+// Create a connection to the database
+const connection = mysql.createConnection({
+    host: 'localhost', // Your database host
+    user: 'root',      // Your database username
+    password: 'password', // Your database password
+    database: 'test_db' // Your database name
+});
+
+// Connect to the database
+connection.connect((err) => {
+    if (err) {
+        console.error('Error connecting to the database:', err.stack);
+        return;
+    }
+    console.log('Connected to the database.');
+
+    // Fetch the transaction amounts
+    connection.query('SELECT amount FROM transactions', (error, results) => {
+        if (error) {
+            console.error('Error fetching data:', error);
+            return;
+        }
+
+        // Extract amounts into an array
+        const amounts = results.map(row => row.amount);
+        console.log("Original amounts:", amounts);
+
+        // Sort the amounts using QuickSort
+        const sortedAmounts = quickSort(amounts);
+        console.log("Sorted amounts:", sortedAmounts);
+
+        // Close the database connection
+        connection.end();
+    });
+});
+	
 const transactions = [200, 50, 150, 300, 100];
 console.log("Original transactions:", transactions);
 const sortedTransactions = quickSort(transactions);
