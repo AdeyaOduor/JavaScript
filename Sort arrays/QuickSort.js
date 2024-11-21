@@ -127,7 +127,7 @@ const myArray = [3, 0, 2, 5, -1, 4, 1];
 console.log("Original array:", myArray); // Output: Original array: [3, 0, 2, 5, -1, 4, 1]
 const sortedArray = quickSort(myArray);
 console.log("Sorted array:", sortedArray); // Output: Sorted array: [-1, 0, 1, 2, 3, 4, 5]
--------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------
 const mysql = require('mysql2');
 
 /**
