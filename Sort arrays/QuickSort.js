@@ -90,6 +90,41 @@ var myArray = [3, 0, 2, 5, -1, 4, 1 ];
 console.log("Original array: " + myArray); //Original array: 3,0,2,5,-1,4,1
 var sortedArray = quick_Sort(myArray);
 console.log("Sorted array: " + sortedArray);// Sorted array: -1,0,1,2,3,4,5
+
+/**
+ * QuickSort algorithm to sort an array.
+ * @param {Array} array - The array to be sorted.
+ * @returns {Array} - The sorted array.
+ */
+function quickSort(array) {
+    // Base case: if the array is empty or has one element, return it as is
+    if (array.length <= 1) {
+        return array;
+    }
+
+    // Choose the pivot (here we use the last element for simplicity)
+    const pivot = array[array.length - 1];
+    const left = [];   // Elements less than or equal to pivot
+    const right = [];  // Elements greater than pivot
+
+    // Partition the array into left and right arrays
+    for (let i = 0; i < array.length - 1; i++) {
+        if (array[i] <= pivot) {
+            left.push(array[i]);
+        } else {
+            right.push(array[i]);
+        }
+    }
+
+    // Recursively sort left and right arrays, and concatenate results
+    return [...quickSort(left), pivot, ...quickSort(right)];
+}
+
+// Example usage
+const myArray = [3, 0, 2, 5, -1, 4, 1];
+console.log("Original array:", myArray); // Output: Original array: [3, 0, 2, 5, -1, 4, 1]
+const sortedArray = quickSort(myArray);
+console.log("Sorted array:", sortedArray); // Output: Sorted array: [-1, 0, 1, 2, 3, 4, 5]
 // ---------------------------------------------------------------------------------------------------------------------------
 // Sort an Array Alphabetically using the sort Method
 function alphabeticalOrder(arr) {
