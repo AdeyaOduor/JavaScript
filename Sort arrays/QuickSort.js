@@ -92,6 +92,8 @@ var sortedArray = quick_Sort(myArray);
 console.log("Sorted array: " + sortedArray);// Sorted array: -1,0,1,2,3,4,5
 
 /**
+In a database context, the QuickSort algorithm can be used to sort records based on a 
+specific field, such as sorting user IDs, prices, or timestamps. 
  * QuickSort algorithm to sort an array.
  * @param {Array} array - The array to be sorted.
  * @returns {Array} - The sorted array.
