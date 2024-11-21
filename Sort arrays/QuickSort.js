@@ -1,3 +1,9 @@
+/*
+QuickSort can be used to sort large arrays of data efficiently. For example, you might have a dataset of numerical values representing user transactions, 
+sensor readings, or performance metrics. Sorting this data can help in various analyses, such as identifying trends, finding outliers, or preparing 
+data for further statistical analysis.
+*/
+
 // quickSort algorithm 1
 // Function to swap two elements in an array
 const swap = (array, left, right) => {
