@@ -191,10 +191,6 @@ connection.connect((err) => {
     });
 });
 	
-const transactions = [200, 50, 150, 300, 100];
-console.log("Original transactions:", transactions);
-const sortedTransactions = quickSort(transactions);
-console.log("Sorted transactions:", sortedTransactions); // Output: Sorted transactions: [50, 100, 150, 200, 300]
 
 // ---------------------------------------------------------------------------------------------------------------------------
 // Sort an Array Alphabetically using the sort Method
