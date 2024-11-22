@@ -134,6 +134,8 @@ const sortedTransactions = quickSort(transactions);
 console.log("Sorted transactions:", sortedTransactions); // Output: Sorted transactions: [50, 100, 150, 200, 300]
 
 // -------------------------------------------------------------------------------------------
+
+// Node express app connecting to a database
 const mysql = require('mysql2');
 
 /**
