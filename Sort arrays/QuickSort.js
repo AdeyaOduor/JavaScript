@@ -138,11 +138,6 @@ console.log("Sorted transactions:", sortedTransactions); // Output: Sorted trans
 // Node express app connecting to a database
 const mysql = require('mysql2');
 
-/**
- * QuickSort algorithm to sort an array.
- * @param {Array} array - The array to be sorted.
- * @returns {Array} - The sorted array.
- */
 function quickSort(array) {
     if (array.length <= 1) {
         return array;
