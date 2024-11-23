@@ -202,7 +202,8 @@ function alphabeticalOrder(arr) {
     return a === b ? 0 : a > b ? 1 : -1;
   });
 }
-alphabeticalOrder(["a", "d", "c", "a", "z", "g"]);
+console.log(alphabeticalOrder(["a", "d", "c", "a", "z", "g"]));
+
 // ---------------------------------------------------------------------------
 // Return a Sorted Array Without Changing the Original Array
 const globalArray = [5, 6, 3, 2, 9];
