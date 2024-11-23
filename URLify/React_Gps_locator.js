@@ -47,7 +47,7 @@ const GPSLocationTracker = () => {
 };
 
 export default GPSLocationTracker;
------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------
 // inside App.js import above code:
 import React from 'react';
 import GPSLocationTracker from './GPSLocationTracker';
@@ -62,7 +62,7 @@ const App = () => {
 };
 
 export default App;
----------------------------------------------------------------------
+// ---------------------------------------------------------------------
 //Image handling with GPS coordinates
 import React, { useState, useEffect } from "react";
 import exifr from "exifr";
