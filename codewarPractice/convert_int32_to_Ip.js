@@ -7,7 +7,8 @@ const int32ToIp = (num) => {
           (num >>> 8 & 0xFF) + '.' +   // Extract the third octet
           (num & 0xFF);                 // Extract the fourth octet
 };
-
+const ip = int32ToIp(3232235777);
+console.log(ip); // Output: "192.168.1.1"
 
 /*Explanation
 
