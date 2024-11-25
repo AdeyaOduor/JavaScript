@@ -7,3 +7,12 @@ function generateHashtag(str) {
     })
     .join(''); // Join the words back together
 }
+
+const postContent = "hello world this is a test";
+const hashtag = generateHashtag(postContent);
+
+if (hashtag) {
+  console.log("Generated Hashtag:", hashtag); // Output: Generated Hashtag: #HelloWorldThisIsATest
+} else {
+  console.log("Invalid input for hashtag generation.");
+}
