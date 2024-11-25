@@ -16,3 +16,13 @@ if (hashtag) {
 } else {
   console.log("Invalid input for hashtag generation.");
 }
+
+/*Real-World Application Scenario
+
+Imagine a social media application like Twitter or Instagram:
+
+    User Engagement: Users often want to tag their posts to join conversations or highlight topics. The generateHashtag function automates 
+    this process by ensuring that hashtags are formatted correctly.
+    Searchability: Hashtags make it easier for users to find content related to specific topics. For example, a post tagged with #Travel can 
+    be easily searched by users interested in travel content.
+*/
