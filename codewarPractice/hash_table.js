@@ -1,84 +1,135 @@
 // Hashes verify file integrity
 
-var LinkedList = function(key, value) {
-  this.keyValPair = [key, value];
-  this.next = null;
-};
-
-LinkedList.prototype.insert = function(key, value) {
-  if (this.next === null) {
-    this.next = new LinkedList(key, value);
-  } else {
-    this.next.insert(key, value);
-  }
-};
-
-LinkedList.prototype.find = function(key) {
-  if (this.keyValPair[0] === key) {
-    return this.keyValPair[1];
-  } else if (this.next !== null) {
-    return this.next.find(key);
-  } else {
-    return null;
-  }
-};
-
-LinkedList.prototype.replace = function(key, value) {
-  if (this.keyValPair[0] === key) {
-    this.keyValPair = [key, value];
-  } else if (this.next !== null) {
-    this.next.replace(key);
-  }
-};
-
-LinkedList.prototype.delete = function(key) {
-  if (this.keyValPair[0] === key) {
-    // this = this.next; // need to delete node
-  } else if (this.next !== null) {
-    this.next.delete(key);
-  } 
-};
-
-var getHash = function(key, limit) {
-  if (typeof key !== 'string') {
-    throw 'error, key is not a string';
-  } else {
-    var answer = 0;
-    for (var i = 0; i < key.length; i++) {
-      answer += key[i];
+class LinkedListNode {
+    constructor(key, value) {
+        this.keyValPair = [key, value];
+        this.next = null;
     }
-    return answer % limit;
-  }
+}
+
+class LinkedList {
+    constructor() {
+        this.head = null;
+    }
+
+    insert(key, value) {
+        const newNode = new LinkedListNode(key, value);
+        if (!this.head) {
+            this.head = newNode;
+        } else {
+            let current = this.head;
+            while (current.next) {
+                current = current.next;
+            }
+            current.next = newNode;
+        }
+    }
+
+    find(key) {
+        let current = this.head;
+        while (current) {
+            if (current.keyValPair[0] === key) {
+                return current.keyValPair[1];
+            }
+            current = current.next;
+        }
+        return null;
+    }
+
+    replace(key, value) {
+        let current = this.head;
+        while (current) {
+            if (current.keyValPair[0] === key) {
+                current.keyValPair[1] = value;
+                return;
+            }
+            current = current.next;
+        }
+    }
+
+    delete(key) {
+        if (!this.head) return;
+
+        if (this.head.keyValPair[0] === key) {
+            this.head = this.head.next;
+            return;
+        }
+
+        let current = this.head;
+        while (current.next) {
+            if (current.next.keyValPair[0] === key) {
+                current.next = current.next.next;
+                return;
+            }
+            current = current.next;
+        }
+    }
+}
+
+const getHash = (key, limit) => {
+    if (typeof key !== 'string') {
+        throw new Error('Key must be a string');
+    }
+    let hash = 0;
+    for (let char of key) {
+        hash += char.charCodeAt(0);
+    }
+    return hash % limit;
 };
 
-var HashTable = function() {
-  this.array = [];
-  this.limit = 8;
+class HashTable {
+    constructor(limit = 8) {
+        this.array = new Array(limit);
+        this.limit = limit;
+    }
+
+    insert(key, value) {
+        const hash = getHash(key, this.limit);
+        if (!this.array[hash]) {
+            this.array[hash] = new LinkedList();
+        }
+        this.array[hash].insert(key, value);
+    }
+
+    retrieve(key) {
+        const hash = getHash(key, this.limit);
+        if (!this.array[hash]) {
+            throw new Error('Key does not exist');
+        }
+        return this.array[hash].find(key);
+    }
+
+    delete(key) {
+        const hash = getHash(key, this.limit);
+        if (!this.array[hash]) {
+            throw new Error('Key does not exist');
+        }
+        this.array[hash].delete(key);
+    }
+}
+
+// Example of Application: Verifying File Integrity
+const fileHashTable = new HashTable();
+
+// Simulating file integrity verification
+const addFileHash = (fileName, hashValue) => {
+    fileHashTable.insert(fileName, hashValue);
 };
 
-HashTable.prototype.insert = function(key, value) {
-  var hash = getHash(key, this.limit);
-  if (this.array[hash] === undefined) {
-    this.array[hash] = new LinkedList(key, value);  
-  } else {
-    this.array[hash].insert(key, value);
-  }
+const verifyFileIntegrity = (fileName, expectedHash) => {
+    try {
+        const actualHash = fileHashTable.retrieve(fileName);
+        return actualHash === expectedHash;
+    } catch (error) {
+        console.error(error.message);
+        return false;
+    }
 };
 
-HashTable.prototype.retrieve = function(key) {
-  var hash = getHash(key, this.limit);
-  if (this.array[hash] === undefined) {
-    throw 'key does not exist';
-  } else {
-    return this.array[hash].find(key);
-  }
-};
+// Adding file hashes
+addFileHash('file1.txt', 'abc123hash');
+addFileHash('file2.txt', 'def456hash');
 
-HashTable.prototype.delete = function(key) {
-  var hash = getHash(key, this.limit);
-  if (this.array[hash] === undefined) {
-    throw 'key does not exist';
-  } else {
-    this.array[hash].delete(key);
-  }
-};
+// Verifying file integrity
+console.log(verifyFileIntegrity('file1.txt', 'abc123hash')); // Output: true
+console.log(verifyFileIntegrity('file2.txt', 'wronghash'));  // Output: false
