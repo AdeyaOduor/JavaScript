@@ -39,4 +39,8 @@ as follows:
 
     Combine the Octets:
         The binary representation of 192.168.1.1 is:
+        11000000.10101000.00000001.00000001
+        When combined into a 32-bit integer, this becomes: 
+        11000000 10101000 00000001 00000001
+        As a single integer, this is 3232235777.
 */
