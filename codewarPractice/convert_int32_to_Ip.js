@@ -9,5 +9,33 @@ const int32ToIp = (num) => {
 };
 
 
-/*
+/*Explanation
+
+    Right Shift (>>>):
+        The >>> operator is the unsigned right shift operator. It shifts the bits of num to the right by the specified number of bits, 
+        filling in zeros from the left. This effectively discards bits that are shifted out.
+        For example, num >>> 24 shifts the bits 24 positions to the right, moving the first octet to the least significant position.
+
+    Bitwise AND (&):
+        The & operator performs a bitwise AND operation. By using 0xFF (which is 11111111 in binary), we isolate the last 8 bits of the number, 
+        effectively extracting one octet of the IP address.
+        For example, (num >>> 24 & 0xFF) extracts the first octet from the integer.
+
+    Concatenation:
+        The function concatenates the four octets with a dot (.) to form the standard IP address format.
+
+Example of Application
+Converting a 32-Bit Integer to an IP Address
+
+Let's say you have the 32-bit integer representation of the IP address 192.168.1.1. The integer representation of this IP address can be calculated 
+as follows:
+
+    Convert Each Octet:
+        192 is represented in binary as 11000000
+        168 is represented in binary as 10101000
+        1 is represented in binary as 00000001
+        1 is represented in binary as 00000001
+
+    Combine the Octets:
+        The binary representation of 192.168.1.1 is:
 */
