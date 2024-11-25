@@ -133,3 +133,14 @@ addFileHash('file2.txt', 'def456hash');
 // Verifying file integrity
 console.log(verifyFileIntegrity('file1.txt', 'abc123hash')); // Output: true
 console.log(verifyFileIntegrity('file2.txt', 'wronghash'));  // Output: false
+
+/*Example Application: Verifying File Integrity
+
+In this example, the hash table is used to store file names and their corresponding hash values. This is useful in scenarios like verifying the 
+integrity of files after transfer or storage.
+Use Case
+
+    Adding File Hashes: When files are uploaded or stored, their names and hash values are inserted into the hash table for later verification.
+    Verifying Integrity: When a file is accessed, the system checks its hash against the stored hash value to ensure it hasn't been altered or 
+    corrupted.
+*/
