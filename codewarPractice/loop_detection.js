@@ -47,18 +47,20 @@ e.next = c; // Creates a loop back to C
 
 console.log(loopDetection(a) === c); // Output: true (loop starts at C)
 
-// Create a linked list without a loop: A -> B -> C -> D -> E -> F
-const A = new ListNode('A');
-const B = new ListNode('B');
-const C = new ListNode('C');
-const D = new ListNode('D');
-const E = new ListNode('E');
-const F = new ListNode('F');
+// network monitoring tool that analyzes packet routes:
+const routeA = new ListNode('Router A');
+const routeB = new ListNode('Router B');
+const routeC = new ListNode('Router C');
+const routeD = new ListNode('Router D');
 
-A.next = B;
-B.next = C;
-C.next = D;
-D.next = E;
-E.next = F;
+routeA.next = routeB;
+routeB.next = routeC;
+routeC.next = routeD;
+routeD.next = routeB; // Creates a loop back to Router B
 
-console.log(loopDetection(A) === null); // Output: true (no loop)
+const loopNode = loopDetection(routeA);
+if (loopNode) {
+    console.log(`Loop detected at: ${loopNode.value}`); // Output: Loop detected at: Router B
+} else {
+    console.log('No loop detected.');
+}
