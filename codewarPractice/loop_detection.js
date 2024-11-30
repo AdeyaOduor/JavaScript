@@ -101,3 +101,25 @@ Key Steps to Implement Loop Detection
         Upon detecting a loop, the system can automatically reroute data, skip the problematic processing step, or restart the data pipeline.
 
 */
+// Step 1: Define the Data Flow
+class ProcessingNode {
+    constructor(name) {
+        this.name = name;
+        this.next = null;
+    }
+}
+
+const createDataFlow = () => {
+    const nodeA = new ProcessingNode('Ingest Data');
+    const nodeB = new ProcessingNode('Transform Data');
+    const nodeC = new ProcessingNode('Aggregate Data');
+    const nodeD = new ProcessingNode('Store Data');
+
+    // Create a loop for demonstration: Store Data -> Transform Data
+    nodeA.next = nodeB;
+    nodeB.next = nodeC;
+    nodeC.next = nodeD;
+    nodeD.next = nodeB; // Creates a loop back to Transform Data
+
+    return nodeA; // Return the head of the linked list
+};
