@@ -123,3 +123,24 @@ const createDataFlow = () => {
 
     return nodeA; // Return the head of the linked list
 };
+
+// Step 2: Implement Loop Detection in the Processing Pipeline
+const processDataFlow = (head) => {
+    const loopNode = loopDetection(head);
+    if (loopNode) {
+        console.error(`Loop detected at: ${loopNode.name}. Stopping processing.`);
+        // Implement logic to handle the loop, e.g., skip this node or alert the user
+        return;
+    }
+
+    // Continue processing nodes if no loop is detected
+    let current = head;
+    while (current) {
+        console.log(`Processing: ${current.name}`);
+        current = current.next;
+    }
+};
+
+// Example usage
+const dataFlow = createDataFlow();
+processDataFlow(dataFlow);
