@@ -1,7 +1,10 @@
+// a constructor that initializes an instance of a book reader.
 let BookReader = function() {
-  this.currentBook = null;
-  this.books = {};
+  this.currentBook = null; // Keeps track of the currently opened book
+  this.books = {}; // An object to store all added books, indexed by their names
 };
+
+
 
 BookReader.prototype.add = function(book) {
   this.books[book.name] = book;
