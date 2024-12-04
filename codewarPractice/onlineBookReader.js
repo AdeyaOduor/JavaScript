@@ -22,3 +22,22 @@ var Book = function(name, file) {
   this.name = name; // The name of the book
   this.file = file; // The content of the book, possibly as a string or file path
 };
+
+// Create an instance of BookReader
+let myBookReader = new BookReader();
+
+// Create some books
+let book1 = new Book('JavaScript Basics', 'Content of JavaScript Basics...');
+let book2 = new Book('Advanced JavaScript', 'Content of Advanced JavaScript...');
+
+// Add books to the reader
+myBookReader.add(book1);
+myBookReader.add(book2);
+
+// Find and open a book
+let content = myBookReader.open('JavaScript Basics');
+console.log(content); // Output: Content of JavaScript Basics...
+
+// Find a specific book
+let foundBook = myBookReader.find('Advanced JavaScript');
+console.log(foundBook); // Output: Book object for 'Advanced JavaScript'
