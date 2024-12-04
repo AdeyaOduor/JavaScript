@@ -14,11 +14,11 @@ BookReader.prototype.find = function(bookname) {
 };
 
 BookReader.prototype.open = function(bookname) {
-  this.currentBook = this.books[bookname];
-  return this.currentBook.file;
+  this.currentBook = this.books[bookname]; // Sets the currentBook to the specified book
+  return this.currentBook.file; // Returns the file associated with the current book
 };
 
 var Book = function(name, file) {
-  this.name = name;
-  this.file = file;
+  this.name = name; // The name of the book
+  this.file = file; // The content of the book, possibly as a string or file path
 };
