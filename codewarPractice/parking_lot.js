@@ -1,3 +1,4 @@
+// inside app.js
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -17,8 +18,8 @@ class ParkingLot {
       if (this.cars[car.name] !== undefined) {
         return 'Car is already inside parking lot';
       } else {
-        this.cars[car.name] = car;
-        this.number++;
+        this.cars[car.name] = car; // Park the car
+        this.number++; // Increment the count of parked cars
         return 'Car parked successfully';
       }
     } else {
@@ -32,8 +33,8 @@ class ParkingLot {
     } else if (this.cars[car.name] === undefined) {
       return 'The car is not in the parking lot';
     } else {
-      delete this.cars[car.name];
-      this.number--;
+      delete this.cars[car.name]; // Remove the car from the parking lot
+      this.number--; // Decrement the count of parked cars
       return 'Car exited successfully';
     }
   }
