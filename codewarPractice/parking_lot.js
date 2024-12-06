@@ -40,7 +40,7 @@ class ParkingLot {
   }
 
   available() {
-    return this.number < this.limit;
+    return this.number < this.limit; // Returns true if there are available spaces
   }
 }
 
