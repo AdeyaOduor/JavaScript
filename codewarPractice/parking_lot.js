@@ -72,3 +72,6 @@ app.listen(PORT, () => {
 });
 
 // Test the post and get methods for park and exit fuctions endpoints.
+/*
+The provided code defines a simple implementation of a parking lot system in JavaScript. 
+It allows cars to be parked, exited, and checks the availability of parking spaces.*/
