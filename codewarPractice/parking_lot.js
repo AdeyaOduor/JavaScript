@@ -7,9 +7,9 @@ app.use(bodyParser.json()); // Middleware to parse JSON bodies
 // ParkingLot class definition
 class ParkingLot {
   constructor(spaces) {
-    this.limit = spaces;
-    this.number = 0;
-    this.cars = {};
+    this.limit = spaces; // Maximum number of parking spaces
+    this.number = 0; // Current number of parked cars
+    this.cars = {}; // Object to store parked cars keyed by their names
   }
 
   park(car) {
