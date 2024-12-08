@@ -42,3 +42,6 @@ if (checkPositive(transactions)) {
 } else {
   console.error('No positive income entries found.');
 }
+
+checkPositive([1, 2, 3, -4, 5]);
+// The output will be true because the array [1, 2, 3, -4, 5] contains values that are greater than 0 (1, 2, 3, and 5).
