@@ -29,12 +29,16 @@ function checkPositive(arr) {
   return result; // Return the result
 }
 
-checkPositive([1, 2, 3, -4, 5]);
-// The output will be true because the array [1, 2, 3, -4, 5] contains values that are greater than 0 (1, 2, 3, and 5).
-
 const scores = [0, -2, 5]; // Example user input
 if (checkPositive(scores)) {
   // Proceed with further processing
 } else {
   console.log('At least one score must be positive.');
+}
+
+const transactions = [-100, -50, 0]; // Example transactions
+if (checkPositive(transactions)) {
+  console.log('There are positive income entries.');
+} else {
+  console.error('No positive income entries found.');
 }
