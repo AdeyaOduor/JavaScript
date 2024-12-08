@@ -18,7 +18,8 @@ if (checkPositive(quantities)) {
   // Proceed with order submission
 } else {
   console.log('All quantities must be positive.');
-}
+// } True
+  
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 // The some Method to Check that Any Elements in an Array Meet a Criteria
 function checkPositive(arr) {
