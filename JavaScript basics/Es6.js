@@ -199,7 +199,8 @@ and C is the value of the same temperature in Celsius.
 
 Note: When you implement this, you will track the temperature inside the class in one scale, either Fahrenheit or Celsius.
 
-This is the power of a getter and a setter. You are creating an API for another user, who can get the correct result regardless of which one you track.
+This is the power of a getter and a setter. You are creating an API for another user, who can get the correct result regardless 
+of which one you track.
 
 In other words, you are abstracting implementation details from the user. */
 // -------------------------------------------------------------------------------------------------------------------------------------------------------
