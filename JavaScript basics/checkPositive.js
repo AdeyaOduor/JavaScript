@@ -23,10 +23,10 @@ if (checkPositive(quantities)) {
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 // The some Method to Check that Any Elements in an Array Meet a Criteria
 function checkPositive(arr) {
-  const result = arr.some(elem => elem > 0);
+  const result = arr.some(elem => elem > 0); // Check if any element is greater than 0
   
-  console.log(result);
-  return result;
+  console.log(result); // Log the result (true or false)
+  return result; // Return the result
 }
 
 checkPositive([1, 2, 3, -4, 5]);
