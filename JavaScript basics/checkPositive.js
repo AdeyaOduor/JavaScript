@@ -8,7 +8,10 @@ function checkPositive(arr) {
   return result; // Return the result
 }
 
-checkPositive([1, 2, 3, -4, 5]);// The output will be false because the array [1, 2, 3, -4, 5] contains the value -4, which is not greater than 0.
+const expenses = [200, 150, -50]; // Example expenses in financial application
+if (!checkPositive(expenses)) {
+  console.error('All expenses must be positive values.');
+}
 
 const quantities = [5, 10, 15]; // Example user input in data validation
 if (checkPositive(quantities)) {
