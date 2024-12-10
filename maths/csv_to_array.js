@@ -1,4 +1,27 @@
-//program to convert a comma-separated values (CSV) string to a 2D array
+/* program to convert a comma-separated values (CSV) string to a 2D array
+
+1. Function Definition
+
+    const csv_to_array: This declares a constant variable csv_to_array and assigns it a function.
+    Parameters:
+        data: A string containing CSV data.
+        delimiter: A string that specifies the character used to separate values in the CSV (default is a comma ,).
+        omitFirstRow: A boolean that indicates whether to skip the first row (often used for headers).
+
+2. Function Logic
+
+    slice Method:
+        This method is used to remove the first row from the data if omitFirstRow is true. It uses data.indexOf('\n') 
+        to find the position of the first newline character and slices the string from there onward.
+        If omitFirstRow is false, it starts from the beginning of the string.
+
+    split('\n'):
+        After slicing, the data is split into an array of rows based on the newline character.
+
+    map(v => v.split(delimiter)):
+        Finally, for each row, it splits the row into individual values (columns) based on the specified delimiter, resulting 
+        in a two-dimensional array where each inner array represents a row of data.
+*/
 const csv_to_array = (data, delimiter = ',', omitFirstRow = false) =>
   data
     .slice(omitFirstRow ? data.indexOf('\n') + 1 : 0) // Remove the first row if specified
