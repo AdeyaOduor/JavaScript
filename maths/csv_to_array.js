@@ -30,6 +30,7 @@ const csv_to_array = (data, delimiter = ',', omitFirstRow = false) =>
 
 
 const salesData = csv_to_array(fetchCSVData('sales_data.csv'), ',', true);
+
 // Analyze the sales data and generate visualizations
 
 // Assuming the CSV data is submitted through a form
