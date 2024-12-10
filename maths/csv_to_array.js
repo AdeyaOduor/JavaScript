@@ -27,7 +27,7 @@ const transformedData = sourceData.map(row => transformRow(row));
 
 const stockPriceData = csv_to_array(fetchCSVData('stock_prices.csv'), ',', true);
 // Visualize the stock price data in a custom charting application
----------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------
 
   // Extract the CSV data
 const rawSalesData = fetchCSVData('sales_data.csv');
