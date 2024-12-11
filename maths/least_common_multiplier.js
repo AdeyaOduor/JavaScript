@@ -50,7 +50,7 @@ const results = [
 
 // Log the results to the console
 console.log(results); // Output [ 60, 60, 2520, 360360, 6056820 ]
----------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------
 
  /**
  * Calculates the Least Common Multiple (LCM) of a set of numbers.
@@ -94,7 +94,7 @@ The LCM has various other real-world applications, such as in:
     Finance: Determining the optimal investment periods for different financial instruments.
     Biology: Analyzing the reproductive cycles of different organisms.
 */
------------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------------------------------------
 /*
 *Suppose you have three different financial instruments with the following investment periods:
 
@@ -120,7 +120,7 @@ const investmentPeriods = [3, 6, 12]; // Instrument A: 3 months, Instrument B: 6
 const optimalInvestmentPeriod = findLCM(investmentPeriods);
 
 console.log(`The optimal investment period is ${optimalInvestmentPeriod} months.`);
-----------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
 
  /**
  * Calculates the Least Common Multiple (LCM) of two numbers.
