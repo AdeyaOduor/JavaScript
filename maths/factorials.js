@@ -4,7 +4,7 @@ function factorial(x, runningTotal = 1 ) {
 }
 
 console.log(factorial(10)) // output 3628800
-------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------------------------
 // recursive
 function factorialize(num) {
   if (num === 0) {
@@ -37,7 +37,7 @@ const numFriends = 5;
 const numPermutations = factorial(numFriends);
 
 console.log(`There are ${numPermutations} possible ways to arrange the ${numFriends} friends in a line.`);
------------------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------------------
    // Calculates the factorial of a given number in probablity and statistics.
 function factorial(n) {
   if (n === 0 || n === 1) {
