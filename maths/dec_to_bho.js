@@ -67,12 +67,10 @@ for (let i = 0; i < ipComponents.length; i++) {
 }
 /*
 Decimal: 192, Binary: 11000000, Hexadecimal: C0, Octal: 300
-
 Decimal: 168, Binary: 10101000, Hexadecimal: A8, Octal: 250
-
 Decimal: 1, Binary: 1, Hexadecimal: 1, Octal: 1
-
-Decimal: 100, Binary: 1100100, Hexadecimal: 64,Octal: 144*/
+Decimal: 100, Binary: 1100100, Hexadecimal: 64,Octal: 144
+*/
 
 // Parsing an Ethernet frame header to convert numerical values between different representations, making it easier to understand and work with the protocol data.
 const ethernetHeader = {
