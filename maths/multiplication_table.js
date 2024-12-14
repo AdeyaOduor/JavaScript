@@ -12,7 +12,7 @@ for(let i = 1; i <= range; i++) {
     const result = i * number;
     console.log(`${number} * ${i} = ${result}`);
 }
---------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------------
     /*
     The function below starts by initializing an empty string called table to store the multiplication table.
 
