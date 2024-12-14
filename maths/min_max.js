@@ -42,7 +42,7 @@ const farthestLocation = reduce_Which(locations, (a, b) => distances[locations.i
 function calculateDistance(p1, p2) {
   // Implementation of distance calculation formula
 }
-------------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------------------
 /* Use Array.prototype.reduce() in combination with the comparator function to get the appropriate element in the array.
 Omit the second argument, comparator, to use the default one that returns the minimum element in the array. */
 
