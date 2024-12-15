@@ -99,3 +99,10 @@ function sieveOfEratosthenes(n) {
 const n = 50; // Find primes up to 50
 const primesUpToN = sieveOfEratosthenes(n);
 console.log(`Prime numbers up to ${n}:`, primesUpToN);
+
+/*
+Prime numbers up to 50: [
+   2,  3,  5,  7, 11, 13,
+  17, 19, 23, 29, 31, 37,
+  41, 43, 47
+]*/
