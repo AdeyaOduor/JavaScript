@@ -67,6 +67,4 @@ This algorithm is a well-known and efficient method for finding prime numbers, a
         Eratosthenes algorithm, which can then be applied to various optimization problems, such as finding the smallest set of prime factors for a 
         given number or identifying prime numbers in a range.
 
-These are just a few examples of how the code provided, which implements the Sieve of Eratosthenes algorithm to find the sum of prime numbers up to a 
-given limit, can be applied in real-world scenarios. The versatility of prime numbers and the underlying algorithm makes this code a valuable tool for 
-a wide range of applications, from cryptography and number theory to data compression and algorithm design.*/
+*/
