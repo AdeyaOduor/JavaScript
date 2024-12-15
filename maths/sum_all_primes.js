@@ -68,3 +68,34 @@ This algorithm is a well-known and efficient method for finding prime numbers, a
         given number or identifying prime numbers in a range.
 
 */
+
+// Example
+function sieveOfEratosthenes(n) {
+    // Step 1: Create an array of boolean values
+    const primes = Array(n + 1).fill(true); // Assume all numbers are prime
+    primes[0] = primes[1] = false; // 0 and 1 are not prime numbers
+
+    // Step 2: Mark non-prime numbers
+    for (let p = 2; p * p <= n; p++) {
+        if (primes[p]) {
+            for (let multiple = p * p; multiple <= n; multiple += p) {
+                primes[multiple] = false; // Mark multiples of p as non-prime
+            }
+        }
+    }
+
+    // Step 3: Collecting all prime numbers
+    const primeNumbers = [];
+    for (let i = 2; i <= n; i++) {
+        if (primes[i]) {
+            primeNumbers.push(i);
+        }
+    }
+
+    return primeNumbers;
+}
+
+// Example usage
+const n = 50; // Find primes up to 50
+const primesUpToN = sieveOfEratosthenes(n);
+console.log(`Prime numbers up to ${n}:`, primesUpToN);
