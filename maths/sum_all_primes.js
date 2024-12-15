@@ -105,4 +105,17 @@ Prime numbers up to 50: [
    2,  3,  5,  7, 11, 13,
   17, 19, 23, 29, 31, 37,
   41, 43, 47
-]*/
+]
+
+Explanation of the Implementation
+
+    Array Initialization:
+        An array primes is initialized with true values. The indices represent the numbers. Thus, primes[i] will be true if i is considered prime.
+
+    Marking Non-Primes:
+        The outer loop iterates through each number starting from 2. If primes[p] is still true, it means p is a prime.
+        The inner loop marks all multiples of p starting from p * p (since smaller multiples will have already been marked by smaller primes).
+
+    Collecting Primes:
+        After marking, the algorithm iterates through the primes array to collect all indices that are still marked as true, indicating they are prime.
+*/
