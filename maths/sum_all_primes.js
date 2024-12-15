@@ -32,7 +32,7 @@ function sumPrimes(num) {
   return primesum;
 }
 
-sumPrimes(977);
+console.log(sumPrimes(977)); // 73156
 
 /* Above is a Sieve of Eratosthenes algorithm to find the sum of all prime numbers up to a given number. 
 This algorithm is a well-known and efficient method for finding prime numbers, and it has several real-world applications. Here are a few examples:
