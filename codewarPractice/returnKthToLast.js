@@ -50,3 +50,9 @@ class LinkedList {
         }
     }
 }
+
+const loginList = new LinkedList();
+loginList.append('2024-12-01 10:00:00'); // Most recent
+loginList.append('2024-12-01 09:00:00');
+loginList.append('2024-12-01 08:00:00');
+loginList.append('2024-12-01 07:00:00');
