@@ -22,8 +22,10 @@ var findKthToLast = function(k, list) {
 /*
 Real-World Application: Retrieving Recent Records
 
-One practical application of this function is in scenarios where you need to retrieve recent user activity 
-or records from a data structure. For example:*/
+One practical application of this function is in scenarios where you need to retrieve recent user activity or records from a data structure. 
+The findKthToLast function is a powerful tool for efficiently accessing specific elements in a linked list. 
+Its application in retrieving recent records, such as user logins, demonstrates its utility in real-world scenarios where data is sequentially stored.
+For example:*/
 
 class LoginRecord {
     constructor(timestamp) {
