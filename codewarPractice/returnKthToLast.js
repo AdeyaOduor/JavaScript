@@ -56,3 +56,7 @@ loginList.append('2024-12-01 10:00:00'); // Most recent
 loginList.append('2024-12-01 09:00:00');
 loginList.append('2024-12-01 08:00:00');
 loginList.append('2024-12-01 07:00:00');
+
+const k = 2; // find the login record that occurred 2 logins before the most recent one:
+const kthLogin = findKthToLast(k, loginList);
+console.log(kthLogin.timestamp); // Output: '2024-12-01 08:00:00'
