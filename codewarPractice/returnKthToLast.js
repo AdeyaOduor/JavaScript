@@ -24,3 +24,29 @@ Real-World Application: Retrieving Recent Records
 
 One practical application of this function is in scenarios where you need to retrieve recent user activity 
 or records from a data structure. For example:*/
+
+class LoginRecord {
+    constructor(timestamp) {
+        this.timestamp = timestamp;
+        this.next = null;
+    }
+}
+
+class LinkedList {
+    constructor() {
+        this.head = null;
+    }
+
+    append(timestamp) {
+        const newNode = new LoginRecord(timestamp);
+        if (!this.head) {
+            this.head = newNode;
+        } else {
+            let current = this.head;
+            while (current.next) {
+                current = current.next;
+            }
+            current.next = newNode;
+        }
+    }
+}
