@@ -18,3 +18,9 @@ var findKthToLast = function(k, list) {
 
   return slow; // Slow is now at the kth node from the end
 };
+
+/*
+Real-World Application: Retrieving Recent Records
+
+One practical application of this function is in scenarios where you need to retrieve recent user activity 
+or records from a data structure. For example:*/
