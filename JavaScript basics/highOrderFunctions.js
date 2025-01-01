@@ -44,3 +44,54 @@ const users = [
 
 const names = users.map(user => user.name);
 console.log(names); // Output: ['Alice', 'Bob', 'Charlie']
+
+/*
+2. filter
+
+The filter function creates a new array with all elements that pass the test implemented by the provided function.
+Example Application: Filtering Data
+
+Scenario: You have an array of products, and you want to get only those that are in stock.*/
+
+const products = [
+    { id: 1, name: 'Laptop', inStock: true },
+    { id: 2, name: 'Phone', inStock: false },
+    { id: 3, name: 'Tablet', inStock: true }
+];
+
+const inStockProducts = products.filter(product => product.inStock);
+console.log(inStockProducts);
+// Output: [{ id: 1, name: 'Laptop', inStock: true }, { id: 3, name: 'Tablet', inStock: true }]
+
+/*
+3. reduce
+
+The reduce function executes a reducer function on each element of the array, resulting in a single output value.
+Example Application: Summing Values
+
+Scenario: You have an array of numbers, and you want to calculate the total sum.*/
+
+const numbers = [1, 2, 3, 4, 5];
+
+const totalSum = numbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+console.log(totalSum); // Output: 15
+
+/*
+Combined Example: Chaining map, filter, and reduce
+
+You can combine these functions to perform complex data transformations in a concise manner.
+
+Scenario: Given an array of users, you want to find the total age of users who are over 30.*/
+
+const users = [
+    { id: 1, name: 'Alice', age: 25 },
+    { id: 2, name: 'Bob', age: 35 },
+    { id: 3, name: 'Charlie', age: 45 }
+];
+
+const totalAgeOver30 = users
+    .filter(user => user.age > 30) // Step 1: Filter users over 30
+    .map(user => user.age)         // Step 2: Extract their ages
+    .reduce((sum, age) => sum + age, 0); // Step 3: Sum the ages
+
+console.log(totalAgeOver30); // Output: 80
