@@ -19,6 +19,7 @@ console.log(squaredIntegers); // [ 25, 9 ]
 integer values are accepted and processed further.*/
 const userInput = [-2.3, 4, 0, 6.7, -1, 3.14];
 const squaredPositiveIntegers = squareList(userInput); //[16, 9, 81]
+
 // The squared positive integers could be used in scientific calculations, such as finding the variance or standard deviation of the measurements.
 const measurements = [2.5, -1.2, 4, 0, 3.7, -5.1, 8];
 const squaredPositiveIntegers = squareList(measurements); //[16, 9, 64]
