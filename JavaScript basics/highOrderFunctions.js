@@ -35,3 +35,12 @@ The map function creates a new array populated with the results of calling a pro
 Example Application: Transforming Data
 
 Scenario: You have an array of objects representing users, and you want to extract just the names into a new array.*/
+
+const users = [
+    { id: 1, name: 'Alice', age: 25 },
+    { id: 2, name: 'Bob', age: 30 },
+    { id: 3, name: 'Charlie', age: 35 }
+];
+
+const names = users.map(user => user.name);
+console.log(names); // Output: ['Alice', 'Bob', 'Charlie']
