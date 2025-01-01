@@ -3,7 +3,7 @@ function reusableFunction() {
   console.log("Hi World");
 }
 
-reusableFunction();
+reusableFunction(); // Hi World
 // -------------------------------------------------------------
 // Passing Values to Functions with Arguments
 function functionWithArgs(one, two) {
