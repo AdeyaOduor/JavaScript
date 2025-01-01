@@ -140,6 +140,7 @@ export function lowercaseString(string) {
 
 </body>
 </html>
+
 // ---------------------------------------------------------------------------------------------------------------------------------
 
 // getters_setters
@@ -222,6 +223,7 @@ const makeServerRequest = new Promise((resolve, reject) => {
 makeServerRequest.then(result => {
   console.log(result);
 });
+
 // -------------------------------------------------------------------------------------------------------------------------
 // Handle a Rejected Promise with catch
 
