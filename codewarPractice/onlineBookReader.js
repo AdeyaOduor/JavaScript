@@ -58,5 +58,54 @@ Here are some examples of how it might be applied:
 
     Content Management Systems:
         The structure can be integrated into a CMS where articles or documents can be treated like books, allowing for similar functionalities to 
-        organize and open documents.
+        organize and open documents as follows.
 */
+
+// Constructor for ContentManager
+let ContentManager = function() {
+    this.currentContent = null; // Keeps track of the currently opened content
+    this.contents = {}; // An object to store all added contents, indexed by their names
+};
+
+// Method to add content
+ContentManager.prototype.add = function(content) {
+    this.contents[content.name] = content; // Adds content to the contents collection
+};
+
+// Method to find content by name
+ContentManager.prototype.find = function(contentName) {
+    return this.contents[contentName]; // Returns the content object if found, otherwise undefined
+};
+
+// Method to open content by name
+ContentManager.prototype.open = function(contentName) {
+    this.currentContent = this.contents[contentName]; // Sets the currentContent to the specified content
+    return this.currentContent.file; // Returns the file associated with the current content
+};
+
+// Constructor for Content
+var Content = function(name, file) {
+    this.name = name; // The name of the content
+    this.file = file; // The content itself, possibly as a string or file path
+};
+
+// Create an instance of ContentManager
+let myContentManager = new ContentManager();
+
+// Create some content items
+let article1 = new Content('Introduction to JavaScript', 'Content of Introduction to JavaScript...');
+let tutorial1 = new Content('CSS Flexbox Guide', 'Content of CSS Flexbox Guide...');
+let ebook1 = new Content('Understanding Asynchronous JavaScript', 'Content of Understanding Asynchronous JavaScript...');
+
+// Add content to the manager
+myContentManager.add(article1);
+myContentManager.add(tutorial1);
+myContentManager.add(ebook1);
+
+// Find and open a content item
+let openedContent = myContentManager.open('Introduction to JavaScript');
+console.log(openedContent); // Output: Content of Introduction to JavaScript...
+
+// Find a specific content item
+let foundContent = myContentManager.find('CSS Flexbox Guide');
+console.log(foundContent); // Output: Content object for CSS Flexbox Guide
