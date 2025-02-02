@@ -1,4 +1,6 @@
 // Return an English-translated sentence of the passed binary string.
+// function converting a given string into its binary representation, where each character in the string is represented by its ASCII value in binary format. 
+// This can be useful in various applications, especially in computer science and digital communication.
 function binaryAgent(str) {
   const result = str.split(' ')
                     .map(b => String.fromCharCode(parseInt(b, 2)))
