@@ -21,6 +21,12 @@ function dblLinear(n) {
     }
     return series[n]; // Return the nth element in the series
 }
+// Example usage
+const uniqueIds = [];
+for (let i = 0; i < 10; i++) {
+    uniqueIds.push(dblLinear(i)); // Generate unique IDs
+}
+console.log(uniqueIds); // Output: [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]
 /*
 Let's explore a few examples of how this function could be used in practice:
 
