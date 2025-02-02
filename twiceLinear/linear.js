@@ -1,25 +1,25 @@
 function dblLinear(n) {
-    const series = [1];
+    const series = [1]; // Initial series with the first element
 
     const calc = x => ({
-        y: 2 * x + 1,
-        z: 3 * x + 1
+        y: 2 * x + 1, // First operation
+        z: 3 * x + 1  // Second operation
     });
 
-    const ascendingOrder = (a, b) => a - b;
+    const ascendingOrder = (a, b) => a - b; // Sort function
 
     for (let idx = 0; idx <= n; idx++) {
-        let x = series[idx];
-        const { y, z } = calc(x);
+        let x = series[idx]; // Get the current number from the series
+        const { y, z } = calc(x); // Calculate new numbers based on current number
         for (let v of [y, z]) {
-            if (series.indexOf(v) < 0) {
-                series.push(v);
-                series.sort(ascendingOrder);
-                series.splice(n+1);
+            if (series.indexOf(v) < 0) { // Check if the number is already in the series
+                series.push(v); // Add the new number to the series
+                series.sort(ascendingOrder); // Sort the series
+                series.splice(n + 1); // Keep only the first n + 1 elements
             }
         }
     }
-    return series[n];
+    return series[n]; // Return the nth element in the series
 }
 /*
 Let's explore a few examples of how this function could be used in practice:
