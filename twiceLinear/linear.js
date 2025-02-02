@@ -1,3 +1,7 @@
+/*
+The dblLinear function generates a specific sequence of numbers based on a set of mathematical rules. It uses two operations to produce new numbers from existing ones, 
+specifically multiplying by 2 and 3, and then adding 1. This allows it to create a series of numbers that grow in a specific pattern.*/
+
 function dblLinear(n) {
     const series = [1]; // Initial series with the first element
 
