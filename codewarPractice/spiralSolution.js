@@ -1,4 +1,5 @@
-//NxN spiral with a given size
+//The spiralize function generates a 2D array (matrix) that represents a spiral pattern of 1s and 0s. 
+// The function works recursively and produces different spiral shapes based on the input size.
 
 function spiralize(size) {
   if (size == 2) return [ [1,1], [0,1] ]; // Base case for size 2
