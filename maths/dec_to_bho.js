@@ -77,9 +77,9 @@ const ethernetHeader = {
 };
 // Implementing a TCP state machine
 function processTCPPacket(packet) {
-  const tcpFlags = dec_to_bho(packet.flags, 'B'); // Convert TCP flags to binary
-  // Use the tcpFlags binary representation to implement the TCP state machine
-  // and handle the packet based on the current connection state
+  const tcpFlags = dec_to_bho(packet.flags, 'B'); 
+ /* Convert TCP flags to binary, Use the tcpFlags binary representation to implement the TCP state machine
+  and handle the packet based on the current connection state */ 
 }
 // Use the dec_to_bho function to validate the IP header checksum
 const ipHeader = {
