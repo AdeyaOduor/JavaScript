@@ -22,3 +22,5 @@ function spiralize(size) {
   res[size - 1][size - 2] = 1; // Set the second last element of the last row to 1
   return res; // Return the completed spiral
 }
+
+console.log(spiralize(5));
