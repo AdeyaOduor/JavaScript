@@ -48,11 +48,8 @@ Real world applications:
 
     Debugging and troubleshooting: When working with low-level systems or embedded devices, developers often need to interpret and analyze data in 
     various number formats. The dec_to_bho function can be a valuable tool for quickly converting between decimal, binary, hexadecimal, and octal 
-    representations, facilitating the debugging and troubleshooting process.
+    representations, facilitating the debugging and troubleshooting process.*/
 
-    Educational and teaching purposes: The dec_to_bho function can also be useful in educational settings, such as computer science or programming 
-    courses, where students need to learn about different number representations and how to convert between them.
-*/
 // Example Convert IP address: 192.168.1.100 components to decimal,
 const ipComponents = [192, 168, 1, 100];
 
