@@ -160,3 +160,30 @@ console.log(updatedSalaries);
     { name: 'Bob', salary: 66000 },
     { name: 'Charlie', salary: 77000 }
 ]*/
+
+// Real-World Example: Building an Access Control List
+const roles = {
+    admin: ['view', 'edit', 'delete', 'create'],
+    editor: ['view', 'edit', 'create'],
+    viewer: ['view']
+};
+
+const users = [
+    { username: 'Alice', role: 'admin' },
+    { username: 'Bob', role: 'editor' },
+    { username: 'Charlie', role: 'viewer' }
+];
+
+const acl = users.map(user => ({
+    username: user.username,
+    permissions: roles[user.role] || []
+}));
+
+console.log(acl);
+
+/* Output
+[
+    { username: 'Alice', permissions: ['view', 'edit', 'delete', 'create'] },
+    { username: 'Bob', permissions: ['view', 'edit', 'create'] },
+    { username: 'Charlie', permissions: ['view'] }
+]*/
