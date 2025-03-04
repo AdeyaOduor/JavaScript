@@ -187,3 +187,13 @@ console.log(acl);
     { username: 'Bob', permissions: ['view', 'edit', 'create'] },
     { username: 'Charlie', permissions: ['view'] }
 ]*/
+
+function hasPermission(username, permission) {
+    const userAcl = acl.find(user => user.username === username);
+    return userAcl ? userAcl.permissions.includes(permission) : false;
+}
+
+// Checking Permissions
+console.log(hasPermission('Alice', 'delete')); // true
+console.log(hasPermission('Bob', 'delete'));   // false
+console.log(hasPermission('Charlie', 'edit'));  // false
