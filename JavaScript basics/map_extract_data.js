@@ -146,3 +146,17 @@ const employees = [
     { name: 'Bob', salary: 60000 },
     { name: 'Charlie', salary: 70000 }
 ];
+
+const updatedSalaries = employees.map(employee => ({
+    name: employee.name,
+    salary: employee.salary * 1.10 // Increase salary by 10%
+}));
+
+console.log(updatedSalaries);
+
+/* Output:
+[
+    { name: 'Alice', salary: 55000 },
+    { name: 'Bob', salary: 66000 },
+    { name: 'Charlie', salary: 77000 }
+]*/
