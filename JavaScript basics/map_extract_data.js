@@ -137,4 +137,12 @@ console.log(squaredNumbers2); // Output: [1, 4, 9, 16, 25]
 
 /*
 A common real-world application of the map function is data transformation, 
-particularly in scenarios where you need to modify or derive new data from existing datasets.*/
+particularly in scenarios where you need to modify or derive new data from existing datasets.
+Example Use Case: Employee Salary Increase
+*/
+
+const employees = [
+    { name: 'Alice', salary: 50000 },
+    { name: 'Bob', salary: 60000 },
+    { name: 'Charlie', salary: 70000 }
+];
