@@ -119,7 +119,8 @@ const ratings = watchList.map(item => ({
 
 console.log(JSON.stringify(ratings));
 // ---------------------------------------------------------------------------------------------------------------------
-// Implement map on a Prototype
+// Array.prototype.map method in JavaScript. 
+// This method is used to create a new array populated with the results of applying a provided callback function to each element in the original array.
 Array.prototype.Map = function (callback) {
   const newArray = [];
 
