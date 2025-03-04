@@ -119,6 +119,12 @@ const ratings = watchList.map(item => ({
 
 console.log(JSON.stringify(ratings));
 
+/* Output
+[{"title":"Inception","rating":"8.8"},
+{"title":"Interstellar","rating":"8.6"},
+{"title":"The Dark Knight","rating":"9.0"},
+{"title":"Batman Begins","rating":"8.3"},
+{"title":"Avatar","rating":"7.9"}]*/
 // ---------------------------------------------------------------------------------------------------------------------
 // Array.prototype.map method in JavaScript. 
 // This method is used to create a new array populated with the results of applying a provided callback function to each element in the original array.
