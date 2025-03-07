@@ -52,10 +52,9 @@ const results = [
 console.log(results); // Output [ 60, 60, 2520, 360360, 6056820 ]
 // ---------------------------------------------------------------------------------------------------
 
- /*
- * Calculates the Least Common Multiple (LCM) of a set of numbers.
- * @param {number[]} numbers - An array of numbers.
- * @returns {number} The Least Common Multiple of the given numbers.
+ /* Calculates the Least Common Multiple (LCM) of a set of numbers.
+  @param {number[]} numbers - An array of numbers.
+  @returns {number} The Least Common Multiple of the given numbers.
  */
 function findLCM(numbers) {
   // Helper function to find the Greatest Common Divisor (GCD)
