@@ -135,12 +135,7 @@ function lcm(a, b) {
   return (a * b) / gcd(a, b);
 }
 
-/**
- * Generates a hash table using the LCM.
- * @param {number[]} keys - An array of keys to be used in the hash table.
- * @param {number} tableSize - The desired size of the hash table.
- * @returns {Object} The generated hash table.
- */
+/*Generates a hash table using the LCM.*/
 function generateHashTable(keys, tableSize) {
   // Create an empty hash table
   const hashTable = {};
@@ -162,7 +157,7 @@ function generateHashTable(keys, tableSize) {
 }
 
 // Example usage
-const keys = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+const keys = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]; // An array of keys to be used in the hash table.
 const tableSize = 11;
 const hashTable = generateHashTable(keys, tableSize);
 
@@ -177,4 +172,17 @@ The hash index is calculated using the modulo operator %, and the hash value is 
 The example usage demonstrates how to generate a hash table with the keys [10, 20, 30, 40, 50, 60, 70, 80, 90, 100] and a table size of 11.
 
 The output of this code will be an object representing the generated hash table, where the keys are the hash indices, and the values are arrays 
-of objects containing the key and its corresponding hash value.*/
+of objects containing the key and its corresponding hash value as follows:
+
+{
+  '1': [ { key: 100, value: 0.09090909090909091 } ],
+  '2': [ { key: 90, value: 0.09090909090909091 } ],
+  '3': [ { key: 80, value: 0.09090909090909091 } ],
+  '4': [ { key: 70, value: 0.09090909090909091 } ],
+  '5': [ { key: 60, value: 0.09090909090909091 } ],
+  '6': [ { key: 50, value: 0.09090909090909091 } ],
+  '7': [ { key: 40, value: 0.09090909090909091 } ],
+  '8': [ { key: 30, value: 0.09090909090909091 } ],
+  '9': [ { key: 20, value: 0.09090909090909091 } ],
+  '10': [ { key: 10, value: 0.09090909090909091 } ]
+}.*/
