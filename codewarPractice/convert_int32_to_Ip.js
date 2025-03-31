@@ -11,7 +11,7 @@ const ip = int32ToIp(3232235777);
 console.log(ip); // Output: "192.168.1.1"
 
 // Application Example in Network Programming
-// Scenario: IP Address Management in a Network Application
+// Scenario: IP Address Management in a Network Application, Logging Network Activity using Incoming Connection Data:
 const connections = [
     { src: 3232235521, dest: 3232235776 }, // 192.168.1.1 to 192.168.1.255
     { src: 16777343, dest: 167772160 }     // 10.0.0.1 to 10.0.0.0
