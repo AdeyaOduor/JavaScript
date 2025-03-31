@@ -22,6 +22,11 @@ connections.forEach(connection => {
     const destIp = int32ToIp(connection.dest);
     console.log(`Connection from ${srcIp} to ${destIp}`);
 });
+
+// Output
+// Connection from 192.168.1.1 to 192.168.1.255
+// Connection from 10.0.0.1 to 10.0.0.0
+
 /*Explanation
 
     Right Shift (>>>):
