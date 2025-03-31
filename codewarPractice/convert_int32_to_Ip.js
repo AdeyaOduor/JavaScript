@@ -16,6 +16,12 @@ const connections = [
     { src: 3232235521, dest: 3232235776 }, // 192.168.1.1 to 192.168.1.255
     { src: 16777343, dest: 167772160 }     // 10.0.0.1 to 10.0.0.0
 ];
+// Converting to Dotted Decimal Format:
+connections.forEach(connection => {
+    const srcIp = int32ToIp(connection.src);
+    const destIp = int32ToIp(connection.dest);
+    console.log(`Connection from ${srcIp} to ${destIp}`);
+});
 /*Explanation
 
     Right Shift (>>>):
