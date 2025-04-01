@@ -71,3 +71,10 @@ console.log(`Total number of possible combinations: ${totalCombinations}`);
 const specificCombination = [0, 1, 2]; // Selecting friends with indices 0, 1, and 2
 const probabilityOfSpecificCombination = 1 / totalCombinations;
 console.log(`Probability of selecting the specific combination ${specificCombination}: ${probabilityOfSpecificCombination}`);
+
+// Calculating Combinations:
+const totalNumbers = 49;
+const numbersToChoose = 6;
+const possibleCombinations = combinations(totalNumbers, numbersToChoose);
+
+console.log(`Possible combinations of choosing ${numbersToChoose} from ${totalNumbers}: ${possibleCombinations}`);
