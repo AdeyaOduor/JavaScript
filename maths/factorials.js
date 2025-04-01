@@ -7,6 +7,14 @@ function factorial(x, runningTotal = 1 ) {
 }
 
 console.log(factorial(10)) // output 3628800
+// -------------------------------------------------------
+// Calculating combinations
+function combinations(n, k) {
+    return factorial(n) / (factorial(k) * factorial(n - k));
+}
+
+// Example: Choosing 3 from 10
+console.log(combinations(10, 3)); // Output: 120
 // ------------------------------------------------------------------------------------------------------------
 // recursive
 function factorialize(num) {
