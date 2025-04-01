@@ -38,7 +38,10 @@ const numPermutations = factorial(numFriends);
 
 console.log(`There are ${numPermutations} possible ways to arrange the ${numFriends} friends in a line.`);
 // -----------------------------------------------------------------------------------------------------------------------------
-   // Calculates the factorial of a given number in probablity and statistics.
+   /*
+   factorial and combinations functions together, they can be used to calculate the number of combinations (or binomial coefficients) of choosing k items from a set of n items. 
+   This is a common task in combinatorial mathematics and has various applications in fields such as probability, statistics, and computer science.*/ 
+
 function factorial(n) {
   if (n === 0 || n === 1) {
     return 1;
