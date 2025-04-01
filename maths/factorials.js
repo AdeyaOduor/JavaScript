@@ -15,6 +15,30 @@ function combinations(n, k) {
 
 // Example: Choosing 3 from 10
 console.log(combinations(10, 3)); // Output: 120
+
+// Probability Example:
+function factorial(x, runningTotal = 1) {
+    return x === 0 ? runningTotal : factorial(x - 1, x * runningTotal);
+}
+
+function combinations(n, k) {
+    return factorial(n) / (factorial(k) * factorial(n - k));
+}
+
+function binomialProbability(n, k, p) {
+    const q = 1 - p; // Probability of failure
+    const comb = combinations(n, k);
+    return comb * Math.pow(p, k) * Math.pow(q, n - k);
+}
+
+const n = 10; // Total flips
+const k = 6;  // Desired heads
+const p = 0.5; // Probability of heads
+
+const probability = binomialProbability(n, k, p);
+console.log(`Probability of getting exactly ${k} heads in ${n} flips: ${probability.toFixed(4)}`);
+// Probability of getting exactly 6 heads in 10 flips: 0.2051
+
 // ------------------------------------------------------------------------------------------------------------
 // recursive
 function factorialize(num) {
