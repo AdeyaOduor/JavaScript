@@ -1,4 +1,7 @@
-// product of all positive integers less than or equal to x
+/*
+This factorial function is a recursive implementation that calculates the factorial of a non-negative integer x using an accumulator (runningTotal). 
+This approach is often referred to as tail recursion, where the recursive call is the last operation performed in the function.*/ 
+
 function factorial(x, runningTotal = 1 ) {
    return x == 0 ? runningTotal : factorial( x-1, x*runningTotal);
 }
