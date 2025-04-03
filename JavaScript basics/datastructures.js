@@ -126,6 +126,17 @@ const imageHeight = 5;
 const grayscaleImage = zeroArray(imageHeight, imageWidth);
 
 console.log(grayscaleImage);
+/*
+
+    Outer Loop (for (let i = 0; i < m; i++)):
+        Iterates m times to create each row of the matrix.
+
+    Inner Loop (for (let j = 0; j < n; j++)):
+        Iterates n times to fill each row with the number 3.
+
+    Result:
+        The function returns a 2D array where each element is 3, structured as m rows and n columns.
+*/
 // ---------------------------------------------------------------------------------------------------------------------------
 
 function htmlColorNames(arr) {
