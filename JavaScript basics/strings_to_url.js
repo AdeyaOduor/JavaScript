@@ -9,4 +9,10 @@ function urlSlug(title) {
     .toLowerCase(); // Convert the entire string to lowercase
 }
 
+const title = "How to Make Perfect Pancakes!";
+const slug = urlSlug(title);
+console.log(slug);
+const titleWithSpaces = "   Learn JavaScript   Basics   ";
+const slugWithSpaces = urlSlug(titleWithSpaces);
+console.log(slugWithSpaces);
 console.log(urlSlug("A Mind Needs Books Like A Sword Needs A Whetstone")); // a-mind-needs-books-like-a-sword-needs-a-whetstone
