@@ -1,4 +1,6 @@
-// Functional Programming to Convert Strings to URL Slugs
+/*
+The urlSlug function converts a given string (typically a title) into a URL-friendly format, commonly referred to as a "slug."
+This transformation is essential for creating clean, readable URLs in web applications.*/
 function urlSlug(title) {
   return title
     .split(" ") // Split the title into an array of words
