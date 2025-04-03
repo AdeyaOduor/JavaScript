@@ -121,6 +121,11 @@ function zeroArray(m, n) {
   }
   return newArray;
 }
+const imageWidth = 5;
+const imageHeight = 5;
+const grayscaleImage = zeroArray(imageHeight, imageWidth);
+
+console.log(grayscaleImage);
 // ---------------------------------------------------------------------------------------------------------------------------
 
 function htmlColorNames(arr) {
