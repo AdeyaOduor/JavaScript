@@ -115,10 +115,11 @@ const watchList = [
 function getRating(watchList) {
   let averageRating;
   const rating = watchList
-    .filter(obj => obj.Director === "Christopher Nolan")
-    .map(obj => Number(obj.imdbRating));
-  averageRating = rating.reduce((accum, curr) => accum + curr)/rating.length;
-  return averageRating;
+    .filter(obj => obj.Director === "Christopher Nolan") // Filter for Nolan's movies
+    .map(obj => Number(obj.imdbRating)); // Extract and convert IMDb ratings to numbers
+  
+  averageRating = rating.reduce((accum, curr) => accum + curr) / rating.length; // Calculate average rating using reduce method
+  return averageRating; // Return the average rating
 }
 
 console.log(getRating(watchList)); // 8.675
