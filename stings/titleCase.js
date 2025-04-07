@@ -5,8 +5,8 @@ The titleCase function is useful for formatting strings to a title case, where t
 This functionality can be applied in various real-world scenarios, particularly in data presentation and user interfaces.*/
 function titleCase(str) {
   return str
-    .toLowerCase()
-    .replace(/(^|\s)\S/g, L => L.toUpperCase());
+    .toLowerCase() // Convert the entire string to lowercase
+    .replace(/(^|\s)\S/g, L => L.toUpperCase()); // Capitalize the first letter of each word
 }
 
 // Example 1
