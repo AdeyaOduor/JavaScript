@@ -4,9 +4,9 @@ This operation is common in various programming scenarios, such as data manipula
 
 function reverseString(str) {
   return str
-    .split("")
-    .reverse()
-    .join("");
+    .split("") // Split the string into an array of characters
+    .reverse() // Reverse the array of characters
+    .join(""); // Join the reversed array back into a string
 }
 
 /* Our goal is to take the input, str, and return it in reverse. Our first step is to split the string by characters using split(''). 
