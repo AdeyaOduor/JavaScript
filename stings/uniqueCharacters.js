@@ -33,8 +33,15 @@ function everyCharUnique(str) {
   return true; // All characters are unique
 }
 
-/* TESTS */
-console.log(everyCharUnique('abcd'), 'true');
-console.log(everyCharUnique('abccd'), 'false');
-console.log(everyCharUnique('bhjjb'), 'false');
-console.log(everyCharUnique('mdjq'), 'true');
+/* Real-World Application: Validating User Input
+
+These functions are useful in scenarios where you need to validate user input, such as:
+
+    Username Creation: When users create usernames, you might want to ensure that all characters are unique to avoid confusion.
+    Password Validation: Certain applications may require unique characters in passwords for added security.
+
+Example Usage */
+const username = "uniqueUser";
+console.log(allUniqueChars(username)); // Output: true
+console.log(everyCharUnique(username)); // Output: true
+console.log(everyCharUnique(username)); // Output: true
