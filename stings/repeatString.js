@@ -1,6 +1,6 @@
 /*
-The repeatStringNumTimes function recursively repeats a given string a specified number of times. 
-This functionality has several practical applications in programming, particularly in scenarios where string manipulation is required. */
+The repeatStringNumTimes function recursively generates a new string by repeating a given string a specified number of times. 
+This kind of function can be useful in various programming scenarios, such as formatting text or generating patterns. */
 
 function repeatStringNumTimes(str, num) {
   return num > 0 ? str + repeatStringNumTimes(str, num - 1) : '';
