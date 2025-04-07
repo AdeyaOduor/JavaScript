@@ -9,6 +9,16 @@ function reverseString(str) {
     .join(""); // Join the reversed array back into a string
 }
 
+function isPalindrome(str) {
+  const reversed = reverseString(str);
+  return str === reversed;
+}
+
+// Example usage
+const word = "racecar";
+console.log(`Is "${word}" a palindrome? ${isPalindrome(word)}`); // Output: true
+
+
 /* Our goal is to take the input, str, and return it in reverse. Our first step is to split the string by characters using split(''). 
 Notice that we don’t leave anything in between the single quotes, this tells the function to split the string by each character.
 
