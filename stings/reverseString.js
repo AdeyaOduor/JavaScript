@@ -1,3 +1,7 @@
+/*
+The reverseString function takes a string as input and returns a new string that is the reverse of the original. 
+This operation is common in various programming scenarios, such as data manipulation, algorithms, and text processing.*/
+
 function reverseString(str) {
   return str
     .split("")
