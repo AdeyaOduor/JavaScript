@@ -17,3 +17,7 @@ console.log(formattedTitle); // Output: "The Quick Brown Fox Jumps Over The Lazy
 const productName = "apple macbook pro 16-inch";
 const formattedProductName = titleCase(productName);
 console.log(formattedProductName); // Output: "Apple Macbook Pro 16-Inch"
+// Example 3
+const mixedTitle = "tHe cAt In tHe HaT";
+const formattedMixedTitle = titleCase(mixedTitle);
+console.log(formattedMixedTitle); //The Cat In The Hat
