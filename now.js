@@ -34,3 +34,18 @@ if (hour === 0 && prepand === ' AM ') {
 }
 
 console.log(`Current Time : ${hour}${prepand} : ${minute} : ${second}`); // Output the time
+
+/*
+Real-World Application: Scheduling and Notifications
+
+This code can be applied in various real-world applications, such as:
+Example: Calendar Application
+
+In a calendar or scheduling application, this time and date formatting can enhance user experience by:
+
+    Displaying Current Events: Showing users what events are happening today, along with the current time.
+    Reminders: Sending notifications for upcoming events based on the current date and time. For example, if a user has a meeting scheduled at a specific time, the application can check against the current time and alert the user.
+
+Example Usage
+
+    User Dashboard: When a user logs into their calendar app, the application could greet them with real Date and time:*/
