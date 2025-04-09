@@ -1,3 +1,5 @@
+/*
+descendingOrder function is intended to take a number, rearrange its digits in descending order, and return that as a string. */
 function descendingOrder(num) {
     
    // Convert the number to a string, then to an array of digits
@@ -12,7 +14,7 @@ function descendingOrder(num) {
 
 // Example usage
 const sortedNumber = descendingOrder(209482);
-console.log(sortedNumber); 
+console.log(sortedNumber); // 984220
 /*
 Real-World Application: Sorting User IDs or Transaction Numbers
 
