@@ -1,12 +1,15 @@
-function descendingOrder() {
-   let num = 209482; // The number to be rearranged
-   let arr_num = Array.from(num + ""); // Convert the number to an array of characters
-   arr_num = arr_num.map(e => parseInt(e)); // Convert each character back to an integer
-   arr_num.sort(); // Sort the array in ascending order
-   arr_num.reverse(); // Reverse the array to get descending order
-   //arr_num.sort((a, b) => a - b); // This line is unnecessary and incorrect
-   let str_arr = arr_num.join(""); // Join the array back into a string
+function descendingOrder(num) {
+    
+   // Convert the number to a string, then to an array of digits
+   let arr_num = Array.from(num.toString());
+   // Sort the array in descending order
+   arr_num.sort((a, b) => b - a);
+   // Join the sorted array back into a string
+   let str_arr = arr_num.join("");
 
    return str_arr; // Return the resulting string
 }
-console.log(descendingOrder()); //022489
+
+// Example usage
+const sortedNumber = descendingOrder(209482);
+console.log(sortedNumber); 
