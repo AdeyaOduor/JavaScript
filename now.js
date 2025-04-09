@@ -1,3 +1,7 @@
+/*
+How to get the current date and time using JavaScript. 
+It formats the output to indicate the day of the week and the current time in a user-friendly manner. */
+
 const today = new Date(); // Get the current date and time
 const day = today.getDay(); // Get the day of the week (0-6, where 0 is Sunday)
 const daylist = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
