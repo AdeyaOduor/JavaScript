@@ -13,3 +13,11 @@ function descendingOrder(num) {
 // Example usage
 const sortedNumber = descendingOrder(209482);
 console.log(sortedNumber); 
+/*
+Real-World Application: Sorting User IDs or Transaction Numbers
+
+This function can be applied in various scenarios, such as:
+
+    User ID Generation: If you need to create a unique identifier by rearranging digits.
+    Transaction Processing: Rearranging transaction numbers based on certain criteria for prioritization or display.
+*/
