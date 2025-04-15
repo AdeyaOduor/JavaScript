@@ -57,6 +57,23 @@ function destroyer(arr, ...valsToRemove) {
 }
 const result = destroyer([1, 2, 3, 1, 2, 3], 2, 3);
 console.log(result); // Output: [1, 1]
+
+/*
+Real-World Application: Cleaning Up User Input
+
+Imagine you have a list of items that a user has selected, and you want to remove certain unwanted items (like banned items) from their 
+selection before processing it further.
+Example Scenario
+
+    User's Selected Items:
+        arr: ["apple", "banana", "orange", "grape", "banana"]
+
+    Items to Remove:
+        valsToRemove: ["banana", "grape"]
+
+    Using destroyer:
+        You can use the function to clean the user's selection by removing the unwanted items.
+*/
 // ---------------------------------------------------------------------------------------------------------------------------------------
 /*an algorithm that will take an array for the first argument and return an array with all the 
 objects that matches all the properties and values in the Object passed as second parameter.
