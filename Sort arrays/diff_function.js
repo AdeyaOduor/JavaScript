@@ -74,6 +74,10 @@ Example Scenario
     Using destroyer:
         You can use the function to clean the user's selection by removing the unwanted items.
 */
+
+const userSelection = ["apple", "banana", "orange", "grape", "banana"];
+const cleanedSelection = destroyer(userSelection, "banana", "grape");
+console.log(cleanedSelection); // Output: ["apple", "orange"]
 // ---------------------------------------------------------------------------------------------------------------------------------------
 /*an algorithm that will take an array for the first argument and return an array with all the 
 objects that matches all the properties and values in the Object passed as second parameter.
