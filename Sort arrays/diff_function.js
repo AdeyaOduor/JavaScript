@@ -55,6 +55,8 @@ It takes an array as its first argument and any number of additional values to r
 function destroyer(arr, ...valsToRemove) {
   return arr.filter(elem => !valsToRemove.includes(elem));
 }
+const result = destroyer([1, 2, 3, 1, 2, 3], 2, 3);
+console.log(result); // Output: [1, 1]
 // ---------------------------------------------------------------------------------------------------------------------------------------
 /*an algorithm that will take an array for the first argument and return an array with all the 
 objects that matches all the properties and values in the Object passed as second parameter.
