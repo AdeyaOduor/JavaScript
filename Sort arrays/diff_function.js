@@ -49,9 +49,8 @@ console.log(diffArray(array1, array2));
 console.log(array1.filter(item => array2.includes(item)));
 // Output: [3, 4, 5] in filtering and transformation
 // --------------------------------------------------------------------------------------------------------------------------------------
-/*Remove all elements from the initial array that are of the same value as these arguments. 
-    Using spread operator to retrieve the arguments.
-    Return the filtered array, using includes().
+/*destroyer function is designed to remove specified values from an array. 
+It takes an array as its first argument and any number of additional values to remove.
 */
 function destroyer(arr, ...valsToRemove) {
   return arr.filter(elem => !valsToRemove.includes(elem));
