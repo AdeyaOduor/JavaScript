@@ -21,6 +21,20 @@ const array2 = [1, 2, 3, 4, 6];
 console.log(diffArray(array1, array2));
 // Output: [4, 5, 6] in data comparison and synchronization
 
+/*
+Real-World Application: Inventory Management
+
+Imagine you are managing inventory for a retail store and you want to find out which items are unique to each of two suppliers' lists.
+
+    Supplier A's Inventory:
+        array1: [101, 102, 103, 105] (IDs of items supplied by Supplier A)
+
+    Supplier B's Inventory:
+        array2: [101, 102, 103, 104, 106] (IDs of items supplied by Supplier B)
+
+    Using diffArray:
+        You want to identify items that are unique to each supplier, which helps you understand what additional products you might need to source from either supplier.
+*/
 const supplierA = [101, 102, 103, 105];
 const supplierB = [101, 102, 103, 104, 106];
 const uniqueItems = diffArray(supplierA, supplierB);
