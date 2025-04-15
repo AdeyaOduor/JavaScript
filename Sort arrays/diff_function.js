@@ -7,7 +7,8 @@ console.log(array_diff([1, 2], [1]));  // Output: [2]
 console.log(array_diff([3, 4], [3]));  // Output: [4]
 // -----------------------------------------------------------------------------------------------------------------------------------
 /*Compare two arrays and return a new array with any items only found in one of the two given arrays, but not both. In other words, 
-return the symmetric difference of the two arrays.*/
+return the symmetric difference of the two arrays. diffArray function takes two arrays as input and returns an array containing 
+the elements that are unique to each input array. */
 function diffArray(arr1, arr2) {
   return [...diff(arr1, arr2), ...diff(arr2, arr1)];
 
