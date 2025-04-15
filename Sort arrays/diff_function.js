@@ -20,6 +20,13 @@ const array1 = [1, 2, 3, 5];
 const array2 = [1, 2, 3, 4, 6];
 console.log(diffArray(array1, array2));
 // Output: [4, 5, 6] in data comparison and synchronization
+
+const supplierA = [101, 102, 103, 105];
+const supplierB = [101, 102, 103, 104, 106];
+const uniqueItems = diffArray(supplierA, supplierB);
+console.log(uniqueItems); // Output: [105, 104, 106]
+
+
 const array1 = [1, 2, 3, 4, 5];
 const array2 = [3, 4, 5, 6, 7];
 console.log(diffArray(array1, array2));
