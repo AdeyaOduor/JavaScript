@@ -91,7 +91,19 @@ function firstNonConsecutive (arr) {
     return null;
 }
 console.log(firstNonConsecutive([1, 2, 2, 3, 4, 4, 5])); //2
+/*
+Real-World Application: Analyzing Sequential Data
 
+Imagine you are processing a sequence of timestamps or IDs that should follow consecutively, such as in an event log or a list of user IDs.
+Example Scenario
+
+    Event Log Entries:
+        You have an array representing event sequence numbers: [1001, 1002, 1003, 1005, 1006].
+        You want to identify the first missing event number.
+
+    Using firstNonConsecutive:
+        You can apply the function to find the first non-consecutive event number.
+*/
 const eventNumbers = [1001, 1002, 1003, 1005, 1006];
 const missingEvent = firstNonConsecutive(eventNumbers);
 console.log(missingEvent); // Output: 1005
