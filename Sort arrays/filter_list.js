@@ -83,7 +83,7 @@ console.log(filteredDataset); // Output: [3.5, 2.1, 4.8]
 
 
 // -------------------------------------------------------------------------------------------------------------
-// find first non consecutive number in an array
+// The firstNonConsecutive function is designed to find the first non-consecutive number in a sorted array of integers.
 function firstNonConsecutive (arr) {
     for (let i = 1; i < arr.length; i++) {
         if (arr[i - 1] + 1 !== arr[i]) return arr[i];
