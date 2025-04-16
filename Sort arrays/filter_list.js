@@ -91,6 +91,10 @@ function firstNonConsecutive (arr) {
     return null;
 }
 console.log(firstNonConsecutive([1, 2, 2, 3, 4, 4, 5])); //2
+
+const eventNumbers = [1001, 1002, 1003, 1005, 1006];
+const missingEvent = firstNonConsecutive(eventNumbers);
+console.log(missingEvent); // Output: 1005
 // ------------------------------------------------------------------------------------------------------------
 // Split a String into an Array Using the split Method
 function splitify(str) {
