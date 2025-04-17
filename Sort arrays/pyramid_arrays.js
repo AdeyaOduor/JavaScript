@@ -17,6 +17,19 @@ console.log(pyramid(4));
   [1, 1, 1],
   [1, 1, 1, 1]
 ]*/
+
+const treeLevels = pyramid(5);
+console.log(treeLevels);
+/* Output:
+[
+  [1],
+  [1, 1],
+  [1, 1, 1],
+  [1, 1, 1, 1],
+  [1, 1, 1, 1, 1]
+]
+This function can be useful for visualizing hierarchical data structures, such as in educational contexts 
+where you want to illustrate concepts like binary trees, organizational charts, or any form of structured data.*/
 // ---------------------------------------------------------------------------------------------------
   
 function pyramid(n) {
