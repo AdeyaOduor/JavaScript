@@ -39,3 +39,15 @@ const sensorData = [
 
 const flatSensorData = steamrollArray(sensorData);
 // flatSensorData is an array containing all the sensor readings
+// --------------------------------------------------------------------------------------------------------------------------------------
+
+const userPreferences = [
+    "notifications",
+    ["email", ["sms", "push"]],
+    "language",
+    ["English", ["Spanish", "French"]]
+];
+
+const flattenedPreferences = steamrollArray(userPreferences);
+console.log(flattenedPreferences); 
+// Output: ["notifications", "email", "sms", "push", "language", "English", "Spanish", "French"]
