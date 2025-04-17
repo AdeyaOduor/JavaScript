@@ -1,4 +1,6 @@
-// Write a function that when given a number >= 0, returns an Array of ascending length subarrays.
+/*
+pyramid function generates a two-dimensional array that represents a pyramid structure made of numbers. 
+Each row of the pyramid contains increasing numbers of 1s.*/ 
 
 function pyramid(n) {
   const res = []; // Initialize an empty array to hold the pyramid structure
