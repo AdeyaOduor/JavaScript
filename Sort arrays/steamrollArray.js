@@ -1,4 +1,4 @@
-// Flatten a nested array, accounting for varying levels of nesting.
+// steamrollArray function is designed to recursively flatten a multi-dimensional array into a single-dimensional array.
 function steamrollArray(arr) {
   let flattened = [];
 
