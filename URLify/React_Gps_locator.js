@@ -7,6 +7,7 @@ const GPSLocationTracker = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    // This function checks if the Geolocation API is available in the user's browser.
     const trackGPSLocation = () => {
       if (navigator.geolocation) {
         navigator.geolocation.watchPosition(
