@@ -1,6 +1,6 @@
 // React functional component that tracks the user's GPS location using the Geolocation API.
 import React, { useEffect, useState } from 'react';
-
+// State variables to store the current GPS coordinates, and any error messages related to geolocation.
 const GPSLocationTracker = () => {
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
