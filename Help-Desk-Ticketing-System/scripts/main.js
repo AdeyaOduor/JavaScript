@@ -46,7 +46,8 @@ function init() {
             let userPassword = detailsArray[i].userpassword;
         }
     }
-}
+} // If user records exist in local storage, they are parsed back into the detailsArray. 
+  // However, the inner loop does not currently do anything with the data.
 
 
 function login(){
