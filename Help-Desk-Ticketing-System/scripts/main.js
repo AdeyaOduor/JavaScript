@@ -51,10 +51,10 @@ function init() {
 
 
 function login(){
-
+    // It retrieves the username and password entered by the user.
     let loginUserName = document.getElementById('usrLogin').value;
     let loginPassword = document.getElementById('pwdLogin').value;
-
+    // Validating User Credentials:
     for (let i = 0; i < detailsArray.length; i++) {
 
         if(detailsArray[i].username === loginUserName && detailsArray[i].userpassword === loginPassword){
@@ -69,8 +69,11 @@ function login(){
 
 
 }
-
-
+/*
+    The function checks if the entered credentials match any user in detailsArray.
+    If a match is found, it saves the user's full name in local storage and redirects to "tickets.html".
+    If the credentials do not match, it shows an error message and resets the login form.
+*/
 function welcome(){
 
     let display = localStorage.getItem('curUser').toUpperCase();
