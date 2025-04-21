@@ -1,4 +1,6 @@
-
+/*
+Basic user registration and login system using JavaScript. It uses an array to store user details and local 
+storage to persist user data across sessions.*/
 var detailsArray = [];
 
 
