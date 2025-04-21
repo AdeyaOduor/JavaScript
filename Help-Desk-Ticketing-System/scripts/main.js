@@ -10,12 +10,14 @@ function register(){
     let newUserEmail = document.getElementById("email").value;
     let newUserName = document.getElementById("usrNameRegister").value;
     let newFullName = document.getElementById("usrRegister").value;
+    // Creating User Object:
     let userDetails = {
         fullname: newFullName,
         username: newUserName,
         useremail: newUserEmail,
         userpassword: newUserPassword
     };
+    // Checking for Existing Username:
     for(let i = 0; i< detailsArray.length; i++) {
         if (detailsArray[i].username === newUserName) {
             document.getElementById("alert").innerText = "Username already exists!!";
