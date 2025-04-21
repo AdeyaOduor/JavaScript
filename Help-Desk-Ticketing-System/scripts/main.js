@@ -1,12 +1,11 @@
 /*
 Basic user registration and login system using JavaScript. It uses an array to store user details and local 
 storage to persist user data across sessions.*/
-var detailsArray = [];
+var detailsArray = []; // This initializes an empty array called detailsArray, which will store user information.
 
-
-// code for registration of users
+// User Registration Function
 function register(){
-
+    // Collecting User Input:
     let newUserPassword = document.getElementById('pwdRegister').value;
     let newUserEmail = document.getElementById("email").value;
     let newUserName = document.getElementById("usrNameRegister").value;
