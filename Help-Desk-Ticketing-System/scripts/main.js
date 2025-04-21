@@ -83,5 +83,5 @@ function welcome(){
        welcomeText.class="text-primary";
        welcomeText.innerHTML ="Logged In:    "+ display
 }
-
+// function retrieves the current user's name from local storage, formats it to uppercase, and displays it in a designated header element with specified styles.
 
