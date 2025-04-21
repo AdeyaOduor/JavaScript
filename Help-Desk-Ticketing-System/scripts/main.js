@@ -25,10 +25,11 @@ function register(){
         }
 
     }
+    // Storing User Information:
             detailsArray.push(userDetails);
             localStorage.userRecord = JSON.stringify(detailsArray);
 
-
+    // Resetting the Form and Redirecting:
     document.getElementById('registrationForm').reset();
     window.location = "tickets.html";
 
