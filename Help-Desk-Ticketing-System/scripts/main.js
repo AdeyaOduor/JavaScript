@@ -34,8 +34,9 @@ function register(){
     window.location = "tickets.html";
 
 }
-
+// This function retrieves stored user records from local storage when the application initializes.
 function init() {
+    // Loading User Data:
     if(localStorage.userRecord) {
         detailsArray = JSON.parse(localStorage.userRecord);
         for(let i = 0; i< detailsArray.length; i++){
