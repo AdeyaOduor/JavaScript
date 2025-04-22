@@ -351,9 +351,7 @@ function sort($p) {
     // CSS Stuff
     document.getElementById("id"+$p).setAttribute("class","active");
 }
-
-
-
+// This function generates the HTML for the pagination buttons, enabling users to navigate through pages of tickets.
 ($pCount) : number of pages,($cur) : current page, the selected one ..
 function pageButtons($pCount,$cur) {
     /** this variables will disable the "Prev" button on 1st page
