@@ -1,6 +1,11 @@
+/*
+code implements a ticket management system using JavaScript and Firebase for backend data storage. 
+It allows users to create, store, and view tickets, complete with a dynamic form for ticket input and a table for displaying ticket summaries.*/
+
+
+// Initializes a connection to Firebase and references a path in the database called ticketRecord. An empty array ticketsArray is created to hold ticket records.
 var database = firebase.database();
 var ref = database.ref('ticketRecord');
-
 var ticketsArray = [];
 
 function newTicket(){
