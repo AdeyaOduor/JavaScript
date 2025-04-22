@@ -301,7 +301,11 @@ function summaryTicket(){
     }
 }
 
-// get the table element
+/* get the table element
+
+    This section handles pagination for the ticket summary table.
+    It calculates how many pages of tickets there are based on the number of tickets and creates navigation buttons.
+*/ 
 var $table = document.getElementById("ticketTable"),
 // number of rows per page
     $n = 10,
