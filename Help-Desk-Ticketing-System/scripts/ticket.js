@@ -195,13 +195,14 @@ function generateTicketNumber(){
         return  (randomstring + randomnumber);
 
 }
+// This function returns a random Bootstrap table class (like table-primary, table-success, etc.) for styling rows in the ticket summary table.
 function randomTableColor(){
     let x = Math.floor(Math.random()*5);
      let colors = ["table-primary","table-success","table-danger","table-info","table-warning","table-light"];
               return colors[x];
 
 }
-
+// This function displays ticket details in a table format, creating a new row for each ticket.
 function ticketSummary(ticketNumber,ticketTitle,ticketDepartment,ticketPriority,ticketCustomerName){
 
     let table = document.getElementById("ticketTableBody");
