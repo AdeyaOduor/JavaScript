@@ -7,7 +7,7 @@ It allows users to create, store, and view tickets, complete with a dynamic form
 var database = firebase.database();
 var ref = database.ref('ticketRecord');
 var ticketsArray = [];
-
+// This function constructs a form for submitting a new ticket.
 function newTicket(){
     resetNewTicketDiv();
     let outerDiv= document.getElementById("outerDiv");
@@ -174,7 +174,7 @@ function newTicket(){
     form.appendChild(divStatus);
     document.body.appendChild(outerDiv);
 }
-
+// This function generates a unique ticket number by combining random letters and numbers.
 function generateTicketNumber(){
     let chars = "ABCDEFGHIJKLMNOPQRSTUVWXTZ";
     let nums = "0123456789";
