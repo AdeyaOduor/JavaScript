@@ -222,6 +222,10 @@ function ticketSummary(ticketNumber,ticketTitle,ticketDepartment,ticketPriority,
     ticketCustomerCell.innerHTML = ticketCustomerName;
     ticketAction.innerHTML= '<button class="btn-info">View Details</button>';
 }
+/*
+    Gathers all input values from the ticket form, creates a ticket object, and pushes it to the Firebase database.
+    It then calls ticketSummary to display the new ticket in the summary table and resets the form.
+*/
 function ticketSubmit(){
 
     let ticketNumber = generateTicketNumber();
