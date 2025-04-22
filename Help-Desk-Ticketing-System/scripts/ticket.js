@@ -291,7 +291,7 @@ function loadSummary(){
     }
 }
 
-
+// This function iterates through ticketsArray and displays each ticket in the summary table.
 function summaryTicket(){
 
     loadTicketSummary();
@@ -300,11 +300,6 @@ function summaryTicket(){
         ticketSummary(ticketsArray[i].ticketNumber, ticketsArray[i].title, ticketsArray[i].department, ticketsArray[i].priority, ticketsArray[i].customerName);
     }
 }
-
-
-
-
-
 
 // get the table element
 var $table = document.getElementById("ticketTable"),
