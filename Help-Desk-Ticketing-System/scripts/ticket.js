@@ -262,7 +262,7 @@ function ticketSubmit(){
 
     document.getElementById('newTicketForm').reset();
 }
-
+// This function clears the form and resets its styling.
 function resetNewTicketDiv(){
 
     let newOuterDiv = document.getElementById("outerDiv");
@@ -270,7 +270,7 @@ function resetNewTicketDiv(){
     newOuterDiv.innerHTML = "";
 
 }
-
+// This function retrieves existing tickets from Firebase when the application starts, populating the ticketsArray and displaying each ticket using the ticketSummary function.
 function init(){
 
     ref.once('value',function(snapshot){
