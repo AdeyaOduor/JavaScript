@@ -12,7 +12,9 @@ console.log(testStrict(7.0)); // Output: "Equal" (same value, different type)
 console.log(testStrict("7")); // Output: "Not Equal" (string vs number)
 console.log(testStrict(5)); // Output: "Not Equal"
 // --------------------------------------------------------------------------
-
+/*
+The testNotEqual function checks if a given value is not equal to the number 99. 
+It uses the loose inequality operator (!=), which evaluates whether two values are not equal, allowing for type coercion.*/
 function testNotEqual(val) {
   if (val!= 99) { 
     return "Not Equal";
