@@ -22,7 +22,10 @@ function testNotEqual(val) {
   return "Equal";
 }
 
-console.log(testNotEqual(10));
+console.log(testNotEqual(99));  // Output: "Equal"
+console.log(testNotEqual(100)); // Output: "Not Equal"
+console.log(testNotEqual("99")); // Output: "Not Equal" (due to type coercion)
+console.log(testNotEqual(0));    // Output: "Not Equal"
 // --------------------------------------------------------------------------
 
 function testStrictNotEqual(val) {
