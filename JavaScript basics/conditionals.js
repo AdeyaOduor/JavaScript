@@ -26,6 +26,23 @@ console.log(testNotEqual(99));  // Output: "Equal"
 console.log(testNotEqual(100)); // Output: "Not Equal"
 console.log(testNotEqual("99")); // Output: "Not Equal" (due to type coercion)
 console.log(testNotEqual(0));    // Output: "Not Equal"
+/*
+Real-World Application: Configuration Validation
+
+Consider a scenario in a web application where you need to validate user input against a specific configuration value. 
+Let’s say you want to ensure that a user does not select a specific configuration option represented by the value 99.*/ 
+function validateConfiguration(option) {
+    if (testNotEqual(option) === "Not Equal") {
+        console.log("Configuration option is valid.");
+    } else {
+        console.log("Invalid configuration option selected.");
+    }
+}
+
+// Example usage
+validateConfiguration(99);  // Output: "Invalid configuration option selected."
+validateConfiguration(50);   // Output: "Configuration option is valid."
+validateConfiguration("99"); // Output: "Invalid configuration option selected."
 // --------------------------------------------------------------------------
 
 function testStrictNotEqual(val) {
