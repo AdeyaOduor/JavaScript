@@ -1,3 +1,5 @@
+// checks if a given value is strictly equal to the number 7. 
+// It uses the strict equality operator (===), which checks both the value and the type of the variable being compared. 
 function testStrict(val) {
   if (val === 7) {
     return "Equal";
