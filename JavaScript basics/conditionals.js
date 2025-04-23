@@ -7,7 +7,10 @@ function testStrict(val) {
   return "Not Equal";
 }
 
-console.log(testStrict(10)); // Change this value to test
+console.log(testStrict(7)); // Output: "Equal"
+console.log(testStrict(7.0)); // Output: "Equal" (same value, different type)
+console.log(testStrict("7")); // Output: "Not Equal" (string vs number)
+console.log(testStrict(5)); // Output: "Not Equal"
 // --------------------------------------------------------------------------
 
 function testNotEqual(val) {
