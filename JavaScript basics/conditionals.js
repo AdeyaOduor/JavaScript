@@ -59,8 +59,13 @@ console.log(testStrictNotEqual(18));   // Output: "Not Equal"
 console.log(testStrictNotEqual("17")); // Output: "Not Equal" (string vs number)
 console.log(testStrictNotEqual(17.0)); // Output: "Equal" (same value, different type)
 
+/*
+Real-World Application: Access Control
 
-// Define user roles and their permissions
+Imagine you are developing a web application that has a feature restricted to users with a specific ID, which is 17. 
+You want to ensure that only the user with this ID can access certain functionalities.
+
+Define user roles and their permissions */ 
 const acl = {
     17: ['module1', 'module2'], // User ID 17 has access to module1 and module2
     18: ['module2'],             // User ID 18 has access only to module2
