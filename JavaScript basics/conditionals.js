@@ -45,7 +45,7 @@ validateConfiguration(50);   // Output: "Configuration option is valid."
 validateConfiguration("99"); // Output: "Invalid configuration option selected."
 // --------------------------------------------------------------------------
 /*
-function checks if a given value is strictly not equal to the number 17. 
+Function checks if a given value is strictly not equal to the number 17. 
 It uses the strict inequality operator (!==), which ensures both the value and type are considered in the comparison. */
 function testStrictNotEqual(val) {
   if (val!== 17) { 
@@ -54,7 +54,10 @@ function testStrictNotEqual(val) {
   return "Equal";
 }
 
-console.log(testStrictNotEqual(10));
+console.log(testStrictNotEqual(17));   // Output: "Equal"
+console.log(testStrictNotEqual(18));   // Output: "Not Equal"
+console.log(testStrictNotEqual("17")); // Output: "Not Equal" (string vs number)
+console.log(testStrictNotEqual(17.0)); // Output: "Equal" (same value, different type)
 // ---------------------------------------------------------------------------
 
 function testGreaterThan(val) {
