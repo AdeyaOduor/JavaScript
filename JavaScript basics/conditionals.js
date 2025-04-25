@@ -58,6 +58,30 @@ console.log(testStrictNotEqual(17));   // Output: "Equal"
 console.log(testStrictNotEqual(18));   // Output: "Not Equal"
 console.log(testStrictNotEqual("17")); // Output: "Not Equal" (string vs number)
 console.log(testStrictNotEqual(17.0)); // Output: "Equal" (same value, different type)
+
+
+// Define user roles and their permissions
+const acl = {
+    17: ['module1', 'module2'], // User ID 17 has access to module1 and module2
+    18: ['module2'],             // User ID 18 has access only to module2
+    19: ['module1', 'module3'],  // User ID 19 has access to module1 and module3
+};
+
+// Function to check module access
+function hasAccess(userId, module) {
+    const userPermissions = acl[userId];
+    if (userPermissions && userPermissions.includes(module)) {
+        return "Access granted to " + module;
+    }
+    return "Access denied to " + module;
+}
+
+// Example usage
+console.log(hasAccess(17, 'module1'));  // Output: "Access granted to module1"
+console.log(hasAccess(17, 'module3'));  // Output: "Access denied to module3"
+console.log(hasAccess(18, 'module2'));  // Output: "Access granted to module2"
+console.log(hasAccess(19, 'module3'));  // Output: "Access granted to module3"
+console.log(hasAccess(20, 'module1'));  // Output: "Access denied to module1"
 // ---------------------------------------------------------------------------
 
 function testGreaterThan(val) {
