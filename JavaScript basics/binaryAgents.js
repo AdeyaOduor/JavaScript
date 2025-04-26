@@ -59,79 +59,42 @@ const sensorReadings = binaryValues.myMap(decodeBinary);
 console.log(sensorReadings); // Output: [1, 2, 3, 4, 5]
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
+// Convert a string to binary representation
 function stringToBinary(str) {
-  let binaryCodes = '';
-  
-  for (let i = 0; i < str.length; i++) {
-    const asciiCode = str.charCodeAt(i);
-    const binaryCode = asciiCode.toString(2).padStart(8, '0');
-    binaryCodes += binaryCode + ' ';
-  }
-  
-  return binaryCodes.trim();
+  return str.split('').map(char => char.charCodeAt(0).toString(2).padStart(8, '0')).join(' ');
 }
 
-console.log(stringToBinary("Hello, world!"));
-// Output
-// "01001000 01100101 01101100 01101100 01101111 00101100 00100000 01110111 01101111 01110010 01101100 01100100 00100001".
-// ---------------------------------------------------------------------------------------------------------------------------
-  // Function to convert binary to text
-function binaryAgent(str) {
-  return str.split(' ').map(function(binary) {
-    return String.fromCharCode(parseInt(binary, 2));
-  }).join('');
+// Convert binary to text
+function binaryToString(binaryStr) {
+  return binaryStr.split(' ').map(binary => String.fromCharCode(parseInt(binary, 2))).join('');
 }
 
-// Example encryption function using binaryAgent
+// Encrypt the message using a key
 function encrypt(message, key) {
-  // Convert the message and key to binary
-  const messageBinary = message.split('').map(char => char.charCodeAt(0).toString(2).padStart(8, '0')).join(' ');
-  const keyBinary = key.split('').map(char => char.charCodeAt(0).toString(2).padStart(8, '0')).join(' ');
+  const messageBinary = stringToBinary(message).split(' ');
+  const keyBinary = stringToBinary(key).split(' ');
 
-  // Perform the encryption
-  const encryptedBinary = messageBinary.split(' ').map((char, i) => {
+  const encryptedBinary = messageBinary.map((char, i) => {
     const messageBit = parseInt(char, 2);
-    const keyBit = parseInt(keyBinary.split(' ')[i], 2);
+    const keyBit = parseInt(keyBinary[i % keyBinary.length], 2); // Cycle through key
     return (messageBit ^ keyBit).toString(2).padStart(8, '0');
   }).join(' ');
 
-  // Convert the encrypted binary back to text
-  return binaryAgent(encryptedBinary);
+  return encryptedBinary; // Return the encrypted binary string
 }
 
-// Example decryption function using binaryAgent
-function decrypt(encryptedMessage, key) {
-  // Convert the encrypted message and key to binary
-  const encryptedBinary = encryptedMessage.split('').map(char => char.charCodeAt(0).toString(2).padStart(8, '0')).join(' ');
-  const keyBinary = key.split('').map(char => char.charCodeAt(0).toString(2).padStart(8, '0')).join(' ');
+// Decrypt the encrypted message using the same key
+function decrypt(encryptedBinary, key) {
+  const encryptedBits = encryptedBinary.split(' ');
+  const keyBinary = stringToBinary(key).split(' ');
 
-  // Perform the decryption
-  const decryptedBinary = encryptedBinary.split(' ').map((char, i) => {
+  const decryptedBinary = encryptedBits.map((char, i) => {
     const encryptedBit = parseInt(char, 2);
-    const keyBit = parseInt(keyBinary.split(' ')[i], 2);
+    const keyBit = parseInt(keyBinary[i % keyBinary.length], 2); // Cycle through key
     return (encryptedBit ^ keyBit).toString(2).padStart(8, '0');
   }).join(' ');
 
-  // Convert the decrypted binary back to text
-  return binaryAgent(decryptedBinary);
-}
-
-function encrypt(message, key, blockSize = 64) {
-  let encryptedMessage = '';
-  for (let i = 0; i < message.length; i += blockSize) {
-    const block = message.slice(i, i + blockSize);
-    encryptedMessage += encrypt_block(block, key);
-  }
-  return encryptedMessage;
-}
-
-function decrypt(encryptedMessage, key, blockSize = 64) {
-  let decryptedMessage = '';
-  for (let i = 0; i < encryptedMessage.length; i += blockSize) {
-    const block = encryptedMessage.slice(i, i + blockSize);
-    decryptedMessage += decrypt_block(block, key);
-  }
-  return decryptedMessage;
+  return binaryToString(decryptedBinary); // Convert back to string
 }
 
 // Example usage
@@ -139,7 +102,7 @@ const message = 'Hello, World!';
 const key = 'MySecretKey';
 
 const encryptedMessage = encrypt(message, key);
-console.log('Encrypted message:', encryptedMessage); //?	^E#$d!
+console.log('Encrypted message (binary):', encryptedMessage);
 
 const decryptedMessage = decrypt(encryptedMessage, key);
 console.log('Decrypted message:', decryptedMessage);
