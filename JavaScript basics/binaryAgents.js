@@ -116,23 +116,23 @@ function decrypt(encryptedMessage, key) {
   return binaryAgent(decryptedBinary);
 }
 
-// function encrypt(message, key, blockSize = 64) {
-//   let encryptedMessage = '';
-//   for (let i = 0; i < message.length; i += blockSize) {
-//     const block = message.slice(i, i + blockSize);
-//     encryptedMessage += encrypt_block(block, key);
-//   }
-//   return encryptedMessage;
-// }
+function encrypt(message, key, blockSize = 64) {
+  let encryptedMessage = '';
+  for (let i = 0; i < message.length; i += blockSize) {
+    const block = message.slice(i, i + blockSize);
+    encryptedMessage += encrypt_block(block, key);
+  }
+  return encryptedMessage;
+}
 
-// function decrypt(encryptedMessage, key, blockSize = 64) {
-//   let decryptedMessage = '';
-//   for (let i = 0; i < encryptedMessage.length; i += blockSize) {
-//     const block = encryptedMessage.slice(i, i + blockSize);
-//     decryptedMessage += decrypt_block(block, key);
-//   }
-//   return decryptedMessage;
-// }
+function decrypt(encryptedMessage, key, blockSize = 64) {
+  let decryptedMessage = '';
+  for (let i = 0; i < encryptedMessage.length; i += blockSize) {
+    const block = encryptedMessage.slice(i, i + blockSize);
+    decryptedMessage += decrypt_block(block, key);
+  }
+  return decryptedMessage;
+}
 
 // Example usage
 const message = 'Hello, World!';
