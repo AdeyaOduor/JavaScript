@@ -108,17 +108,32 @@ const decryptedMessage = decrypt(encryptedMessage, key);
 console.log('Decrypted message:', decryptedMessage);
 /*
 In this example, the binaryAgent function is used to convert between binary and text representations. 
-The encrypt and decrypt functions demonstrate a simple encryption/decryption algorithm using the XOR operation.
+The encrypt and decrypt functions demonstrate a simple encryption/decryption algorithm using the XOR operation.*/
+// -----------------------------------------------------------------------------------------------------------------------------
 
-Here's how the example works:
+const CryptoJS = require('crypto-js');
 
-    The encrypt function takes a message and a key as input.
-    It converts the message and key to binary representations using the split(), map(), and join() methods.
-    It then performs the encryption by applying the XOR operation between the message bits and the key bits.
-    The encrypted binary data is converted back to text using the binaryAgent function.
+// Encrypt a message using AES
+function encrypt(message, key) {
+  // Encrypt the message with the key using AES
+  const encrypted = CryptoJS.AES.encrypt(message, key).toString();
+  return encrypted; // Return the encrypted message
+}
 
-The decrypt function works in a similar way, but it applies the XOR operation between the encrypted message and the key to 
-recover the original message.
+// Decrypt the encrypted message using the same key
+function decrypt(encryptedMessage, key) {
+  // Decrypt the message with the key using AES
+  const bytes = CryptoJS.AES.decrypt(encryptedMessage, key);
+  const decrypted = bytes.toString(CryptoJS.enc.Utf8);
+  return decrypted; // Return the decrypted message
+}
 
-Note that this is a very simple example, and in a real-world scenario, you would likely use more advanced encryption algorithms 
-and key management techniques to ensure the security of your data.*/
+// Example usage
+const message = 'Hello, World!';
+const key = 'MySecretKey123'; // Key must be of sufficient length (16, 24, or 32 characters for AES)
+
+const encryptedMessage = encrypt(message, key);
+console.log('Encrypted message:', encryptedMessage);
+
+const decryptedMessage = decrypt(encryptedMessage, key);
+console.log('Decrypted message:', decryptedMessage);
