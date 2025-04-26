@@ -108,9 +108,21 @@ const decryptedMessage = decrypt(encryptedMessage, key);
 console.log('Decrypted message:', decryptedMessage);
 /*
 In this example, the binaryAgent function is used to convert between binary and text representations. 
-The encrypt and decrypt functions demonstrate a simple encryption/decryption algorithm using the XOR operation.*/
+The encrypt and decrypt functions demonstrate a simple encryption/decryption algorithm using the XOR operation.
+
+It is important to note that XOR is not secure for cryptographic purposes unless used with a strong key and additional security measures.
+
+Real-World Application
+
+This code can be used in various applications requiring simple encryption and decryption, such as:
+
+    Messaging Apps: Encrypt messages before sending to maintain privacy.
+    Data Storage: Securely store sensitive information in binary format.
+    File Transfer: Encrypt files before transferring over insecure channels.
+*/
 // -----------------------------------------------------------------------------------------------------------------------------
 
+// npm install crypto-js
 const CryptoJS = require('crypto-js');
 
 // Encrypt a message using AES
