@@ -149,3 +149,43 @@ console.log('Encrypted message:', encryptedMessage);
 
 const decryptedMessage = decrypt(encryptedMessage, key);
 console.log('Decrypted message:', decryptedMessage);
+// ------------------------------------------------------------------------------------------------------------
+
+
+// Example with Random IV
+const CryptoJS = require('crypto-js');
+
+// Encrypt a message using AES with IV
+function encrypt(message, key) {
+  const iv = CryptoJS.lib.WordArray.random(16); // Generate a random IV
+  const encrypted = CryptoJS.AES.encrypt(message, CryptoJS.enc.Utf8.parse(key), {
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+  });
+  return iv.toString() + ':' + encrypted.toString(); // Return IV and encrypted message
+}
+
+// Decrypt the encrypted message using the same key
+function decrypt(encryptedMessage, key) {
+  const parts = encryptedMessage.split(':');
+  const iv = CryptoJS.enc.Hex.parse(parts[0]); // Extract IV
+  const encrypted = parts[1];
+
+  const bytes = CryptoJS.AES.decrypt(encrypted, CryptoJS.enc.Utf8.parse(key), {
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+  });
+  return bytes.toString(CryptoJS.enc.Utf8); // Return the decrypted message
+}
+
+// Example usage
+const message = 'Hello, World!';
+const key = 'MySecretKey123'; // Key must be of sufficient length
+
+const encryptedMessage = encrypt(message, key);
+console.log('Encrypted message:', encryptedMessage);
+
+const decryptedMessage = decrypt(encryptedMessage, key);
+console.log('Decrypted message:', decryptedMessage);
