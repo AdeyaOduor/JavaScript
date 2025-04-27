@@ -23,10 +23,10 @@ const arr = [
   [[10, 11, 12], 13, 14]
 ];
 
-const subarray = arr[3];
-const nestedSubarray = arr[3][0];
-const element = arr[3][0][1];
-const myData = arr[2][1];
+const subarray = arr[3];             // Accessing the fourth element of arr
+const nestedSubarray = arr[3][0];    // Accessing the first element of the fourth element (which is itself an array)
+const element = arr[3][0][1];         // Accessing the second element of the nested array
+const myData = arr[2][1];             // Accessing the second element of the third subarray
 
 console.log("subarray:", subarray); // subarray: [ [ 10, 11, 12 ], 13, 14 ]
 console.log("nestedSubarray:", nestedSubarray); // nestedSubarray: [ 10, 11, 12 ]
