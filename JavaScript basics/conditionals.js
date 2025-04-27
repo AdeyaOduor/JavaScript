@@ -101,6 +101,43 @@ console.log(testGreaterThan(50));  // "Over 10"
 console.log(testGreaterThan(5));   // "10 or Under"
 
 // Example in Number checker
+// numberChecker.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input {
+            padding: 10px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Number Checker</h1>
+    <input type="number" id="numberInput" placeholder="Enter a number" />
+    <button onclick="checkNumber()">Check</button>
+    <div class="result" id="result"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+// script.js
 function testGreaterThan(val) {
   return val > 100 ? "Over 100" :
          val > 10 ? "Over 10" :
