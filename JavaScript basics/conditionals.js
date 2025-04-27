@@ -99,6 +99,26 @@ function testGreaterThan(val) {
 console.log(testGreaterThan(150)); // "Over 100"
 console.log(testGreaterThan(50));  // "Over 10"
 console.log(testGreaterThan(5));   // "10 or Under"
+
+// Example in Number checker
+function testGreaterThan(val) {
+  return val > 100 ? "Over 100" :
+         val > 10 ? "Over 10" :
+         "10 or Under";
+}
+
+function checkNumber() {
+  const input = document.getElementById('numberInput').value;
+  const number = parseFloat(input);
+  
+  if (isNaN(number)) {
+    document.getElementById('result').innerText = "Please enter a valid number.";
+    return;
+  }
+
+  const result = testGreaterThan(number);
+  document.getElementById('result').innerText = result;
+}
 // ------------------------------------------------------------------------------
 
 
