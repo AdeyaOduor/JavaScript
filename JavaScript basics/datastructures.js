@@ -32,6 +32,22 @@ console.log("subarray:", subarray); // subarray: [ [ 10, 11, 12 ], 13, 14 ]
 console.log("nestedSubarray:", nestedSubarray); // nestedSubarray: [ 10, 11, 12 ]
 console.log("element:", element); // element: 11
 console.log("myData:", myData); // myData: 8
+
+// Example usage
+const userProfiles = [
+  ['Alice', 30, 'Engineer'],
+  ['Bob', 25, 'Designer'],
+  ['Charlie', 35, 'Manager'],
+  [['Dave', 40, 'Director'], 'Eve', 'Frank']
+];
+
+// Accessing specific user data
+const group = userProfiles[3];            // Group of users: [['Dave', 40, 'Director'], 'Eve', 'Frank']
+const firstUser = userProfiles[3][0];     // First user in the group: ['Dave', 40, 'Director']
+const userName = userProfiles[3][0][0];   // User name of the first user: 'Dave'
+const userAge = userProfiles[2][1];        // Age of Charlie: 35
+
+console.log(`User: ${userName}, Age: ${userAge}`); // Output: User: Dave, Age: 35
 // ------------------------------------------------------------------------------------------
 
 // append data to the end of an array is via the push() function.
