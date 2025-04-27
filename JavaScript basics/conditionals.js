@@ -156,6 +156,13 @@ function checkNumber() {
   const result = testGreaterThan(number);
   document.getElementById('result').innerText = result;
 }
+/*
+Step 4: Running the Application
+
+    Save both index.html and script.js in the same directory.
+    Open index.html in a web browser.
+    Enter a number in the input field and click the "Check" button. The application will display whether the number is "Over 100," "Over 10," or "10 or Under."
+*/
 // ------------------------------------------------------------------------------
 
 
