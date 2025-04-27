@@ -90,18 +90,15 @@ console.log(hasAccess(20, 'module1'));  // Output: "Access denied to module1"
 // ---------------------------------------------------------------------------
 
 function testGreaterThan(val) {
-  if (val > 100) {  
-    return "Over 100";
-  }
-  
-  if (val > 10) {  
-    return "Over 10";
-  }
-
-  return "10 or Under";
+  return val > 100 ? "Over 100" :
+         val > 10 ? "Over 10" :
+         "10 or Under";
 }
 
-console.log(testGreaterThan(10)); // Change this value to test
+// Example usage
+console.log(testGreaterThan(150)); // "Over 100"
+console.log(testGreaterThan(50));  // "Over 10"
+console.log(testGreaterThan(5));   // "10 or Under"
 // ------------------------------------------------------------------------------
 
 
