@@ -7,6 +7,28 @@ const myArray2 = [["Bulls", 23], ["White Sox", 45]]; // nested array
 const myArray3 = [50, 60, 70];
 const myData = myArray3[2];
 console.log(myData); // 70
+
+// Function to display player and team information
+function displayInfo() {
+    const output = document.getElementById('output');
+
+    // Display player information
+    const playerName = myArray1[0];
+    const playerId = myArray1[1];
+    const playerAge = myArray3[2]; // Accessing the age from myArray3
+
+    output.innerHTML += `<div class="player">Player: ${playerName}, ID: ${playerId}, Age: ${playerAge}</div>`;
+
+    // Display team information
+    myArray2.forEach(team => {
+        const teamName = team[0];
+        const teamScore = team[1];
+        output.innerHTML += `<div class="team">Team: ${teamName}, Score: ${teamScore}</div>`;
+    });
+}
+
+// Call the function to display info
+displayInfo();
 // --------------------------------------------------------------------------------------
 
 // Modify Array Data With Indexes
