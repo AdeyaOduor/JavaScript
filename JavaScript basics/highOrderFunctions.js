@@ -86,10 +86,8 @@ console.log(inStockProducts);
 
 /*
 3. reduce
-
 The reduce function executes a reducer function on each element of the array, resulting in a single output value.
 Example Application: Summing Values
-
 Scenario: You have an array of numbers, and you want to calculate the total sum.*/
 
 const numbers = [1, 2, 3, 4, 5];
@@ -99,9 +97,7 @@ console.log(totalSum); // Output: 15
 
 /*
 Combined Example: Chaining map, filter, and reduce
-
 You can combine these functions to perform complex data transformations in a concise manner.
-
 Scenario: Given an array of users, you want to find the total age of users who are over 30.*/
 
 const users = [
