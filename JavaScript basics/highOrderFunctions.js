@@ -14,6 +14,20 @@ const squareList = arr => {
 
 const squaredIntegers = squareList([-3, 4.8, 5, 3, -3.2]);
 console.log(squaredIntegers); // [ 25, 9 ]
+/*
+Explanation of the Function
+
+    Filtering Positive Integers:
+        The function first filters the input array arr using filter(). It checks each number to determine if it is a positive integer (greater than or equal to 0 and an integer).
+        For the input [-3, 4.8, 5, 3, -3.2], the positive integers are [5, 3].
+
+    Mapping to Squares:
+        Next, it maps over the filtered array to square each positive integer using map(). The squaring operation is done using the exponentiation operator **.
+        The result for [5, 3] will be [25, 9].
+
+    Returning the Result:
+        Finally, the function returns the new array of squared integers.
+*/
 
 /* The `squareList` function could be used to validate and clean user input, ensuring that only positive 
 integer values are accepted and processed further.*/
