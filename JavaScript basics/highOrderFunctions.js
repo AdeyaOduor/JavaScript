@@ -37,6 +37,13 @@ const squaredPositiveIntegers = squareList(userInput); //[16, 9, 81]
 // The squared positive integers could be used in scientific calculations, such as finding the variance or standard deviation of the measurements.
 const measurements = [2.5, -1.2, 4, 0, 3.7, -5.1, 8];
 const squaredPositiveIntegers = squareList(measurements); //[16, 9, 64]
+
+// Example distances logged by the user
+const distances = [-5, 10, 3, 2.5, 7, -1, 4];
+
+// Function to calculate squared distances of valid runs
+const squaredDistances = squareList(distances);
+console.log(squaredDistances);  // Outputs: [100, 9, 49, 16]
 // ----------------------------------------------------------------------------------------------------------------------------------------------------
 
 /*
