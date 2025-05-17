@@ -36,13 +36,20 @@ function addFive() {
 addThree(); // output is undefined
 addFive(); // output is undefined
 // ---------------------------------------------------------------------------------------------------
-let processed = 0;
+let processed = 0; // This line declares a variable named processed and initializes it to 0.
 
 function processArg(num) {
   return (num + 3) / 5;
 }
 
-// Call the processArg function with an argument of 7 and assign its return value to the variable processed.
+/*
+    A function named processArg is defined, which takes one argument, num.
+    Inside the function, it performs the following calculation:
+        It adds 3 to the input num.
+        Then, it divides the result by 5.
+    The result of this calculation is returned to the caller.
+    Call the processArg function with an argument of 7 and assign its return value to the variable processed.
+*/ 
 processed = processArg(7); // Equal to 2
 // --------------------------------------------------------------------------------------------------------------
 /*a function nextInLine which takes an array (arr) and a number (item) as arguments.
