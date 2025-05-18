@@ -44,6 +44,10 @@ const distances = [-5, 10, 3, 2.5, 7, -1, 4];
 // Function to calculate squared distances of valid runs
 const squaredDistances = squareList(distances);
 console.log(squaredDistances);  // Outputs: [100, 9, 49, 16]
+
+const investmentReturns = [-5, 10, 3.5, 15, -2, 4, 20, 7.2];
+const squaredReturns = squareList(investmentReturns);
+console.log(squaredReturns);  // Outputs: [100, 225, 16, 400]
 // ----------------------------------------------------------------------------------------------------------------------------------------------------
 
 /*
