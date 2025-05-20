@@ -4,5 +4,6 @@ const filter_Non_Unique = arr => arr.filter(i => arr.indexOf(i) === arr.lastInde
 console.log(filter_Non_Unique([1, 2, 2, 3, 4, 4, 5]));  // Outputs: [1, 3, 5]
 console.log(filter_Non_Unique([1, 2, 3, 4]));            // Outputs: [1, 2, 3, 4]  
 
-/* Use new Set() and the spread operator (...) to create an array of the unique values in arr.
-Use Array.prototype.filter() to create an array containing only the unique values. */
+/* The function filters an array to return only the elements that are unique (i.e., appear exactly once).
+    It checks each element's first occurrence (indexOf) against its last occurrence (lastIndexOf). If they are the same, the element is unique.
+ */
