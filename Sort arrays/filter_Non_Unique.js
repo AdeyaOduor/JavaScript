@@ -20,3 +20,20 @@ const productIDs = [101, 202, 202, 303, 404, 404, 505];
 
 const uniqueProducts = filter_Non_Unique(productIDs);
 console.log(uniqueProducts);  // Outputs: [101, 303, 505]
+
+/*
+Explanation of Output
+
+    Input IDs:
+        The input array [101, 202, 202, 303, 404, 404, 505] contains product IDs where 202 and 404 are duplicates.
+
+    Filtered Unique IDs:
+        After applying the filter_Non_Unique function, we get [101, 303, 505].
+        These IDs are unique, meaning they only appear once in the inventory list.
+
+Real-World Application
+
+    Stock Management: The output can be used to generate reports for stock availability, ensuring only unique items are considered for sales.
+    Sales Reporting: Unique product IDs can be prioritized in sales reports to analyze which products are not duplicated in stock.
+    Inventory Audits: During inventory audits, focusing on unique IDs helps to streamline the verification process, reducing confusion over duplicates.
+*/
