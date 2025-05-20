@@ -16,3 +16,7 @@ Context: Product Inventory Management
     Objective:
         The store manager wants to identify which products are truly unique in the inventory to ensure they are listed correctly for sales and stock tracking.
 */
+const productIDs = [101, 202, 202, 303, 404, 404, 505];
+
+const uniqueProducts = filter_Non_Unique(productIDs);
+console.log(uniqueProducts);  // Outputs: [101, 303, 505]
