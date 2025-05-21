@@ -46,9 +46,11 @@ const userInput = [10, 'hello', 20, 'world', 30];
 const validNumbers = filter_list(userInput);
 console.log(validNumbers); // Output: [10, 20, 30]
 
-// 3. Processing Financial Transactions
-
-// When handling financial transactions, you might receive a list of amounts that may include erroneous entries. Filtering helps in keeping only valid transaction amounts for processing.
+/*
+3. Processing Financial Transactions
+When handling financial transactions, you might receive a list of amounts that may include erroneous entries. 
+Filtering helps in keeping only valid transaction amounts for processing.
+*/  
 
 // Example:
 const transactions = [100, 'error', 250, null, 300];
