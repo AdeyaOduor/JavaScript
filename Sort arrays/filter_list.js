@@ -57,20 +57,21 @@ const transactions = [100, 'error', 250, null, 300];
 const validTransactions = filter_list(transactions);
 console.log(validTransactions); // Output: [100, 250, 300]
 
-// 4. Generating Statistics
-
-// When computing statistics like averages or sums, you need to ensure that only numeric values are included in the calculations.
-
+/*
+4. Generating Statistics
+ When computing statistics like averages or sums, you need to ensure that only numeric values are included in the calculations.
+*/ 
 // Example:
 const scores = [85, 'N/A', 90, 78, 'missing', 88];
 const validScores = filter_list(scores);
 const averageScore = validScores.reduce((a, b) => a + b, 0) / validScores.length;
 console.log(averageScore); // Output: 85.25
 
-// 5. Filtering Sensor Data
-
-// In IoT applications, sensor readings might be mixed with error messages or invalid data points. Filtering these out ensures that only valid readings are analyzed.
-
+/*
+5. Filtering Sensor Data
+// In IoT applications, sensor readings might be mixed with error messages or invalid data points. 
+Filtering these out ensures that only valid readings are analyzed.
+*/ 
 // Example:
 const sensorReadings = [23.5, 'error', 24.1, 25.0, 'offline', 22.9];
 const validReadings = filter_list(sensorReadings);
