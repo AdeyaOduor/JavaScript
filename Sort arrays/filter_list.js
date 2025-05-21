@@ -35,9 +35,11 @@ const validResponses = filter_list(surveyResponses);
 // Use validResponses to create a bar chart
 console.log(validResponses); // Output: [5, 4, 3, 2]
 
-// 2. User Input Validation
-
-// In applications that accept user input, you may want to filter out invalid inputs (e.g., strings, special characters) before performing calculations or storing data.
+/*
+2. User Input Validation
+In applications that accept user input, you may want to filter out invalid inputs (e.g., strings, special characters) 
+before performing calculations or storing data.
+*/ 
 
 // Example:
 const userInput = [10, 'hello', 20, 'world', 30];
