@@ -9,9 +9,10 @@ function filter_list(l) {
   }
 console.log(filter_list([1, 2, 2, 3, 4, 4, 5]));  /*[ 1, 2, 2, 3, 4, 4, 5]*/
 
-// 1. Data Cleaning in Analytics
-
-// When analyzing datasets, it’s common to encounter mixed data types. Filtering out non-numeric values ensures that only valid numbers are processed.
+/*
+1. Data Cleaning in Analytics
+When analyzing datasets, it’s common to encounter mixed data types. Filtering out non-numeric values ensures that only valid numbers are processed.
+*/ 
 
 // Example 1:
 const data = [1, 'apple', 2, 'banana', 3, null, 4];
