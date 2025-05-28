@@ -32,7 +32,7 @@ function displayInfo() {
 displayInfo();
 // --------------------------------------------------------------------------------------
 
-// Modify Array Data With Indexes
+// Modify Array Data With Indexes, replacing 18 at fisrt index with 45
 const myArray = [18, 64, 99];
 myArray[0] = 45;
 
