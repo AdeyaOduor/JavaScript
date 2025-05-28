@@ -3,33 +3,57 @@
 /*
 creating an aray with strings and integers and accessing arrays with myData, 
 illustrates how to use arrays to manage and display structured data in an application. */ 
-const myArray1 = ["Quincy", 1];
-const myArray2 = [["Bulls", 23], ["White Sox", 45]]; // nested array
-const myArray3 = [50, 60, 70];
-const myData = myArray3[2];
-console.log(myData); // 70
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player and Team Info</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .player, .team {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Player and Team Information</h1>
+    <div id="output"></div> <!-- Container for player and team info -->
+    
+    <script>
+        const myArray1 = ["Quincy", 1];
+        const myArray2 = [["Bulls", 23], ["White Sox", 45]]; // Nested array
+        const myArray3 = [50, 60, 70];
+        const myData = myArray3[2];
+        console.log(myData); // Outputs: 70
 
-// Function to display player and team information
-function displayInfo() {
-    const output = document.getElementById('output');
+        // Function to display player and team information
+        function displayInfo() {
+            const output = document.getElementById('output');
 
-    // Display player information
-    const playerName = myArray1[0];
-    const playerId = myArray1[1];
-    const playerAge = myArray3[2]; // Accessing the age from myArray3
+            // Display player information
+            const playerName = myArray1[0];
+            const playerId = myArray1[1];
+            const playerAge = myArray3[2]; // Accessing the age from myArray3
 
-    output.innerHTML += `<div class="player">Player: ${playerName}, ID: ${playerId}, Age: ${playerAge}</div>`;
+            output.innerHTML += `<div class="player">Player: ${playerName}, ID: ${playerId}, Age: ${playerAge}</div>`;
 
-    // Display team information
-    myArray2.forEach(team => {
-        const teamName = team[0];
-        const teamScore = team[1];
-        output.innerHTML += `<div class="team">Team: ${teamName}, Score: ${teamScore}</div>`;
-    });
-}
+            // Display team information
+            myArray2.forEach(team => {
+                const teamName = team[0];
+                const teamScore = team[1];
+                output.innerHTML += `<div class="team">Team: ${teamName}, Score: ${teamScore}</div>`;
+            });
+        }
 
-// Call the function to display info
-displayInfo();
+        // Call the function to display info
+        displayInfo();
+    </script>
+</body>
+</html>
 // --------------------------------------------------------------------------------------
 
 // Modify Array Data With Indexes, replacing 18 at fisrt index with 45
