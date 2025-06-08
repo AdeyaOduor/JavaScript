@@ -104,18 +104,8 @@ const addTogether = ( a, ...arr ) =>
 const addT = a => b =>
   typeof b !== "number"  ? undefined
   : a + b
-// ---------------------------------------------------------------------------------
-// Suppose we have a list of monthly expenses
-const addTogether = ( a, ...arr ) =>
-  typeof a !== "number" ? undefined
-  : arr.length === 0 ? addT( a )
-  : addT( a )( arr[0] )
 
-const addT = a => b =>
-  typeof b !== "number"  ? undefined
-  : a + b
-
-// Now use the addTogether function
+// Example: Suppose we have a list of monthly expenses
 const monthlyExpenses = [1200, 250, 75, 150, 80];
 const totalExpenses = addTogether(...monthlyExpenses);
 
