@@ -1,3 +1,7 @@
+/*
+JavaScript code is intended to sum two linked lists representing numbers, where each node contains a single digit. 
+The digits are stored in reverse order (i.e., the least significant digit is at the head of the list).*/
+
 var LinkedList = require('./../util/LinkedList');
 var printList = require('./../util/printList');
 
