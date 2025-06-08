@@ -1,7 +1,24 @@
 /*
 JavaScript code is intended to sum two linked lists representing numbers, where each node contains a single digit. 
-The digits are stored in reverse order (i.e., the least significant digit is at the head of the list).*/
+The digits are stored in reverse order (i.e., the least significant digit is at the head of the list).
 
+// LinkedList.js 
+class LinkedList {
+    constructor(value) {
+        this.value = value;
+        this.next = null;
+    }
+}
+module.exports = LinkedList;
+
+
+/project-root
+    /util
+        LinkedList.js
+        printList.js
+*/
+
+// main.js
 var LinkedList = require('./../util/LinkedList');
 var printList = require('./../util/printList');
 
