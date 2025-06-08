@@ -10,19 +10,16 @@ var sumList = function(head1, head2) {
   
   var ones;
   var tens = 0;
-  var sum;
   
-  while (node1 !== null && node2 !== null) {
-    if (node1 === null) {
-      sum = node2.value;
-    } else if (node2 === null) {
-      sum = node1.value;
-    } else {
-      sum = node1.value + node2.value;
-    }
-
-    sum += tens;
+  while (node1 !== null || node2 !== null) {
+    var value1 = node1 ? node1.value : 0;
+    var value2 = node2 ? node2.value : 0;
+    
+    var sum = value1 + value2 + tens;
+    
     ones = sum % 10;
+    tens = Math.floor(sum / 10);
+    
     if (node3 === null) {
       head3 = new LinkedList(ones);
       node3 = head3;
@@ -31,8 +28,6 @@ var sumList = function(head1, head2) {
       node3 = node3.next;
     }
 
-    tens = Math.floor(sum / 10);
-
     if (node1 !== null) {
       node1 = node1.next;
     }
@@ -40,11 +35,10 @@ var sumList = function(head1, head2) {
     if (node2 !== null) {
       node2 = node2.next;
     }
-
   }
+  
   if (tens > 0) {
     node3.next = new LinkedList(tens);
-    node3 = node3.next;
   }
 
   return head3;
@@ -58,41 +52,33 @@ var sumList = function(head1, head2) {
 var a = new LinkedList(7);
 var b = new LinkedList(1);
 var c = new LinkedList(6);
-
 a.next = b;
 b.next = c;
 
 var d = new LinkedList(5);
 var e = new LinkedList(9);
 var f = new LinkedList(2);
-
 d.next = e;
 e.next = f;
 
 var newHead = sumList(a, d);
-
 printList(newHead);
 
-// Input: (7 -> 1 -> 6) + (5 -> 9 -> 9). this case refers to 617 + 995
-// Output: 2 -> 1 -> 9. the answer refers to 1612
+// Additional test case
+var a2 = new LinkedList(7);
+var b2 = new LinkedList(1);
+var c2 = new LinkedList(6);
+a2.next = b2;
+b2.next = c2;
 
-var a = new LinkedList(7);
-var b = new LinkedList(1);
-var c = new LinkedList(6);
+var d2 = new LinkedList(5);
+var e2 = new LinkedList(9);
+var f2 = new LinkedList(9);
+d2.next = e2;
+e2.next = f2;
 
-a.next = b;
-b.next = c;
-
-var d = new LinkedList(5);
-var e = new LinkedList(9);
-var f = new LinkedList(2);
-
-d.next = e;
-e.next = f;
-
-var newHead = sumList(a, d);
-
-printList(newHead);
+var newHead2 = sumList(a2, d2);
+printList(newHead2);
 
 /*Create a function that sums two arguments together. If only one argument is provided, then return a function that expects one argument 
 and returns the sum. For example, addTogether(2, 3) should return 5, and addTogether(2) should return a function.*/
