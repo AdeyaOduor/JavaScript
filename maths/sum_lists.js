@@ -132,24 +132,31 @@ const addTogether = (a, ...arr) => {
   // Check the first argument type
   if (typeof a !== "number") return undefined;
 
-  // Define the operation to use
-  let operation = add;
-  if (arr.length > 0) {
-    operation = arr.shift();
-    if (typeof operation !== "function") {
-      return undefined;
+  let result = a;
+  
+  // Process the rest of the arguments
+  for (let i = 0; i < arr.length; i++) {
+    if (typeof arr[i] === 'function') {
+      // If the next argument is a function, apply it
+      const operation = arr[i];
+      // Ensure there is a number after the function
+      if (i + 1 < arr.length && typeof arr[i + 1] === 'number') {
+        result = operation(result, arr[i + 1]);
+        i++; // Skip the next number since we've used it
+      } else {
+        return undefined; // Invalid sequence, function not followed by a number
+      }
+    } else if (typeof arr[i] === 'number') {
+      // If the argument is a number, add it directly
+      result = add(result, arr[i]);
+    } else {
+      return undefined; // Invalid argument type
     }
   }
 
-  // Base case: apply the operation to the first argument
-  if (arr.length === 0) {
-    return operation(a);
-  }
-
-  // Recursive case: apply the operation to the first argument and the next argument
-  return operation(a, arr[0]) && addTogether(operation(a, arr[0]), ...arr.slice(1));
+  return result;
 };
 
 // Calculate 5 + 3 - 2 * 4 / 2
 const result = addTogether(5, 3, subtract, 2, multiply, 4, divide, 2);
-console.log(result);
+console.log(result); // Outputs: 5 + 5 - 2 * 4 / 2
