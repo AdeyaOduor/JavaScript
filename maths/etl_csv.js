@@ -87,3 +87,52 @@ app.get('/data', (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
+// Create a directory named public and inside it, create an index.html file:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Data Visualization</h1>
+    <canvas id="myChart" width="400" height="200"></canvas>
+    <script>
+        fetch('/data')
+            .then(response => response.json())
+            .then(data => {
+                const labels = data.map(row => row.value);
+                const ctx = document.getElementById('myChart').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Values',
+                            data: labels,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+    </script>
+</body>
+</html>
+
+/*
+Start the Express server:
+bash
+node server.js
+*/
