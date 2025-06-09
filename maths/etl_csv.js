@@ -60,3 +60,30 @@ function performStatistics(data) {
   console.log(`Median: ${med}`);
   console.log(`Mode: ${mod}`);
 }
+
+/*
+Create a sample CSV file named data.csv in the same directory:
+Execute the ETL script using Node.js:
+bash
+node etl.js
+
+For visualization, you can use a simple Express server to serve a webpage with Chart.js. Create a file named server.js:
+*/
+
+// server.js
+const express = require('express');
+const fs = require('fs');
+const app = express();
+const port = 3000;
+
+// Serve static files
+app.use(express.static('public'));
+
+app.get('/data', (req, res) => {
+  const data = fs.readFileSync('output.json');
+  res.json(JSON.parse(data));
+});
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
