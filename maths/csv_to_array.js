@@ -1,5 +1,4 @@
 /* program to convert a comma-separated values (CSV) string to a 2D array
-
 1. Function Definition
 
     const csv_to_array: This declares a constant variable csv_to_array and assigns it a function.
@@ -39,9 +38,10 @@ const transformedData = sourceData.map(row => transformRow(row));
 const csvData = document.getElementById('csv-upload').value;
 const parsedData = csv_to_array(csvData, ',', true);
 
-// Store the parsed data in the application's database
-// Load the transformed data into a database
-// Visualize the stock price data in a custom charting application
+/*
+Store the parsed data in the application's database
+Load the transformed data into a database
+Visualize the stock price data in a custom charting application*/ 
 // ---------------------------------------------------------------------------------------
 
   // Extract the CSV data
