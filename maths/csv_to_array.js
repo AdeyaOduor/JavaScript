@@ -1,6 +1,5 @@
 /* program to convert a comma-separated values (CSV) string to a 2D array
 1. Function Definition
-
     const csv_to_array: This declares a constant variable csv_to_array and assigns it a function.
     Parameters:
         data: A string containing CSV data.
@@ -8,7 +7,6 @@
         omitFirstRow: A boolean that indicates whether to skip the first row (often used for headers).
 
 2. Function Logic
-
     slice Method:
         This method is used to remove the first row from the data if omitFirstRow is true. It uses data.indexOf('\n') 
         to find the position of the first newline character and slices the string from there onward.
