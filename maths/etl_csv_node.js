@@ -177,4 +177,19 @@ app.listen(port, () => {
 Start the Express server:
 bash
 node server.js
+
+Explanations
+    Column Selection:
+        The transformData function now accepts a second parameter, columns, which is an array of column names to focus on (e.g., ['value', 'category']).
+        During data processing, the script only considers these specified columns for transformation and analysis.
+
+    Data Cleaning:
+        Rows are filtered based on the presence of values in the specified columns.
+
+    Transformation:
+        Each specified column is processed, converted to a float, and stored in the transformed row.
+
+    Aggregation:
+        The aggregation step groups data by the specified categorical column (e.g., category), calculating the average and count for each category.
+
 */
