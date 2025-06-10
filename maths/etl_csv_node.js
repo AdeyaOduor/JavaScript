@@ -31,7 +31,7 @@ fs.createReadStream(inputFile)
     console.log('CSV file successfully processed.');
 
     // Step 2: Transform
-    const transformedData = transformData(data);
+    const transformedData = transformData(data, ['value', 'category']); // Specify columns to transform
     
     // Step 3: Load
     fs.writeFileSync(outputFile, JSON.stringify(transformedData, null, 2));
