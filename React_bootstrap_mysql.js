@@ -16,6 +16,8 @@ In the backend folder, create a file named User.js:
 
 Step 4: Create Server with Express
 In the backend folder, create a file named server.js:
+
+Step 5: Create the React Components
 */
 
 // backend/db.js
@@ -85,3 +87,21 @@ app.post('/login', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
+// src/Navbar.js
+import React from 'react';
+import { Navbar, Nav } from 'react-bootstrap';
+
+const AppNavbar = () => {
+  return (
+    <Navbar bg="light" expand="lg">
+      <Navbar.Brand href="#home">Budget Tracker</Navbar.Brand>
+      <Nav className="ml-auto">
+        <Nav.Link href="#login">Login</Nav.Link>
+        <Nav.Link href="#register">Register</Nav.Link>
+      </Nav>
+    </Navbar>
+  );
+};
+
+export default AppNavbar;
