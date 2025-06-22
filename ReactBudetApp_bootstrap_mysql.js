@@ -177,3 +177,23 @@ const BudgetTracker = () => {
 };
 
 export default BudgetTracker;
+
+// src/App.js
+import React from 'react';
+import AppNavbar from './Navbar';
+import ImageCarousel from './Carousel';
+import BudgetTracker from './BudgetTracker';
+
+function App() {
+  return (
+    <div>
+      <AppNavbar />
+      <ImageCarousel />
+      <div className="container">
+        <BudgetTracker />
+      </div>
+    </div>
+  );
+}
+
+export default App;
