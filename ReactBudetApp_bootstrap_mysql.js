@@ -17,7 +17,9 @@ In the backend folder, create a file named User.js:
 Step 4: Create Server with Express
 In the backend folder, create a file named server.js:
 
-Step 5: Create the React Components
+Step 5: Create the follwing React Components inside src folder Navbar, Carousel, and BudgetTracker;
+
+Step 6: Update App Component
 */
 
 // backend/db.js
