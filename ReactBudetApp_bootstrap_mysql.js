@@ -107,3 +107,73 @@ const AppNavbar = () => {
 };
 
 export default AppNavbar;
+
+// src/Carousel.js
+import React from 'react';
+import { Carousel } from 'react-bootstrap';
+
+const ImageCarousel = () => {
+  return (
+    <Carousel>
+      <Carousel.Item>
+        <img className="d-block w-100" src="image1.jpg" alt="First slide" />
+      </Carousel.Item>
+      <Carousel.Item>
+        <img className="d-block w-100" src="image2.jpg" alt="Second slide" />
+      </Carousel.Item>
+      <Carousel.Item>
+        <img className="d-block w-100" src="image3.jpg" alt="Third slide" />
+      </Carousel.Item>
+    </Carousel>
+  );
+};
+
+export default ImageCarousel;
+
+// src/BudgetTracker.js
+import React, { useState } from 'react';
+import axios from 'axios';
+
+const BudgetTracker = () => {
+  const [budget, setBudget] = useState(0);
+  const [expenses, setExpenses] = useState([]);
+  const [expenseTitle, setExpenseTitle] = useState('');
+  const [expenseAmount, setExpenseAmount] = useState(0);
+
+  const submitBudget = () => {
+    // Handle budget submission
+    setBudget(budget);
+  };
+
+  const submitExpense = () => {
+    const newExpense = { title: expenseTitle, amount: expenseAmount };
+    setExpenses([...expenses, newExpense]);
+    setExpenseTitle('');
+    setExpenseAmount(0);
+  };
+
+  return (
+    <div>
+      <h1>Budget Tracker</h1>
+      <form onSubmit={submitBudget}>
+        <input type="number" value={budget} onChange={(e) => setBudget(e.target.value)} placeholder="Set Budget" />
+        <button type="submit">Set Budget</button>
+      </form>
+      <form onSubmit={submitExpense}>
+        <input type="text" value={expenseTitle} onChange={(e) => setExpenseTitle(e.target.value)} placeholder="Expense Title" />
+        <input type="number" value={expenseAmount} onChange={(e) => setExpenseAmount(e.target.value)} placeholder="Amount" />
+        <button type="submit">Add Expense</button>
+      </form>
+      <div>
+        <h2>Expenses</h2>
+        {expenses.map((expense, index) => (
+          <div key={index}>
+            <span>{expense.title}: ${expense.amount}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default BudgetTracker;
