@@ -22,6 +22,9 @@ Step 5: Create the follwing React Components inside src folder Navbar, Carousel,
 Step 6: Update App Component
 Modify src/App.js to include the Navbar, Carousel, and Budget Tracker components:
 
+Step 7: Add Background Images to Carousel
+Make sure to replace image1.jpg, image2.jpg, and image3.jpg in the Carousel.js with the paths to your actual image files.
+
 Start the backend server from the CLI:
 cd backend
 node server.js
