@@ -20,6 +20,15 @@ In the backend folder, create a file named server.js:
 Step 5: Create the follwing React Components inside src folder Navbar, Carousel, and BudgetTracker;
 
 Step 6: Update App Component
+Modify src/App.js to include the Navbar, Carousel, and Budget Tracker components:
+
+Start the backend server from the CLI:
+cd backend
+node server.js
+
+Start the React app from the CLI:
+npm start
+
 */
 
 // backend/db.js
