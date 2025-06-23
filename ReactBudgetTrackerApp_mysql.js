@@ -282,18 +282,29 @@ const Register = () => {
 export default Register;
 
 // src/App.js
-import React from 'react';
+import React, { useState } from 'react';
 import AppNavbar from './Navbar';
 import ImageCarousel from './Carousel';
 import BudgetTracker from './BudgetTracker';
+import Login from './Login';
+import Register from './Register';
 
 function App() {
+  const [token, setToken] = useState('');
+
   return (
     <div>
       <AppNavbar />
       <ImageCarousel />
       <div className="container">
-        <BudgetTracker />
+        {!token ? (
+          <>
+            <Login setToken={setToken} />
+            <Register />
+          </>
+        ) : (
+          <BudgetTracker token={token} />
+        )}
       </div>
     </div>
   );
