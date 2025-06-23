@@ -17,10 +17,10 @@ In the backend folder, create a file named User.js:
 Step 4: Create Server with Express
 In the backend folder, create a file named server.js:
 
-Step 5: Create the follwing React Components inside src folder Navbar, Carousel, and BudgetTracker;
+Step 5: Create the follwing React Components inside src folder Navbar, Carousel, Login.js, Register.js, and BudgetTracker;
 
 Step 6: Update App Component
-Modify src/App.js to include the Navbar, Carousel, and Budget Tracker components:
+Modify src/App.js to include the Navbar, Carousel, Login.js, Register.js, and Budget Tracker components:
 
 Step 7: Add Background Images to Carousel
 Make sure to replace image1.jpg, image2.jpg, and image3.jpg in the Carousel.js with the paths to your actual image files.
