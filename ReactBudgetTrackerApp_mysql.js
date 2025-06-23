@@ -2,7 +2,7 @@
 Step 1: Set Up Your React Application;
 npx create-react-app budget-tracker
 cd budget-tracker
-npm install axios react-bootstrap bootstrap mysql2 sequelize
+npm install axios react-bootstrap bootstrap mysql2 sequelize react-chartjs-2 chart.js
 
 Include Bootstrap in your project. Modify src/index.js:
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -63,6 +63,8 @@ module.exports = User;
 // backend/server.js
 const express = require('express');
 const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('./User');
 const sequelize = require('./db');
 const app = express();
@@ -78,8 +80,9 @@ sequelize.sync().then(() => {
 // User Registration
 app.post('/register', async (req, res) => {
   const { username, password } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
   try {
-    const user = await User.create({ username, password });
+    const user = await User.create({ username, password: hashedPassword });
     res.status(201).json(user);
   } catch (error) {
     res.status(400).json({ error: 'User already exists' });
@@ -89,12 +92,29 @@ app.post('/register', async (req, res) => {
 // User Login
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
-  const user = await User.findOne({ where: { username, password } });
-  if (user) {
-    res.status(200).json(user);
+  const user = await User.findOne({ where: { username } });
+  if (user && await bcrypt.compare(password, user.password)) {
+    const token = jwt.sign({ id: user.id }, 'your_jwt_secret', { expiresIn: '1h' });
+    res.status(200).json({ token });
   } else {
     res.status(401).json({ error: 'Invalid credentials' });
   }
+});
+
+// Middleware to check JWT token
+const authenticateToken = (req, res, next) => {
+  const token = req.headers['authorization'];
+  if (!token) return res.sendStatus(401);
+  jwt.verify(token, 'your_jwt_secret', (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+};
+
+// Protected route example
+app.get('/api/user', authenticateToken, (req, res) => {
+  res.json({ message: 'Hello, user!' });
 });
 
 // Start server
