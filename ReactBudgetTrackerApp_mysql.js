@@ -245,6 +245,42 @@ const Login = ({ setToken }) => {
 
 export default Login;
 
+// src/Register.js
+import React, { useState } from 'react';
+import axios from 'axios';
+
+const Register = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post('http://localhost:5000/register', { username, password });
+      setMessage('User registered successfully!');
+      setUsername('');
+      setPassword('');
+    } catch (err) {
+      setMessage('User already exists');
+    }
+  };
+
+  return (
+    <div>
+      <h2>Register</h2>
+      {message && <div className="alert alert-info">{message}</div>}
+      <form onSubmit={handleSubmit}>
+        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" required />
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
+        <button type="submit">Register</button>
+      </form>
+    </div>
+  );
+};
+
+export default Register;
+
 // src/App.js
 import React from 'react';
 import AppNavbar from './Navbar';
