@@ -126,13 +126,19 @@ app.listen(PORT, () => {
 import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 
-const AppNavbar = () => {
+const AppNavbar = ({ token, setToken }) => {
   return (
     <Navbar bg="light" expand="lg">
       <Navbar.Brand href="#home">Budget Tracker</Navbar.Brand>
       <Nav className="ml-auto">
-        <Nav.Link href="#login">Login</Nav.Link>
-        <Nav.Link href="#register">Register</Nav.Link>
+        {token ? (
+          <Nav.Link onClick={() => setToken('')}>Logout</Nav.Link>
+        ) : (
+          <>
+            <Nav.Link href="#login">Login</Nav.Link>
+            <Nav.Link href="#register">Register</Nav.Link>
+          </>
+        )}
       </Nav>
     </Navbar>
   );
@@ -166,7 +172,7 @@ export default ImageCarousel;
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const BudgetTracker = () => {
+const BudgetTracker = ({ token }) => {
   const [budget, setBudget] = useState(0);
   const [expenses, setExpenses] = useState([]);
   const [expenseTitle, setExpenseTitle] = useState('');
@@ -177,11 +183,16 @@ const BudgetTracker = () => {
     setBudget(budget);
   };
 
-  const submitExpense = () => {
+  const submitExpense = async () => {
     const newExpense = { title: expenseTitle, amount: expenseAmount };
     setExpenses([...expenses, newExpense]);
     setExpenseTitle('');
     setExpenseAmount(0);
+    
+    // Save expense to the database
+    await axios.post('http://localhost:5000/api/expenses', newExpense, {
+      headers: { Authorization: token }
+    });
   };
 
   return (
