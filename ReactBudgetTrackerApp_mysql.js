@@ -203,6 +203,42 @@ const AppNavbar = ({ token, setToken }) => {
 
 export default AppNavbar;
 
+// src/ExpenseChart.js
+import React from 'react';
+import { Bar } from 'react-chartjs-2';
+
+const ExpenseChart = ({ expenses }) => {
+  const data = {
+    labels: expenses.map(expense => expense.title),
+    datasets: [
+      {
+        label: 'Expenses',
+        data: expenses.map(expense => expense.amount),
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+  };
+
+  return (
+    <div>
+      <h2>Expense Overview</h2>
+      <Bar data={data} options={options} />
+    </div>
+  );
+};
+
+export default ExpenseChart;
+
 // src/Carousel.js
 import React from 'react';
 import { Carousel } from 'react-bootstrap';
