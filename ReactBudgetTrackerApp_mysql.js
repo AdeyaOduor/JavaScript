@@ -285,19 +285,7 @@ const BudgetTracker = ({ token }) => {
   };
 
   return (
-    // Inside the return statement in BudgetTracker.js
-<div className="list-group">
-  {expenses.map((expense) => (
-    <div key={expense.id} className="list-group-item d-flex justify-content-between align-items-center">
-      <span>{expense.title}: ${expense.amount}</span>
-      <div>
-        <button className="btn btn-warning btn-sm mx-2" onClick={() => editExpense(expense)}>Edit</button>
-        <button className="btn btn-danger btn-sm" onClick={() => deleteExpense(expense.id)}>Delete</button>
-      </div>
-    </div>
-  ))}
-</div>
-    
+    // Inside the return statement in BudgetTracker.js  
     <div>
       <h1>Budget Tracker</h1>
       <form onSubmit={submitBudget}>
@@ -309,13 +297,13 @@ const BudgetTracker = ({ token }) => {
         <input type="number" value={expenseAmount} onChange={(e) => setExpenseAmount(e.target.value)} placeholder="Amount" />
         <button type="submit">{editingExpenseId ? 'Update Expense' : 'Add Expense'}</button>
       </form>
-      <div>
+      <div className="list-group">
         <h2>Expenses</h2>
         {expenses.map((expense) => (
-          <div key={expense.id}>
+          <div key={expense.id} className="list-group-item d-flex justify-content-between align-items-center">
             <span>{expense.title}: ${expense.amount}</span>
-            <button onClick={() => editExpense(expense)}>Edit</button>
-            <button onClick={() => deleteExpense(expense.id)}>Delete</button>
+            <button className="btn btn-warning btn-sm mx-2" onClick={() => editExpense(expense)}>Edit</button>
+        <button className="btn btn-danger btn-sm" onClick={() => deleteExpense(expense.id)}>Delete</button>
           </div>
         ))}
       </div>
