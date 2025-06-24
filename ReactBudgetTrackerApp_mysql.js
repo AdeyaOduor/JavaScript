@@ -12,7 +12,7 @@ In the root of your project, create a folder named backend. Inside, create file 
 for database configuration using Sequelize:
 
 Step 3: Create Models
-In the backend folder, create a file named User.js, Expense.js:
+In the backend folder create files; User.js, Expense.js:
 
 Step 4: Create Server with Express
 In the backend folder, create a file named server.js:
@@ -226,7 +226,7 @@ const ImageCarousel = () => {
 export default ImageCarousel;
 
 // src/BudgetTracker.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const BudgetTracker = ({ token }) => {
@@ -234,22 +234,54 @@ const BudgetTracker = ({ token }) => {
   const [expenses, setExpenses] = useState([]);
   const [expenseTitle, setExpenseTitle] = useState('');
   const [expenseAmount, setExpenseAmount] = useState(0);
+  const [editingExpenseId, setEditingExpenseId] = useState(null);
+
+  useEffect(() => {
+    fetchExpenses();
+  }, []);
+
+  const fetchExpenses = async () => {
+    const response = await axios.get('http://localhost:5000/api/expenses', {
+      headers: { Authorization: token }
+    });
+    setExpenses(response.data);
+  };
 
   const submitBudget = () => {
-    // Handle budget submission
     setBudget(budget);
   };
 
-  const submitExpense = async () => {
+  const submitExpense = async (e) => {
+    e.preventDefault();
     const newExpense = { title: expenseTitle, amount: expenseAmount };
-    setExpenses([...expenses, newExpense]);
+
+    if (editingExpenseId != null) {
+      await axios.put(`http://localhost:5000/api/expenses/${editingExpenseId}`, newExpense, {
+        headers: { Authorization: token }
+      });
+      setEditingExpenseId(null);
+    } else {
+      await axios.post('http://localhost:5000/api/expenses', newExpense, {
+        headers: { Authorization: token }
+      });
+    }
+
     setExpenseTitle('');
     setExpenseAmount(0);
-    
-    // Save expense to the database
-    await axios.post('http://localhost:5000/api/expenses', newExpense, {
+    fetchExpenses();
+  };
+
+  const editExpense = (expense) => {
+    setExpenseTitle(expense.title);
+    setExpenseAmount(expense.amount);
+    setEditingExpenseId(expense.id);
+  };
+
+  const deleteExpense = async (id) => {
+    await axios.delete(`http://localhost:5000/api/expenses/${id}`, {
       headers: { Authorization: token }
     });
+    fetchExpenses();
   };
 
   return (
@@ -262,13 +294,15 @@ const BudgetTracker = ({ token }) => {
       <form onSubmit={submitExpense}>
         <input type="text" value={expenseTitle} onChange={(e) => setExpenseTitle(e.target.value)} placeholder="Expense Title" />
         <input type="number" value={expenseAmount} onChange={(e) => setExpenseAmount(e.target.value)} placeholder="Amount" />
-        <button type="submit">Add Expense</button>
+        <button type="submit">{editingExpenseId ? 'Update Expense' : 'Add Expense'}</button>
       </form>
       <div>
         <h2>Expenses</h2>
-        {expenses.map((expense, index) => (
-          <div key={index}>
+        {expenses.map((expense) => (
+          <div key={expense.id}>
             <span>{expense.title}: ${expense.amount}</span>
+            <button onClick={() => editExpense(expense)}>Edit</button>
+            <button onClick={() => deleteExpense(expense.id)}>Delete</button>
           </div>
         ))}
       </div>
