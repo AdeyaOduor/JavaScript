@@ -285,6 +285,19 @@ const BudgetTracker = ({ token }) => {
   };
 
   return (
+    // Inside the return statement in BudgetTracker.js
+<div className="list-group">
+  {expenses.map((expense) => (
+    <div key={expense.id} className="list-group-item d-flex justify-content-between align-items-center">
+      <span>{expense.title}: ${expense.amount}</span>
+      <div>
+        <button className="btn btn-warning btn-sm mx-2" onClick={() => editExpense(expense)}>Edit</button>
+        <button className="btn btn-danger btn-sm" onClick={() => deleteExpense(expense.id)}>Delete</button>
+      </div>
+    </div>
+  ))}
+</div>
+    
     <div>
       <h1>Budget Tracker</h1>
       <form onSubmit={submitBudget}>
