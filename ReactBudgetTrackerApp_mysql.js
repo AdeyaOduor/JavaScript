@@ -8,11 +8,11 @@ Include Bootstrap in your project. Modify src/index.js:
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 Step 2: Create the MySQL Database Connection;
-In the root of your project, create a folder named backend. Inside, create a file named db.js 
+In the root of your project, create a folder named backend. Inside, create file db.js; 
 for database configuration using Sequelize:
 
-Step 3: Create User Model
-In the backend folder, create a file named User.js:
+Step 3: Create Models
+In the backend folder, create a file named User.js, Expense.js:
 
 Step 4: Create Server with Express
 In the backend folder, create a file named server.js:
@@ -60,6 +60,26 @@ const User = sequelize.define('User', {
 
 module.exports = User;
 
+// backend/Expense.js
+const { DataTypes } = require('sequelize');
+const sequelize = require('./db');
+
+const Expense = sequelize.define('Expense', {
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  title: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  amount: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+  },
+});
+
+module.exports = Expense;
 // backend/server.js
 const express = require('express');
 const bodyParser = require('body-parser');
