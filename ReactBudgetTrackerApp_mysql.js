@@ -80,13 +80,16 @@ const Expense = sequelize.define('Expense', {
 });
 
 module.exports = Expense;
+
 // backend/server.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('./User');
+const Expense = require('./Expense');
 const sequelize = require('./db');
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -132,15 +135,49 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
+// Expense routes
+app.post('/api/expenses', authenticateToken, async (req, res) => {
+  const { title, amount } = req.body;
+  const expense = await Expense.create({ userId: req.user.id, title, amount });
+  res.status(201).json(expense);
+});
+
+app.get('/api/expenses', authenticateToken, async (req, res) => {
+  const expenses = await Expense.findAll({ where: { userId: req.user.id } });
+  res.json(expenses);
+});
+
+app.put('/api/expenses/:id', authenticateToken, async (req, res) => {
+  const { title, amount } = req.body;
+  const expense = await Expense.findByPk(req.params.id);
+  if (expense && expense.userId === req.user.id) {
+    expense.title = title;
+    expense.amount = amount;
+    await expense.save();
+    res.json(expense);
+  } else {
+    res.status(404).json({ error: 'Expense not found' });
+  }
+});
+
+app.delete('/api/expenses/:id', authenticateToken, async (req, res) => {
+  const expense = await Expense.findByPk(req.params.id);
+  if (expense && expense.userId === req.user.id) {
+    await expense.destroy();
+    res.sendStatus(204);
+  } else {
+    res.status(404).json({ error: 'Expense not found' });
+  }
+});
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
 // Protected route example
 app.get('/api/user', authenticateToken, (req, res) => {
   res.json({ message: 'Hello, user!' });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
 
 // src/Navbar.js
 import React from 'react';
