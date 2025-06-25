@@ -77,6 +77,14 @@ const Expense = sequelize.define('Expense', {
     type: DataTypes.FLOAT,
     allowNull: false,
   },
+  date: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  category: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
 });
 
 module.exports = Expense;
