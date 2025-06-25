@@ -281,6 +281,14 @@ const BudgetTracker = ({ token }) => {
   const [expenseTitle, setExpenseTitle] = useState('');
   const [expenseAmount, setExpenseAmount] = useState(0);
   const [editingExpenseId, setEditingExpenseId] = useState(null);
+  const [filterCategory, setFilterCategory] = useState('');
+  const [filterDate, setFilterDate] = useState('');
+
+const filteredExpenses = expenses.filter(expense => {
+  const categoryMatch = filterCategory ? expense.category === filterCategory : true;
+  const dateMatch = filterDate ? new Date(expense.date).toISOString().split('T')[0] === filterDate : true;
+  return categoryMatch && dateMatch;
+});
 
   useEffect(() => {
     fetchExpenses();
