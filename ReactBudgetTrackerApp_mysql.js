@@ -264,6 +264,7 @@ export default ImageCarousel;
 // src/BudgetTracker.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import ExpenseChart from './ExpenseChart'; // Import the chart component
 
 const BudgetTracker = ({ token }) => {
   const [budget, setBudget] = useState(0);
