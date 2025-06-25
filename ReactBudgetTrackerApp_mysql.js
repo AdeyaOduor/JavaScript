@@ -299,8 +299,8 @@ const BudgetTracker = ({ token }) => {
 
   const submitExpense = async (e) => {
     e.preventDefault();
-    const newExpense = { title: expenseTitle, amount: expenseAmount };
-
+    const newExpense = { title: expenseTitle, amount: expenseAmount, date: expenseDate, category: expenseCategory };
+  
     if (editingExpenseId != null) {
       await axios.put(`http://localhost:5000/api/expenses/${editingExpenseId}`, newExpense, {
         headers: { Authorization: token }
