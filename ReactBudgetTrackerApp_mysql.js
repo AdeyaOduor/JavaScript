@@ -145,8 +145,8 @@ const authenticateToken = (req, res, next) => {
 
 // Expense routes
 app.post('/api/expenses', authenticateToken, async (req, res) => {
-  const { title, amount } = req.body;
-  const expense = await Expense.create({ userId: req.user.id, title, amount });
+  const { title, amount, date, category } = req.body;
+  const expense = await Expense.create({ userId: req.user.id, title, amount, date, category });
   res.status(201).json(expense);
 });
 
@@ -177,6 +177,7 @@ app.delete('/api/expenses/:id', authenticateToken, async (req, res) => {
     res.status(404).json({ error: 'Expense not found' });
   }
 });
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
