@@ -349,7 +349,10 @@ const filteredExpenses = expenses.filter(expense => {
       <form onSubmit={submitExpense}>
         <input type="text" value={expenseTitle} onChange={(e) => setExpenseTitle(e.target.value)} placeholder="Expense Title" />
         <input type="number" value={expenseAmount} onChange={(e) => setExpenseAmount(e.target.value)} placeholder="Amount" />
+        <input type="text" value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)} placeholder="Filter by Category" />
+        <input type="date" value={filterDate} onChange={(e) => setFilterDate(e.target.value)} />
         <button type="submit">{editingExpenseId ? 'Update Expense' : 'Add Expense'}</button>
+       
       </form>
       <div className="list-group">
         <h2>Expenses</h2>
