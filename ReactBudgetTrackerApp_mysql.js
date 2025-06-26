@@ -353,11 +353,11 @@ const filteredExpenses = expenses.filter(expense => {
         <input type="date" value={filterDate} onChange={(e) => setFilterDate(e.target.value)} />
         <button type="submit">{editingExpenseId ? 'Update Expense' : 'Add Expense'}</button>     
       </form>
-  
-      <div className="list-group">
-    {filteredExpenses.map((expense) => (
-      <div key={expense.id} className="list-group-item d-flex justify-content-between align-items-center">
-        <span>{expense.title}: ${expense.amount} ({expense.category}, {new Date(expense.date).toLocaleDateString()})</span>
+      <h2>Expenses</h2>
+        <div className="list-group">
+           {filteredExpenses.map((expense) => (
+        <div key={expense.id} className="list-group-item d-flex justify-content-between align-items-center">
+            <span>{expense.title}: ${expense.amount} ({expense.category}, {new Date(expense.date).toLocaleDateString()})</span>
         <div>
         {expenses.map((expense) => (
           <div key={expense.id} className="list-group-item d-flex justify-content-between align-items-center">
