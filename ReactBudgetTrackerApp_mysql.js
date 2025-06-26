@@ -284,11 +284,11 @@ const BudgetTracker = ({ token }) => {
   const [filterCategory, setFilterCategory] = useState('');
   const [filterDate, setFilterDate] = useState('');
 
-const filteredExpenses = expenses.filter(expense => {
-  const categoryMatch = filterCategory ? expense.category === filterCategory : true;
-  const dateMatch = filterDate ? new Date(expense.date).toISOString().split('T')[0] === filterDate : true;
-  return categoryMatch && dateMatch;
-});
+  const filteredExpenses = expenses.filter(expense => {
+    const categoryMatch = filterCategory ? expense.category === filterCategory : true;
+    const dateMatch = filterDate ? new Date(expense.date).toISOString().split('T')[0] === filterDate : true;
+    return categoryMatch && dateMatch;
+  });
 
   useEffect(() => {
     fetchExpenses();
@@ -301,14 +301,15 @@ const filteredExpenses = expenses.filter(expense => {
     setExpenses(response.data);
   };
 
-  const submitBudget = () => {
-    setBudget(budget);
+  const submitBudget = (e) => {
+    e.preventDefault();
+    // Add logic to save or use the budget
   };
 
   const submitExpense = async (e) => {
     e.preventDefault();
-    const newExpense = { title: expenseTitle, amount: expenseAmount, date: expenseDate, category: expenseCategory };
-  
+    const newExpense = { title: expenseTitle, amount: expenseAmount, date: new Date().toISOString(), category: filterCategory };
+
     if (editingExpenseId != null) {
       await axios.put(`http://localhost:5000/api/expenses/${editingExpenseId}`, newExpense, {
         headers: { Authorization: token }
@@ -338,8 +339,10 @@ const filteredExpenses = expenses.filter(expense => {
     fetchExpenses();
   };
 
+  const totalExpenses = expenses.reduce((total, expense) => total + expense.amount, 0).toFixed(2);
+  const averageExpense = expenses.length > 0 ? (totalExpenses / expenses.length).toFixed(2) : 0;
+
   return (
-    // Inside the return statement in BudgetTracker.js  
     <div>
       <h1>Budget Tracker</h1>
       <form onSubmit={submitBudget}>
@@ -354,23 +357,19 @@ const filteredExpenses = expenses.filter(expense => {
         <button type="submit">{editingExpenseId ? 'Update Expense' : 'Add Expense'}</button>     
       </form>
       <h2>Expenses</h2>
-        <div className="list-group">
-           {filteredExpenses.map((expense) => (
-        <div key={expense.id} className="list-group-item d-flex justify-content-between align-items-center">
-            <span>{expense.title}: ${expense.amount} ({expense.category}, {new Date(expense.date).toLocaleDateString()})</span>
-        <div>
-        {expenses.map((expense) => (
+      <div className="list-group">
+        {filteredExpenses.map((expense) => (
           <div key={expense.id} className="list-group-item d-flex justify-content-between align-items-center">
-            <span>{expense.title}: ${expense.amount}</span>
-            <button className="btn btn-warning btn-sm mx-2" onClick={() => editExpense(expense)}>Edit</button>
-            <button className="btn btn-danger btn-sm" onClick={() => deleteExpense(expense.id)}>Delete</button>
+            <span>{expense.title}: ${expense.amount} ({expense.category}, {new Date(expense.date).toLocaleDateString()})</span>
+            <div>
+              <button className="btn btn-warning btn-sm mx-2" onClick={() => editExpense(expense)}>Edit</button>
+              <button className="btn btn-danger btn-sm" onClick={() => deleteExpense(expense.id)}>Delete</button>
+            </div>
           </div>
-         <div>
-            <h3>Total Expenses: ${expenses.reduce((total, expense) => total + expense.amount, 0).toFixed(2)}</h3>
-             <h3>Average Expense: ${expenses.length > 0 ? (expenses.reduce((total, expense) => total + expense.amount, 0) / expenses.length).toFixed(2) : 0}</h3>
-        </div>
         ))}
       </div>
+      <h3>Total Expenses: ${totalExpenses}</h3>
+      <h3>Average Expense: ${averageExpense}</h3>
     </div>
   );
 };
