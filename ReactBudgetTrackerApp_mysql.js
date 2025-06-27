@@ -101,8 +101,13 @@ const sequelize = require('./db');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-let budget = 0; // In-memory budget storage (replace with a database in production)
+// Middleware
+app.use(bodyParser.json());
 
+// In-memory budget storage (replace with a database in production)
+let budget = 0;
+
+// POST endpoint for updating the budget
 app.post('/api/budget', (req, res) => {
   const { budget: newBudget } = req.body;
 
@@ -114,15 +119,17 @@ app.post('/api/budget', (req, res) => {
   res.status(200).json({ message: 'Budget updated successfully' });
 });
 
-app.use(bodyParser.json());
-
-// Connect to the database
-sequelize.sync().then(() => {
-  console.log('Database synced');
-});
-
-app.listen(5000, () => {
-  console.log('Server is running on port 5000');
+// Connect to the database and start the server
+sequelize.sync()
+  .then(() => {
+    console.log('Database synced');
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  })
+  .catch(err => {
+    console.error('Unable to sync database:', err);
+  });
 
 // User Registration
 app.post('/register', async (req, res) => {
