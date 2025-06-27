@@ -306,8 +306,9 @@ const BudgetTracker = ({ token }) => {
   const [editingExpenseId, setEditingExpenseId] = useState(null);
   const [filterCategory, setFilterCategory] = useState('');
   const [filterDate, setFilterDate] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
 
-  const filteredExpenses = expenses.filter(expense => {
+ const filteredExpenses = expenses.filter(expense => {
     const categoryMatch = filterCategory ? expense.category === filterCategory : true;
     const dateMatch = filterDate ? new Date(expense.date).toISOString().split('T')[0] === filterDate : true;
     return categoryMatch && dateMatch;
@@ -326,43 +327,52 @@ const BudgetTracker = ({ token }) => {
 
   const submitBudget = async (e) => {
     e.preventDefault();
-    // Optionally save the budget to a server
-    // await axios.post('http://localhost:5000/api/budget', { budget }, { headers: { Authorization: token } });
-    // For now, just set the budget in state
-    alert(`Budget set to: $${budget}`);
+    
+    if (budget < 0) {
+      setAlertMessage('Budget cannot be negative.');
+      return;
+    }
+
+    try {
+      await axios.post('http://localhost:5000/api/budget', { budget }, {
+        headers: { Authorization: token }
+      });
+      setAlertMessage(`Budget set to: $${budget}`);
+      setBudget(0); // Reset input after submission
+    } catch (error) {
+      setAlertMessage('Failed to set budget. Please try again.');
+    }
   };
 
   const submitExpense = async (e) => {
     e.preventDefault();
-    const newExpense = { title: expenseTitle, amount: expenseAmount, date: new Date().toISOString(), category: filterCategory };
 
-    if (editingExpenseId != null) {
-      await axios.put(`http://localhost:5000/api/expenses/${editingExpenseId}`, newExpense, {
-        headers: { Authorization: token }
-      });
-      setEditingExpenseId(null);
-    } else {
-      await axios.post('http://localhost:5000/api/expenses', newExpense, {
-        headers: { Authorization: token }
-      });
+    if (expenseAmount <= 0) {
+      setAlertMessage('Expense amount must be greater than zero.');
+      return;
     }
 
-    setExpenseTitle('');
-    setExpenseAmount(0);
-    fetchExpenses();
-  };
+    const newExpense = { title: expenseTitle, amount: expenseAmount, date: new Date().toISOString(), category: filterCategory };
 
-  const editExpense = (expense) => {
-    setExpenseTitle(expense.title);
-    setExpenseAmount(expense.amount);
-    setEditingExpenseId(expense.id);
-  };
+    try {
+      if (editingExpenseId != null) {
+        await axios.put(`http://localhost:5000/api/expenses/${editingExpenseId}`, newExpense, {
+          headers: { Authorization: token }
+        });
+        setEditingExpenseId(null);
+      } else {
+        await axios.post('http://localhost:5000/api/expenses', newExpense, {
+          headers: { Authorization: token }
+        });
+      }
 
-  const deleteExpense = async (id) => {
-    await axios.delete(`http://localhost:5000/api/expenses/${id}`, {
-      headers: { Authorization: token }
-    });
-    fetchExpenses();
+      setExpenseTitle('');
+      setExpenseAmount(0);
+      setAlertMessage('Expense added/updated successfully.');
+      fetchExpenses();
+    } catch (error) {
+      setAlertMessage('Failed to add expense. Please try again.');
+    }
   };
 
   const totalExpenses = expenses.reduce((total, expense) => total + expense.amount, 0).toFixed(2);
@@ -371,10 +381,12 @@ const BudgetTracker = ({ token }) => {
   return (
     <div>
       <h1>Budget Tracker</h1>
+      {alertMessage && <div className="alert">{alertMessage}</div>}
       <form onSubmit={submitBudget}>
         <input type="number" value={budget} onChange={(e) => setBudget(e.target.value)} placeholder="Set Budget" />
         <button type="submit">Set Budget</button>
       </form>
+      <h3>Your Budget: ${budget}</h3>
       <form onSubmit={submitExpense}>
         <input type="text" value={expenseTitle} onChange={(e) => setExpenseTitle(e.target.value)} placeholder="Expense Title" />
         <input type="number" value={expenseAmount} onChange={(e) => setExpenseAmount(e.target.value)} placeholder="Amount" />
