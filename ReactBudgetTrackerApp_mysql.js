@@ -301,9 +301,12 @@ const BudgetTracker = ({ token }) => {
     setExpenses(response.data);
   };
 
-  const submitBudget = (e) => {
+  const submitBudget = async (e) => {
     e.preventDefault();
-    // Add logic to save or use the budget
+    // Optionally save the budget to a server
+    // await axios.post('http://localhost:5000/api/budget', { budget }, { headers: { Authorization: token } });
+    // For now, just set the budget in state
+    alert(`Budget set to: $${budget}`);
   };
 
   const submitExpense = async (e) => {
