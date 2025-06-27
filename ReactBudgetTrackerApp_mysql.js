@@ -101,12 +101,28 @@ const sequelize = require('./db');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+let budget = 0; // In-memory budget storage (replace with a database in production)
+
+app.post('/api/budget', (req, res) => {
+  const { budget: newBudget } = req.body;
+
+  if (typeof newBudget !== 'number' || newBudget < 0) {
+    return res.status(400).json({ error: 'Invalid budget value' });
+  }
+
+  budget = newBudget; // Store the budget
+  res.status(200).json({ message: 'Budget updated successfully' });
+});
+
 app.use(bodyParser.json());
 
 // Connect to the database
 sequelize.sync().then(() => {
   console.log('Database synced');
 });
+
+app.listen(5000, () => {
+  console.log('Server is running on port 5000');
 
 // User Registration
 app.post('/register', async (req, res) => {
