@@ -607,6 +607,7 @@ export default BudgetTracker;
 // src/Login.js
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Card, Form, Button, Alert, Container } from 'react-bootstrap';
 
 const Login = ({ setToken }) => {
   const [username, setUsername] = useState('');
@@ -625,15 +626,41 @@ const Login = ({ setToken }) => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      {error && <div className="alert alert-danger">{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" required />
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
-        <button type="submit">Login</button>
-      </form>
-    </div>
+    <Container className="mt-5" style={{ maxWidth: '500px' }}>
+      <Card>
+        <Card.Body>
+          <Card.Title className="text-center mb-4">Login</Card.Title>
+          {error && <Alert variant="danger">{error}</Alert>}
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3">
+              <Form.Label>Username</Form.Label>
+              <Form.Control
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter username"
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter password"
+                required
+              />
+            </Form.Group>
+
+            <Button variant="primary" type="submit" className="w-100 mt-3">
+              Login
+            </Button>
+          </Form>
+        </Card.Body>
+      </Card>
+    </Container>
   );
 };
 
