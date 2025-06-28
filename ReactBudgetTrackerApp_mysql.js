@@ -298,19 +298,21 @@ export default ImageCarousel;
 // src/BudgetTracker.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import ExpenseChart from './ExpenseChart'; // Import the chart component
+import { Container, Card, Form, Button, Alert, ListGroup, Row, Col } from 'react-bootstrap';
+import ExpenseChart from './ExpenseChart';
 
 const BudgetTracker = ({ token }) => {
   const [budget, setBudget] = useState(0);
   const [expenses, setExpenses] = useState([]);
   const [expenseTitle, setExpenseTitle] = useState('');
-  const [expenseAmount, setExpenseAmount] = useState(0);
+  const [expenseAmount, setExpenseAmount] = useState('');
   const [editingExpenseId, setEditingExpenseId] = useState(null);
   const [filterCategory, setFilterCategory] = useState('');
   const [filterDate, setFilterDate] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
+  const [alertVariant, setAlertVariant] = useState('success');
 
- const filteredExpenses = expenses.filter(expense => {
+  const filteredExpenses = expenses.filter(expense => {
     const categoryMatch = filterCategory ? expense.category === filterCategory : true;
     const dateMatch = filterDate ? new Date(expense.date).toISOString().split('T')[0] === filterDate : true;
     return categoryMatch && dateMatch;
@@ -318,20 +320,30 @@ const BudgetTracker = ({ token }) => {
 
   useEffect(() => {
     fetchExpenses();
-  }, []);
+  }, [token]);
 
   const fetchExpenses = async () => {
-    const response = await axios.get('http://localhost:5000/api/expenses', {
-      headers: { Authorization: token }
-    });
-    setExpenses(response.data);
+    try {
+      const response = await axios.get('http://localhost:5000/api/expenses', {
+        headers: { Authorization: token }
+      });
+      setExpenses(response.data);
+    } catch (error) {
+      showAlert('Failed to fetch expenses', 'danger');
+    }
+  };
+
+  const showAlert = (message, variant = 'success') => {
+    setAlertMessage(message);
+    setAlertVariant(variant);
+    setTimeout(() => setAlertMessage(''), 5000);
   };
 
   const submitBudget = async (e) => {
     e.preventDefault();
     
     if (budget < 0) {
-      setAlertMessage('Budget cannot be negative.');
+      showAlert('Budget cannot be negative', 'danger');
       return;
     }
 
@@ -339,22 +351,31 @@ const BudgetTracker = ({ token }) => {
       await axios.post('http://localhost:5000/api/budget', { budget }, {
         headers: { Authorization: token }
       });
-      setAlertMessage(`Budget set to: $${budget}`);
-      setBudget(0); // Reset input after submission
+      showAlert(`Budget set to: $${budget}`);
     } catch (error) {
-      setAlertMessage('Failed to set budget. Please try again.');
+      showAlert('Failed to set budget', 'danger');
     }
   };
 
   const submitExpense = async (e) => {
     e.preventDefault();
 
-    if (expenseAmount <= 0) {
-      setAlertMessage('Expense amount must be greater than zero.');
+    if (!expenseTitle || !expenseAmount) {
+      showAlert('Please fill all fields', 'danger');
       return;
     }
 
-    const newExpense = { title: expenseTitle, amount: expenseAmount, date: new Date().toISOString(), category: filterCategory };
+    if (parseFloat(expenseAmount) <= 0) {
+      showAlert('Expense amount must be greater than zero', 'danger');
+      return;
+    }
+
+    const newExpense = { 
+      title: expenseTitle, 
+      amount: parseFloat(expenseAmount), 
+      date: new Date().toISOString(), 
+      category: filterCategory || 'Uncategorized' 
+    };
 
     try {
       if (editingExpenseId != null) {
@@ -362,55 +383,222 @@ const BudgetTracker = ({ token }) => {
           headers: { Authorization: token }
         });
         setEditingExpenseId(null);
+        showAlert('Expense updated successfully');
       } else {
         await axios.post('http://localhost:5000/api/expenses', newExpense, {
           headers: { Authorization: token }
         });
+        showAlert('Expense added successfully');
       }
 
       setExpenseTitle('');
-      setExpenseAmount(0);
-      setAlertMessage('Expense added/updated successfully.');
+      setExpenseAmount('');
       fetchExpenses();
     } catch (error) {
-      setAlertMessage('Failed to add expense. Please try again.');
+      showAlert('Failed to save expense', 'danger');
     }
   };
 
-  const totalExpenses = expenses.reduce((total, expense) => total + expense.amount, 0).toFixed(2);
-  const averageExpense = expenses.length > 0 ? (totalExpenses / expenses.length).toFixed(2) : 0;
+  const editExpense = (expense) => {
+    setExpenseTitle(expense.title);
+    setExpenseAmount(expense.amount.toString());
+    setFilterCategory(expense.category);
+    setEditingExpenseId(expense.id);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const deleteExpense = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/expenses/${id}`, {
+        headers: { Authorization: token }
+      });
+      showAlert('Expense deleted successfully');
+      fetchExpenses();
+    } catch (error) {
+      showAlert('Failed to delete expense', 'danger');
+    }
+  };
+
+  const totalExpenses = filteredExpenses.reduce((total, expense) => total + parseFloat(expense.amount), 0).toFixed(2);
+  const averageExpense = filteredExpenses.length > 0 ? (totalExpenses / filteredExpenses.length).toFixed(2) : 0;
+  const remainingBudget = (budget - totalExpenses).toFixed(2);
 
   return (
-    <div>
-      <h1>Budget Tracker</h1>
-      {alertMessage && <div className="alert">{alertMessage}</div>}
-      <form onSubmit={submitBudget}>
-        <input type="number" value={budget} onChange={(e) => setBudget(e.target.value)} placeholder="Set Budget" />
-        <button type="submit">Set Budget</button>
-      </form>
-      <h3>Your Budget: ${budget}</h3>
-      <form onSubmit={submitExpense}>
-        <input type="text" value={expenseTitle} onChange={(e) => setExpenseTitle(e.target.value)} placeholder="Expense Title" />
-        <input type="number" value={expenseAmount} onChange={(e) => setExpenseAmount(e.target.value)} placeholder="Amount" />
-        <input type="text" value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)} placeholder="Filter by Category" />
-        <input type="date" value={filterDate} onChange={(e) => setFilterDate(e.target.value)} />
-        <button type="submit">{editingExpenseId ? 'Update Expense' : 'Add Expense'}</button>     
-      </form>
-      <h2>Expenses</h2>
-      <div className="list-group">
-        {filteredExpenses.map((expense) => (
-          <div key={expense.id} className="list-group-item d-flex justify-content-between align-items-center">
-            <span>{expense.title}: ${expense.amount} ({expense.category}, {new Date(expense.date).toLocaleDateString()})</span>
-            <div>
-              <button className="btn btn-warning btn-sm mx-2" onClick={() => editExpense(expense)}>Edit</button>
-              <button className="btn btn-danger btn-sm" onClick={() => deleteExpense(expense.id)}>Delete</button>
-            </div>
-          </div>
-        ))}
-      </div>
-      <h3>Total Expenses: ${totalExpenses}</h3>
-      <h3>Average Expense: ${averageExpense}</h3>
-    </div>
+    <Container className="mt-4">
+      {alertMessage && <Alert variant={alertVariant}>{alertMessage}</Alert>}
+
+      <Row>
+        <Col md={8}>
+          <Card className="mb-4">
+            <Card.Body>
+              <Card.Title>Budget Overview</Card.Title>
+              <Form onSubmit={submitBudget} className="mb-3">
+                <Form.Group>
+                  <Form.Label>Set Monthly Budget</Form.Label>
+                  <Form.Control 
+                    type="number" 
+                    value={budget} 
+                    onChange={(e) => setBudget(e.target.value)} 
+                    placeholder="Enter budget amount"
+                    min="0"
+                    step="0.01"
+                  />
+                </Form.Group>
+                <Button variant="primary" type="submit" className="mt-2">
+                  Set Budget
+                </Button>
+              </Form>
+              
+              <div className="stats-container">
+                <div className="stat-card">
+                  <h5>Total Budget</h5>
+                  <h3>${budget}</h3>
+                </div>
+                <div className="stat-card">
+                  <h5>Total Expenses</h5>
+                  <h3>${totalExpenses}</h3>
+                </div>
+                <div className="stat-card">
+                  <h5>Remaining</h5>
+                  <h3 className={remainingBudget < 0 ? 'text-danger' : 'text-success'}>
+                    ${remainingBudget}
+                  </h3>
+                </div>
+              </div>
+            </Card.Body>
+          </Card>
+
+          <Card className="mb-4">
+            <Card.Body>
+              <Card.Title>Add/Edit Expense</Card.Title>
+              <Form onSubmit={submitExpense}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Title</Form.Label>
+                  <Form.Control 
+                    type="text" 
+                    value={expenseTitle} 
+                    onChange={(e) => setExpenseTitle(e.target.value)} 
+                    placeholder="Expense title" 
+                    required
+                  />
+                </Form.Group>
+                
+                <Form.Group className="mb-3">
+                  <Form.Label>Amount</Form.Label>
+                  <Form.Control 
+                    type="number" 
+                    value={expenseAmount} 
+                    onChange={(e) => setExpenseAmount(e.target.value)} 
+                    placeholder="Amount" 
+                    min="0.01"
+                    step="0.01"
+                    required
+                  />
+                </Form.Group>
+                
+                <Row>
+                  <Col md={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Category</Form.Label>
+                      <Form.Control
+                        as="select"
+                        value={filterCategory}
+                        onChange={(e) => setFilterCategory(e.target.value)}
+                      >
+                        <option value="">All Categories</option>
+                        <option value="Food">Food</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Other">Other</option>
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Date</Form.Label>
+                      <Form.Control 
+                        type="date" 
+                        value={filterDate} 
+                        onChange={(e) => setFilterDate(e.target.value)} 
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
+                
+                <Button variant={editingExpenseId ? 'warning' : 'success'} type="submit">
+                  {editingExpenseId ? 'Update Expense' : 'Add Expense'}
+                </Button>
+                {editingExpenseId && (
+                  <Button variant="secondary" onClick={() => {
+                    setEditingExpenseId(null);
+                    setExpenseTitle('');
+                    setExpenseAmount('');
+                  }} className="ms-2">
+                    Cancel
+                  </Button>
+                )}
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+        
+        <Col md={4}>
+          <Card className="mb-4">
+            <Card.Body>
+              <Card.Title>Expense Statistics</Card.Title>
+              <div className="stats-container">
+                <div className="stat-card">
+                  <h5>Total Expenses</h5>
+                  <h3>${totalExpenses}</h3>
+                </div>
+                <div className="stat-card">
+                  <h5>Average Expense</h5>
+                  <h3>${averageExpense}</h3>
+                </div>
+              </div>
+            </Card.Body>
+          </Card>
+          
+          <Card>
+            <Card.Body>
+              <Card.Title>Expense Chart</Card.Title>
+              <ExpenseChart expenses={filteredExpenses} />
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+
+      <Card className="mt-4">
+        <Card.Body>
+          <Card.Title>Expense List</Card.Title>
+          {filteredExpenses.length === 0 ? (
+            <Alert variant="info">No expenses found. Add some expenses to get started!</Alert>
+          ) : (
+            <ListGroup>
+              {filteredExpenses.map((expense) => (
+                <ListGroup.Item key={expense.id} className="d-flex justify-content-between align-items-center">
+                  <div>
+                    <strong>{expense.title}</strong>
+                    <div className="text-muted small">
+                      ${expense.amount} • {expense.category} • {new Date(expense.date).toLocaleDateString()}
+                    </div>
+                  </div>
+                  <div>
+                    <Button variant="outline-warning" size="sm" onClick={() => editExpense(expense)} className="me-2">
+                      Edit
+                    </Button>
+                    <Button variant="outline-danger" size="sm" onClick={() => deleteExpense(expense.id)}>
+                      Delete
+                    </Button>
+                  </div>
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          )}
+        </Card.Body>
+      </Card>
+    </Container>
   );
 };
 
