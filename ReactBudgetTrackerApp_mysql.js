@@ -6,6 +6,7 @@ npm install axios react-bootstrap bootstrap react-chartjs-2 chart.js
 
 Include Bootstrap in your project. Modify src/index.js:
 import 'bootstrap/dist/css/bootstrap.min.css';
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
 
 Step 2: Create the MySQL Database Connection;
 In the root of your project, create a folder named backend. 
@@ -212,6 +213,39 @@ app.get('/api/user', authenticateToken, (req, res) => {
   res.json({ message: 'Hello, user!' });
 });
 
+// Add CSS for better styling (in App.css):
+.stats-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.stat-card {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  flex: 1;
+  margin: 0 5px;
+}
+
+.stat-card h5 {
+  font-size: 1rem;
+  color: #6c757d;
+}
+
+.stat-card h3 {
+  font-size: 1.5rem;
+  margin-top: 5px;
+}
+
+.list-group-item {
+  transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+  background-color: #f8f9fa;
+}
 
 // src/Navbar.js
 import React from 'react';
