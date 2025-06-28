@@ -2,7 +2,7 @@
 Step 1: Set Up Your React Application;
 npx create-react-app budget-tracker
 cd budget-tracker
-npm install axios react-bootstrap bootstrap mysql2 sequelize react-chartjs-2 chart.js
+npm install axios react-bootstrap bootstrap react-chartjs-2 chart.js
 
 Include Bootstrap in your project. Modify src/index.js:
 import 'bootstrap/dist/css/bootstrap.min.css';
