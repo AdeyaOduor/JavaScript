@@ -287,32 +287,61 @@ export default AppNavbar;
 // src/ExpenseChart.js
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
+import { Card } from 'react-bootstrap';
 
 const ExpenseChart = ({ expenses }) => {
+  // Group by category for better chart visualization
+  const categoryTotals = expenses.reduce((acc, expense) => {
+    acc[expense.category] = (acc[expense.category] || 0) + parseFloat(expense.amount);
+    return acc;
+  }, {});
+
   const data = {
-    labels: expenses.map(expense => expense.title),
+    labels: Object.keys(categoryTotals),
     datasets: [
       {
-        label: 'Expenses',
-        data: expenses.map(expense => expense.amount),
-        backgroundColor: 'rgba(75, 192, 192, 0.6)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        label: 'Expenses by Category',
+        data: Object.values(categoryTotals),
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.6)',
+          'rgba(54, 162, 235, 0.6)',
+          'rgba(255, 206, 86, 0.6)',
+          'rgba(75, 192, 192, 0.6)',
+          'rgba(153, 102, 255, 0.6)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+        ],
         borderWidth: 1,
       },
     ],
   };
 
   const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+    },
     scales: {
       y: {
         beginAtZero: true,
-      },
-    },
+        ticks: {
+          callback: function(value) {
+            return '$' + value;
+          }
+        }
+      }
+    }
   };
 
   return (
-    <div>
-      <h2>Expense Overview</h2>
+    <div style={{ height: '300px' }}>
       <Bar data={data} options={options} />
     </div>
   );
