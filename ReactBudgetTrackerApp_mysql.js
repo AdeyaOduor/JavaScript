@@ -4,10 +4,6 @@ npx create-react-app budget-tracker
 cd budget-tracker
 npm install axios react-bootstrap bootstrap react-chartjs-2 chart.js
 
-Include Bootstrap in your project. Modify src/index.js:
-import 'bootstrap/dist/css/bootstrap.min.css';
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
-
 Step 2: Create the MySQL Database Connection;
 In the root of your project, create a folder named backend. 
 cd backend
@@ -212,6 +208,12 @@ app.listen(PORT, () => {
 app.get('/api/user', authenticateToken, (req, res) => {
   res.json({ message: 'Hello, user!' });
 });
+
+// src/index.js:
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
 
 // Add CSS for better styling (in App.css):
 .stats-container {
