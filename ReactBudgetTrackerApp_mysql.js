@@ -248,6 +248,51 @@ import './App.css';
 .list-group-item:hover {
   background-color: #f8f9fa;
 }
+/* Carousel Styles */
+.carousel-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-caption {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.carousel-caption h3 {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.carousel-caption p {
+  font-size: 1.2rem;
+}
+
+/* Modal Enhancements */
+.modal-content {
+  border-radius: 15px;
+}
+
+.modal-header {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.modal-title {
+  font-weight: bold;
+}
+
+/* Navbar Enhancements */
+.navbar {
+  padding: 15px 0;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
 
 // src/Navbar.js
 import React from 'react';
