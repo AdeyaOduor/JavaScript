@@ -363,15 +363,32 @@ import { Carousel } from 'react-bootstrap';
 
 const ImageCarousel = () => {
   return (
-    <Carousel>
+    <Carousel controls={false} indicators={false} interval={3000} pause={false}>
       <Carousel.Item>
-        <img className="d-block w-100" src="image1.jpg" alt="First slide" />
+        <div className="carousel-image" style={{ 
+          backgroundImage: "url('/finance1.jpg')",
+          height: '400px',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}>
+          <div className="carousel-caption">
+            <h3>Track Your Expenses</h3>
+            <p>Gain control over your finances</p>
+          </div>
+        </div>
       </Carousel.Item>
       <Carousel.Item>
-        <img className="d-block w-100" src="image2.jpg" alt="Second slide" />
-      </Carousel.Item>
-      <Carousel.Item>
-        <img className="d-block w-100" src="image3.jpg" alt="Third slide" />
+        <div className="carousel-image" style={{ 
+          backgroundImage: "url('/finance2.jpg')",
+          height: '400px',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}>
+          <div className="carousel-caption">
+            <h3>Set Budget Goals</h3>
+            <p>Plan for your financial future</p>
+          </div>
+        </div>
       </Carousel.Item>
     </Carousel>
   );
