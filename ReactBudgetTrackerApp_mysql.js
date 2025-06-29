@@ -785,26 +785,66 @@ import React, { useState } from 'react';
 import AppNavbar from './Navbar';
 import ImageCarousel from './Carousel';
 import BudgetTracker from './BudgetTracker';
-import Login from './Login';
-import Register from './Register';
+import LoginModal from './LoginModal';
+import RegisterModal from './RegisterModal';
+import { Container } from 'react-bootstrap';
 
 function App() {
-  const [token, setToken] = useState('');
+  const [token, setToken] = useState(localStorage.getItem('token') || '');
+  const [showLogin, setShowLogin] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
+
+  const handleLogin = (token) => {
+    localStorage.setItem('token', token);
+    setToken(token);
+    setShowLogin(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setToken('');
+  };
 
   return (
-    <div>
-      <AppNavbar />
-      <ImageCarousel />
-      <div className="container">
-        {!token ? (
-          <>
-            <Login setToken={setToken} />
-            <Register />
-          </>
-        ) : (
+    <div className="App">
+      <AppNavbar 
+        token={token} 
+        onLogout={handleLogout}
+        onLoginClick={() => setShowLogin(true)}
+        onRegisterClick={() => setShowRegister(true)}
+      />
+      
+      {!token && <ImageCarousel />}
+      
+      <Container className="mt-4">
+        {token ? (
           <BudgetTracker token={token} />
+        ) : (
+          <div className="text-center py-5">
+            <h2>Welcome to Budget Tracker</h2>
+            <p className="lead">Please login or register to manage your expenses</p>
+          </div>
         )}
-      </div>
+      </Container>
+
+      <LoginModal 
+        show={showLogin} 
+        onHide={() => setShowLogin(false)}
+        onLogin={handleLogin}
+        onRegisterClick={() => {
+          setShowLogin(false);
+          setShowRegister(true);
+        }}
+      />
+
+      <RegisterModal 
+        show={showRegister} 
+        onHide={() => setShowRegister(false)}
+        onRegister={() => {
+          setShowRegister(false);
+          setShowLogin(true);
+        }}
+      />
     </div>
   );
 }
