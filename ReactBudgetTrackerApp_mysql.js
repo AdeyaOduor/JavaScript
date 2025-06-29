@@ -752,9 +752,10 @@ export default LoginModal;
 
 // src/Register.js
 import React, { useState } from 'react';
+import { Modal, Form, Button, Alert } from 'react-bootstrap';
 import axios from 'axios';
 
-const Register = () => {
+const RegisterModal = ({ show, onHide, onRegister }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -763,28 +764,56 @@ const Register = () => {
     e.preventDefault();
     try {
       await axios.post('http://localhost:5000/register', { username, password });
-      setMessage('User registered successfully!');
-      setUsername('');
-      setPassword('');
+      setMessage('Registration successful! Please login');
+      setTimeout(() => {
+        onRegister();
+        onHide();
+      }, 1500);
     } catch (err) {
-      setMessage('User already exists');
+      setMessage('Registration failed. User may already exist');
     }
   };
 
   return (
-    <div>
-      <h2>Register</h2>
-      {message && <div className="alert alert-info">{message}</div>}
-      <form onSubmit={handleSubmit}>
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" required />
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
-        <button type="submit">Register</button>
-      </form>
-    </div>
+    <Modal show={show} onHide={onHide} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>Register</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        {message && (
+          <Alert variant={message.includes('successful') ? 'success' : 'danger'}>
+            {message}
+          </Alert>
+        )}
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
+            <Form.Label>Username</Form.Label>
+            <Form.Control
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Button variant="primary" type="submit" className="w-100">
+            Register
+          </Button>
+        </Form>
+      </Modal.Body>
+    </Modal>
   );
 };
 
-export default Register;
+export default RegisterModal;
 
 // src/App.js
 import React, { useState } from 'react';
