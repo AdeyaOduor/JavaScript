@@ -253,28 +253,34 @@ import './App.css';
 import React from 'react';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 
-const AppNavbar = ({ token, setToken }) => {
+const AppNavbar = ({ token, onLogout, onLoginClick, onRegisterClick }) => {
   return (
-    <Navbar bg="dark" variant="dark" expand="lg" className="mb-4">
+    <Navbar bg="primary" variant="dark" expand="lg" className="shadow-sm">
       <Container>
-        <Navbar.Brand href="#home" className="fw-bold">
-          <i className="bi bi-wallet2 me-2"></i> Budget Tracker
+        <Navbar.Brand href="#">
+          <img
+            src="/logo.png" // Replace with your logo path
+            height="30"
+            className="d-inline-block align-top me-2"
+            alt="Budget Tracker Logo"
+          />
+          Budget Tracker
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto">
+        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
+          <Nav>
             {token ? (
-              <Button variant="outline-light" onClick={() => setToken('')}>
+              <Button variant="outline-light" onClick={onLogout}>
                 Logout
               </Button>
             ) : (
               <>
-                <Nav.Link href="#login" className="me-3">
+                <Button variant="outline-light" className="me-2" onClick={onLoginClick}>
                   Login
-                </Nav.Link>
-                <Nav.Link href="#register">
-                  <Button variant="primary">Register</Button>
-                </Nav.Link>
+                </Button>
+                <Button variant="light" onClick={onRegisterClick}>
+                  Register
+                </Button>
               </>
             )}
           </Nav>
