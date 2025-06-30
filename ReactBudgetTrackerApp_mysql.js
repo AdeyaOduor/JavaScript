@@ -90,6 +90,26 @@ BEGIN
     SELECT id, username, created_at FROM Users WHERE id = p_user_id;
 END //
 
+-- Set/Update User Budget
+CREATE PROCEDURE SetUserBudget(
+    IN p_user_id INT,
+    IN p_amount DECIMAL(10, 2),
+    IN p_month_year VARCHAR(7)
+)
+BEGIN
+    INSERT INTO Budgets (user_id, amount, month_year)
+    VALUES (p_user_id, p_amount, p_month_year)
+    ON DUPLICATE KEY UPDATE amount = p_amount;
+    
+    SELECT * FROM Budgets WHERE user_id = p_user_id AND month_year = p_month_year;
+END //
+
+-- Get User Budget
+CREATE PROCEDURE GetUserBudget(IN p_user_id INT, IN p_month_year VARCHAR(7))
+BEGIN
+    SELECT * FROM Budgets WHERE user_id = p_user_id AND month_year = p_month_year;
+END //
+
 // backend/db.js
 const { Sequelize } = require('sequelize');
 
