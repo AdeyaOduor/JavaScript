@@ -242,121 +242,205 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('./User');
-const Expense = require('./Expense');
-const sequelize = require('./db');
+const mysql = require('mysql2/promise'); // Using promise-based MySQL client
+require('dotenv').config();
+// const User = require('./User');
+// const Expense = require('./Expense');
+// const sequelize = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Database connection pool
+const pool = mysql.createPool({
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_NAME || 'budget_tracker',
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+});
+
 // Middleware
 app.use(bodyParser.json());
 
-// In-memory budget storage (replace with a database in production)
-let budget = 0;
-
-// POST endpoint for updating the budget
-app.post('/api/budget', (req, res) => {
-  const { budget: newBudget } = req.body;
-
-  if (typeof newBudget !== 'number' || newBudget < 0) {
-    return res.status(400).json({ error: 'Invalid budget value' });
-  }
-
-  budget = newBudget; // Store the budget
-  res.status(200).json({ message: 'Budget updated successfully' });
-});
-
-// Connect to the database and start the server
-sequelize.sync()
-  .then(() => {
-    console.log('Database synced');
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
-  })
-  .catch(err => {
-    console.error('Unable to sync database:', err);
-  });
+// Helper function to execute stored procedures
+async function executeProcedure(procedureName, params) {
+    const connection = await pool.getConnection();
+    try {
+        const placeholders = params.map(() => '?').join(',');
+        const [results] = await connection.query(
+            `CALL ${procedureName}(${placeholders})`,
+            params
+        );
+        return results[0];
+    } finally {
+        connection.release();
+    }
+}
 
 // User Registration
 app.post('/register', async (req, res) => {
-  const { username, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
-  try {
-    const user = await User.create({ username, password: hashedPassword });
-    res.status(201).json(user);
-  } catch (error) {
-    res.status(400).json({ error: 'User already exists' });
-  }
+    try {
+        const { username, password } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const result = await executeProcedure('RegisterUser', [username, hashedPassword]);
+        res.status(201).json(result[0]);
+    } catch (error) {
+        if (error.code === 'ER_DUP_ENTRY') {
+            res.status(400).json({ error: 'Username already exists' });
+        } else {
+            console.error(error);
+            res.status(500).json({ error: 'Registration failed' });
+        }
+    }
 });
 
 // User Login
 app.post('/login', async (req, res) => {
-  const { username, password } = req.body;
-  const user = await User.findOne({ where: { username } });
-  if (user && await bcrypt.compare(password, user.password)) {
-    const token = jwt.sign({ id: user.id }, 'your_jwt_secret', { expiresIn: '1h' });
-    res.status(200).json({ token });
-  } else {
-    res.status(401).json({ error: 'Invalid credentials' });
-  }
+    try {
+        const { username, password } = req.body;
+        const [user] = await executeProcedure('AuthenticateUser', [username]);
+        
+        if (!user) {
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) {
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || 'your_jwt_secret', { expiresIn: '1h' });
+        res.json({ token });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Login failed' });
+    }
 });
 
-// Middleware to check JWT token
-const authenticateToken = (req, res, next) => {
-  const token = req.headers['authorization'];
-  if (!token) return res.sendStatus(401);
-  jwt.verify(token, 'your_jwt_secret', (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    next();
-  });
+// Middleware to authenticate JWT
+const authenticateToken = async (req, res, next) => {
+    const token = req.headers['authorization'];
+    if (!token) return res.sendStatus(401);
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret');
+        const [user] = await executeProcedure('GetUserById', [decoded.id]);
+        if (!user) return res.sendStatus(403);
+        req.user = user;
+        next();
+    } catch (err) {
+        res.sendStatus(403);
+    }
 };
 
-// Expense routes
+// Budget Endpoints
+app.post('/api/budget', authenticateToken, async (req, res) => {
+    try {
+        const { amount, monthYear } = req.body;
+        const currentMonth = monthYear || new Date().toISOString().slice(0, 7);
+        const result = await executeProcedure('SetUserBudget', [req.user.id, amount, currentMonth]);
+        res.json(result[0]);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to set budget' });
+    }
+});
+
+app.get('/api/budget', authenticateToken, async (req, res) => {
+    try {
+        const currentMonth = new Date().toISOString().slice(0, 7);
+        const [budget] = await executeProcedure('GetUserBudget', [req.user.id, currentMonth]);
+        res.json(budget || { amount: 0 });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to get budget' });
+    }
+});
+
+// Expense Endpoints
 app.post('/api/expenses', authenticateToken, async (req, res) => {
-  const { title, amount, date, category } = req.body;
-  const expense = await Expense.create({ userId: req.user.id, title, amount, date, category });
-  res.status(201).json(expense);
+    try {
+        const { title, amount, date, category } = req.body;
+        const expenseDate = date || new Date().toISOString().split('T')[0];
+        const result = await executeProcedure('AddExpense', [
+            req.user.id,
+            title,
+            amount,
+            expenseDate,
+            category || 'Uncategorized'
+        ]);
+        res.status(201).json(result[0]);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to add expense' });
+    }
 });
 
 app.get('/api/expenses', authenticateToken, async (req, res) => {
-  const expenses = await Expense.findAll({ where: { userId: req.user.id } });
-  res.json(expenses);
+    try {
+        const { startDate, endDate, category } = req.query;
+        const expenses = await executeProcedure('GetUserExpenses', [
+            req.user.id,
+            startDate || null,
+            endDate || null,
+            category || null
+        ]);
+        res.json(expenses);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to get expenses' });
+    }
+});
+
+app.get('/api/expenses/summary', authenticateToken, async (req, res) => {
+    try {
+        const monthYear = req.query.month || new Date().toISOString().slice(0, 7);
+        const summary = await executeProcedure('GetExpenseSummary', [req.user.id, monthYear]);
+        res.json(summary);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to get expense summary' });
+    }
 });
 
 app.put('/api/expenses/:id', authenticateToken, async (req, res) => {
-  const { title, amount } = req.body;
-  const expense = await Expense.findByPk(req.params.id);
-  if (expense && expense.userId === req.user.id) {
-    expense.title = title;
-    expense.amount = amount;
-    await expense.save();
-    res.json(expense);
-  } else {
-    res.status(404).json({ error: 'Expense not found' });
-  }
+    try {
+        const { title, amount } = req.body;
+        const result = await executeProcedure('UpdateExpense', [
+            req.params.id,
+            req.user.id,
+            title,
+            amount
+        ]);
+        res.json(result[0]);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to update expense' });
+    }
 });
 
 app.delete('/api/expenses/:id', authenticateToken, async (req, res) => {
-  const expense = await Expense.findByPk(req.params.id);
-  if (expense && expense.userId === req.user.id) {
-    await expense.destroy();
-    res.sendStatus(204);
-  } else {
-    res.status(404).json({ error: 'Expense not found' });
-  }
+    try {
+        const result = await executeProcedure('DeleteExpense', [req.params.id, req.user.id]);
+        if (result[0].affected_rows === 0) {
+            return res.status(404).json({ error: 'Expense not found' });
+        }
+        res.sendStatus(204);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to delete expense' });
+    }
 });
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
 });
-// Protected route example
-app.get('/api/user', authenticateToken, (req, res) => {
-  res.json({ message: 'Hello, user!' });
-});
+
+
 
 // src/index.js:
 import 'bootstrap/dist/css/bootstrap.min.css';
