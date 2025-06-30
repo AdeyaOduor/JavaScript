@@ -110,6 +110,78 @@ BEGIN
     SELECT * FROM Budgets WHERE user_id = p_user_id AND month_year = p_month_year;
 END //
 
+-- Add Expense
+CREATE PROCEDURE AddExpense(
+    IN p_user_id INT,
+    IN p_title VARCHAR(100),
+    IN p_amount DECIMAL(10, 2),
+    IN p_date DATE,
+    IN p_category VARCHAR(50)
+BEGIN
+    INSERT INTO Expenses (user_id, title, amount, date, category)
+    VALUES (p_user_id, p_title, p_amount, p_date, p_category);
+    
+    SELECT * FROM Expenses WHERE id = LAST_INSERT_ID();
+END //
+
+-- Update Expense
+CREATE PROCEDURE UpdateExpense(
+    IN p_expense_id INT,
+    IN p_user_id INT,
+    IN p_title VARCHAR(100),
+    IN p_amount DECIMAL(10, 2)
+BEGIN
+    UPDATE Expenses
+    SET title = p_title, amount = p_amount
+    WHERE id = p_expense_id AND user_id = p_user_id;
+    
+    SELECT * FROM Expenses WHERE id = p_expense_id;
+END //
+
+-- Delete Expense
+CREATE PROCEDURE DeleteExpense(IN p_expense_id INT, IN p_user_id INT)
+BEGIN
+    DELETE FROM Expenses WHERE id = p_expense_id AND user_id = p_user_id;
+    SELECT ROW_COUNT() AS affected_rows;
+END //
+
+-- Get User Expenses
+CREATE PROCEDURE GetUserExpenses(
+    IN p_user_id INT,
+    IN p_start_date DATE,
+    IN p_end_date DATE,
+    IN p_category VARCHAR(50))
+BEGIN
+    SELECT * FROM Expenses
+    WHERE user_id = p_user_id
+    AND (p_start_date IS NULL OR date >= p_start_date)
+    AND (p_end_date IS NULL OR date <= p_end_date)
+    AND (p_category IS NULL OR category = p_category)
+    ORDER BY date DESC;
+END //
+
+-- Get Expense Summary by Category
+CREATE PROCEDURE GetExpenseSummary(
+    IN p_user_id INT,
+    IN p_month_year VARCHAR(7))
+BEGIN
+    SELECT 
+        category,
+        SUM(amount) AS total_amount,
+        COUNT(*) AS transaction_count
+    FROM Expenses
+    WHERE user_id = p_user_id
+    AND DATE_FORMAT(date, '%Y-%m') = p_month_year
+    GROUP BY category
+    ORDER BY total_amount DESC;
+END //
+
+DELIMITER ;
+
+
+
+
+
 // backend/db.js
 const { Sequelize } = require('sequelize');
 
