@@ -33,7 +33,7 @@ Start the React app from the CLI:
 npm start
 
 */
-// create strored procedure in your MySQL client
+// create strored procedure in MySQL client
 -- Create the database if it doesn't exist
 CREATE DATABASE IF NOT EXISTS budget_tracker;
 USE budget_tracker;
@@ -68,6 +68,27 @@ CREATE TABLE IF NOT EXISTS Budgets (
     FOREIGN KEY (user_id) REFERENCES Users(id),
     UNIQUE KEY unique_user_month (user_id, month_year)
 );
+
+DELIMITER //
+
+-- User Registration
+CREATE PROCEDURE RegisterUser(IN p_username VARCHAR(50), IN p_password VARCHAR(255))
+BEGIN
+    INSERT INTO Users (username, password) VALUES (p_username, p_password);
+    SELECT LAST_INSERT_ID() AS id, username FROM Users WHERE id = LAST_INSERT_ID();
+END //
+
+-- User Login
+CREATE PROCEDURE AuthenticateUser(IN p_username VARCHAR(50))
+BEGIN
+    SELECT id, username, password FROM Users WHERE username = p_username;
+END //
+
+-- Get User by ID
+CREATE PROCEDURE GetUserById(IN p_user_id INT)
+BEGIN
+    SELECT id, username, created_at FROM Users WHERE id = p_user_id;
+END //
 
 // backend/db.js
 const { Sequelize } = require('sequelize');
