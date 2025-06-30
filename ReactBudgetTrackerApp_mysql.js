@@ -16,10 +16,10 @@ In the backend folder create files; User.js, Expense.js:
 Step 4: Create Server with Express
 In the backend folder, create a file named server.js:
 
-Step 5: Create the follwing React Components inside src folder Navbar, Carousel, Login.js, Register.js, and BudgetTracker;
+Step 5: Create the follwing React Components inside src folder App.js, App.css, Navbar, Carousel, Login.js, Register.js, and BudgetTracker;
 
 Step 6: Update App Component
-Modify src/App.js to include the Navbar, Carousel, Login.js, Register.js, and Budget Tracker components:
+Modify src/App.js to include the App.css, Navbar, Carousel, Login.js, Register.js, and Budget Tracker components:
 
 Step 7: Add Navbar Logo, and Background Images to Carousel
 Inside public folder, add another image folder where the logo and background images will be stored
@@ -180,8 +180,6 @@ DELIMITER ;
 
 
 
-
-
 // backend/db.js
 const { Sequelize } = require('sequelize');
 
@@ -191,6 +189,7 @@ const sequelize = new Sequelize('database_name', 'username', 'password', {
 });
 
 module.exports = sequelize;
+
 
 // backend/User.js
 const { DataTypes } = require('sequelize');
@@ -207,6 +206,7 @@ const User = sequelize.define('User', {
 });
 
 module.exports = User;
+
 
 // backend/Expense.js
 const { DataTypes } = require('sequelize');
@@ -236,6 +236,7 @@ const Expense = sequelize.define('Expense', {
 });
 
 module.exports = Expense;
+
 
 // backend/server.js
 const express = require('express');
@@ -447,8 +448,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+    
 
-// Add CSS for better styling (in App.css):
+// src/App.css):
 .stats-container {
   display: flex;
   justify-content: space-between;
@@ -516,7 +518,6 @@ import './App.css';
 .modal-title {
   font-weight: bold;
 }
-
 /* Navbar Enhancements */
 .navbar {
   padding: 15px 0;
@@ -526,6 +527,8 @@ import './App.css';
   font-weight: bold;
   font-size: 1.5rem;
 }
+
+
 
 // src/Navbar.js
 import React from 'react';
@@ -569,6 +572,8 @@ const AppNavbar = ({ token, onLogout, onLoginClick, onRegisterClick }) => {
 };
 
 export default AppNavbar;
+
+
 
 // src/ExpenseChart.js
 import React from 'react';
@@ -635,6 +640,8 @@ const ExpenseChart = ({ expenses }) => {
 
 export default ExpenseChart;
 
+
+
 // src/Carousel.js
 import React from 'react';
 import { Carousel } from 'react-bootstrap';
@@ -673,6 +680,8 @@ const ImageCarousel = () => {
 };
 
 export default ImageCarousel;
+
+
 
 // src/BudgetTracker.js
 import React, { useState, useEffect } from 'react';
@@ -983,6 +992,8 @@ const BudgetTracker = ({ token }) => {
 
 export default BudgetTracker;
 
+
+
 // src/Login.js
 import React, { useState } from 'react';
 import { Modal, Form, Button, Alert } from 'react-bootstrap';
@@ -1044,6 +1055,7 @@ const LoginModal = ({ show, onHide, onLogin, onRegisterClick }) => {
 };
 
 export default LoginModal;
+
 
 // src/Register.js
 import React, { useState } from 'react';
@@ -1109,6 +1121,8 @@ const RegisterModal = ({ show, onHide, onRegister }) => {
 };
 
 export default RegisterModal;
+
+
 
 // src/App.js
 import React, { useState } from 'react';
