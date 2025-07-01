@@ -4,16 +4,15 @@ npx create-react-app budget-tracker
 cd budget-tracker
 npm install axios react-bootstrap bootstrap react-chartjs-2 chart.js
 
-Step 2: Create the MySQL Database Connection, and models;
+Step 2: Create the MySQL Database Connection, Server with Express, and models;
 In the root of your project, create a folder named backend. 
 cd backend
 npm install express body-parser bcryptjs jsonwebtoken sequelize mysql2 cors
-Inside backend, create files: db.js, User.js, server.js, and Expense.js;
+Inside backend folder, create files: db.js, User.js, server.js, and Expense.js;
 
 Step 3: Create stored procedures in MySQL client
 
-Step 4: Create Server with Express
-In the backend folder, create a file named server.js:
+Step 4: Create 
 
 Step 5: Create the follwing React Components inside src folder App.js, App.css, Navbar, Carousel, Login.js, Register.js, and BudgetTracker;
 
@@ -719,6 +718,35 @@ const BudgetTracker = ({ token }) => {
       showAlert('Failed to fetch expenses', 'danger');
     }
   };
+
+// Getting expenses for current month
+const fetchExpenses = async () => {
+  try {
+    const currentMonth = new Date().toISOString().slice(0, 7);
+    const response = await axios.get('/api/expenses', {
+      params: {
+        startDate: `${currentMonth}-01`,
+        endDate: `${currentMonth}-31`
+      },
+      headers: { Authorization: token }
+    });
+    setExpenses(response.data);
+  } catch (error) {
+    console.error('Failed to fetch expenses:', error);
+  }
+};
+
+// Getting expense summary
+const fetchExpenseSummary = async () => {
+  try {
+    const response = await axios.get('/api/expenses/summary', {
+      headers: { Authorization: token }
+    });
+    setSummary(response.data);
+  } catch (error) {
+    console.error('Failed to fetch summary:', error);
+  }
+};
 
   const showAlert = (message, variant = 'success') => {
     setAlertMessage(message);
