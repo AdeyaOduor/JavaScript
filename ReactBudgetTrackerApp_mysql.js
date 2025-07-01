@@ -12,9 +12,9 @@ Inside backend folder, create files: db.js, User.js, server.js, and Expense.js;
 
 Step 3: Create stored procedures in MySQL client
 
-Step 4: Create 
+Step 4: Create React components folder inside src folder;
 
-Step 5: Create the follwing React Components inside src folder App.js, App.css, Navbar, Carousel, Login.js, Register.js, and BudgetTracker;
+Step 5: Create the follwing files inside src/components: App.js, App.css, Navbar, Carousel, Login.js, Register.js, and BudgetTracker;
 
 Step 6: Update App Component
 Modify src/App.js to include the App.css, Navbar.js, Carousel.js, Login.js, Register.js, and BudgetTracker.js components:
@@ -708,16 +708,16 @@ const BudgetTracker = ({ token }) => {
     fetchExpenses();
   }, [token]);
 
-  const fetchExpenses = async () => {
-    try {
-      const response = await axios.get('http://localhost:5000/api/expenses', {
-        headers: { Authorization: token }
-      });
-      setExpenses(response.data);
-    } catch (error) {
-      showAlert('Failed to fetch expenses', 'danger');
-    }
-  };
+  // const fetchExpenses = async () => {
+  //   try {
+  //     const response = await axios.get('http://localhost:5000/api/expenses', {
+  //       headers: { Authorization: token }
+  //     });
+  //     setExpenses(response.data);
+  //   } catch (error) {
+  //     showAlert('Failed to fetch expenses', 'danger');
+  //   }
+  // };
 
 // Getting expenses for current month
 const fetchExpenses = async () => {
