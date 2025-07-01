@@ -4,11 +4,11 @@ npx create-react-app budget-tracker
 cd budget-tracker
 npm install axios react-bootstrap bootstrap react-chartjs-2 chart.js
 
-Step 2: Create the MySQL Database Connection;
+Step 2: Create the MySQL Database Connection, and models;
 In the root of your project, create a folder named backend. 
 cd backend
 npm install express body-parser bcryptjs jsonwebtoken sequelize mysql2 cors
-Inside backend, create file db.js; // for database configuration using Sequelize:
+Inside backend, create files: db.js;
 
 Step 3: Create Models
 In the backend folder create files; User.js, Expense.js:
@@ -180,7 +180,7 @@ DELIMITER ;
 
 
 
-// backend/db.js
+// backend/db.js; for database configuration using Sequelize:
 const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize('database_name', 'username', 'password', {
