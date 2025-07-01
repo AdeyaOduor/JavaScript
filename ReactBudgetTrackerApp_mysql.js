@@ -176,6 +176,7 @@ END //
 
 DELIMITER ;
 
+GRANT EXECUTE ON budget_tracker.* TO 'your_username'@'localhost';
 
 
 // backend/db.js; for database configuration using Sequelize:
