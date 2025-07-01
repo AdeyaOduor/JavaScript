@@ -8,10 +8,9 @@ Step 2: Create the MySQL Database Connection, and models;
 In the root of your project, create a folder named backend. 
 cd backend
 npm install express body-parser bcryptjs jsonwebtoken sequelize mysql2 cors
-Inside backend, create files: db.js;
+Inside backend, create files: db.js, User.js, and Expense.js;
 
-Step 3: Create Models
-In the backend folder create files; User.js, Expense.js:
+Step 3: Create stored procedures in MySQL client
 
 Step 4: Create Server with Express
 In the backend folder, create a file named server.js:
@@ -19,7 +18,7 @@ In the backend folder, create a file named server.js:
 Step 5: Create the follwing React Components inside src folder App.js, App.css, Navbar, Carousel, Login.js, Register.js, and BudgetTracker;
 
 Step 6: Update App Component
-Modify src/App.js to include the App.css, Navbar, Carousel, Login.js, Register.js, and Budget Tracker components:
+Modify src/App.js to include the App.css, Navbar.js, Carousel.js, Login.js, Register.js, and BudgetTracker.js components:
 
 Step 7: Add Navbar Logo, and Background Images to Carousel
 Inside public folder, add another image folder where the logo and background images will be stored
