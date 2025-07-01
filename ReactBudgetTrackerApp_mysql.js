@@ -435,6 +435,10 @@ app.delete('/api/expenses/:id', authenticateToken, async (req, res) => {
     }
 });
 
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
 // Start server
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
