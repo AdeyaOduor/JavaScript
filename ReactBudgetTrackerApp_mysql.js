@@ -8,7 +8,7 @@ Step 2: Create the MySQL Database Connection, and models;
 In the root of your project, create a folder named backend. 
 cd backend
 npm install express body-parser bcryptjs jsonwebtoken sequelize mysql2 cors
-Inside backend, create files: db.js, User.js, and Expense.js;
+Inside backend, create files: db.js, User.js, server.js, and Expense.js;
 
 Step 3: Create stored procedures in MySQL client
 
