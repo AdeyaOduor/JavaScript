@@ -9,10 +9,9 @@ NGINX Prerequisites
     */
 
 
-// 1. Deployment Steps
+// 1. Deployment Steps using CLI:
 
 // A. Database Setup
-bash
 // Secure MySQL installation
 sudo mysql_secure_installation
 
@@ -28,7 +27,6 @@ EXIT;
 mysql -u budget_user -p budget_tracker < database_schema.sql
 
 // B. Backend Deployment
-bash
 // # Clone your repository
 git clone https://github.com/yourusername/budget-tracker.git
 cd budget-tracker/backend
@@ -36,7 +34,7 @@ cd budget-tracker/backend
 // # Install dependencies
 npm install
 
-// # Create production .env file
+// # Create production .env file inside backend folder;
 echo "DB_HOST=localhost
 DB_USER=budget_user
 DB_PASSWORD=strong_password_123
@@ -56,8 +54,6 @@ pm2 startup
 pm2 save
 
 // C. Frontend Deployment
-bash
-
 cd ../frontend
 
 // # Install dependencies and build
