@@ -64,5 +64,10 @@ cd ../frontend
 npm install
 npm run build
 
-// # Create NGINX config
+// # Create NGINX configuration file
+// # /etc/nginx/nginx.conf    
+// # /etc/nginx/sites-available/budget-tracker
+
 sudo nano /etc/nginx/sites-available/budget-tracker
+
+
