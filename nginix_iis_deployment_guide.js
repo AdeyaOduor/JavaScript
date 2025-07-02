@@ -5,14 +5,14 @@ NGINX Prerequisites
     MySQL 8.0+ installed
     NGINX installed
     PM2 process manager
-    SSL certificate (Let's Encrypt)
-    
-    
+    SSL certificate (Let's Encrypt) 
     */
+
+
 // 1. Deployment Steps
+
 // A. Database Setup
 bash
-
 // Secure MySQL installation
 sudo mysql_secure_installation
 
@@ -24,12 +24,11 @@ GRANT ALL PRIVILEGES ON budget_tracker.* TO 'budget_user'@'localhost';
 FLUSH PRIVILEGES;
 EXIT;
 
-// Import your schema and stored procedures
+// # Import your schema and stored procedures
 mysql -u budget_user -p budget_tracker < database_schema.sql
 
 // B. Backend Deployment
 bash
-
 // # Clone your repository
 git clone https://github.com/yourusername/budget-tracker.git
 cd budget-tracker/backend
@@ -52,7 +51,7 @@ sudo npm install -g pm2
 // # Start backend service
 pm2 start server.js --name "budget-tracker-api"
 
-# Configure PM2 to start on boot
+// # Configure PM2 to start on boot
 pm2 startup
 pm2 save
 
