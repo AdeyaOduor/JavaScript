@@ -66,7 +66,8 @@ npm run build
 
 sudo nano /etc/nginx/sites-available/budget-tracker
 
-// # Add the following to nginx.conf
+// # Add the following to nginx.conf created by above command;
+
 // # HTTP to HTTPS redirect
 server {
     listen 80;
@@ -112,7 +113,7 @@ server {
     root /home/ubuntu/budget-tracker/frontend/build;
     index index.html;
 
-    # Enable gzip compression
+    // # Enable gzip compression
     gzip on;
     gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
     gzip_min_length 1000;
@@ -121,14 +122,14 @@ server {
     gzip_buffers 16 8k;
     gzip_vary on;
 
-    # Static assets caching
+    // # Static assets caching
     location ~* \.(?:jpg|jpeg|png|gif|ico|css|js|svg|woff2)$ {
         expires 365d;
         add_header Cache-Control "public, no-transform";
         access_log off;
     }
 
-    # API proxy to Node.js backend
+    // # API proxy to Node.js backend
     location /api {
         proxy_pass http://localhost:3001;
         proxy_http_version 1.1;
@@ -140,24 +141,28 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_cache_bypass $http_upgrade;
         
-        # Timeout settings
+        // # Timeout settings
         proxy_connect_timeout 60s;
         proxy_send_timeout 60s;
         proxy_read_timeout 60s;
         send_timeout 60s;
     }
 
-    # Handle client-side routing
+// # Frontend serving
+//     root /home/ubuntu/budget-tracker/frontend/build;
+//     index index.html;
+
+    // # Handle client-side routing
     location / {
         try_files $uri $uri/ /index.html;
     }
 
-    # Block access to sensitive files
+    // # Block access to sensitive files
     location ~ /\. {
         deny all;
     }
 
-    # Error pages
+    // # Error pages
     error_page 404 /404.html;
     error_page 500 502 503 504 /50x.html;
 }
