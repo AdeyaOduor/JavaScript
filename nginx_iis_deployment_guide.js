@@ -74,11 +74,11 @@ server {
     listen [::]:80;
     server_name yourdomain.com www.yourdomain.com;
     
-    # Security headers for even the redirect
+    // # Security headers for even the redirect
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-Content-Type-Options "nosniff";
     
-    # Redirect all HTTP requests to HTTPS
+    // # Redirect all HTTP requests to HTTPS
     return 301 https://$host$request_uri;
 }
 
