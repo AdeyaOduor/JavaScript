@@ -65,7 +65,7 @@ npm run build
 // # /etc/nginx/sites-available/budget-tracker
 
 sudo nano /etc/nginx/sites-available/budget-tracker
-
+// ----------------------------------------------------------------------------------------
 // # Add the following to nginx.conf created by above command;
 
 // # HTTP to HTTPS redirect
@@ -166,4 +166,8 @@ server {
     error_page 404 /404.html;
     error_page 500 502 503 504 /50x.html;
 }
+// -----------------------------------------------------------------------------------------
+sudo ln -s /etc/nginx/sites-available/budget-tracker /etc/nginx/sites-enabled
+sudo nginx -t
+sudo systemctl restart nginx
 
