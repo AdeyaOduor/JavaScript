@@ -167,14 +167,12 @@ server {
     error_page 500 502 503 504 /50x.html;
 }
 // -----------------------------------------------------------------------------------------
+
+// Enable the site and test configuration:
 sudo ln -s /etc/nginx/sites-available/budget-tracker /etc/nginx/sites-enabled
 sudo nginx -t
 sudo systemctl restart nginx
 
-
-sudo apt install certbot python3-certbot-nginx
-sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
-
-
+// D. SSL Certificate with Let's Encrypt
 sudo apt install certbot python3-certbot-nginx
 sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
