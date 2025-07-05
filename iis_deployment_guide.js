@@ -66,3 +66,66 @@ D. Configure URL Rewrite and Reverse Proxy
     Install URL Rewrite and ARR through Web Platform Installer
     Add this web.config to your frontend build folder:
     */
+
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <system.webServer>
+        <rewrite>
+            <rules>
+                <!-- Serve static files directly -->
+                <rule name="Static Files" stopProcessing="true">
+                    <match url="^(.+\.(?:css|js|png|jpg|gif|ico|svg|woff2?|ttf|eot))$" />
+                    <action type="Rewrite" url="/{R:1}" />
+                </rule>
+                
+                <!-- Proxy API requests to Node.js -->
+                <rule name="ReverseProxyInboundRule1" stopProcessing="true">
+                    <match url="^api/(.*)" />
+                    <action type="Rewrite" url="http://localhost:3001/{R:1}" />
+                    <serverVariables>
+                        <set name="HTTP_X_ORIGINAL_ACCEPT_ENCODING" value="{HTTP_ACCEPT_ENCODING}" />
+                        <set name="HTTP_ACCEPT_ENCODING" value="" />
+                    </serverVariables>
+                </rule>
+                
+                <!-- Handle client-side routing -->
+                <rule name="React Routes" stopProcessing="true">
+                    <match url=".*" />
+                    <conditions logicalGrouping="MatchAll">
+                        <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
+                        <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
+                    </conditions>
+                    <action type="Rewrite" url="/index.html" />
+                </rule>
+            </rules>
+            <outboundRules>
+                <rule name="ReverseProxyOutboundRule1" preCondition="ResponseIsHtml1">
+                    <match filterByTags="A, Form, Img" pattern="^http(s)?://localhost:3001/(.*)" />
+                    <action type="Rewrite" value="http{R:1}://{HTTP_HOST}/{R:2}" />
+                </rule>
+                <preConditions>
+                    <preCondition name="ResponseIsHtml1">
+                        <add input="{RESPONSE_CONTENT_TYPE}" pattern="^text/html" />
+                    </preCondition>
+                </preConditions>
+            </outboundRules>
+        </rewrite>
+        
+        <!-- Security headers -->
+        <httpProtocol>
+            <customHeaders>
+                <add name="X-Frame-Options" value="SAMEORIGIN" />
+                <add name="X-XSS-Protection" value="1; mode=block" />
+                <add name="X-Content-Type-Options" value="nosniff" />
+                <add name="Strict-Transport-Security" value="max-age=31536000; includeSubDomains" />
+                <add name="Referrer-Policy" value="strict-origin-when-cross-origin" />
+                <add name="Content-Security-Policy" value="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://yourdomain.com" />
+            </customHeaders>
+        </httpProtocol>
+        
+        <!-- Static file caching -->
+        <staticContent>
+            <clientCache cacheControlMode="UseMaxAge" cacheControlMaxAge="365.00:00:00" />
+        </staticContent>
+    </system.webServer>
+</configuration>
