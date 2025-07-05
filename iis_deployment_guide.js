@@ -60,3 +60,9 @@ npm run build
 #    - Site name: BudgetTracker
 #    - Physical path: \path\to\frontend\build
 #    - Binding: https with your SSL certificate
+
+/*
+D. Configure URL Rewrite and Reverse Proxy
+    Install URL Rewrite and ARR through Web Platform Installer
+    Add this web.config to your frontend build folder:
+    */
