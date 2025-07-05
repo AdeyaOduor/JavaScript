@@ -45,3 +45,17 @@ pm2 start server.js --name "budget-tracker-api"
 // # Configure PM2 to start on boot
 pm2 startup
 pm2 save
+
+
+cd ..\frontend
+
+# Install dependencies and build
+npm install
+npm run build
+
+# Create IIS site
+# 1. Open IIS Manager
+# 2. Add new website:
+#    - Site name: BudgetTracker
+#    - Physical path: \path\to\frontend\build
+#    - Binding: https with your SSL certificate
