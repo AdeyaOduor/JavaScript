@@ -46,10 +46,11 @@ pm2 start server.js --name "budget-tracker-api"
 pm2 startup
 pm2 save
 
+// C. Frontend Deployment
 
 cd ..\frontend
 
-# Install dependencies and build
+// # Install dependencies and build
 npm install
 npm run build
 
