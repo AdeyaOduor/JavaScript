@@ -176,3 +176,9 @@ sudo systemctl restart nginx
 // D. SSL Certificate with Let's Encrypt
 sudo apt install certbot python3-certbot-nginx
 sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
+
+// Linux (UFW) Firewall configuration
+sudo ufw allow ssh
+sudo ufw allow http
+sudo ufw allow https
+sudo ufw enable
