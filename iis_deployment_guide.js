@@ -129,3 +129,8 @@ D. Configure URL Rewrite and Reverse Proxy
         </staticContent>
     </system.webServer>
 </configuration>
+
+
+// Windows (PowerShell) firewall configuration:
+New-NetFirewallRule -DisplayName "Node.js Budget Tracker" -Direction Inbound -LocalPort 3001 -Protocol TCP -Action Allow
+New-NetFirewallRule -DisplayName "HTTP(S)" -Direction Inbound -LocalPort 80,443 -Protocol TCP -Action Allow
