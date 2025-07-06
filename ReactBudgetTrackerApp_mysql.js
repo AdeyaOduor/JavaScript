@@ -258,6 +258,8 @@ require('dotenv').config();
 // const User = require('./User');
 // const Expense = require('./Expense');
 // const sequelize = require('./db');
+// const helmet = require('helmet'); // for deployment
+// const rateLimit = require('express-rate-limit'); // for deployment
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -290,6 +292,19 @@ async function executeProcedure(procedureName, params) {
         connection.release();
     }
 }
+// uncomment the following in deployment / production phase
+// app.use(helmet());
+// app.use(helmet.hsts({
+//     maxAge: 31536000,
+//     includeSubDomains: true,
+//     preload: true
+// }));
+
+// const limiter = rateLimit({
+//     windowMs: 15 * 60 * 1000, // 15 minutes
+//     max: 100 // limit each IP to 100 requests per windowMs
+// });
+// app.use('/api/', limiter);
 
 // User Registration
 app.post('/register', async (req, res) => {
