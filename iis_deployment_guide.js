@@ -134,3 +134,9 @@ D. Configure URL Rewrite and Reverse Proxy
 // Windows (PowerShell) firewall configuration:
 New-NetFirewallRule -DisplayName "Node.js Budget Tracker" -Direction Inbound -LocalPort 3001 -Protocol TCP -Action Allow
 New-NetFirewallRule -DisplayName "HTTP(S)" -Direction Inbound -LocalPort 80,443 -Protocol TCP -Action Allow
+
+// PM2 Logging: 
+pm2 install pm2-logrotate
+pm2 set pm2-logrotate:max_size 10M
+pm2 set pm2-logrotate:retain 30
+pm2 set pm2-logrotate:compress true
