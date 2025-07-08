@@ -187,3 +187,18 @@ sudo ufw enable
 // 1. Logging Setup: Configure log rotation for both NGINX and Node.js:
 
 sudo nano /etc/logrotate.d/nginx
+
+// Add .txt file
+/var/log/nginx/*.log {
+    daily
+    missingok
+    rotate 14
+    compress
+    delaycompress
+    notifempty
+    create 0640 www-data adm
+    sharedscripts
+    postrotate
+        /usr/sbin/nginx -t && /usr/sbin/nginx -s reload
+    endscript
+}
