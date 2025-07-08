@@ -182,3 +182,8 @@ sudo ufw allow ssh
 sudo ufw allow http
 sudo ufw allow https
 sudo ufw enable
+
+// Monitoring and Maintenance
+// 1. Logging Setup: Configure log rotation for both NGINX and Node.js:
+
+sudo nano /etc/logrotate.d/nginx
