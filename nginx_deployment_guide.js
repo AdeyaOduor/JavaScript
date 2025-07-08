@@ -202,3 +202,10 @@ sudo nano /etc/logrotate.d/nginx
         /usr/sbin/nginx -t && /usr/sbin/nginx -s reload
     endscript
 }
+
+// PM2 Logging: 
+pm2 install pm2-logrotate
+pm2 set pm2-logrotate:max_size 10M
+pm2 set pm2-logrotate:retain 30
+pm2 set pm2-logrotate:compress true
+
