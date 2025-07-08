@@ -212,3 +212,19 @@ pm2 set pm2-logrotate:compress true
 // 2. Backup Strategy: Create automated backups for MySQL:
 // # Daily backup script
 sudo nano /usr/local/bin/mysql_backup.sh
+
+#!/bin/bash
+DATE=$(date +%Y%m%d%H%M)
+BACKUP_DIR="/var/backups/mysql"
+mkdir -p $BACKUP_DIR
+mysqldump -u budget_user -p'strong_password_123' budget_tracker | gzip > "$BACKUP_DIR/budget_tracker_$DATE.sql.gz"
+find $BACKUP_DIR -type f -mtime +7 -delete
+
+// Make executable and add to cron
+sudo chmod +x /usr/local/bin/mysql_backup.sh
+sudo crontab -e
+
+// Add to .txt:
+0 2 * * * /usr/local/bin/mysql_backup.sh
+
+
