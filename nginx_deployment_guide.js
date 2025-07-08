@@ -209,3 +209,6 @@ pm2 set pm2-logrotate:max_size 10M
 pm2 set pm2-logrotate:retain 30
 pm2 set pm2-logrotate:compress true
 
+// 2. Backup Strategy: Create automated backups for MySQL:
+// # Daily backup script
+sudo nano /usr/local/bin/mysql_backup.sh
