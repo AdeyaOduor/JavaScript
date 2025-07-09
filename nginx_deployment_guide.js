@@ -61,9 +61,10 @@ npm install
 npm run build
 
 // # Create NGINX configuration file
- /etc/nginx/nginx.conf    // Primary NGINX configuration file
+ /etc/nginx/nginx.conf       // Primary NGINX configuration file
 /etc/nginx/sites-available/  // Storage for all site configurations
 /etc/nginx/sites-enabled/	 // Symlinks to active site configurations
+/var/log/nginx/	             // Access and error logs
 // # /etc/nginx/sites-available/budget-tracker
 
 sudo nano /etc/nginx/sites-available/budget-tracker
@@ -230,3 +231,4 @@ sudo crontab -e
 0 2 * * * /usr/local/bin/mysql_backup.sh
 
 
+sudo apt update && sudo apt upgrade nginx // Keep NGINX updated:
