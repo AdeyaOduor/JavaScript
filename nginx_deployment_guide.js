@@ -61,7 +61,9 @@ npm install
 npm run build
 
 // # Create NGINX configuration file
-// # /etc/nginx/nginx.conf    
+ /etc/nginx/nginx.conf    // Primary NGINX configuration file
+/etc/nginx/sites-available/  // Storage for all site configurations
+/etc/nginx/sites-enabled/	 // Symlinks to active site configurations
 // # /etc/nginx/sites-available/budget-tracker
 
 sudo nano /etc/nginx/sites-available/budget-tracker
