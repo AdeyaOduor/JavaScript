@@ -230,5 +230,9 @@ sudo crontab -e
 // Add to .txt:
 0 2 * * * /usr/local/bin/mysql_backup.sh
 
+// Keep NGINX updated:
+sudo apt update && sudo apt upgrade nginx 
 
-sudo apt update && sudo apt upgrade nginx // Keep NGINX updated:
+// Set proper permissions:
+sudo chown -R www-data:www-data /home/ubuntu/budget-tracker/frontend/build
+sudo chmod -R 755 /home/ubuntu/budget-tracker/frontend/build
