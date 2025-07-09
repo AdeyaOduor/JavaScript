@@ -229,6 +229,7 @@ sudo crontab -e
 
 // Add to .txt:
 0 2 * * * /usr/local/bin/mysql_backup.sh
+0 12 * * * /usr/bin/certbot renew --quiet 
 
 // Keep NGINX updated:
 sudo apt update && sudo apt upgrade nginx 
@@ -236,3 +237,9 @@ sudo apt update && sudo apt upgrade nginx
 // Set proper permissions:
 sudo chown -R www-data:www-data /home/ubuntu/budget-tracker/frontend/build
 sudo chmod -R 755 /home/ubuntu/budget-tracker/frontend/build
+
+// Monitor NGINX access:
+sudo tail -f /var/log/nginx/access.log
+
+// Enable automatic certificate renewal:
+sudo crontab -e
