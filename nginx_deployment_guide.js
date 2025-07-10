@@ -172,6 +172,12 @@ sudo ln -s /etc/nginx/sites-available/budget-tracker /etc/nginx/sites-enabled
 sudo nginx -t
 sudo systemctl restart nginx
 
+// # API Endpoint Testing with curl: Test all critical user flows:
+curl -X POST https://yourdomain.com/api/login -H "Content-Type: application/json" -d '{"username":"testuser","password":"testpass"}'
+
+curl -X GET https://yourdomain.com/api/expenses -H "Authorization: Bearer YOUR_JWT_TOKEN"
+
+
 // D. SSL Certificate with Let's Encrypt
 sudo apt install certbot python3-certbot-nginx
 sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
