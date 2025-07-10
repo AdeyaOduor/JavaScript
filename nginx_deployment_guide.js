@@ -225,7 +225,6 @@ sudo crontab -e
 
 // Add to .txt:
 0 2 * * * /usr/local/bin/mysql_backup.sh
-0 12 * * * /usr/bin/certbot renew --quiet 
 
 // Keep NGINX updated:
 sudo apt update && sudo apt upgrade nginx 
@@ -239,3 +238,6 @@ sudo tail -f /var/log/nginx/access.log
 
 // Enable automatic certificate renewal:
 sudo crontab -e
+
+// Add to .txt:
+0 12 * * * /usr/bin/certbot renew --quiet 
