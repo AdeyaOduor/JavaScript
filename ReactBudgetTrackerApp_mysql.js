@@ -275,8 +275,20 @@ const pool = mysql.createPool({
     queueLimit: 0
 });
 
-// Middleware
+// Middleware: uncomment code parts in deployment / production phase
 app.use(bodyParser.json());
+// app.use(helmet());
+// app.use(helmet.hsts({
+//     maxAge: 31536000,
+//     includeSubDomains: true,
+//     preload: true
+// }));
+
+// const limiter = rateLimit({
+//     windowMs: 15 * 60 * 1000, // 15 minutes
+//     max: 100 // limit each IP to 100 requests per windowMs
+// });
+// app.use('/api/', limiter);
 
 // Helper function to execute stored procedures
 async function executeProcedure(procedureName, params) {
@@ -292,19 +304,7 @@ async function executeProcedure(procedureName, params) {
         connection.release();
     }
 }
-// uncomment the following in deployment / production phase
-// app.use(helmet());
-// app.use(helmet.hsts({
-//     maxAge: 31536000,
-//     includeSubDomains: true,
-//     preload: true
-// }));
 
-// const limiter = rateLimit({
-//     windowMs: 15 * 60 * 1000, // 15 minutes
-//     max: 100 // limit each IP to 100 requests per windowMs
-// });
-// app.use('/api/', limiter);
 
 // User Registration
 app.post('/register', async (req, res) => {
