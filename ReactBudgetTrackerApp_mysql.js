@@ -263,35 +263,35 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const mysql = require('mysql2/promise'); // Using promise-based MySQL client
 require('dotenv').config();
-// const User = require('./User');
-// const Expense = require('./Expense');
-// const sequelize = require('./db');
-// const helmet = require('helmet'); // for deployment
-// const rateLimit = require('express-rate-limit'); // for deployment
+const User = require('./User');
+const Expense = require('./Expense');
+const sequelize = require('./db');
+const helmet = require('helmet'); // for deployment
+const rateLimit = require('express-rate-limit'); // for deployment
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-// const cluster = require('cluster');
-// const numCPUs = require('os').cpus().length;
+const cluster = require('cluster');
+const numCPUs = require('os').cpus().length;
 
-// if (cluster.isMaster) {
-//     console.log(`Master ${process.pid} is running`);
+if (cluster.isMaster) {
+    console.log(`Master ${process.pid} is running`);
     
-//     // Fork workers
-//     for (let i = 0; i < numCPUs; i++) {
-//         cluster.fork();
-//     }
+    // Fork workers
+    for (let i = 0; i < numCPUs; i++) {
+        cluster.fork();
+    }
     
-//     cluster.on('exit', (worker, code, signal) => {
-//         console.log(`worker ${worker.process.pid} died`);
-//         cluster.fork(); // Restart worker
-//     });
-// } else {
-//     // Your existing server code here
-//     app.listen(PORT, () => {
-//         console.log(`Worker ${process.pid} started on port ${PORT}`);
-//     });
-// }
+    cluster.on('exit', (worker, code, signal) => {
+        console.log(`worker ${worker.process.pid} died`);
+        cluster.fork(); // Restart worker
+    });
+} else {
+    // Your existing server code here
+    app.listen(PORT, () => {
+        console.log(`Worker ${process.pid} started on port ${PORT}`);
+    });
+}
 
 // Database connection pool
 const pool = mysql.createPool({
@@ -306,34 +306,28 @@ const pool = mysql.createPool({
 
 // Middleware: uncomment code parts in deployment / production phase
 app.use(bodyParser.json());
-// app.use(helmet());
-// app.use(helmet.hsts({
-//     maxAge: 31536000,
-//     includeSubDomains: true,
-//     preload: true
-// }));
+app.use(helmet());
+app.use(helmet.hsts({
+    maxAge: 31536000,
+    includeSubDomains: true,
+    preload: true
+}));
 
-// const limiter = rateLimit({
-//     windowMs: 15 * 60 * 1000, // 15 minutes
-//     max: 100 // limit each IP to 100 requests per windowMs
-// });
-// app.use('/api/', limiter);
-// More granular rate limiting
-// const apiLimiter = rateLimit({
-//     windowMs: 15 * 60 * 1000,
-//     max: 100,
-//     message: "Too many requests from this IP, please try again later"
-// });
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+    message: "Too many requests from this IP, please try again later"
+});
 
-// const authLimiter = rateLimit({
-//     windowMs: 60 * 60 * 1000,
-//     max: 5,
-//     message: "Too many login attempts, please try again in an hour"
-// });
+const authLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000,
+    max: 5,
+    message: "Too many login attempts, please try again in an hour"
+});
 
-// app.use('/api/', apiLimiter);
-// app.use('/login', authLimiter);
-// app.use('/register', authLimiter);
+app.use('/api/', apiLimiter);
+app.use('/login', authLimiter);
+app.use('/register', authLimiter);
 
 // Helper function to execute stored procedures
 async function executeProcedure(procedureName, params) {
