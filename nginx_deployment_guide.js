@@ -45,6 +45,8 @@ NODE_ENV=production" > .env
 
 // # Install PM2 process manager
 sudo npm install -g pm2
+pm2 install pm2-monit
+pm2 monit
 
 // # Start backend service
 pm2 start server.js --name "budget-tracker-api"
