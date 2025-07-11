@@ -318,6 +318,22 @@ app.use(bodyParser.json());
 //     max: 100 // limit each IP to 100 requests per windowMs
 // });
 // app.use('/api/', limiter);
+// More granular rate limiting
+// const apiLimiter = rateLimit({
+//     windowMs: 15 * 60 * 1000,
+//     max: 100,
+//     message: "Too many requests from this IP, please try again later"
+// });
+
+// const authLimiter = rateLimit({
+//     windowMs: 60 * 60 * 1000,
+//     max: 5,
+//     message: "Too many login attempts, please try again in an hour"
+// });
+
+// app.use('/api/', apiLimiter);
+// app.use('/login', authLimiter);
+// app.use('/register', authLimiter);
 
 // Helper function to execute stored procedures
 async function executeProcedure(procedureName, params) {
