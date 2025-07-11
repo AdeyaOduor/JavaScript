@@ -189,6 +189,14 @@ GRANT EXECUTE ON budget_tracker.* TO 'your_username'@'localhost';
 // SET GLOBAL validate_password.policy = STRONG;
 // SET GLOBAL max_connections = 100;
 
+// -- Set password expiration policy
+// ALTER USER 'budget_user'@'localhost' PASSWORD EXPIRE INTERVAL 90 DAY;
+
+// -- Enable audit logging
+// SET GLOBAL audit_log_format = JSON;
+// SET GLOBAL audit_log_policy = ALL;
+// SET GLOBAL audit_log_rotate_on_size = 100000000;
+
 
 // backend/db.js; for database configuration using Sequelize:
 const { Sequelize } = require('sequelize');
