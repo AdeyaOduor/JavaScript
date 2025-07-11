@@ -87,6 +87,18 @@ server {
     return 301 https://$host$request_uri;
 }
 
+// server {
+//     listen 127.0.0.1:8080;
+//     server_name localhost;
+    
+//     location /nginx_status {
+//         stub_status on;
+//         access_log off;
+//         allow 127.0.0.1;
+//         deny all;
+//     }
+// }
+
 // # Main HTTPS server block
 server {
     listen 443 ssl http2;
