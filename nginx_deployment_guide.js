@@ -228,7 +228,12 @@ pm2 set pm2-logrotate:max_size 10M
 pm2 set pm2-logrotate:retain 30
 pm2 set pm2-logrotate:compress true
 
+// # Install mytop for real-time monitoring
+sudo apt install mytop
+mytop -u budget_user -p strong_password_123 -d budget_tracker
+
 // 2. Backup Strategy: Create automated backups for MySQL:
+
 // # Daily backup script
 sudo nano /usr/local/bin/mysql_backup.sh
 
