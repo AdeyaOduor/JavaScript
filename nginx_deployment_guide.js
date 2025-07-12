@@ -244,6 +244,23 @@ mkdir -p $BACKUP_DIR
 mysqldump -u budget_user -p'strong_password_123' budget_tracker | gzip > "$BACKUP_DIR/budget_tracker_$DATE.sql.gz"
 find $BACKUP_DIR -type f -mtime +7 -delete
 
+# Update backup script
+#!/bin/bash
+DATE=$(date +%Y%m%d%H%M)
+BACKUP_DIR="/var/backups/mysql"
+ENCRYPT_KEY="your_encryption_key_here"
+
+mkdir -p $BACKUP_DIR
+mysqldump -u budget_user -p'strong_password_123' budget_tracker | \
+gzip | \
+openssl enc -aes-256-cbc -salt -pass pass:$ENCRYPT_KEY -out "$BACKUP_DIR/budget_tracker_$DATE.sql.gz.enc"
+
+# Copy to remote storage (AWS S3 example)
+aws s3 cp "$BACKUP_DIR/budget_tracker_$DATE.sql.gz.enc" s3://your-backup-bucket/
+
+# Cleanup old backups
+find $BACKUP_DIR -type f -mtime +30 -delete
+
 // Make executable and add to cron
 sudo chmod +x /usr/local/bin/mysql_backup.sh
 sudo crontab -e
