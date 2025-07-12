@@ -244,7 +244,7 @@ mkdir -p $BACKUP_DIR
 mysqldump -u budget_user -p'strong_password_123' budget_tracker | gzip > "$BACKUP_DIR/budget_tracker_$DATE.sql.gz"
 find $BACKUP_DIR -type f -mtime +7 -delete
 
-# Update backup script
+// # Updated backup script
 #!/bin/bash
 DATE=$(date +%Y%m%d%H%M)
 BACKUP_DIR="/var/backups/mysql"
@@ -255,16 +255,12 @@ mysqldump -u budget_user -p'strong_password_123' budget_tracker | \
 gzip | \
 openssl enc -aes-256-cbc -salt -pass pass:$ENCRYPT_KEY -out "$BACKUP_DIR/budget_tracker_$DATE.sql.gz.enc"
 
-# Copy to remote storage (AWS S3 example)
+// # Copy to remote storage (AWS S3 example)
 aws s3 cp "$BACKUP_DIR/budget_tracker_$DATE.sql.gz.enc" s3://your-backup-bucket/
 
-# Cleanup old backups
+// # Cleanup old backups
 find $BACKUP_DIR -type f -mtime +30 -delete
 
-// Database Recovery:
-openssl enc -d -aes-256-cbc -pass pass:$ENCRYPT_KEY -in backup_file.sql.gz.enc | \
-gunzip | \
-mysql -u budget_user -p'strong_password_123' budget_tracker
 
 // Make executable and add to cron
 sudo chmod +x /usr/local/bin/mysql_backup.sh
@@ -288,3 +284,8 @@ sudo crontab -e
 
 // Add to .txt:
 0 12 * * * /usr/bin/certbot renew --quiet 
+
+// Database Recovery:
+openssl enc -d -aes-256-cbc -pass pass:$ENCRYPT_KEY -in backup_file.sql.gz.enc | \
+gunzip | \
+mysql -u budget_user -p'strong_password_123' budget_tracker
