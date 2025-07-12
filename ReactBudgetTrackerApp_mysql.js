@@ -183,19 +183,19 @@ DELIMITER ;
 GRANT EXECUTE ON budget_tracker.* TO 'your_username'@'localhost';
 
 // -- Enable mysql_native_password for better compatibility in deployment phase
-// ALTER USER 'budget_user'@'localhost' IDENTIFIED WITH mysql_native_password BY 'strong_password_123';
+ALTER USER 'budget_user'@'localhost' IDENTIFIED WITH mysql_native_password BY 'strong_password_123';
 
-// -- Set global security parameters
-// SET GLOBAL validate_password.policy = STRONG;
-// SET GLOBAL max_connections = 100;
+-- Set global security parameters
+SET GLOBAL validate_password.policy = STRONG;
+SET GLOBAL max_connections = 100;
 
-// -- Set password expiration policy
-// ALTER USER 'budget_user'@'localhost' PASSWORD EXPIRE INTERVAL 90 DAY;
+-- Set password expiration policy
+ALTER USER 'budget_user'@'localhost' PASSWORD EXPIRE INTERVAL 90 DAY;
 
-// -- Enable audit logging
-// SET GLOBAL audit_log_format = JSON;
-// SET GLOBAL audit_log_policy = ALL;
-// SET GLOBAL audit_log_rotate_on_size = 100000000;
+-- Enable audit logging
+SET GLOBAL audit_log_format = JSON;
+SET GLOBAL audit_log_policy = ALL;
+SET GLOBAL audit_log_rotate_on_size = 100000000;
 
 
 // backend/db.js; for database configuration using Sequelize:
