@@ -289,3 +289,48 @@ sudo crontab -e
 openssl enc -d -aes-256-cbc -pass pass:$ENCRYPT_KEY -in backup_file.sql.gz.enc | \
 gunzip | \
 mysql -u budget_user -p'strong_password_123' budget_tracker
+
+// Continuous Deployment Setup, GitHub Actions Example (.github/workflows/deploy.yml):
+
+// yaml
+name: Deploy Budget Tracker
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+        
+    - name: Install dependencies
+      run: |
+        cd backend
+        npm ci
+        cd ../frontend
+        npm ci
+        
+    - name: Build frontend
+      run: |
+        cd frontend
+        npm run build
+        
+    - name: Deploy to production
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SERVER_IP: ${{ secrets.PRODUCTION_IP }}
+      run: |
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        
+        scp -r frontend/build ubuntu@$SERVER_IP:/home/ubuntu/budget-tracker/frontend/
+        ssh ubuntu@$SERVER_IP "cd /home/ubuntu/budget-tracker/backend && git pull && npm ci && pm2 restart budget-tracker-api"
