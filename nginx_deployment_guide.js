@@ -261,6 +261,11 @@ aws s3 cp "$BACKUP_DIR/budget_tracker_$DATE.sql.gz.enc" s3://your-backup-bucket/
 # Cleanup old backups
 find $BACKUP_DIR -type f -mtime +30 -delete
 
+// Database Recovery:
+openssl enc -d -aes-256-cbc -pass pass:$ENCRYPT_KEY -in backup_file.sql.gz.enc | \
+gunzip | \
+mysql -u budget_user -p'strong_password_123' budget_tracker
+
 // Make executable and add to cron
 sudo chmod +x /usr/local/bin/mysql_backup.sh
 sudo crontab -e
