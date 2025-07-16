@@ -393,3 +393,120 @@ const Register = ({ setError }) => {
 };
 
 export default Register;
+
+
+// frontend/src/components/Quiz.js
+import { useState, useEffect } from 'react';
+import { Card, ListGroup, Button, Alert } from 'react-bootstrap';
+import axios from 'axios';
+
+const Quiz = ({ token }) => {
+  const [questions, setQuestions] = useState([]);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [quizOver, setQuizOver] = useState(false);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/questions', {
+          headers: { Authorization: token }
+        });
+        setQuestions(response.data);
+      } catch (err) {
+        setError('Failed to load questions');
+      }
+    };
+    fetchQuestions();
+  }, [token]);
+
+  const handleNext = async () => {
+    if (!quizOver) {
+      if (selectedAnswer === null) {
+        setError('Please select an answer');
+        return;
+      }
+
+      setError('');
+      
+      if (selectedAnswer === questions[currentQuestion].correctAnswer) {
+        setCorrectAnswers(correctAnswers + 1);
+      }
+
+      if (currentQuestion < questions.length - 1) {
+        setCurrentQuestion(currentQuestion + 1);
+        setSelectedAnswer(null);
+      } else {
+        try {
+          await axios.post('http://localhost:5000/score', { score: correctAnswers }, {
+            headers: { Authorization: token }
+          });
+          setSuccess(`Quiz completed! You scored ${correctAnswers} out of ${questions.length}`);
+          setQuizOver(true);
+        } catch (err) {
+          setError('Failed to save score');
+        }
+      }
+    } else {
+      // Reset quiz
+      setCurrentQuestion(0);
+      setCorrectAnswers(0);
+      setQuizOver(false);
+      setSelectedAnswer(null);
+      setSuccess('');
+    }
+  };
+
+  if (questions.length === 0) {
+    return <div>Loading questions...</div>;
+  }
+
+  return (
+    <Card className="mx-auto" style={{ maxWidth: '600px' }}>
+      <Card.Body>
+        <Card.Title className="text-center mb-4">
+          Question {currentQuestion + 1} of {questions.length}
+        </Card.Title>
+        
+        {error && <Alert variant="danger">{error}</Alert>}
+        {success && <Alert variant="success">{success}</Alert>}
+        
+        <Card.Text className="fs-4 mb-4">
+          {questions[currentQuestion].question}
+        </Card.Text>
+        
+        <ListGroup>
+          {questions[currentQuestion].choices.map((choice, index) => (
+            <ListGroup.Item 
+              key={index}
+              action
+              active={selectedAnswer === index}
+              onClick={() => setSelectedAnswer(index)}
+              className="d-flex align-items-center"
+            >
+              <input
+                type="radio"
+                name="quizChoice"
+                checked={selectedAnswer === index}
+                onChange={() => {}}
+                className="me-3"
+              />
+              {choice}
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+        
+        <div className="d-flex justify-content-end mt-4">
+          <Button onClick={handleNext}>
+            {quizOver ? 'Play Again' : 'Next Question'}
+          </Button>
+        </div>
+      </Card.Body>
+    </Card>
+  );
+};
+
+export default Quiz;
