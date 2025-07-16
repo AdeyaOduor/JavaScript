@@ -1,5 +1,8 @@
 /*
-1. mkdir animal-quiz-app
+1. Backend Setup (Node.js + Express + MySQL)
+bash
+
+mkdir animal-quiz-app
 cd animal-quiz-app
 mkdir backend frontend
 cd backend
@@ -28,6 +31,13 @@ CREATE TABLE quiz_scores (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+3.Frontend Setup (React + Bootstrap 5)
+bash
+
+cd ../frontend
+npx create-react-app .
+npm install axios react-bootstrap bootstrap react-router-dom
 
 */
 
