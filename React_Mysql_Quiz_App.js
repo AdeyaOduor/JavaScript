@@ -570,3 +570,22 @@ const Scores = ({ token }) => {
 };
 
 export default Scores;
+
+/*
+Running the Application
+
+    Start the backend:
+
+bash
+
+cd backend
+node server.js
+
+    Start the frontend:
+
+bash
+
+cd ../frontend
+npm start
+
+*/
