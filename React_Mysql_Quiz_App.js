@@ -510,3 +510,63 @@ const Quiz = ({ token }) => {
 };
 
 export default Quiz;
+
+// frontend/src/components/Scores.js
+import { useState, useEffect } from 'react';
+import { Table, Card } from 'react-bootstrap';
+import axios from 'axios';
+
+const Scores = ({ token }) => {
+  const [scores, setScores] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchScores = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/scores', {
+          headers: { Authorization: token }
+        });
+        setScores(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError('Failed to load scores');
+        setLoading(false);
+      }
+    };
+    fetchScores();
+  }, [token]);
+
+  if (loading) return <div>Loading scores...</div>;
+  if (error) return <div>{error}</div>;
+
+  return (
+    <Card>
+      <Card.Body>
+        <Card.Title className="text-center mb-4">Your Quiz Scores</Card.Title>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Score</th>
+              <th>Total Questions</th>
+              <th>Percentage</th>
+            </tr>
+          </thead>
+          <tbody>
+            {scores.map((score, index) => (
+              <tr key={index}>
+                <td>{new Date(score.created_at).toLocaleDateString()}</td>
+                <td>{score.score}</td>
+                <td>{score.total_questions}</td>
+                <td>{Math.round((score.score / score.total_questions) * 100)}%</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </Card.Body>
+    </Card>
+  );
+};
+
+export default Scores;
