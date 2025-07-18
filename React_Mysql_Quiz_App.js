@@ -75,32 +75,49 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 // Questions data
 const questions = [
     {
+        id: 1,
         question: 'What is the baby of a moth known as?',
+        type: 'radio',
         choices: ['baby', 'infant', 'kit', 'larva'],
         correctAnswer: 3
     },
     {
+        id: 2,
+        question: 'What are the young of these animals called? (Select all that apply)',
+        type: 'checkbox',
+        choices: [
+            { text: 'Kangaroo: joey', correct: true },
+            { text: 'Elephant: calf', correct: true },
+            { text: 'Butterfly: kitten', correct: false },
+            { text: 'Frog: tadpole', correct: true }
+        ]
+    },
+    {
+        id: 3,
         question: 'What is the adult of a kid called?',
+        type: 'dropdown',
         choices: ['calf', 'doe', 'goat', 'chick'],
         correctAnswer: 2
     },
     {
-        question: 'What is the young of buffalo called?',
-        choices: ['calf', 'baby', 'pup', 'cow'],
+        id: 4,
+        question: 'Which of these are baby animal names? (Select all correct)',
+        type: 'checkbox',
+        choices: [
+            { text: 'Pup', correct: true },
+            { text: 'Fry', correct: true },
+            { text: 'Lamb', correct: true },
+            { text: 'Stallion', correct: false }
+        ]
+    },
+    {
+        id: 5,
+        question: 'What is a baby swan called?',
+        type: 'dropdown',
+        choices: ['cygnet', 'gander', 'cob', 'pen'],
         correctAnswer: 0
-    },
-    {
-        question: 'What is a baby alligator called?',
-        choices: ['baby', 'gator', 'hatchling', 'calf'],
-        correctAnswer: 1
-    },
-    {
-        question: 'What is a baby goose called?',
-        choices: ['gooser', 'gosling', 'gup', 'pup'],
-        correctAnswer: 1
     }
 ];
-
 // Authentication middleware
 const authenticateToken = (req, res, next) => {
     const token = req.headers['authorization'];
