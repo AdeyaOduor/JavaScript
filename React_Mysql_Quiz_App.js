@@ -130,6 +130,7 @@ const authenticateToken = (req, res, next) => {
     });
 };
 
+
 // Routes
 app.post('/register', async (req, res) => {
     try {
@@ -184,9 +185,11 @@ app.get('/questions', authenticateToken, (req, res) => {
     res.json(questions);
 });
 
+// score endpoint
 app.post('/score', authenticateToken, async (req, res) => {
     try {
-        const { score } = req.body;
+        const { answers } = req.body;
+        const score = calculateScore(questions, answers);
         const totalQuestions = questions.length;
         
         await pool.execute(
@@ -194,7 +197,11 @@ app.post('/score', authenticateToken, async (req, res) => {
             [req.user.id, score, totalQuestions]
         );
         
-        res.json({ message: 'Score saved successfully' });
+        res.json({ 
+            message: 'Score saved successfully',
+            score,
+            totalQuestions
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to save score' });
@@ -218,7 +225,7 @@ app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
 
-// Add this helper function
+// helper function
 function calculateScore(questions, answers) {
     let score = 0;
     
@@ -246,28 +253,6 @@ function calculateScore(questions, answers) {
     return score;
 }
 
-// Update the /score endpoint
-app.post('/score', authenticateToken, async (req, res) => {
-    try {
-        const { answers } = req.body;
-        const score = calculateScore(questions, answers);
-        const totalQuestions = questions.length;
-        
-        await pool.execute(
-            'INSERT INTO quiz_scores (user_id, score, total_questions) VALUES (?, ?, ?)',
-            [req.user.id, score, totalQuestions]
-        );
-        
-        res.json({ 
-            message: 'Score saved successfully',
-            score,
-            totalQuestions
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to save score' });
-    }
-});
 // -----------------------------------------------------------------------------------------------------------------------
 
 // frontend/src/index.js
