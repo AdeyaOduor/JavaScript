@@ -551,6 +551,14 @@ const Quiz = ({ token }) => {
        </div>
 
     return (
+        <Card.Text className="fs-4 mb-2">
+           {currentQuestion.question}
+        </Card.Text>
+        <small className="text-muted mb-3 d-block">
+           {currentQuestion.type === 'radio' && 'Select one answer'}
+           {currentQuestion.type === 'checkbox' && 'Select all that apply'}
+           {currentQuestion.type === 'dropdown' && 'Choose from dropdown'}
+        </small>      
         <Card className="mx-auto" style={{ maxWidth: '800px' }}>
             <Card.Body>
                 <Card.Title className="text-center mb-4">
