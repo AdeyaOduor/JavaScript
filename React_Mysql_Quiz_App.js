@@ -518,8 +518,10 @@ const Quiz = ({ token }) => {
                         { headers: { Authorization: token } }
                     );
                     setSuccess(
-                        `Quiz completed! You scored ${response.data.score} out of ${response.data.totalQuestions}`
-                    );
+                       `Quiz completed! You scored ${response.data.score} out of ${response.data.totalQuestions} (${Math.round(
+                        (response.data.score / response.data.totalQuestions) * 100
+                     )}%)`
+                   );
                     setQuizOver(true);
                 } catch (err) {
                     setError('Failed to submit quiz');
