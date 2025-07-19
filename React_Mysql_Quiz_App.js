@@ -638,60 +638,106 @@ export default Quiz;
 
 // frontend/src/components/Scores.js
 import { useState, useEffect } from 'react';
-import { Table, Card } from 'react-bootstrap';
+import { Table, Card, Accordion, Badge } from 'react-bootstrap';
 import axios from 'axios';
 
 const Scores = ({ token }) => {
-  const [scores, setScores] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+    const [scores, setScores] = useState([]);
+    const [questions, setQuestions] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
-  useEffect(() => {
-    const fetchScores = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/scores', {
-          headers: { Authorization: token }
-        });
-        setScores(response.data);
-        setLoading(false);
-      } catch (err) {
-        setError('Failed to load scores');
-        setLoading(false);
-      }
-    };
-    fetchScores();
-  }, [token]);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [scoresRes, questionsRes] = await Promise.all([
+                    axios.get('http://localhost:5000/scores', {
+                        headers: { Authorization: token }
+                    }),
+                    axios.get('http://localhost:5000/questions', {
+                        headers: { Authorization: token }
+                    })
+                ]);
+                
+                setScores(scoresRes.data);
+                setQuestions(questionsRes.data);
+                setLoading(false);
+            } catch (err) {
+                setError('Failed to load data');
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, [token]);
 
-  if (loading) return <div>Loading scores...</div>;
-  if (error) return <div>{error}</div>;
+    if (loading) return <div className="text-center my-5">Loading scores...</div>;
+    if (error) return <div className="alert alert-danger">{error}</div>;
 
-  return (
-    <Card>
-      <Card.Body>
-        <Card.Title className="text-center mb-4">Your Quiz Scores</Card.Title>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Score</th>
-              <th>Total Questions</th>
-              <th>Percentage</th>
-            </tr>
-          </thead>
-          <tbody>
-            {scores.map((score, index) => (
-              <tr key={index}>
-                <td>{new Date(score.created_at).toLocaleDateString()}</td>
-                <td>{score.score}</td>
-                <td>{score.total_questions}</td>
-                <td>{Math.round((score.score / score.total_questions) * 100)}%</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </Card.Body>
-    </Card>
-  );
+    return (
+        <Card>
+            <Card.Body>
+                <Card.Title className="text-center mb-4">Your Quiz Results</Card.Title>
+                
+                <Table striped bordered hover className="mb-5">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Score</th>
+                            <th>Total Questions</th>
+                            <th>Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {scores.map((score, index) => (
+                            <tr key={index}>
+                                <td>{new Date(score.created_at).toLocaleDateString()}</td>
+                                <td>{score.score}</td>
+                                <td>{score.total_questions}</td>
+                                <td>
+                                    <Badge bg={score.score/score.total_questions >= 0.7 ? 'success' : 'warning'}>
+                                        {Math.round((score.score / score.total_questions) * 100)}%
+                                    </Badge>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+                
+                <Accordion>
+                    <Accordion.Item eventKey="0">
+                        <Accordion.Header>View All Questions and Answers</Accordion.Header>
+                        <Accordion.Body>
+                            <div className="question-list">
+                                {questions.map((question, qIndex) => (
+                                    <div key={qIndex} className="mb-4 p-3 border rounded">
+                                        <h5>{question.question}</h5>
+                                        <div className="ms-3">
+                                            {question.type === 'radio' || question.type === 'dropdown' ? (
+                                                <>
+                                                    <p><strong>Correct answer:</strong> {question.choices[question.correctAnswer]}</p>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <p><strong>Correct answers:</strong></p>
+                                                    <ul>
+                                                        {question.choices
+                                                            .filter(choice => choice.correct)
+                                                            .map((choice, cIndex) => (
+                                                                <li key={cIndex}>{choice.text}</li>
+                                                            ))}
+                                                    </ul>
+                                                </>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </Accordion.Body>
+                    </Accordion.Item>
+                </Accordion>
+            </Card.Body>
+        </Card>
+    );
 };
 
 export default Scores;
