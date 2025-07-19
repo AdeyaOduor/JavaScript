@@ -552,6 +552,7 @@ const Quiz = ({ token }) => {
          />
        </div>
 
+
     return (
         <Card.Text className="fs-4 mb-2">
            {currentQuestion.question}
