@@ -540,6 +540,16 @@ const Quiz = ({ token }) => {
         return <div className="text-center my-5">Loading questions...</div>;
     }
 
+       <div className="progress mb-4" style={{ height: '10px' }}>
+       <div 
+        className="progress-bar" 
+        role="progressbar" 
+        style={{ 
+            width: `${((currentQuestionIndex + (quizOver ? 1 : 0)) / questions.length * 100}%` 
+             }}
+         />
+       </div>
+
     return (
         <Card className="mx-auto" style={{ maxWidth: '800px' }}>
             <Card.Body>
