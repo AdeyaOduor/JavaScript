@@ -22,7 +22,8 @@ npm install axios react-bootstrap bootstrap react-router-dom
 
 */
 
-// src/components/database_setup.sql and execute stored_procedure with linux cli or run in MySql client directly
+// src/components/database_setup.sql and execute stored_procedure with the following linux cmd: mysql -u root -p < database_setup.sql
+// or run in MySql client directly
 
 -- Create database and tables
 CREATE DATABASE IF NOT EXISTS animal_quiz;
