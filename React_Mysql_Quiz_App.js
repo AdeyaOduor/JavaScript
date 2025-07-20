@@ -11,26 +11,7 @@ npm install express mysql2 bcryptjs jsonwebtoken cors body-parser dotenv
 
 
 2. Database Setup (MySQL)
-sql
-
-CREATE DATABASE animal_quiz;
-USE animal_quiz;
-
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE quiz_scores (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    score INT NOT NULL,
-    total_questions INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
+sql_stored_procedure
 
 3.Frontend Setup (React + Bootstrap 5)
 bash
@@ -40,6 +21,76 @@ npx create-react-app .
 npm install axios react-bootstrap bootstrap react-router-dom
 
 */
+
+// src/components/database_setup.sql and execute stored_procedure with linux cli or run in MySql client directly
+
+-- Create database and tables
+CREATE DATABASE IF NOT EXISTS animal_quiz;
+USE animal_quiz;
+
+-- Users table
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Quiz scores table
+CREATE TABLE IF NOT EXISTS quiz_scores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    score INT NOT NULL,
+    total_questions INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- Stored Procedure: Register User
+DELIMITER //
+CREATE PROCEDURE register_user(
+    IN p_username VARCHAR(50),
+    IN p_password VARCHAR(255)
+BEGIN
+    INSERT INTO users (username, password) VALUES (p_username, p_password);
+    SELECT id, username, created_at FROM users WHERE id = LAST_INSERT_ID();
+END //
+DELIMITER ;
+
+-- Stored Procedure: Authenticate User
+DELIMITER //
+CREATE PROCEDURE authenticate_user(IN p_username VARCHAR(50))
+BEGIN
+    SELECT id, username, password FROM users WHERE username = p_username;
+END //
+DELIMITER ;
+
+-- Stored Procedure: Save Quiz Score
+DELIMITER //
+CREATE PROCEDURE save_quiz_score(
+    IN p_user_id INT,
+    IN p_score INT,
+    IN p_total_questions INT)
+BEGIN
+    INSERT INTO quiz_scores (user_id, score, total_questions) 
+    VALUES (p_user_id, p_score, p_total_questions);
+    
+    SELECT * FROM quiz_scores WHERE id = LAST_INSERT_ID();
+END //
+DELIMITER ;
+
+-- Stored Procedure: Get User Scores
+DELIMITER //
+CREATE PROCEDURE get_user_scores(IN p_user_id INT)
+BEGIN
+    SELECT score, total_questions, created_at 
+    FROM quiz_scores 
+    WHERE user_id = p_user_id 
+    ORDER BY created_at DESC;
+END //
+DELIMITER ;
+
+
 
 // backend/server.js
 
