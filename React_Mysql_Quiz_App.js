@@ -339,63 +339,57 @@ ReactDOM.render(
 );
 
 // frontend/src/App.js
-import { useState, useEffect } from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import { Container, Navbar, Nav, Button, Alert } from 'react-bootstrap';
+import { useState } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { Container, Navbar, Nav, Button } from 'react-bootstrap';
+import Landing from './components/Landing';
 import Login from './components/Login';
 import Register from './components/Register';
 import Quiz from './components/Quiz';
 import Scores from './components/Scores';
-import axios from 'axios';
+import './App.css';
 
 function App() {
-  const [token, setToken] = useState(localStorage.getItem('token'));
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
+    const [token, setToken] = useState(localStorage.getItem('token'));
+    const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setToken(null);
-    navigate('/login');
-  };
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        setToken(null);
+        navigate('/');
+    };
 
-  return (
-    <>
-      <Navbar bg="dark" variant="dark" expand="lg">
-        <Container>
-          <Navbar.Brand href="/">Animal Quiz</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto">
-              {token ? (
-                <>
-                  <Nav.Link href="/quiz">Quiz</Nav.Link>
-                  <Nav.Link href="/scores">My Scores</Nav.Link>
-                  <Button variant="outline-light" onClick={handleLogout}>Logout</Button>
-                </>
-              ) : (
-                <>
-                  <Nav.Link href="/login">Login</Nav.Link>
-                  <Nav.Link href="/register">Register</Nav.Link>
-                </>
-              )}
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+    return (
+        <>
+            {token && (
+                <Navbar bg="dark" variant="dark" expand="lg">
+                    <Container>
+                        <Navbar.Brand href="/">Animal Quiz</Navbar.Brand>
+                        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                        <Navbar.Collapse id="basic-navbar-nav">
+                            <Nav className="ms-auto">
+                                <Nav.Link href="/quiz">Quiz</Nav.Link>
+                                <Nav.Link href="/scores">My Scores</Nav.Link>
+                                <Button variant="outline-light" onClick={handleLogout}>
+                                    Logout
+                                </Button>
+                            </Nav>
+                        </Navbar.Collapse>
+                    </Container>
+                </Navbar>
+            )}
 
-      <Container className="mt-4">
-        {error && <Alert variant="danger" onClose={() => setError('')} dismissible>{error}</Alert>}
-        <Routes>
-          <Route path="/" element={token ? <Navigate to="/quiz" /> : <Navigate to="/login" />} />
-          <Route path="/login" element={<Login setToken={setToken} setError={setError} />} />
-          <Route path="/register" element={<Register setError={setError} />} />
-          <Route path="/quiz" element={token ? <Quiz token={token} /> : <Navigate to="/login" />} />
-          <Route path="/scores" element={token ? <Scores token={token} /> : <Navigate to="/login" />} />
-        </Routes>
-      </Container>
-    </>
-  );
+            <Container className="mt-4">
+                <Routes>
+                    <Route path="/" element={token ? <Navigate to="/quiz" /> : <Landing />} />
+                    <Route path="/login" element={<Login setToken={setToken} />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/quiz" element={token ? <Quiz token={token} /> : <Navigate to="/login" />} />
+                    <Route path="/scores" element={token ? <Scores token={token} /> : <Navigate to="/login" />} />
+                </Routes>
+            </Container>
+        </>
+    );
 }
 
 export default App;
