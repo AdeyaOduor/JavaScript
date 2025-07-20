@@ -394,6 +394,80 @@ function App() {
 
 export default App;
 
+
+// frontend/src/App.css
+/* Landing Page Styles */
+.landing-page {
+    min-height: 100vh;
+}
+
+.carousel-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.feature-item {
+    border: none;
+    text-align: center;
+    padding: 1.5rem;
+    margin: 0.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.feature-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #0d6efd;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .feature-item {
+        min-width: 150px;
+        padding: 1rem;
+    }
+    
+    .carousel-slide {
+        height: 300px;
+    }
+}
+
+/* Quiz component styles */
+.quiz-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.question-text {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.answer-option {
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+}
+
+.answer-option:hover {
+    background-color: #f8f9fa;
+}
+
+.answer-option.selected {
+    background-color: #e9f5ff;
+    border-left: 4px solid #0d6efd;
+}
+
+
+
 // frontend/src/components/Login.js
 import { useState } from 'react';
 import { Form, Button, Card } from 'react-bootstrap';
