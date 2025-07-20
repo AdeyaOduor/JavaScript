@@ -514,6 +514,141 @@ const Register = ({ setError }) => {
 export default Register;
 
 
+import { useState, useEffect } from 'react';
+import { Carousel, Card, ListGroup, Button } from 'react-bootstrap';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import Login from './Login';
+import Register from './Register';
+
+const Landing = () => {
+    const [activeTab, setActiveTab] = useState('login');
+    const [carouselItems, setCarouselItems] = useState([]);
+    const [features, setFeatures] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchLandingData = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/landing-data');
+                setCarouselItems(response.data.carouselItems);
+                setFeatures(response.data.features);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching landing data:', error);
+                setLoading(false);
+            }
+        };
+        fetchLandingData();
+    }, []);
+
+    if (loading) {
+        return <div className="text-center my-5">Loading...</div>;
+    }
+
+    return (
+        <div className="landing-page">
+            <Carousel fade indicators={false} controls={false} interval={5000}>
+                {carouselItems.map((item) => (
+                    <Carousel.Item key={item.id}>
+                        <div 
+                            className="carousel-slide"
+                            style={{
+                                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), url(${item.image})`,
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                                height: '400px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                color: 'white',
+                                textAlign: 'center',
+                                padding: '2rem'
+                            }}
+                        >
+                            <div>
+                                <h2>{item.title}</h2>
+                                <p className="lead">{item.description}</p>
+                                <Button 
+                                    variant="light" 
+                                    size="lg"
+                                    onClick={() => navigate(activeTab === 'login' ? '/login' : '/register')}
+                                >
+                                    Get Started
+                                </Button>
+                            </div>
+                        </div>
+                    </Carousel.Item>
+                ))}
+            </Carousel>
+
+            <Container className="my-5">
+                <Row className="justify-content-center">
+                    <Col md={8} lg={6}>
+                        <Card>
+                            <Card.Header className="bg-dark text-white">
+                                <Nav variant="tabs" defaultActiveKey="login">
+                                    <Nav.Item>
+                                        <Nav.Link 
+                                            eventKey="login" 
+                                            onClick={() => setActiveTab('login')}
+                                            className={activeTab === 'login' ? 'active' : ''}
+                                        >
+                                            Login
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item>
+                                        <Nav.Link 
+                                            eventKey="register" 
+                                            onClick={() => setActiveTab('register')}
+                                            className={activeTab === 'register' ? 'active' : ''}
+                                        >
+                                            Register
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                </Nav>
+                            </Card.Header>
+                            <Card.Body>
+                                {activeTab === 'login' ? (
+                                    <Login />
+                                ) : (
+                                    <Register />
+                                )}
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+
+                <Row className="mt-5">
+                    <Col>
+                        <h2 className="text-center mb-4">Features</h2>
+                        <ListGroup horizontal className="justify-content-center">
+                            {features.map((feature, index) => (
+                                <ListGroup.Item key={index} className="feature-item">
+                                    <div className="feature-icon">
+                                        <i className={`bi bi-${getFeatureIcon(index)}`}></i>
+                                    </div>
+                                    {feature}
+                                </ListGroup.Item>
+                            ))}
+                        </ListGroup>
+                    </Col>
+                </Row>
+            </Container>
+        </div>
+    );
+};
+
+// Helper function for feature icons
+const getFeatureIcon = (index) => {
+    const icons = ['shield-lock', 'question-square', 'graph-up', 'phone'];
+    return icons[index % icons.length];
+};
+
+export default Landing;
+
+
 // frontend/src/components/Quiz.js
 import { useState, useEffect } from 'react';
 import { Card, ListGroup, Button, Alert, Form } from 'react-bootstrap';
