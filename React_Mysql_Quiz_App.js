@@ -513,7 +513,7 @@ const Register = ({ setError }) => {
 
 export default Register;
 
-
+// frontend/src/components/Landing.js
 import { useState, useEffect } from 'react';
 import { Carousel, Card, ListGroup, Button } from 'react-bootstrap';
 import axios from 'axios';
