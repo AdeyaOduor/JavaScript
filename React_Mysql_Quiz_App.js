@@ -149,26 +149,9 @@ const questions = [
         type: 'dropdown',
         choices: ['calf', 'doe', 'goat', 'chick'],
         correctAnswer: 2
-    },
-    {
-        id: 4,
-        question: 'Which of these are baby animal names? (Select all correct)',
-        type: 'checkbox',
-        choices: [
-            { text: 'Pup', correct: true },
-            { text: 'Fry', correct: true },
-            { text: 'Lamb', correct: true },
-            { text: 'Stallion', correct: false }
-        ]
-    },
-    {
-        id: 5,
-        question: 'What is a baby swan called?',
-        type: 'dropdown',
-        choices: ['cygnet', 'gander', 'cob', 'pen'],
-        correctAnswer: 0
     }
 ];
+
 // Authentication middleware
 const authenticateToken = (req, res, next) => {
     const token = req.headers['authorization'];
@@ -181,102 +164,7 @@ const authenticateToken = (req, res, next) => {
     });
 };
 
-
-// Routes
-app.post('/register', async (req, res) => {
-    try {
-        const { username, password } = req.body;
-        const hashedPassword = await bcrypt.hash(password, 10);
-        
-        const [result] = await pool.execute(
-            'INSERT INTO users (username, password) VALUES (?, ?)',
-            [username, hashedPassword]
-        );
-        
-        res.status(201).json({ id: result.insertId, username });
-    } catch (error) {
-        if (error.code === 'ER_DUP_ENTRY') {
-            res.status(400).json({ error: 'Username already exists' });
-        } else {
-            console.error(error);
-            res.status(500).json({ error: 'Registration failed' });
-        }
-    }
-});
-
-app.post('/login', async (req, res) => {
-    try {
-        const { username, password } = req.body;
-        
-        const [users] = await pool.execute(
-            'SELECT * FROM users WHERE username = ?',
-            [username]
-        );
-        
-        if (users.length === 0) {
-            return res.status(401).json({ error: 'Invalid credentials' });
-        }
-        
-        const user = users[0];
-        const passwordMatch = await bcrypt.compare(password, user.password);
-        
-        if (!passwordMatch) {
-            return res.status(401).json({ error: 'Invalid credentials' });
-        }
-        
-        const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: '1h' });
-        res.json({ token });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Login failed' });
-    }
-});
-
-app.get('/questions', authenticateToken, (req, res) => {
-    res.json(questions);
-});
-
-// score endpoint
-app.post('/score', authenticateToken, async (req, res) => {
-    try {
-        const { answers } = req.body;
-        const score = calculateScore(questions, answers);
-        const totalQuestions = questions.length;
-        
-        await pool.execute(
-            'INSERT INTO quiz_scores (user_id, score, total_questions) VALUES (?, ?, ?)',
-            [req.user.id, score, totalQuestions]
-        );
-        
-        res.json({ 
-            message: 'Score saved successfully',
-            score,
-            totalQuestions
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to save score' });
-    }
-});
-
-app.get('/scores', authenticateToken, async (req, res) => {
-    try {
-        const [scores] = await pool.execute(
-            'SELECT score, total_questions, created_at FROM quiz_scores WHERE user_id = ? ORDER BY created_at DESC',
-            [req.user.id]
-        );
-        res.json(scores);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to fetch scores' });
-    }
-});
-
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
-
-// helper function
+// Helper function to calculate score
 function calculateScore(questions, answers) {
     let score = 0;
     
@@ -303,6 +191,133 @@ function calculateScore(questions, answers) {
     
     return score;
 }
+
+// Routes using stored procedures
+app.post('/register', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        
+        const [result] = await pool.execute(
+            'CALL register_user(?, ?)',
+            [username, hashedPassword]
+        );
+        
+        res.status(201).json(result[0][0]);
+    } catch (error) {
+        if (error.code === 'ER_DUP_ENTRY') {
+            res.status(400).json({ error: 'Username already exists' });
+        } else {
+            console.error(error);
+            res.status(500).json({ error: 'Registration failed' });
+        }
+    }
+});
+
+app.post('/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        
+        const [users] = await pool.execute(
+            'CALL authenticate_user(?)',
+            [username]
+        );
+        
+        if (users[0].length === 0) {
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+        
+        const user = users[0][0];
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        
+        if (!passwordMatch) {
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+        
+        const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: '1h' });
+        res.json({ token });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Login failed' });
+    }
+});
+
+app.get('/questions', authenticateToken, (req, res) => {
+    res.json(questions);
+});
+
+app.post('/score', authenticateToken, async (req, res) => {
+    try {
+        const { answers } = req.body;
+        const score = calculateScore(questions, answers);
+        const totalQuestions = questions.length;
+        
+        const [result] = await pool.execute(
+            'CALL save_quiz_score(?, ?, ?)',
+            [req.user.id, score, totalQuestions]
+        );
+        
+        res.json({ 
+            message: 'Score saved successfully',
+            score,
+            totalQuestions,
+            scoreDetails: result[0][0]
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to save score' });
+    }
+});
+
+app.get('/scores', authenticateToken, async (req, res) => {
+    try {
+        const [scores] = await pool.execute(
+            'CALL get_user_scores(?)',
+            [req.user.id]
+        );
+        
+        res.json(scores[0]);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to fetch scores' });
+    }
+});
+
+// Landing page data
+app.get('/landing-data', (req, res) => {
+    res.json({
+        carouselItems: [
+            {
+                id: 1,
+                title: "Test Your Animal Knowledge",
+                description: "Discover fascinating facts about baby animals and their parents",
+                image: "https://images.unsplash.com/photo-1452570053594-1b985d6ea890?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+            },
+            {
+                id: 2,
+                title: "Multiple Question Types",
+                description: "Single answer, multiple choice, and dropdown questions",
+                image: "https://images.unsplash.com/photo-1474511320723-9a56873867b5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+            },
+            {
+                id: 3,
+                title: "Track Your Progress",
+                description: "See your scores improve over time",
+                image: "https://images.unsplash.com/photo-1425082661705-1834bfd09dca?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+            }
+        ],
+        features: [
+            "Secure user authentication",
+            "Interactive quiz interface",
+            "Detailed score tracking",
+            "Responsive design"
+        ]
+    });
+});
+
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});
 
 // -----------------------------------------------------------------------------------------------------------------------
 
