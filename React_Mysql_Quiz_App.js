@@ -287,6 +287,22 @@ app.get('/questions', authenticateToken, (req, res) => {
     res.json(questions);
 });
 
+// Add new endpoint to check quiz eligibility
+app.get('/quiz/eligibility', authenticateToken, async (req, res) => {
+    try {
+        const [result] = await pool.execute(
+            'CALL check_quiz_eligibility(?)',
+            [req.user.id]
+        );
+        
+        res.json(result[0][0]);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to check eligibility' });
+    }
+});
+
+// score endpoint response
 app.post('/score', authenticateToken, async (req, res) => {
     try {
         const { answers } = req.body;
@@ -298,11 +314,18 @@ app.post('/score', authenticateToken, async (req, res) => {
             [req.user.id, score, totalQuestions]
         );
         
+        const scoreDetails = result[0][0];
+        const percentage = Math.round(scoreDetails.percentage);
+        
         res.json({ 
-            message: 'Score saved successfully',
+            message: scoreDetails.passed 
+                ? `Congratulations! You passed with ${percentage}%` 
+                : `Sorry, you failed with ${percentage}%. You can retake after ${new Date(scoreDetails.can_retake_after).toLocaleDateString()}`,
             score,
             totalQuestions,
-            scoreDetails: result[0][0]
+            percentage,
+            passed: scoreDetails.passed,
+            canRetakeAfter: scoreDetails.can_retake_after
         });
     } catch (error) {
         console.error(error);
