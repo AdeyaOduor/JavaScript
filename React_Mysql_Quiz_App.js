@@ -1003,6 +1003,49 @@ const Quiz = ({ token }) => {
 
 export default Quiz;
 
+frontend/src/components/QuizTimer.js)
+javascript
+
+import { useState, useEffect } from 'react';
+import { Alert, ProgressBar } from 'react-bootstrap';
+
+const QuizTimer = ({ duration, onTimeout }) => {
+    const [timeLeft, setTimeLeft] = useState(duration * 60); // duration in minutes
+    
+    useEffect(() => {
+        if (timeLeft <= 0) {
+            onTimeout();
+            return;
+        }
+        
+        const timer = setInterval(() => {
+            setTimeLeft(prev => prev - 1);
+        }, 1000);
+        
+        return () => clearInterval(timer);
+    }, [timeLeft, onTimeout]);
+    
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    const progress = (timeLeft / (duration * 60)) * 100;
+    
+    return (
+        <div className="mb-4">
+            <Alert variant={timeLeft < 120 ? 'danger' : 'info'}>
+                Time Remaining: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+            </Alert>
+            <ProgressBar 
+                now={progress} 
+                variant={progress < 20 ? 'danger' : progress < 50 ? 'warning' : 'success'} 
+                animated 
+            />
+        </div>
+    );
+};
+
+export default QuizTimer;
+
+
 // frontend/src/components/Scores.js
 import { useState, useEffect } from 'react';
 import { Table, Card, Accordion, Badge } from 'react-bootstrap';
