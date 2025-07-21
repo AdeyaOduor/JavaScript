@@ -94,6 +94,27 @@ BEGIN
 END //
 DELIMITER ;
 
+-- Stored Procedure: Check if user can take quiz
+DELIMITER //
+CREATE PROCEDURE check_quiz_eligibility(IN p_user_id INT)
+BEGIN
+    DECLARE last_attempt TIMESTAMP;
+    DECLARE can_retake BOOLEAN DEFAULT TRUE;
+    
+    SELECT completion_time, can_retake_after INTO last_attempt, can_retake
+    FROM quiz_scores
+    WHERE user_id = p_user_id
+    ORDER BY completion_time DESC
+    LIMIT 1;
+    
+    IF last_attempt IS NOT NULL AND can_retake = FALSE AND can_retake_after > NOW() THEN
+        SELECT FALSE AS eligible, can_retake_after AS retake_date;
+    ELSE
+        SELECT TRUE AS eligible, NULL AS retake_date;
+    END IF;
+END //
+DELIMITER ;
+
 
 
 // backend/server.js
