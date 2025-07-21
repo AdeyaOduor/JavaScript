@@ -323,7 +323,20 @@ app.get('/scores', authenticateToken, async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch scores' });
     }
 });
-
+// endpoint to check quiz eligibility
+app.get('/quiz/eligibility', authenticateToken, async (req, res) => {
+    try {
+        const [result] = await pool.execute(
+            'CALL check_quiz_eligibility(?)',
+            [req.user.id]
+        );
+        
+        res.json(result[0][0]);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to check eligibility' });
+    }
+});
 // Landing page data
 app.get('/landing-data', (req, res) => {
     res.json({
