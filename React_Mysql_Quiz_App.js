@@ -69,6 +69,7 @@ BEGIN
 END //
 DELIMITER ;
 
+
 -- Stored Procedure: Save Quiz Score
 DELIMITER //
 CREATE PROCEDURE save_quiz_score(
@@ -76,10 +77,25 @@ CREATE PROCEDURE save_quiz_score(
     IN p_score INT,
     IN p_total_questions INT)
 BEGIN
-    INSERT INTO quiz_scores (user_id, score, total_questions) 
-    VALUES (p_user_id, p_score, p_total_questions);
+    DECLARE v_passed BOOLEAN;
+    DECLARE v_can_retake_after TIMESTAMP;
     
-    SELECT * FROM quiz_scores WHERE id = LAST_INSERT_ID();
+    SET v_passed = (p_score / p_total_questions) >= 0.7;
+    
+    IF v_passed THEN
+        SET v_can_retake_after = NULL;
+    ELSE
+        SET v_can_retake_after = DATE_ADD(NOW(), INTERVAL 90 DAY);
+    END IF;
+    
+    INSERT INTO quiz_scores (user_id, score, total_questions, passed, can_retake_after) 
+    VALUES (p_user_id, p_score, p_total_questions, v_passed, v_can_retake_after);
+    
+    SELECT *, 
+           (score / total_questions) * 100 AS percentage,
+           can_retake_after
+    FROM quiz_scores 
+    WHERE id = LAST_INSERT_ID();
 END //
 DELIMITER ;
 
