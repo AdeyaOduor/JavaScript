@@ -43,7 +43,10 @@ CREATE TABLE IF NOT EXISTS quiz_scores (
     user_id INT NOT NULL,
     score INT NOT NULL,
     total_questions INT NOT NULL,
+    passed BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    completion_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    can_retake_after TIMESTAMP DEFAULT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
