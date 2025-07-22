@@ -796,8 +796,10 @@ export default Landing;
 
 // frontend/src/components/Quiz.js
 import { useState, useEffect } from 'react';
-import { Card, ListGroup, Button, Alert, Form } from 'react-bootstrap';
+import { Card, ListGroup, Button, Alert, Form, Modal } from 'react-bootstrap';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import QuizTimer from './QuizTimer';
 
 const Quiz = ({ token }) => {
     const [questions, setQuestions] = useState([]);
@@ -807,6 +809,59 @@ const Quiz = ({ token }) => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [eligibility, setEligibility] = useState(null);
+    const [showTimeoutModal, setShowTimeoutModal] = useState(false);
+    const navigate = useNavigate();
+
+    // Check quiz eligibility on component mount
+    useEffect(() => {
+        const checkEligibility = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/quiz/eligibility', {
+                    headers: { Authorization: token }
+                });
+                setEligibility(response.data);
+                
+                if (!response.data.eligible) {
+                    setError(`You cannot retake the quiz until ${new Date(response.data.retake_date).toLocaleDateString()}`);
+                }
+            } catch (err) {
+                setError('Failed to check quiz eligibility');
+            }
+        };
+        checkEligibility();
+    }, [token]);
+
+    const handleTimeout = () => {
+        setShowTimeoutModal(true);
+        handleSubmitAnswers(); // Auto-submit when time runs out
+    };
+
+    const handleSubmitAnswers = async () => {
+        if (isSubmitting) return;
+        
+        setIsSubmitting(true);
+        try {
+            const response = await axios.post(
+                'http://localhost:5000/score',
+                { answers: userAnswers },
+                { headers: { Authorization: token } }
+            );
+            
+            setSuccess(response.data.message);
+            setQuizOver(true);
+            
+            if (response.data.passed) {
+                setTimeout(() => {
+                    navigate('/scores');
+                }, 5000);
+            }
+        } catch (err) {
+            setError('Failed to submit quiz');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
     useEffect(() => {
         const fetchQuestions = async () => {
