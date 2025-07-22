@@ -832,6 +832,23 @@ const Quiz = ({ token }) => {
         checkEligibility();
     }, [token]);
 
+    // Fetch questions after eligibility check
+    useEffect(() => {
+        if (eligibility && eligibility.eligible) {
+            const fetchQuestions = async () => {
+                try {
+                    const response = await axios.get('http://localhost:5000/questions', {
+                        headers: { Authorization: token }
+                    });
+                    setQuestions(response.data);
+                } catch (err) {
+                    setError('Failed to load questions');
+                }
+            };
+            fetchQuestions();
+        }
+    }, [token, eligibility]);
+
     const handleTimeout = () => {
         setShowTimeoutModal(true);
         handleSubmitAnswers(); // Auto-submit when time runs out
@@ -862,20 +879,6 @@ const Quiz = ({ token }) => {
             setIsSubmitting(false);
         }
     };
-
-    useEffect(() => {
-        const fetchQuestions = async () => {
-            try {
-                const response = await axios.get('http://localhost:5000/questions', {
-                    headers: { Authorization: token }
-                });
-                setQuestions(response.data);
-            } catch (err) {
-                setError('Failed to load questions');
-            }
-        };
-        fetchQuestions();
-    }, [token]);
 
     const currentQuestion = questions[currentQuestionIndex];
 
@@ -911,24 +914,7 @@ const Quiz = ({ token }) => {
             if (currentQuestionIndex < questions.length - 1) {
                 setCurrentQuestionIndex(currentQuestionIndex + 1);
             } else {
-                setIsSubmitting(true);
-                try {
-                    const response = await axios.post(
-                        'http://localhost:5000/score',
-                        { answers: userAnswers },
-                        { headers: { Authorization: token } }
-                    );
-                    setSuccess(
-                       `Quiz completed! You scored ${response.data.score} out of ${response.data.totalQuestions} (${Math.round(
-                        (response.data.score / response.data.totalQuestions) * 100
-                     )}%)`
-                   );
-                    setQuizOver(true);
-                } catch (err) {
-                    setError('Failed to submit quiz');
-                } finally {
-                    setIsSubmitting(false);
-                }
+                await handleSubmitAnswers();
             }
         } else {
             // Reset quiz
@@ -939,124 +925,7 @@ const Quiz = ({ token }) => {
         }
     };
 
-    if (questions.length === 0) {
-        return <div className="text-center my-5">Loading questions...</div>;
-    }
-
-       <div className="progress mb-4" style={{ height: '10px' }}>
-       <div 
-        className="progress-bar" 
-        role="progressbar" 
-        style={{ 
-            width: `${((currentQuestionIndex + (quizOver ? 1 : 0)) / questions.length * 100}%` 
-             }}
-         />
-       </div>
-
-
-    return (
-        <Card.Text className="fs-4 mb-2">
-           {currentQuestion.question}
-        </Card.Text>
-        <small className="text-muted mb-3 d-block">
-           {currentQuestion.type === 'radio' && 'Select one answer'}
-           {currentQuestion.type === 'checkbox' && 'Select all that apply'}
-           {currentQuestion.type === 'dropdown' && 'Choose from dropdown'}
-        </small>      
-        <Card className="mx-auto" style={{ maxWidth: '800px' }}>
-            <Card.Body>
-                <Card.Title className="text-center mb-4">
-                    Question {currentQuestionIndex + 1} of {questions.length}
-                </Card.Title>
-                
-                {error && <Alert variant="danger">{error}</Alert>}
-                {success && <Alert variant="success">{success}</Alert>}
-                
-                <Card.Text className="fs-4 mb-4">
-                    {currentQuestion.question}
-                </Card.Text>
-                
-                {currentQuestion.type === 'radio' && (
-                    <ListGroup>
-                        {currentQuestion.choices.map((choice, index) => (
-                            <ListGroup.Item 
-                                key={index}
-                                action
-                                active={userAnswers[currentQuestion.id] === index}
-                                onClick={() => handleAnswerChange(index)}
-                                className="d-flex align-items-center"
-                            >
-                                <Form.Check
-                                    type="radio"
-                                    name={`question-${currentQuestion.id}`}
-                                    checked={userAnswers[currentQuestion.id] === index}
-                                    onChange={() => {}}
-                                    className="me-3"
-                                    label={choice}
-                                />
-                            </ListGroup.Item>
-                        ))}
-                    </ListGroup>
-                )}
-                
-                {currentQuestion.type === 'checkbox' && (
-                    <ListGroup>
-                        {currentQuestion.choices.map((choice, index) => (
-                            <ListGroup.Item key={index} className="d-flex align-items-center">
-                                <Form.Check
-                                    type="checkbox"
-                                    id={`check-${currentQuestion.id}-${index}`}
-                                    label={choice.text}
-                                    checked={(userAnswers[currentQuestion.id] || []).includes(index)}
-                                    onChange={(e) => handleCheckboxChange(index, e.target.checked)}
-                                    className="me-3"
-                                />
-                            </ListGroup.Item>
-                        ))}
-                    </ListGroup>
-                )}
-                
-                {currentQuestion.type === 'dropdown' && (
-                    <Form.Select 
-                        size="lg"
-                        value={userAnswers[currentQuestion.id] || ''}
-                        onChange={(e) => handleAnswerChange(parseInt(e.target.value))}
-                    >
-                        <option value="">Select an answer</option>
-                        {currentQuestion.choices.map((choice, index) => (
-                            <option key={index} value={index}>
-                                {choice}
-                            </option>
-                        ))}
-                    </Form.Select>
-                )}
-                
-                <div className="d-flex justify-content-between mt-4">
-                    {currentQuestionIndex > 0 && !quizOver && (
-                        <Button 
-                            variant="outline-primary"
-                            onClick={() => setCurrentQuestionIndex(currentQuestionIndex - 1)}
-                        >
-                            Previous
-                        </Button>
-                    )}
-                    
-                    <Button 
-                        onClick={handleNext}
-                        disabled={isSubmitting}
-                        className="ms-auto"
-                    >
-                        {isSubmitting && 'Submitting...'}
-                        {!isSubmitting && (quizOver ? 'Play Again' : 
-                            (currentQuestionIndex === questions.length - 1 ? 'Submit Quiz' : 'Next Question'))}
-                    </Button>
-                </div>
-            </Card.Body>
-        </Card>
-    );
-};
-
- if (eligibility && !eligibility.eligible) {
+    if (eligibility && !eligibility.eligible) {
         return (
             <Card className="mx-auto my-5" style={{ maxWidth: '600px' }}>
                 <Card.Body className="text-center">
@@ -1072,15 +941,120 @@ const Quiz = ({ token }) => {
         );
     }
 
+    if (questions.length === 0) {
+        return <div className="text-center my-5">Loading questions...</div>;
+    }
+
     return (
         <>
             <Card className="mx-auto" style={{ maxWidth: '800px' }}>
                 <Card.Body>
                     {!quizOver && (
-                        <QuizTimer duration={120} onTimeout={handleTimeout} />
+                        <>
+                            <QuizTimer duration={120} onTimeout={handleTimeout} />
+                            <div className="progress mb-4" style={{ height: '10px' }}>
+                                <div 
+                                    className="progress-bar" 
+                                    role="progressbar" 
+                                    style={{ 
+                                        width: `${((currentQuestionIndex + (quizOver ? 1 : 0)) / questions.length * 100}%` 
+                                    }}
+                                />
+                            </div>
+                        </>
                     )}
                     
-                    {/* ... rest of the quiz UI ... */}
+                    <Card.Title className="text-center mb-4">
+                        Question {currentQuestionIndex + 1} of {questions.length}
+                    </Card.Title>
+                    
+                    {error && <Alert variant="danger">{error}</Alert>}
+                    {success && <Alert variant="success">{success}</Alert>}
+                    
+                    <Card.Text className="fs-4 mb-2">
+                        {currentQuestion.question}
+                    </Card.Text>
+                    <small className="text-muted mb-3 d-block">
+                        {currentQuestion.type === 'radio' && 'Select one answer'}
+                        {currentQuestion.type === 'checkbox' && 'Select all that apply'}
+                        {currentQuestion.type === 'dropdown' && 'Choose from dropdown'}
+                    </small>
+                    
+                    {currentQuestion.type === 'radio' && (
+                        <ListGroup>
+                            {currentQuestion.choices.map((choice, index) => (
+                                <ListGroup.Item 
+                                    key={index}
+                                    action
+                                    active={userAnswers[currentQuestion.id] === index}
+                                    onClick={() => handleAnswerChange(index)}
+                                    className="d-flex align-items-center"
+                                >
+                                    <Form.Check
+                                        type="radio"
+                                        name={`question-${currentQuestion.id}`}
+                                        checked={userAnswers[currentQuestion.id] === index}
+                                        onChange={() => {}}
+                                        className="me-3"
+                                        label={choice}
+                                    />
+                                </ListGroup.Item>
+                            ))}
+                        </ListGroup>
+                    )}
+                    
+                    {currentQuestion.type === 'checkbox' && (
+                        <ListGroup>
+                            {currentQuestion.choices.map((choice, index) => (
+                                <ListGroup.Item key={index} className="d-flex align-items-center">
+                                    <Form.Check
+                                        type="checkbox"
+                                        id={`check-${currentQuestion.id}-${index}`}
+                                        label={choice.text}
+                                        checked={(userAnswers[currentQuestion.id] || []).includes(index)}
+                                        onChange={(e) => handleCheckboxChange(index, e.target.checked)}
+                                        className="me-3"
+                                    />
+                                </ListGroup.Item>
+                            ))}
+                        </ListGroup>
+                    )}
+                    
+                    {currentQuestion.type === 'dropdown' && (
+                        <Form.Select 
+                            size="lg"
+                            value={userAnswers[currentQuestion.id] || ''}
+                            onChange={(e) => handleAnswerChange(parseInt(e.target.value))}
+                        >
+                            <option value="">Select an answer</option>
+                            {currentQuestion.choices.map((choice, index) => (
+                                <option key={index} value={index}>
+                                    {choice}
+                                </option>
+                            ))}
+                        </Form.Select>
+                    )}
+                    
+                    <div className="d-flex justify-content-between mt-4">
+                        {currentQuestionIndex > 0 && !quizOver && (
+                            <Button 
+                                variant="outline-primary"
+                                onClick={() => setCurrentQuestionIndex(currentQuestionIndex - 1)}
+                            >
+                                Previous
+                            </Button>
+                        )}
+                        
+                        <Button 
+                            onClick={handleNext}
+                            disabled={isSubmitting}
+                            className="ms-auto"
+                        >
+                            {isSubmitting && 'Submitting...'}
+                            {!isSubmitting && (quizOver ? 'Play Again' : 
+                                (currentQuestionIndex === questions.length - 1 ? 'Submit Quiz' : 'Next Question'))}
+                        </Button>
+                    </div>
                 </Card.Body>
             </Card>
 
@@ -1112,6 +1086,8 @@ const Quiz = ({ token }) => {
 };
 
 export default Quiz;
+
+
 // frontend/src/components/QuizTimer.js)
 import { useState, useEffect } from 'react';
 import { Alert, ProgressBar } from 'react-bootstrap';
