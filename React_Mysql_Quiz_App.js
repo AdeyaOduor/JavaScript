@@ -688,10 +688,13 @@ export default Register;
 // frontend/src/components/Landing.js
 import { useState, useEffect } from 'react';
 import { Carousel, Card, ListGroup, Button } from 'react-bootstrap';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Login from './Login';
 import Register from './Register';
+import Login from './Login';
+import axios from 'axios';
+// import image1 from './path/to/image1.jpg'; 
+// import image2 from './path/to/image2.jpg';
+// import image3 from './path/to/image3.jpg';
 
 const Landing = () => {
     const [activeTab, setActiveTab] = useState('login');
