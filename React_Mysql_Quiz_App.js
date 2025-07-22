@@ -1298,21 +1298,13 @@ const Scores = ({ token }) => {
 
 export default Scores;
 
-/*
-Running the Application
-
-    Start the backend:
-
-bash
+/*  Start the backend in terminal:
 
 cd backend
 node server.js
 
-    Start the frontend:
-
-bash
+Start the frontend in terminal:
 
 cd ../frontend
 npm start
-
 */
