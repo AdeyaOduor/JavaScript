@@ -1056,8 +1056,62 @@ const Quiz = ({ token }) => {
     );
 };
 
-export default Quiz;
+ if (eligibility && !eligibility.eligible) {
+        return (
+            <Card className="mx-auto my-5" style={{ maxWidth: '600px' }}>
+                <Card.Body className="text-center">
+                    <Alert variant="danger">
+                        <h4>Quiz Access Restricted</h4>
+                        <p>{error}</p>
+                        <Button variant="primary" onClick={() => navigate('/scores')}>
+                            View Your Previous Scores
+                        </Button>
+                    </Alert>
+                </Card.Body>
+            </Card>
+        );
+    }
 
+    return (
+        <>
+            <Card className="mx-auto" style={{ maxWidth: '800px' }}>
+                <Card.Body>
+                    {!quizOver && (
+                        <QuizTimer duration={120} onTimeout={handleTimeout} />
+                    )}
+                    
+                    {/* ... rest of the quiz UI ... */}
+                </Card.Body>
+            </Card>
+
+            {/* Timeout Modal */}
+            <Modal show={showTimeoutModal} onHide={() => setShowTimeoutModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Time's Up!</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Alert variant="danger">
+                        Your 2-hour time limit has expired. Your answers have been automatically submitted.
+                    </Alert>
+                    {success && <Alert variant="info">{success}</Alert>}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button 
+                        variant="primary" 
+                        onClick={() => {
+                            setShowTimeoutModal(false);
+                            navigate('/scores');
+                        }}
+                    >
+                        View Results
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </>
+    );
+};
+
+export default Quiz;
 // frontend/src/components/QuizTimer.js)
 import { useState, useEffect } from 'react';
 import { Alert, ProgressBar } from 'react-bootstrap';
