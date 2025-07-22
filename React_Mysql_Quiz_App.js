@@ -1,6 +1,5 @@
 /*
-1. Backend Setup (Node.js + Express + MySQL)
-bash
+1. Backend Setup (Node.js + Express + MySQL) in terminal:
 
 mkdir animal-quiz-app
 cd animal-quiz-app
@@ -9,12 +8,9 @@ cd backend
 npm init -y
 npm install express mysql2 bcryptjs jsonwebtoken cors body-parser dotenv
 
-
-2. Database Setup (MySQL)
-sql_stored_procedure
+2. Database Setup (MySQL) in client or sql_stored_procedure inside the directory but run with the apprppriate command in linux
 
 3.Frontend Setup (React + Bootstrap 5)
-bash
 
 cd ../frontend
 npx create-react-app .
@@ -24,7 +20,6 @@ npm install axios react-bootstrap bootstrap react-router-dom
 
 // src/components/database_setup.sql and execute stored_procedure with the following linux cmd: mysql -u root -p < database_setup.sql
 // or run in MySql client directly
-
 -- Create database and tables
 CREATE DATABASE IF NOT EXISTS animal_quiz;
 USE animal_quiz;
