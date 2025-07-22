@@ -161,8 +161,9 @@ const pool = mysql.createPool({
     queueLimit: 0
 });
 
-// JWT Secret
+// JWT Configuration
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
 
 // Questions data
 const questions = [
@@ -195,11 +196,16 @@ const questions = [
 
 // Authentication middleware
 const authenticateToken = (req, res, next) => {
-    const token = req.headers['authorization'];
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    
     if (!token) return res.sendStatus(401);
 
     jwt.verify(token, JWT_SECRET, (err, user) => {
-        if (err) return res.sendStatus(403);
+        if (err) {
+            console.error('JWT verification error:', err);
+            return res.status(403).json({ error: 'Invalid or expired token' });
+        }
         req.user = user;
         next();
     });
@@ -207,36 +213,40 @@ const authenticateToken = (req, res, next) => {
 
 // Helper function to calculate score
 function calculateScore(questions, answers) {
-    let score = 0;
+    if (!answers) return 0;
     
-    questions.forEach(question => {
+    return questions.reduce((score, question) => {
         const userAnswer = answers[question.id];
-        
+        if (!userAnswer) return score;
+
         if (question.type === 'radio' || question.type === 'dropdown') {
-            if (userAnswer == question.correctAnswer) {
-                score++;
-            }
+            return score + (userAnswer == question.correctAnswer ? 1 : 0);
         } 
-        else if (question.type === 'checkbox') {
+        
+        if (question.type === 'checkbox') {
             const correctChoices = question.choices
                 .map((choice, index) => choice.correct ? index : null)
                 .filter(val => val !== null);
             
-            const isCorrect = 
-                userAnswer.length === correctChoices.length &&
-                userAnswer.every(ans => correctChoices.includes(ans));
+            const isCorrect = userAnswer.length === correctChoices.length &&
+                            userAnswer.every(ans => correctChoices.includes(ans));
             
-            if (isCorrect) score++;
+            return score + (isCorrect ? 1 : 0);
         }
-    });
-    
-    return score;
+        
+        return score;
+    }, 0);
 }
 
-// Routes using stored procedures
+// Routes
 app.post('/register', async (req, res) => {
     try {
         const { username, password } = req.body;
+        
+        if (!username || !password) {
+            return res.status(400).json({ error: 'Username and password are required' });
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10);
         
         const [result] = await pool.execute(
@@ -246,10 +256,10 @@ app.post('/register', async (req, res) => {
         
         res.status(201).json(result[0][0]);
     } catch (error) {
+        console.error('Registration error:', error);
         if (error.code === 'ER_DUP_ENTRY') {
             res.status(400).json({ error: 'Username already exists' });
         } else {
-            console.error(error);
             res.status(500).json({ error: 'Registration failed' });
         }
     }
@@ -259,6 +269,10 @@ app.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
         
+        if (!username || !password) {
+            return res.status(400).json({ error: 'Username and password are required' });
+        }
+
         const [users] = await pool.execute(
             'CALL authenticate_user(?)',
             [username]
@@ -275,20 +289,32 @@ app.post('/login', async (req, res) => {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
         
-        const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign(
+            { id: user.id, username: user.username }, 
+            JWT_SECRET, 
+            { expiresIn: JWT_EXPIRES_IN }
+        );
+        
         res.json({ token });
     } catch (error) {
-        console.error(error);
+        console.error('Login error:', error);
         res.status(500).json({ error: 'Login failed' });
     }
 });
 
-app.get('/questions', authenticateToken, (req, res) => {
-    res.json(questions);
+// Protected routes
+app.use(['/questions', '/quiz', '/scores'], authenticateToken);
+
+app.get('/questions', (req, res) => {
+    try {
+        res.json(questions);
+    } catch (error) {
+        console.error('Questions error:', error);
+        res.status(500).json({ error: 'Failed to fetch questions' });
+    }
 });
 
-// Add new endpoint to check quiz eligibility
-app.get('/quiz/eligibility', authenticateToken, async (req, res) => {
+app.get('/quiz/eligibility', async (req, res) => {
     try {
         const [result] = await pool.execute(
             'CALL check_quiz_eligibility(?)',
@@ -297,15 +323,19 @@ app.get('/quiz/eligibility', authenticateToken, async (req, res) => {
         
         res.json(result[0][0]);
     } catch (error) {
-        console.error(error);
+        console.error('Eligibility check error:', error);
         res.status(500).json({ error: 'Failed to check eligibility' });
     }
 });
 
-// score endpoint response
-app.post('/score', authenticateToken, async (req, res) => {
+app.post('/score', async (req, res) => {
     try {
         const { answers } = req.body;
+        
+        if (!answers || typeof answers !== 'object') {
+            return res.status(400).json({ error: 'Invalid answers format' });
+        }
+
         const score = calculateScore(questions, answers);
         const totalQuestions = questions.length;
         
@@ -316,24 +346,25 @@ app.post('/score', authenticateToken, async (req, res) => {
         
         const scoreDetails = result[0][0];
         const percentage = Math.round(scoreDetails.percentage);
+        const passed = percentage >= 70;
         
         res.json({ 
-            message: scoreDetails.passed 
+            message: passed 
                 ? `Congratulations! You passed with ${percentage}%` 
                 : `Sorry, you failed with ${percentage}%. You can retake after ${new Date(scoreDetails.can_retake_after).toLocaleDateString()}`,
             score,
             totalQuestions,
             percentage,
-            passed: scoreDetails.passed,
+            passed,
             canRetakeAfter: scoreDetails.can_retake_after
         });
     } catch (error) {
-        console.error(error);
+        console.error('Score submission error:', error);
         res.status(500).json({ error: 'Failed to save score' });
     }
 });
 
-app.get('/scores', authenticateToken, async (req, res) => {
+app.get('/scores', async (req, res) => {
     try {
         const [scores] = await pool.execute(
             'CALL get_user_scores(?)',
@@ -342,58 +373,59 @@ app.get('/scores', authenticateToken, async (req, res) => {
         
         res.json(scores[0]);
     } catch (error) {
-        console.error(error);
+        console.error('Scores fetch error:', error);
         res.status(500).json({ error: 'Failed to fetch scores' });
     }
 });
-// endpoint to check quiz eligibility
-app.get('/quiz/eligibility', authenticateToken, async (req, res) => {
+
+// Public routes
+app.get('/landing-data', (req, res) => {
     try {
-        const [result] = await pool.execute(
-            'CALL check_quiz_eligibility(?)',
-            [req.user.id]
-        );
-        
-        res.json(result[0][0]);
+        res.json({
+            carouselItems: [
+                {
+                    id: 1,
+                    title: "Test Your Animal Knowledge",
+                    description: "Discover fascinating facts about baby animals and their parents",
+                    image: "https://images.unsplash.com/photo-1452570053594-1b985d6ea890?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                },
+                {
+                    id: 2,
+                    title: "Multiple Question Types",
+                    description: "Single answer, multiple choice, and dropdown questions",
+                    image: "https://images.unsplash.com/photo-1474511320723-9a56873867b5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                },
+                {
+                    id: 3,
+                    title: "Track Your Progress",
+                    description: "See your scores improve over time",
+                    image: "https://images.unsplash.com/photo-1425082661705-1834bfd09dca?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                }
+            ],
+            features: [
+                "Secure user authentication",
+                "Interactive quiz interface",
+                "Detailed score tracking",
+                "Responsive design"
+            ]
+        });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to check eligibility' });
+        console.error('Landing data error:', error);
+        res.status(500).json({ error: 'Failed to fetch landing data' });
     }
 });
-// Landing page data
-app.get('/landing-data', (req, res) => {
-    res.json({
-        carouselItems: [
-            {
-                id: 1,
-                title: "Test Your Animal Knowledge",
-                description: "Discover fascinating facts about baby animals and their parents",
-                image: "https://images.unsplash.com/photo-1452570053594-1b985d6ea890?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-            },
-            {
-                id: 2,
-                title: "Multiple Question Types",
-                description: "Single answer, multiple choice, and dropdown questions",
-                image: "https://images.unsplash.com/photo-1474511320723-9a56873867b5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-            },
-            {
-                id: 3,
-                title: "Track Your Progress",
-                description: "See your scores improve over time",
-                image: "https://images.unsplash.com/photo-1425082661705-1834bfd09dca?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-            }
-        ],
-        features: [
-            "Secure user authentication",
-            "Interactive quiz interface",
-            "Detailed score tracking",
-            "Responsive design"
-        ]
-    });
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error('Unhandled error:', err);
+    res.status(500).json({ error: 'Internal server error' });
 });
 
+// Start server
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
+}).on('error', (err) => {
+    console.error('Server startup error:', err);
 });
 
 // -----------------------------------------------------------------------------------------------------------------------
