@@ -1131,7 +1131,7 @@ export default QuizTimer;
 
 // frontend/src/components/Scores.js
 import { useState, useEffect } from 'react';
-import { Table, Card, Accordion, Badge } from 'react-bootstrap';
+import { Table, Card, Accordion, Badge, Alert } from 'react-bootstrap';
 import axios from 'axios';
 
 const Scores = ({ token }) => {
@@ -1164,70 +1164,101 @@ const Scores = ({ token }) => {
     }, [token]);
 
     if (loading) return <div className="text-center my-5">Loading scores...</div>;
-    if (error) return <div className="alert alert-danger">{error}</div>;
+    if (error) return <Alert variant="danger">{error}</Alert>;
 
     return (
         <Card>
             <Card.Body>
                 <Card.Title className="text-center mb-4">Your Quiz Results</Card.Title>
                 
-                <Table striped bordered hover className="mb-5">
-                    <thead>
+                <Table striped bordered hover responsive className="mb-4">
+                    <thead className="table-dark">
                         <tr>
                             <th>Date</th>
                             <th>Score</th>
-                            <th>Total Questions</th>
                             <th>Percentage</th>
+                            <th>Status</th>
+                            <th>Retake Available</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {scores.map((score, index) => (
-                            <tr key={index}>
-                                <td>{new Date(score.created_at).toLocaleDateString()}</td>
-                                <td>{score.score}</td>
-                                <td>{score.total_questions}</td>
-                                <td>
-                                    <Badge bg={score.score/score.total_questions >= 0.7 ? 'success' : 'warning'}>
-                                        {Math.round((score.score / score.total_questions) * 100)}%
-                                    </Badge>
-                                </td>
-                            </tr>
-                        ))}
+                        {scores.map((score, index) => {
+                            const percentage = Math.round((score.score / score.total_questions) * 100);
+                            const passed = percentage >= 70;
+                            const retakeDate = score.can_retake_after 
+                                ? new Date(score.can_retake_after).toLocaleDateString() 
+                                : 'N/A';
+                            
+                            return (
+                                <tr key={index}>
+                                    <td>{new Date(score.completion_time || score.created_at).toLocaleDateString()}</td>
+                                    <td>{score.score}/{score.total_questions}</td>
+                                    <td>{percentage}%</td>
+                                    <td>
+                                        <Badge bg={passed ? 'success' : 'danger'} pill>
+                                            {passed ? 'Passed' : 'Failed'}
+                                        </Badge>
+                                    </td>
+                                    <td>
+                                        {passed ? 'Not Required' : 
+                                            score.can_retake_after && new Date(score.can_retake_after) > new Date() 
+                                                ? `After ${retakeDate}` 
+                                                : 'Now Available'}
+                                    </td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </Table>
-                
-                <Accordion>
-                    <Accordion.Item eventKey="0">
-                        <Accordion.Header>View All Questions and Answers</Accordion.Header>
-                        <Accordion.Body>
-                            <div className="question-list">
-                                {questions.map((question, qIndex) => (
-                                    <div key={qIndex} className="mb-4 p-3 border rounded">
-                                        <h5>{question.question}</h5>
-                                        <div className="ms-3">
-                                            {question.type === 'radio' || question.type === 'dropdown' ? (
-                                                <>
-                                                    <p><strong>Correct answer:</strong> {question.choices[question.correctAnswer]}</p>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <p><strong>Correct answers:</strong></p>
-                                                    <ul>
-                                                        {question.choices
-                                                            .filter(choice => choice.correct)
-                                                            .map((choice, cIndex) => (
-                                                                <li key={cIndex}>{choice.text}</li>
-                                                            ))}
-                                                    </ul>
-                                                </>
-                                            )}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </Accordion.Body>
-                    </Accordion.Item>
-                </Accordion>
+
+                {scores.length > 0 && (
+                    <Alert variant="info" className="mt-3 mb-4">
+                        <Alert.Heading>Quiz Results Information</Alert.Heading>
+                        <p>
+                            <strong>Passing Score:</strong> 70% or higher<br />
+                            <strong>Retake Policy:</strong> If you fail, you can retake the quiz after 60 days
+                        </p>
+                    </Alert>
+                )}
+
+                {questions.length > 0 && (
+                    <Accordion className="mt-4">
+                        <Accordion.Item eventKey="0">
+                            <Accordion.Header>
+                                <strong>View All Questions and Correct Answers</strong>
+                            </Accordion.Header>
+                            <Accordion.Body>
+                                <div className="question-list">
+                                    {questions.map((question, qIndex) => (
+                                        <Card key={qIndex} className="mb-3">
+                                            <Card.Body>
+                                                <Card.Title>{question.question}</Card.Title>
+                                                <Card.Text>
+                                                    {question.type === 'radio' || question.type === 'dropdown' ? (
+                                                        <>
+                                                            <strong>Correct answer:</strong> {question.choices[question.correctAnswer]}
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <strong>Correct answers:</strong>
+                                                            <ul className="mt-2">
+                                                                {question.choices
+                                                                    .filter(choice => choice.correct)
+                                                                    .map((choice, cIndex) => (
+                                                                        <li key={cIndex}>{choice.text}</li>
+                                                                    ))}
+                                                            </ul>
+                                                        </>
+                                                    )}
+                                                </Card.Text>
+                                            </Card.Body>
+                                        </Card>
+                                    ))}
+                                </div>
+                            </Accordion.Body>
+                        </Accordion.Item>
+                    </Accordion>
+                )}
             </Card.Body>
         </Card>
     );
