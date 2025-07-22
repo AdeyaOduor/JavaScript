@@ -1003,9 +1003,7 @@ const Quiz = ({ token }) => {
 
 export default Quiz;
 
-frontend/src/components/QuizTimer.js)
-javascript
-
+// frontend/src/components/QuizTimer.js)
 import { useState, useEffect } from 'react';
 import { Alert, ProgressBar } from 'react-bootstrap';
 
