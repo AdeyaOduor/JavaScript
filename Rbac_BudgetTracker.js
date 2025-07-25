@@ -255,7 +255,14 @@ DELIMITER //
 CREATE FUNCTION bcrypt_compare(input_password VARCHAR(255), stored_hash VARCHAR(255))
 RETURNS BOOLEAN DETERMINISTIC
 BEGIN
+    -- This is a placeholder implementation
+    -- In a real system, you would use a proper bcrypt verification function
+    -- MySQL doesn't have built-in bcrypt support, so you would typically:
+    -- 1. Use application code to verify passwords, or
+    -- 2. Install a bcrypt plugin for MySQL
     RETURN stored_hash = IFNULL((SELECT CONCAT('$2a$', SUBSTRING(stored_hash, 5)) = 
            IFNULL((SELECT CONCAT('$2a$', SUBSTRING(TO_BASE64(UNHEX(SHA2(input_password, 256))), 1, 22)), stored_hash);
 END //
 DELIMITER ;
+
+
