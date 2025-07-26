@@ -817,3 +817,108 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
+
+// routes/publicRoutes.js
+const express = require('express');
+const router = express.Router();
+const db = require('../db');
+
+// Get national budget summary
+router.get('/national-summary', async (req, res) => {
+    try {
+        const [results] = await db.query('CALL GetNationalBudgetSummary(NULL)');
+        
+        if (!results || results.length === 0) {
+            return res.status(404).json({ error: 'No budget data found' });
+        }
+        
+        // Process the results for the frontend
+        const nationalTotal = results.find(r => r.level === NULL);
+        const levelBreakdown = results.filter(r => r.level !== NULL);
+        
+        res.json({
+            total_allocated: nationalTotal?.total_allocated || 0,
+            total_spent: nationalTotal?.total_spent || 0,
+            utilization_percentage: nationalTotal?.utilization_percentage || 0,
+            level_breakdown: levelBreakdown.map(item => ({
+                level: item.level,
+                jurisdiction_count: item.jurisdiction_count,
+                total_allocated: item.total_allocated,
+                total_spent: item.total_spent,
+                utilization_percentage: item.utilization_percentage
+            }))
+        });
+    } catch (error) {
+        console.error('Error fetching national summary:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Search budget data
+router.get('/search', async (req, res) => {
+    try {
+        const { query, year, level } = req.query;
+        
+        const fiscalYear = year ? parseInt(year) : NULL;
+        const levelFilter = level || NULL;
+        const searchQuery = query || NULL;
+        
+        const [results] = await db.query(
+            'CALL SearchPublicBudgetData(?, ?, ?)',
+            [searchQuery, fiscalYear, levelFilter]
+        );
+        
+        res.json(results[0] || []);
+    } catch (error) {
+        console.error('Search error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+module.exports = router;
+
+
+// src/App.js
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import DashboardLayout from './layouts/DashboardLayout';
+import ProtectedRoute from './components/ProtectedRoute';
+import LandingPage from './views/public/LandingPage';
+import NationalDashboard from './views/dashboards/NationalDashboard';
+import CountyDashboard from './views/dashboards/CountyDashboard';
+import Login from './views/auth/Login';
+import Unauthorized from './views/auth/Unauthorized';
+
+function App() {
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/unauthorized" element={<Unauthorized />} />
+                
+                <Route element={<DashboardLayout />}>
+                    {/* Super Admin and National Admin routes */}
+                    <Route element={<ProtectedRoute requiredRole="National Admin" />}>
+                        <Route path="/national" element={<NationalDashboard />} />
+                    </Route>
+                    
+                    {/* County Admin routes */}
+                    <Route element={<ProtectedRoute requiredRole="County Admin" />}>
+                        <Route path="/county" element={<CountyDashboard />} />
+                    </Route>
+
+                    {/* Sub-County Admin routes */}
+                    <Route element={<ProtectedRoute requiredRole="SubCounty Admin" />}>
+                        <Route path="/sub-county" element={<SubCountyDashboard />} />
+                    </Route>
+                    
+                    {/* Add other protected routes as needed */}
+                    
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                </Route>
+            </Routes>
+        </Router>
+    );
+}
+
+export default App;
