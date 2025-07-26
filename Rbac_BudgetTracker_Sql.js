@@ -879,12 +879,13 @@ module.exports = router;
 
 
 // src/App.js
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import DashboardLayout from './layouts/DashboardLayout';
 import ProtectedRoute from './components/ProtectedRoute';
-import LandingPage from './views/public/LandingPage';
 import NationalDashboard from './views/dashboards/NationalDashboard';
 import CountyDashboard from './views/dashboards/CountyDashboard';
+import SubCountyDashboard from './views/dashboards/SubCountyDashboard';
+import DepartmentDashboard from './views/dashboards/DepartmentDashboard';
 import Login from './views/auth/Login';
 import Unauthorized from './views/auth/Unauthorized';
 
@@ -892,7 +893,6 @@ function App() {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<LandingPage />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/unauthorized" element={<Unauthorized />} />
                 
@@ -906,16 +906,32 @@ function App() {
                     <Route element={<ProtectedRoute requiredRole="County Admin" />}>
                         <Route path="/county" element={<CountyDashboard />} />
                     </Route>
-
+                    
                     {/* Sub-County Admin routes */}
-                    <Route element={<ProtectedRoute requiredRole="SubCounty Admin" />}>
+                    <Route element={<ProtectedRoute requiredRole="Sub-County Admin" />}>
                         <Route path="/sub-county" element={<SubCountyDashboard />} />
                     </Route>
                     
-                    {/* Add other protected routes as needed */}
+                    {/* Department Head routes */}
+                    <Route element={<ProtectedRoute requiredRole="Department Head" />}>
+                        <Route path="/department" element={<DepartmentDashboard />} />
+                    </Route>
                     
-                    <Route path="*" element={<Navigate to="/" replace />} />
+                    {/* Common routes */}
+                    <Route element={<ProtectedRoute />}>
+                        <Route path="/reports" element={<Reports />} />
+                        <Route path="/profile" element={<Profile />} />
+                    </Route>
+                    
+                    {/* Super Admin only routes */}
+                    <Route element={<ProtectedRoute requiredRole="Super Admin" />}>
+                        <Route path="/counties" element={<CountiesOverview />} />
+                        <Route path="/sub-counties" element={<SubCountiesOverview />} />
+                        <Route path="/users" element={<UserManagement />} />
+                    </Route>
                 </Route>
+                
+                <Route path="*" element={<Navigate to="/login" replace />} />
             </Routes>
         </Router>
     );
