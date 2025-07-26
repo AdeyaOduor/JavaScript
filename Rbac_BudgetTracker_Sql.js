@@ -419,3 +419,401 @@ DELIMITER ;
 -- Grant permissions
 GRANT ALL PRIVILEGES ON budget_tracker.* TO 'budget_user'@'localhost';
 FLUSH PRIVILEGES;
+
+
+            // src/views/public/LandingPage.js
+import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, Card, Form, Spinner, Alert } from 'react-bootstrap';
+import axios from 'axios';
+import { Bar, Pie } from 'react-chartjs-2';
+import { Chart, registerables } from 'chart.js';
+import { useNavigate } from 'react-router-dom';
+
+Chart.register(...registerables);
+
+const LandingPage = () => {
+    const [searchQuery, setSearchQuery] = useState('');
+    const [fiscalYear, setFiscalYear] = useState(new Date().getFullYear());
+    const [levelFilter, setLevelFilter] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [nationalSummary, setNationalSummary] = useState(null);
+    const [searchResults, setSearchResults] = useState([]);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        fetchNationalSummary();
+    }, []);
+
+    const fetchNationalSummary = async () => {
+        try {
+            setLoading(true);
+            const response = await axios.get('/api/public/national-summary');
+            setNationalSummary(response.data);
+            setLoading(false);
+        } catch (err) {
+            setError('Failed to load national budget data');
+            setLoading(false);
+        }
+    };
+
+    const handleSearch = async (e) => {
+        e.preventDefault();
+        try {
+            setLoading(true);
+            const response = await axios.get('/api/public/search', {
+                params: { query: searchQuery, year: fiscalYear, level: levelFilter }
+            });
+            setSearchResults(response.data);
+            setLoading(false);
+        } catch (err) {
+            setError('Search failed. Please try again.');
+            setLoading(false);
+        }
+    };
+
+    const handleLoginRedirect = () => {
+        navigate('/login');
+    };
+
+    // Prepare data for charts
+    const allocationChartData = {
+        labels: nationalSummary?.level_breakdown.map(item => item.level),
+        datasets: [
+            {
+                label: 'Allocated (KSh)',
+                data: nationalSummary?.level_breakdown.map(item => item.total_allocated / 1000000),
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Spent (KSh)',
+                data: nationalSummary?.level_breakdown.map(item => item.total_spent / 1000000),
+                backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }
+        ]
+    };
+
+    const utilizationChartData = {
+        labels: searchResults.map(item => item.name),
+        datasets: [
+            {
+                data: searchResults.map(item => item.utilization_percentage),
+                backgroundColor: searchResults.map(item => 
+                    item.utilization_percentage >= 80 ? 'rgba(255, 99, 132, 0.6)' :
+                    item.utilization_percentage >= 50 ? 'rgba(255, 206, 86, 0.6)' :
+                    'rgba(75, 192, 192, 0.6)'
+                ),
+                borderColor: searchResults.map(item => 
+                    item.utilization_percentage >= 80 ? 'rgba(255, 99, 132, 1)' :
+                    item.utilization_percentage >= 50 ? 'rgba(255, 206, 86, 1)' :
+                    'rgba(75, 192, 192, 1)'
+                ),
+                borderWidth: 1
+            }
+        ]
+    };
+
+    return (
+        <Container className="mt-4">
+            <Row className="mb-4">
+                <Col>
+                    <h1 className="text-center">Kenya Government Budget Tracker</h1>
+                    <p className="text-center text-muted">
+                        Transparency in national, county, and sub-county budget allocations and expenditures
+                    </p>
+                </Col>
+            </Row>
+            
+            {error && <Alert variant="danger" onClose={() => setError(null)} dismissible>{error}</Alert>}
+            
+            {/* National Summary Section */}
+            <Row className="mb-5">
+                <Col>
+                    <Card className="shadow">
+                        <Card.Header className="bg-primary text-white">
+                            <h3>National Budget Overview - FY {fiscalYear}</h3>
+                        </Card.Header>
+                        <Card.Body>
+                            {loading ? (
+                                <div className="text-center py-5">
+                                    <Spinner animation="border" />
+                                </div>
+                            ) : nationalSummary ? (
+                                <>
+                                    <Row>
+                                        <Col md={4}>
+                                            <Card className="mb-3">
+                                                <Card.Body>
+                                                    <Card.Title>Total Allocation</Card.Title>
+                                                    <Card.Text className="display-6 text-primary">
+                                                        KSh {(nationalSummary.total_allocated / 1000000000).toFixed(2)}B
+                                                    </Card.Text>
+                                                </Card.Body>
+                                            </Card>
+                                        </Col>
+                                        <Col md={4}>
+                                            <Card className="mb-3">
+                                                <Card.Body>
+                                                    <Card.Title>Total Expenditure</Card.Title>
+                                                    <Card.Text className="display-6 text-danger">
+                                                        KSh {(nationalSummary.total_spent / 1000000000).toFixed(2)}B
+                                                    </Card.Text>
+                                                </Card.Body>
+                                            </Card>
+                                        </Col>
+                                        <Col md={4}>
+                                            <Card className="mb-3">
+                                                <Card.Body>
+                                                    <Card.Title>Utilization Rate</Card.Title>
+                                                    <Card.Text className="display-6">
+                                                        <span className={nationalSummary.utilization_percentage >= 80 ? 'text-danger' : 
+                                                                        nationalSummary.utilization_percentage >= 50 ? 'text-warning' : 'text-success'}>
+                                                            {nationalSummary.utilization_percentage}%
+                                                        </span>
+                                                    </Card.Text>
+                                                </Card.Body>
+                                            </Card>
+                                        </Col>
+                                    </Row>
+                                    
+                                    <Row>
+                                        <Col md={8}>
+                                            <div className="chart-container" style={{ height: '400px' }}>
+                                                <Bar 
+                                                    data={allocationChartData}
+                                                    options={{
+                                                        responsive: true,
+                                                        maintainAspectRatio: false,
+                                                        scales: {
+                                                            y: {
+                                                                beginAtZero: true,
+                                                                title: {
+                                                                    display: true,
+                                                                    text: 'Amount (Millions KSh)'
+                                                                }
+                                                            }
+                                                        },
+                                                        plugins: {
+                                                            tooltip: {
+                                                                callbacks: {
+                                                                    label: function(context) {
+                                                                        return `${context.dataset.label}: KSh ${(context.raw * 1000000).toLocaleString()}`;
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }}
+                                                />
+                                            </div>
+                                        </Col>
+                                        <Col md={4}>
+                                            <Card>
+                                                <Card.Header>
+                                                    <h5>Breakdown by Level</h5>
+                                                </Card.Header>
+                                                <Card.Body>
+                                                    <Table striped bordered hover>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Level</th>
+                                                                <th>Allocated</th>
+                                                                <th>Spent</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {nationalSummary.level_breakdown.map((item, index) => (
+                                                                <tr key={index}>
+                                                                    <td>{item.level}</td>
+                                                                    <td>KSh {(item.total_allocated / 1000000).toFixed(2)}M</td>
+                                                                    <td>KSh {(item.total_spent / 1000000).toFixed(2)}M</td>
+                                                                </tr>
+                                                            ))}
+                                                        </tbody>
+                                                    </Table>
+                                                </Card.Body>
+                                            </Card>
+                                        </Col>
+                                    </Row>
+                                </>
+                            ) : (
+                                <Alert variant="warning">No national budget data available</Alert>
+                            )}
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+            
+            {/* Search Section */}
+            <Row className="mb-4">
+                <Col>
+                    <Card className="shadow">
+                        <Card.Header>
+                            <h3>Search Budget Data</h3>
+                        </Card.Header>
+                        <Card.Body>
+                            <Form onSubmit={handleSearch}>
+                                <Row>
+                                    <Col md={5}>
+                                        <Form.Group controlId="searchQuery">
+                                            <Form.Label>Search Jurisdiction</Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Enter county or sub-county name"
+                                                value={searchQuery}
+                                                onChange={(e) => setSearchQuery(e.target.value)}
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col md={3}>
+                                        <Form.Group controlId="fiscalYear">
+                                            <Form.Label>Fiscal Year</Form.Label>
+                                            <Form.Control
+                                                as="select"
+                                                value={fiscalYear}
+                                                onChange={(e) => setFiscalYear(e.target.value)}
+                                            >
+                                                <option value={new Date().getFullYear()}>{new Date().getFullYear()}</option>
+                                                <option value={new Date().getFullYear() - 1}>{new Date().getFullYear() - 1}</option>
+                                                <option value={new Date().getFullYear() - 2}>{new Date().getFullYear() - 2}</option>
+                                            </Form.Control>
+                                        </Form.Group>
+                                    </Col>
+                                    <Col md={3}>
+                                        <Form.Group controlId="levelFilter">
+                                            <Form.Label>Jurisdiction Level</Form.Label>
+                                            <Form.Control
+                                                as="select"
+                                                value={levelFilter}
+                                                onChange={(e) => setLevelFilter(e.target.value)}
+                                            >
+                                                <option value="">All Levels</option>
+                                                <option value="national">National</option>
+                                                <option value="county">County</option>
+                                                <option value="subcounty">Sub-County</option>
+                                            </Form.Control>
+                                        </Form.Group>
+                                    </Col>
+                                    <Col md={1} className="d-flex align-items-end">
+                                        <button type="submit" className="btn btn-primary w-100">
+                                            <i className="fas fa-search"></i>
+                                        </button>
+                                    </Col>
+                                </Row>
+                            </Form>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+            
+            {/* Search Results */}
+            {searchResults.length > 0 && (
+                <Row className="mb-5">
+                    <Col>
+                        <Card className="shadow">
+                            <Card.Header>
+                                <h3>Search Results</h3>
+                            </Card.Header>
+                            <Card.Body>
+                                <Row>
+                                    <Col md={6}>
+                                        <div className="chart-container" style={{ height: '400px' }}>
+                                            <Pie 
+                                                data={utilizationChartData}
+                                                options={{
+                                                    responsive: true,
+                                                    maintainAspectRatio: false,
+                                                    plugins: {
+                                                        tooltip: {
+                                                            callbacks: {
+                                                                label: function(context) {
+                                                                    return `${context.label}: ${context.raw}% utilization`;
+                                                                }
+                                                            }
+                                                        },
+                                                        legend: {
+                                                            position: 'right'
+                                                        }
+                                                    }
+                                                }}
+                                            />
+                                        </div>
+                                    </Col>
+                                    <Col md={6}>
+                                        <Table striped bordered hover responsive>
+                                            <thead>
+                                                <tr>
+                                                    <th>Jurisdiction</th>
+                                                    <th>Level</th>
+                                                    <th>Allocated</th>
+                                                    <th>Spent</th>
+                                                    <th>Utilization</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {searchResults.map((item, index) => (
+                                                    <tr key={index}>
+                                                        <td>{item.name}</td>
+                                                        <td>
+                                                            <span className={`badge ${
+                                                                item.level === 'national' ? 'bg-primary' :
+                                                                item.level === 'county' ? 'bg-success' : 'bg-info'
+                                                            }`}>
+                                                                {item.level}
+                                                            </span>
+                                                        </td>
+                                                        <td>KSh {item.total_allocated?.toLocaleString()}</td>
+                                                        <td>KSh {item.total_spent?.toLocaleString()}</td>
+                                                        <td>
+                                                            <div className="progress" style={{ height: '20px' }}>
+                                                                <div 
+                                                                    className={`progress-bar ${
+                                                                        item.utilization_percentage >= 80 ? 'bg-danger' :
+                                                                        item.utilization_percentage >= 50 ? 'bg-warning' : 'bg-success'
+                                                                    }`}
+                                                                    style={{ width: `${item.utilization_percentage}%` }}
+                                                                >
+                                                                    {item.utilization_percentage}%
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </Table>
+                                    </Col>
+                                </Row>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            )}
+            
+            {/* Login Prompt for Authorized Users */}
+            <Row className="mb-4">
+                <Col>
+                    <Card className="shadow">
+                        <Card.Body className="text-center">
+                            <h4>Government Officials</h4>
+                            <p className="text-muted">
+                                Authorized personnel can log in to enter or update budget data
+                            </p>
+                            <button 
+                                onClick={handleLoginRedirect}
+                                className="btn btn-primary"
+                            >
+                                <i className="fas fa-sign-in-alt me-2"></i>
+                                Login to Dashboard
+                            </button>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
+    );
+};
+
+export default LandingPage;
