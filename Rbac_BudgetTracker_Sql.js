@@ -421,6 +421,95 @@ GRANT ALL PRIVILEGES ON budget_tracker.* TO 'budget_user'@'localhost';
 FLUSH PRIVILEGES;
 
 
+// src/context/AuthContext.js
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
+    const [permissions, setPermissions] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                const response = await axios.get('/api/auth/check');
+                setUser(response.data.user);
+                setPermissions(response.data.permissions);
+            } catch (error) {
+                setUser(null);
+                setPermissions([]);
+            } finally {
+                setLoading(false);
+            }
+        };
+        checkAuth();
+    }, []);
+
+    const login = async (credentials) => {
+        const response = await axios.post('/api/auth/login', credentials);
+        setUser(response.data.user);
+        setPermissions(response.data.permissions);
+    };
+
+    const logout = async () => {
+        await axios.post('/api/auth/logout');
+        setUser(null);
+        setPermissions([]);
+        navigate('/login');
+    };
+
+    // Check if user has permission for a specific jurisdiction and role
+    const hasPermission = (requiredRole, jurisdictionId = null) => {
+        if (!user) return false;
+        
+        // Super admin has all permissions
+        if (permissions.some(p => p.role === 'Super Admin')) return true;
+        
+        return permissions.some(p => 
+            p.role === requiredRole && 
+            (jurisdictionId === null || p.jurisdiction_id === jurisdictionId)
+        );
+    };
+
+    // Get accessible jurisdictions for the user
+    const getAccessibleJurisdictions = () => {
+        if (!user) return [];
+        
+        if (hasPermission('Super Admin')) {
+            return ['all'];
+        }
+        
+        return permissions.map(p => ({
+            id: p.jurisdiction_id,
+            level: p.jurisdiction_level,
+            name: p.jurisdiction_name
+        }));
+    };
+
+    return (
+        <AuthContext.Provider value={{ 
+            user, 
+            permissions, 
+            loading, 
+            login, 
+            logout, 
+            hasPermission,
+            getAccessibleJurisdictions
+        }}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
+
+export const useAuth = () => useContext(AuthContext);
+
+
+
 // API endpoints for authentication and authorization
 const express = require('express');
 const router = express.Router();
@@ -676,7 +765,7 @@ router.get('/budget/county/:countyId', authenticateToken, async (req, res) => {
 module.exports = router;
 
 
-// backend/routes/publicRoutes.js
+// routes/publicRoutes.js
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
