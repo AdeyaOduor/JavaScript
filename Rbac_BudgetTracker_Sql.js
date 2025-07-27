@@ -421,6 +421,261 @@ GRANT ALL PRIVILEGES ON budget_tracker.* TO 'budget_user'@'localhost';
 FLUSH PRIVILEGES;
 
 
+// BackEnd API endpoints for authentication and authorization
+const express = require('express');
+const router = express.Router();
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const db = require('../db');
+
+// Login endpoint
+router.post('/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        
+        // Get user from database
+        const [user] = await db.query(`
+            SELECT u.*, 
+                   ur.role_id, 
+                   r.name as role_name,
+                   j.id as jurisdiction_id,
+                   j.name as jurisdiction_name,
+                   j.level as jurisdiction_level
+            FROM users u
+            JOIN user_roles ur ON u.id = ur.user_id
+            JOIN roles r ON ur.role_id = r.id
+            JOIN jurisdictions j ON ur.jurisdiction_id = j.id
+            WHERE u.username = ? AND u.is_active = TRUE
+        `, [username]);
+        
+        if (!user) {
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+        
+        // Check password
+        const validPassword = await bcrypt.compare(password, user.password_hash);
+        if (!validPassword) {
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+        
+        // Get all permissions for the user
+        const [permissions] = await db.query(`
+            SELECT r.name as role, 
+                   j.id as jurisdiction_id, 
+                   j.name as jurisdiction_name,
+                   j.level as jurisdiction_level,
+                   d.id as department_id,
+                   d.name as department_name
+            FROM user_roles ur
+            JOIN roles r ON ur.role_id = r.id
+            JOIN jurisdictions j ON ur.jurisdiction_id = j.id
+            LEFT JOIN departments d ON ur.department_id = d.id
+            WHERE ur.user_id = ?
+        `, [user.id]);
+        
+        // Create JWT token
+        const token = jwt.sign(
+            { 
+                userId: user.id, 
+                role: user.role_name,
+                jurisdictionId: user.jurisdiction_id,
+                jurisdictionLevel: user.jurisdiction_level
+            }, 
+            process.env.JWT_SECRET,
+            { expiresIn: '8h' }
+        );
+        
+        res.json({
+            token,
+            user: {
+                id: user.id,
+                username: user.username,
+                email: user.email,
+                full_name: user.full_name,
+                role: user.role_name,
+                jurisdiction_id: user.jurisdiction_id,
+                jurisdiction_name: user.jurisdiction_name,
+                jurisdiction_level: user.jurisdiction_level
+            },
+            permissions
+        });
+        
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Check auth status
+router.get('/check', authenticateToken, async (req, res) => {
+    try {
+        // Get user details
+        const [user] = await db.query(`
+            SELECT u.*, 
+                   r.name as role_name,
+                   j.id as jurisdiction_id,
+                   j.name as jurisdiction_name,
+                   j.level as jurisdiction_level
+            FROM users u
+            JOIN user_roles ur ON u.id = ur.user_id
+            JOIN roles r ON ur.role_id = r.id
+            JOIN jurisdictions j ON ur.jurisdiction_id = j.id
+            WHERE u.id = ?
+            ORDER BY r.hierarchy_level DESC
+            LIMIT 1
+        `, [req.user.userId]);
+        
+        if (!user) {
+            return res.status(401).json({ error: 'User not found' });
+        }
+        
+        // Get all permissions
+        const [permissions] = await db.query(`
+            SELECT r.name as role, 
+                   j.id as jurisdiction_id, 
+                   j.name as jurisdiction_name,
+                   j.level as jurisdiction_level,
+                   d.id as department_id,
+                   d.name as department_name
+            FROM user_roles ur
+            JOIN roles r ON ur.role_id = r.id
+            JOIN jurisdictions j ON ur.jurisdiction_id = j.id
+            LEFT JOIN departments d ON ur.department_id = d.id
+            WHERE ur.user_id = ?
+        `, [req.user.userId]);
+        
+        res.json({ user, permissions });
+        
+    } catch (error) {
+        console.error('Auth check error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Middleware to authenticate JWT token
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    
+    if (!token) return res.sendStatus(401);
+    
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) return res.sendStatus(403);
+        req.user = user;
+        next();
+    });
+}
+
+// Authorization middleware for jurisdiction access
+function authorizeAccess(requiredRole, jurisdictionLevel = null) {
+    return (req, res, next) => {
+        // Super admin bypasses all checks
+        if (req.user.role === 'Super Admin') return next();
+        
+        // Check if user has the required role
+        if (req.user.role !== requiredRole) {
+            return res.status(403).json({ error: 'Insufficient permissions' });
+        }
+        
+        // If jurisdiction level is specified, check it matches
+        if (jurisdictionLevel && req.user.jurisdictionLevel !== jurisdictionLevel) {
+            return res.status(403).json({ error: 'Access restricted to specific jurisdiction level' });
+        }
+        
+        next();
+    };
+}
+
+// Get national budget data
+router.get('/budget/national', authenticateToken, authorizeAccess('National Admin', 'national'), async (req, res) => {
+    try {
+        // Only Super Admin or National Admin can access this
+        if (req.user.role !== 'Super Admin' && req.user.role !== 'National Admin') {
+            return res.status(403).json({ error: 'Access denied' });
+        }
+        
+        const [results] = await db.query(`
+            SELECT 
+                SUM(allocated_amount) as totalAllocated,
+                SUM(spent_amount) as totalSpent
+            FROM budgets
+            WHERE jurisdiction_id IN (
+                SELECT id FROM jurisdictions WHERE level = 'national'
+            )
+        `);
+        
+        const [counties] = await db.query(`
+            SELECT 
+                j.id,
+                j.name,
+                SUM(b.allocated_amount) as allocated,
+                SUM(b.spent_amount) as spent,
+                ROUND((SUM(b.spent_amount) / SUM(b.allocated_amount)) * 100, 2) as utilization
+            FROM jurisdictions j
+            LEFT JOIN budgets b ON j.id = b.jurisdiction_id
+            WHERE j.level = 'county'
+            GROUP BY j.id, j.name
+        `);
+        
+        res.json({
+            totalAllocated: results[0].totalAllocated || 0,
+            totalSpent: results[0].totalSpent || 0,
+            counties
+        });
+        
+    } catch (error) {
+        console.error('Error fetching national budget:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Get county budget data
+router.get('/budget/county/:countyId', authenticateToken, async (req, res) => {
+    try {
+        const { countyId } = req.params;
+        
+        // Check if user has access to this county
+        if (req.user.role !== 'Super Admin' && 
+            (req.user.role !== 'County Admin' || req.user.jurisdiction_id != countyId)) {
+            return res.status(403).json({ error: 'Access denied' });
+        }
+        
+        const [results] = await db.query(`
+            SELECT 
+                SUM(allocated_amount) as totalAllocated,
+                SUM(spent_amount) as totalSpent
+            FROM budgets
+            WHERE jurisdiction_id = ?
+        `, [countyId]);
+        
+        const [departments] = await db.query(`
+            SELECT 
+                d.id,
+                d.name,
+                SUM(b.allocated_amount) as allocated,
+                SUM(b.spent_amount) as spent,
+                ROUND((SUM(b.spent_amount) / SUM(b.allocated_amount)) * 100, 2) as utilization
+            FROM departments d
+            LEFT JOIN budgets b ON d.id = b.department_id
+            WHERE d.jurisdiction_id = ?
+            GROUP BY d.id, d.name
+        `, [countyId]);
+        
+        res.json({
+            totalAllocated: results[0].totalAllocated || 0,
+            totalSpent: results[0].totalSpent || 0,
+            departments
+        });
+        
+    } catch (error) {
+        console.error('Error fetching county budget:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+module.exports = router;
+
+
 // src/context/AuthContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
@@ -924,261 +1179,6 @@ const CountyDashboard = () => {
 };
 
 export default CountyDashboard;
-
-
-// API endpoints for authentication and authorization
-const express = require('express');
-const router = express.Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const db = require('../db');
-
-// Login endpoint
-router.post('/login', async (req, res) => {
-    try {
-        const { username, password } = req.body;
-        
-        // Get user from database
-        const [user] = await db.query(`
-            SELECT u.*, 
-                   ur.role_id, 
-                   r.name as role_name,
-                   j.id as jurisdiction_id,
-                   j.name as jurisdiction_name,
-                   j.level as jurisdiction_level
-            FROM users u
-            JOIN user_roles ur ON u.id = ur.user_id
-            JOIN roles r ON ur.role_id = r.id
-            JOIN jurisdictions j ON ur.jurisdiction_id = j.id
-            WHERE u.username = ? AND u.is_active = TRUE
-        `, [username]);
-        
-        if (!user) {
-            return res.status(401).json({ error: 'Invalid credentials' });
-        }
-        
-        // Check password
-        const validPassword = await bcrypt.compare(password, user.password_hash);
-        if (!validPassword) {
-            return res.status(401).json({ error: 'Invalid credentials' });
-        }
-        
-        // Get all permissions for the user
-        const [permissions] = await db.query(`
-            SELECT r.name as role, 
-                   j.id as jurisdiction_id, 
-                   j.name as jurisdiction_name,
-                   j.level as jurisdiction_level,
-                   d.id as department_id,
-                   d.name as department_name
-            FROM user_roles ur
-            JOIN roles r ON ur.role_id = r.id
-            JOIN jurisdictions j ON ur.jurisdiction_id = j.id
-            LEFT JOIN departments d ON ur.department_id = d.id
-            WHERE ur.user_id = ?
-        `, [user.id]);
-        
-        // Create JWT token
-        const token = jwt.sign(
-            { 
-                userId: user.id, 
-                role: user.role_name,
-                jurisdictionId: user.jurisdiction_id,
-                jurisdictionLevel: user.jurisdiction_level
-            }, 
-            process.env.JWT_SECRET,
-            { expiresIn: '8h' }
-        );
-        
-        res.json({
-            token,
-            user: {
-                id: user.id,
-                username: user.username,
-                email: user.email,
-                full_name: user.full_name,
-                role: user.role_name,
-                jurisdiction_id: user.jurisdiction_id,
-                jurisdiction_name: user.jurisdiction_name,
-                jurisdiction_level: user.jurisdiction_level
-            },
-            permissions
-        });
-        
-    } catch (error) {
-        console.error('Login error:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-// Check auth status
-router.get('/check', authenticateToken, async (req, res) => {
-    try {
-        // Get user details
-        const [user] = await db.query(`
-            SELECT u.*, 
-                   r.name as role_name,
-                   j.id as jurisdiction_id,
-                   j.name as jurisdiction_name,
-                   j.level as jurisdiction_level
-            FROM users u
-            JOIN user_roles ur ON u.id = ur.user_id
-            JOIN roles r ON ur.role_id = r.id
-            JOIN jurisdictions j ON ur.jurisdiction_id = j.id
-            WHERE u.id = ?
-            ORDER BY r.hierarchy_level DESC
-            LIMIT 1
-        `, [req.user.userId]);
-        
-        if (!user) {
-            return res.status(401).json({ error: 'User not found' });
-        }
-        
-        // Get all permissions
-        const [permissions] = await db.query(`
-            SELECT r.name as role, 
-                   j.id as jurisdiction_id, 
-                   j.name as jurisdiction_name,
-                   j.level as jurisdiction_level,
-                   d.id as department_id,
-                   d.name as department_name
-            FROM user_roles ur
-            JOIN roles r ON ur.role_id = r.id
-            JOIN jurisdictions j ON ur.jurisdiction_id = j.id
-            LEFT JOIN departments d ON ur.department_id = d.id
-            WHERE ur.user_id = ?
-        `, [req.user.userId]);
-        
-        res.json({ user, permissions });
-        
-    } catch (error) {
-        console.error('Auth check error:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-// Middleware to authenticate JWT token
-function authenticateToken(req, res, next) {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-    
-    if (!token) return res.sendStatus(401);
-    
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-        if (err) return res.sendStatus(403);
-        req.user = user;
-        next();
-    });
-}
-
-// Authorization middleware for jurisdiction access
-function authorizeAccess(requiredRole, jurisdictionLevel = null) {
-    return (req, res, next) => {
-        // Super admin bypasses all checks
-        if (req.user.role === 'Super Admin') return next();
-        
-        // Check if user has the required role
-        if (req.user.role !== requiredRole) {
-            return res.status(403).json({ error: 'Insufficient permissions' });
-        }
-        
-        // If jurisdiction level is specified, check it matches
-        if (jurisdictionLevel && req.user.jurisdictionLevel !== jurisdictionLevel) {
-            return res.status(403).json({ error: 'Access restricted to specific jurisdiction level' });
-        }
-        
-        next();
-    };
-}
-
-// Get national budget data
-router.get('/budget/national', authenticateToken, authorizeAccess('National Admin', 'national'), async (req, res) => {
-    try {
-        // Only Super Admin or National Admin can access this
-        if (req.user.role !== 'Super Admin' && req.user.role !== 'National Admin') {
-            return res.status(403).json({ error: 'Access denied' });
-        }
-        
-        const [results] = await db.query(`
-            SELECT 
-                SUM(allocated_amount) as totalAllocated,
-                SUM(spent_amount) as totalSpent
-            FROM budgets
-            WHERE jurisdiction_id IN (
-                SELECT id FROM jurisdictions WHERE level = 'national'
-            )
-        `);
-        
-        const [counties] = await db.query(`
-            SELECT 
-                j.id,
-                j.name,
-                SUM(b.allocated_amount) as allocated,
-                SUM(b.spent_amount) as spent,
-                ROUND((SUM(b.spent_amount) / SUM(b.allocated_amount)) * 100, 2) as utilization
-            FROM jurisdictions j
-            LEFT JOIN budgets b ON j.id = b.jurisdiction_id
-            WHERE j.level = 'county'
-            GROUP BY j.id, j.name
-        `);
-        
-        res.json({
-            totalAllocated: results[0].totalAllocated || 0,
-            totalSpent: results[0].totalSpent || 0,
-            counties
-        });
-        
-    } catch (error) {
-        console.error('Error fetching national budget:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-// Get county budget data
-router.get('/budget/county/:countyId', authenticateToken, async (req, res) => {
-    try {
-        const { countyId } = req.params;
-        
-        // Check if user has access to this county
-        if (req.user.role !== 'Super Admin' && 
-            (req.user.role !== 'County Admin' || req.user.jurisdiction_id != countyId)) {
-            return res.status(403).json({ error: 'Access denied' });
-        }
-        
-        const [results] = await db.query(`
-            SELECT 
-                SUM(allocated_amount) as totalAllocated,
-                SUM(spent_amount) as totalSpent
-            FROM budgets
-            WHERE jurisdiction_id = ?
-        `, [countyId]);
-        
-        const [departments] = await db.query(`
-            SELECT 
-                d.id,
-                d.name,
-                SUM(b.allocated_amount) as allocated,
-                SUM(b.spent_amount) as spent,
-                ROUND((SUM(b.spent_amount) / SUM(b.allocated_amount)) * 100, 2) as utilization
-            FROM departments d
-            LEFT JOIN budgets b ON d.id = b.department_id
-            WHERE d.jurisdiction_id = ?
-            GROUP BY d.id, d.name
-        `, [countyId]);
-        
-        res.json({
-            totalAllocated: results[0].totalAllocated || 0,
-            totalSpent: results[0].totalSpent || 0,
-            departments
-        });
-        
-    } catch (error) {
-        console.error('Error fetching county budget:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-module.exports = router;
 
 
 // src/App.js
