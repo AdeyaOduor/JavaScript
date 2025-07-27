@@ -769,6 +769,163 @@ const NationalDashboard = () => {
 export default NationalDashboard;
 
 
+// src/views/dashboards/CountyDashboard.js
+import React, { useEffect, useState } from 'react';
+import { Card, Row, Col, Container, Spinner, Table } from 'react-bootstrap';
+import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
+
+const CountyDashboard = () => {
+    const [loading, setLoading] = useState(true);
+    const [budgetData, setBudgetData] = useState(null);
+    const [departments, setDepartments] = useState([]);
+    const { user } = useAuth();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [budgetRes, deptRes] = await Promise.all([
+                    axios.get(`/api/budget/county/${user.jurisdiction_id}`),
+                    axios.get(`/api/departments?jurisdiction=${user.jurisdiction_id}`)
+                ]);
+                
+                setBudgetData(budgetRes.data);
+                setDepartments(deptRes.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        
+        fetchData();
+    }, [user.jurisdiction_id]);
+
+    if (loading) {
+        return (
+            <div className="text-center mt-5">
+                <Spinner animation="border" />
+            </div>
+        );
+    }
+
+    return (
+        <Container>
+            <h2 className="mb-4">{user.jurisdiction_name} County Budget Overview</h2>
+            
+            <Row className="mb-4">
+                <Col md={4}>
+                    <Card className="shadow">
+                        <Card.Body>
+                            <Card.Title>County Allocation</Card.Title>
+                            <Card.Text className="display-6">
+                                KSh {budgetData.totalAllocated?.toLocaleString()}
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                </Col>
+                <Col md={4}>
+                    <Card className="shadow">
+                        <Card.Body>
+                            <Card.Title>County Expenditure</Card.Title>
+                            <Card.Text className="display-6 text-danger">
+                                KSh {budgetData.totalSpent?.toLocaleString()}
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                </Col>
+                <Col md={4}>
+                    <Card className="shadow">
+                        <Card.Body>
+                            <Card.Title>Remaining Balance</Card.Title>
+                            <Card.Text className="display-6 text-success">
+                                KSh {(budgetData.totalAllocated - budgetData.totalSpent)?.toLocaleString()}
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+            
+            <Card className="shadow mb-4">
+                <Card.Header>
+                    <h5>Department Budget Utilization</h5>
+                </Card.Header>
+                <Card.Body>
+                    <Table striped bordered hover responsive>
+                        <thead>
+                            <tr>
+                                <th>Department</th>
+                                <th>Allocated (KSh)</th>
+                                <th>Spent (KSh)</th>
+                                <th>Utilization %</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {departments.map(dept => (
+                                <tr key={dept.id}>
+                                    <td>{dept.name}</td>
+                                    <td>{dept.allocated?.toLocaleString()}</td>
+                                    <td>{dept.spent?.toLocaleString()}</td>
+                                    <td>
+                                        <div className="progress">
+                                            <div 
+                                                className={`progress-bar ${dept.utilization >= 80 ? 'bg-danger' : dept.utilization >= 50 ? 'bg-warning' : 'bg-success'}`}
+                                                style={{ width: `${dept.utilization}%` }}
+                                            >
+                                                {dept.utilization}%
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button className="btn btn-sm btn-outline-primary">
+                                            View Details
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                </Card.Body>
+            </Card>
+            
+            <Row>
+                <Col md={6}>
+                    <Card className="shadow">
+                        <Card.Header>
+                            <h5>Sub-Counties Allocation</h5>
+                        </Card.Header>
+                        <Card.Body>
+                            {/* Sub-counties chart or table would go here */}
+                            <div className="text-center py-4">
+                                <i className="fas fa-chart-pie fa-3x text-muted"></i>
+                                <p className="mt-2">Sub-Counties Budget Distribution</p>
+                            </div>
+                        </Card.Body>
+                    </Card>
+                </Col>
+                <Col md={6}>
+                    <Card className="shadow">
+                        <Card.Header>
+                            <h5>Recent Transactions</h5>
+                        </Card.Header>
+                        <Card.Body>
+                            {/* Recent transactions would go here */}
+                            <div className="text-center py-4">
+                                <i className="fas fa-list-alt fa-3x text-muted"></i>
+                                <p className="mt-2">Recent Budget Transactions</p>
+                            </div>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
+    );
+};
+
+export default CountyDashboard;
+
+
 // API endpoints for authentication and authorization
 const express = require('express');
 const router = express.Router();
