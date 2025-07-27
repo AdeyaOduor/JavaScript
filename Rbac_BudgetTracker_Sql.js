@@ -638,6 +638,137 @@ const DashboardLayout = () => {
 export default DashboardLayout;
 
 
+// src/views/dashboards/NationalDashboard.js
+import React, { useEffect, useState } from 'react';
+import { Card, Row, Col, Container, Spinner, Table } from 'react-bootstrap';
+import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
+
+const NationalDashboard = () => {
+    const [loading, setLoading] = useState(true);
+    const [budgetData, setBudgetData] = useState([]);
+    const [counties, setCounties] = useState([]);
+    const { hasPermission } = useAuth();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [budgetRes, countiesRes] = await Promise.all([
+                    axios.get('/api/budget/national'),
+                    axios.get('/api/jurisdictions/counties')
+                ]);
+                
+                setBudgetData(budgetRes.data);
+                setCounties(countiesRes.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        
+        fetchData();
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="text-center mt-5">
+                <Spinner animation="border" />
+            </div>
+        );
+    }
+
+    return (
+        <Container>
+            <h2 className="mb-4">National Government Budget Overview</h2>
+            
+            <Row className="mb-4">
+                <Col md={4}>
+                    <Card className="shadow">
+                        <Card.Body>
+                            <Card.Title>Total Budget Allocation</Card.Title>
+                            <Card.Text className="display-6">
+                                KSh {budgetData.totalAllocated?.toLocaleString()}
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                </Col>
+                <Col md={4}>
+                    <Card className="shadow">
+                        <Card.Body>
+                            <Card.Title>Total Expenditure</Card.Title>
+                            <Card.Text className="display-6 text-danger">
+                                KSh {budgetData.totalSpent?.toLocaleString()}
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                </Col>
+                <Col md={4}>
+                    <Card className="shadow">
+                        <Card.Body>
+                            <Card.Title>Balance</Card.Title>
+                            <Card.Text className="display-6 text-success">
+                                KSh {(budgetData.totalAllocated - budgetData.totalSpent)?.toLocaleString()}
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+            
+            <Card className="shadow mb-4">
+                <Card.Header>
+                    <h5>County Budget Summary</h5>
+                </Card.Header>
+                <Card.Body>
+                    <Table striped bordered hover responsive>
+                        <thead>
+                            <tr>
+                                <th>County</th>
+                                <th>Allocated (KSh)</th>
+                                <th>Spent (KSh)</th>
+                                <th>Utilization %</th>
+                                {hasPermission('Super Admin') && <th>Actions</th>}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {counties.map(county => (
+                                <tr key={county.id}>
+                                    <td>{county.name}</td>
+                                    <td>{county.allocated?.toLocaleString()}</td>
+                                    <td>{county.spent?.toLocaleString()}</td>
+                                    <td>
+                                        <div className="progress">
+                                            <div 
+                                                className={`progress-bar ${county.utilization >= 80 ? 'bg-danger' : county.utilization >= 50 ? 'bg-warning' : 'bg-success'}`}
+                                                style={{ width: `${county.utilization}%` }}
+                                            >
+                                                {county.utilization}%
+                                            </div>
+                                        </div>
+                                    </td>
+                                    {hasPermission('Super Admin') && (
+                                        <td>
+                                            <button className="btn btn-sm btn-outline-primary me-2">
+                                                Details
+                                            </button>
+                                            <button className="btn btn-sm btn-outline-warning">
+                                                Adjust
+                                            </button>
+                                        </td>
+                                    )}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                </Card.Body>
+            </Card>
+        </Container>
+    );
+};
+
+export default NationalDashboard;
+
+
 // API endpoints for authentication and authorization
 const express = require('express');
 const router = express.Router();
