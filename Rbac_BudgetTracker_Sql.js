@@ -509,6 +509,134 @@ export const AuthProvider = ({ children }) => {
 export const useAuth = () => useContext(AuthContext);
 
 
+// src/components/ProtectedRoute.js
+import { useAuth } from '../context/AuthContext';
+import { Navigate, Outlet } from 'react-router-dom';
+
+const ProtectedRoute = ({ requiredRole, jurisdictionLevel = null }) => {
+    const { user, loading, hasPermission } = useAuth();
+
+    if (loading) {
+        return <div className="text-center mt-5">Loading...</div>;
+    }
+
+    if (!user) {
+        return <Navigate to="/login" replace />;
+    }
+
+    if (requiredRole && !hasPermission(requiredRole, jurisdictionLevel)) {
+        return <Navigate to="/unauthorized" replace />;
+    }
+
+    return <Outlet />;
+};
+
+export default ProtectedRoute;
+
+
+// src/layouts/DashboardLayout.js
+import React from 'react';
+import { Container, Row, Col, Nav, Card } from 'react-bootstrap';
+import { useAuth } from '../context/AuthContext';
+import { Link, Outlet } from 'react-router-dom';
+
+const DashboardLayout = () => {
+    const { user, permissions, logout, hasPermission } = useAuth();
+
+    const getNavItems = () => {
+        const items = [];
+        
+        // Super Admin gets all navigation
+        if (hasPermission('Super Admin')) {
+            items.push(
+                { path: '/national', label: 'National Dashboard', icon: 'globe' },
+                { path: '/counties', label: 'Counties Overview', icon: 'map' },
+                { path: '/sub-counties', label: 'Sub-Counties Overview', icon: 'map-marked' },
+                { path: '/users', label: 'User Management', icon: 'users' }
+            );
+        }
+        
+        // National level access
+        if (hasPermission('National Admin')) {
+            items.push(
+                { path: '/national', label: 'National Dashboard', icon: 'globe' },
+                { path: '/counties', label: 'Counties Overview', icon: 'map' }
+            );
+        }
+        
+        // County level access
+        if (hasPermission('County Admin')) {
+            items.push(
+                { path: '/county', label: 'County Dashboard', icon: 'building' }
+            );
+        }
+        
+        // Sub-County level access
+        if (hasPermission('Sub-County Admin')) {
+            items.push(
+                { path: '/sub-county', label: 'Sub-County Dashboard', icon: 'map-marker-alt' }
+            );
+        }
+        
+        // Department level access
+        if (hasPermission('Department Head')) {
+            items.push(
+                { path: '/department', label: 'Department Dashboard', icon: 'sitemap' }
+            );
+        }
+        
+        // Common items
+        items.push(
+            { path: '/reports', label: 'Reports', icon: 'file-alt' },
+            { path: '/profile', label: 'Profile', icon: 'user' }
+        );
+        
+        return items;
+    };
+
+    return (
+        <Container fluid>
+            <Row>
+                <Col md={2} className="bg-dark text-white min-vh-100 p-0">
+                    <div className="p-3">
+                        <h4 className="text-center">Budget Tracker</h4>
+                        <div className="text-center mb-4">
+                            <span className="badge bg-primary">
+                                {user?.role} | {user?.jurisdiction_name}
+                            </span>
+                        </div>
+                    </div>
+                    <Nav className="flex-column">
+                        {getNavItems().map((item, index) => (
+                            <Nav.Link 
+                                as={Link} 
+                                to={item.path} 
+                                key={index}
+                                className="text-white py-3 px-3 border-bottom border-secondary"
+                            >
+                                <i className={`fas fa-${item.icon} me-2`}></i>
+                                {item.label}
+                            </Nav.Link>
+                        ))}
+                        <Nav.Link 
+                            onClick={logout}
+                            className="text-white py-3 px-3 border-bottom border-secondary"
+                        >
+                            <i className="fas fa-sign-out-alt me-2"></i>
+                            Logout
+                        </Nav.Link>
+                    </Nav>
+                </Col>
+                <Col md={10} className="p-4">
+                    <Outlet />
+                </Col>
+            </Row>
+        </Container>
+    );
+};
+
+export default DashboardLayout;
+
 
 // API endpoints for authentication and authorization
 const express = require('express');
