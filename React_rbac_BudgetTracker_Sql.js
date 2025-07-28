@@ -1,6 +1,167 @@
 /*include components from React_BudgetTracker_Sql.js to implement this RBAC modules*/
 
+-- 1. Stored Procedure for National Budget Summary
+DELIMITER //
+CREATE PROCEDURE GetNationalBudgetSummary(IN fiscal_year INT)
+BEGIN
+    SELECT 
+        j.level,
+        COUNT(DISTINCT j.id) AS jurisdiction_count,
+        SUM(b.allocated_amount) AS total_allocated,
+        SUM(b.spent_amount) AS total_spent,
+        ROUND((SUM(b.spent_amount) / SUM(b.allocated_amount)) * 100, 2) AS utilization_percentage
+    FROM jurisdictions j
+    LEFT JOIN budgets b ON j.id = b.jurisdiction_id
+    WHERE (fiscal_year IS NULL OR b.fiscal_year = fiscal_year)
+    GROUP BY j.level WITH ROLLUP;
+END //
+DELIMITER ;
 
+-- 2. Stored Procedure for Jurisdiction Budget Summary
+DELIMITER //
+CREATE PROCEDURE GetJurisdictionBudgetSummary(
+    IN jurisdiction_id INT,
+    IN fiscal_year INT,
+    IN include_children BOOLEAN
+)
+BEGIN
+    -- Get the requested jurisdiction
+    CREATE TEMPORARY TABLE IF NOT EXISTS temp_jurisdictions AS
+    SELECT id, name, level FROM jurisdictions WHERE id = jurisdiction_id;
+    
+    -- Include child jurisdictions if requested
+    IF include_children THEN
+        INSERT INTO temp_jurisdictions
+        WITH RECURSIVE jurisdiction_tree AS (
+            SELECT id, name, level FROM jurisdictions WHERE id = jurisdiction_id
+            UNION ALL
+            SELECT j.id, j.name, j.level 
+            FROM jurisdictions j
+            JOIN jurisdiction_tree jt ON j.parent_id = jt.id
+        )
+        SELECT id, name, level FROM jurisdiction_tree WHERE id != jurisdiction_id;
+    END IF;
+    
+    -- Return the budget summary
+    SELECT 
+        j.id,
+        j.name,
+        j.level,
+        SUM(b.allocated_amount) AS total_allocated,
+        SUM(b.spent_amount) AS total_spent,
+        ROUND((SUM(b.spent_amount) / SUM(b.allocated_amount)) * 100, 2) AS utilization_percentage,
+        COUNT(DISTINCT b.department_id) AS department_count
+    FROM temp_jurisdictions j
+    LEFT JOIN budgets b ON j.id = b.jurisdiction_id
+    WHERE (fiscal_year IS NULL OR b.fiscal_year = fiscal_year)
+    GROUP BY j.id, j.name, j.level;
+    
+    DROP TEMPORARY TABLE IF EXISTS temp_jurisdictions;
+END //
+DELIMITER ;
+
+-- 3. Stored Procedure for Public Budget Search
+DELIMITER //
+CREATE PROCEDURE SearchPublicBudgetData(
+    IN search_query VARCHAR(100),
+    IN fiscal_year INT,
+    IN level_filter VARCHAR(20)
+)
+BEGIN
+    SELECT 
+        j.id,
+        j.name,
+        j.level,
+        j.code,
+        SUM(b.allocated_amount) AS total_allocated,
+        SUM(b.spent_amount) AS total_spent,
+        ROUND((SUM(b.spent_amount) / SUM(b.allocated_amount)) * 100, 2) AS utilization_percentage
+    FROM jurisdictions j
+    LEFT JOIN budgets b ON j.id = b.jurisdiction_id
+    WHERE 
+        (search_query IS NULL OR j.name LIKE CONCAT('%', search_query, '%') OR j.code LIKE CONCAT('%', search_query, '%'))
+        AND (fiscal_year IS NULL OR b.fiscal_year = fiscal_year)
+        AND (level_filter IS NULL OR j.level = level_filter)
+    GROUP BY j.id, j.name, j.level, j.code
+    ORDER BY 
+        CASE j.level 
+            WHEN 'national' THEN 1
+            WHEN 'county' THEN 2
+            WHEN 'subcounty' THEN 3
+            ELSE 4
+        END,
+        j.name;
+END //
+DELIMITER ;
+
+-- 4. Stored Procedure for User Authentication
+DELIMITER //
+CREATE PROCEDURE AuthenticateUser(
+    IN p_username VARCHAR(50),
+    IN p_password VARCHAR(255)
+)
+BEGIN
+    DECLARE user_count INT;
+    DECLARE user_id INT;
+    DECLARE password_hash VARCHAR(255);
+    DECLARE is_active BOOLEAN;
+    
+    -- Check if user exists and get password hash
+    SELECT COUNT(*), id, password_hash, is_active INTO user_count, user_id, password_hash, is_active
+    FROM users WHERE username = p_username;
+    
+    IF user_count = 0 THEN
+        SELECT NULL AS user, 'User not found' AS message;
+    ELSEIF NOT is_active THEN
+        SELECT NULL AS user, 'User account is inactive' AS message;
+    ELSEIF NOT (SELECT bcrypt_compare(p_password, password_hash)) THEN
+        SELECT NULL AS user, 'Invalid password' AS message;
+    ELSE
+        -- Return user data with permissions
+        SELECT 
+            u.id, 
+            u.username, 
+            u.email, 
+            u.full_name,
+            r.name AS role,
+            j.id AS jurisdiction_id,
+            j.name AS jurisdiction_name,
+            j.level AS jurisdiction_level,
+            'success' AS message
+        FROM users u
+        JOIN user_roles ur ON u.id = ur.user_id
+        JOIN roles r ON ur.role_id = r.id
+        JOIN jurisdictions j ON ur.jurisdiction_id = j.id
+        WHERE u.id = user_id
+        ORDER BY r.hierarchy_level DESC
+        LIMIT 1;
+        
+        -- Return all permissions
+        SELECT 
+            r.name AS role, 
+            j.id AS jurisdiction_id, 
+            j.name AS jurisdiction_name,
+            j.level AS jurisdiction_level,
+            d.id AS department_id,
+            d.name AS department_name
+        FROM user_roles ur
+        JOIN roles r ON ur.role_id = r.id
+        JOIN jurisdictions j ON ur.jurisdiction_id = j.id
+        LEFT JOIN departments d ON ur.department_id = d.id
+        WHERE ur.user_id = user_id;
+    END IF;
+END //
+DELIMITER ;
+
+-- Helper function for password comparison
+DELIMITER //
+CREATE FUNCTION bcrypt_compare(input_password VARCHAR(255), stored_hash VARCHAR(255))
+RETURNS BOOLEAN DETERMINISTIC
+BEGIN
+    RETURN stored_hash = IFNULL((SELECT CONCAT('$2a$', SUBSTRING(stored_hash, 5)) = 
+           IFNULL((SELECT CONCAT('$2a$', SUBSTRING(TO_BASE64(UNHEX(SHA2(input_password, 256))), 1, 22)), stored_hash);
+END //
+DELIMITER ;
 
 // ==================== Back End ====================
 
