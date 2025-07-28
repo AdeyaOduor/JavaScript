@@ -1,4 +1,6 @@
-// Database Schema and Stored Procedures
+/*include components from React_BudgetTracker_Sql.js to implement this RBAC modules*/
+
+// Database Schema and Stored Procedures for Budget tracker
 -- Create the database if it doesn't exist
 CREATE DATABASE IF NOT EXISTS budget_tracker;
 USE budget_tracker;
