@@ -40,85 +40,133 @@ npm start
 CREATE DATABASE IF NOT EXISTS budget_tracker;
 USE budget_tracker;
 
--- Users table
-CREATE TABLE IF NOT EXISTS Users (
+-- Jurisdictions hierarchy (National -> County -> Sub-County)
+CREATE TABLE IF NOT EXISTS jurisdictions (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    code VARCHAR(20) UNIQUE NOT NULL,
+    level ENUM('national', 'county', 'subcounty') NOT NULL,
+    parent_id INT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (parent_id) REFERENCES jurisdictions(id) ON DELETE CASCADE
+);
+
+-- Departments within each jurisdiction
+CREATE TABLE IF NOT EXISTS departments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    jurisdiction_id INT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    code VARCHAR(20) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (jurisdiction_id) REFERENCES jurisdictions(id) ON DELETE CASCADE,
+    UNIQUE KEY (jurisdiction_id, code)
+);
+
+-- Roles definition
+CREATE TABLE IF NOT EXISTS roles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL,
+    description TEXT,
+    hierarchy_level INT NOT NULL COMMENT 'Higher number means more privileges',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Expenses table
-CREATE TABLE IF NOT EXISTS Expenses (
+-- Users table with enhanced structure
+CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    title VARCHAR(100) NOT NULL,
-    amount DECIMAL(10, 2) NOT NULL,
-    date DATE NOT NULL,
-    category VARCHAR(50) NOT NULL,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    full_name VARCHAR(100) NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES Users(id)
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Budgets table
-CREATE TABLE IF NOT EXISTS Budgets (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+-- User roles assignment with jurisdiction scope
+CREATE TABLE IF NOT EXISTS user_roles (
     user_id INT NOT NULL,
-    amount DECIMAL(10, 2) NOT NULL,
-    month_year VARCHAR(7) NOT NULL, -- Format: YYYY-MM
+    role_id INT NOT NULL,
+    jurisdiction_id INT NOT NULL,
+    department_id INT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES Users(id),
-    UNIQUE KEY unique_user_month (user_id, month_year)
+    PRIMARY KEY (user_id, role_id, jurisdiction_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE,
+    FOREIGN KEY (jurisdiction_id) REFERENCES jurisdictions(id) ON DELETE CASCADE,
+    FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE SET NULL
+);
+
+-- Budget categories table
+CREATE TABLE IF NOT EXISTS budget_categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    code VARCHAR(20) NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY (name, code)
+);
+
+-- Budgets table with enhanced structure
+CREATE TABLE IF NOT EXISTS budgets (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    jurisdiction_id INT NOT NULL,
+    department_id INT NOT NULL,
+    fiscal_year INT NOT NULL,
+    budget_category_id INT NOT NULL,
+    allocated_amount DECIMAL(15,2) NOT NULL,
+    spent_amount DECIMAL(15,2) DEFAULT 0,
+    created_by INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (jurisdiction_id) REFERENCES jurisdictions(id),
+    FOREIGN KEY (department_id) REFERENCES departments(id),
+    FOREIGN KEY (budget_category_id) REFERENCES budget_categories(id),
+    FOREIGN KEY (created_by) REFERENCES users(id),
+    UNIQUE KEY (jurisdiction_id, department_id, fiscal_year, budget_category_id)
+);
+
+-- Expenses table with enhanced structure
+CREATE TABLE IF NOT EXISTS expenses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    budget_id INT NOT NULL,
+    user_id INT NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    amount DECIMAL(15,2) NOT NULL,
+    date DATE NOT NULL,
+    description TEXT,
+    receipt_reference VARCHAR(100),
+    status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (budget_id) REFERENCES budgets(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- Audit log table
+CREATE TABLE IF NOT EXISTS audit_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NULL,
+    action VARCHAR(50) NOT NULL,
+    table_name VARCHAR(50) NOT NULL,
+    record_id INT NULL,
+    old_values JSON NULL,
+    new_values JSON NULL,
+    ip_address VARCHAR(45),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
 DELIMITER //
 
--- User Registration
-CREATE PROCEDURE RegisterUser(IN p_username VARCHAR(50), IN p_password VARCHAR(255))
-BEGIN
-    INSERT INTO Users (username, password) VALUES (p_username, p_password);
-    SELECT LAST_INSERT_ID() AS id, username FROM Users WHERE id = LAST_INSERT_ID();
-END //
-
--- User Login
-CREATE PROCEDURE AuthenticateUser(IN p_username VARCHAR(50))
-BEGIN
-    SELECT id, username, password FROM Users WHERE username = p_username;
-END //
-
--- Get User by ID
-CREATE PROCEDURE GetUserById(IN p_user_id INT)
-BEGIN
-    SELECT id, username, created_at FROM Users WHERE id = p_user_id;
-END //
-
--- Set/Update User Budget
-CREATE PROCEDURE SetUserBudget(
-    IN p_user_id INT,
-    IN p_amount DECIMAL(10, 2),
-    IN p_month_year VARCHAR(7)
-)
-BEGIN
-    INSERT INTO Budgets (user_id, amount, month_year)
-    VALUES (p_user_id, p_amount, p_month_year)
-    ON DUPLICATE KEY UPDATE amount = p_amount;
-    
-    SELECT * FROM Budgets WHERE user_id = p_user_id AND month_year = p_month_year;
-END //
-
--- Get User Budget
-CREATE PROCEDURE GetUserBudget(IN p_user_id INT, IN p_month_year VARCHAR(7))
-BEGIN
-    SELECT * FROM Budgets WHERE user_id = p_user_id AND month_year = p_month_year;
-END //
-
--- Add Expense
+-- Fixed: Add missing closing parenthesis in AddExpense procedure
 CREATE PROCEDURE AddExpense(
     IN p_user_id INT,
     IN p_title VARCHAR(100),
     IN p_amount DECIMAL(10, 2),
     IN p_date DATE,
     IN p_category VARCHAR(50)
+)
 BEGIN
     INSERT INTO Expenses (user_id, title, amount, date, category)
     VALUES (p_user_id, p_title, p_amount, p_date, p_category);
@@ -126,12 +174,13 @@ BEGIN
     SELECT * FROM Expenses WHERE id = LAST_INSERT_ID();
 END //
 
--- Update Expense
+-- Fixed: Add missing closing parenthesis in UpdateExpense procedure
 CREATE PROCEDURE UpdateExpense(
     IN p_expense_id INT,
     IN p_user_id INT,
     IN p_title VARCHAR(100),
     IN p_amount DECIMAL(10, 2)
+)
 BEGIN
     UPDATE Expenses
     SET title = p_title, amount = p_amount
@@ -140,59 +189,329 @@ BEGIN
     SELECT * FROM Expenses WHERE id = p_expense_id;
 END //
 
--- Delete Expense
-CREATE PROCEDURE DeleteExpense(IN p_expense_id INT, IN p_user_id INT)
+-- Enhanced: User registration with jurisdiction and role assignment
+CREATE PROCEDURE RegisterUser(
+    IN p_username VARCHAR(50),
+    IN p_password_hash VARCHAR(255),
+    IN p_email VARCHAR(100),
+    IN p_full_name VARCHAR(100),
+    IN p_role_id INT,
+    IN p_jurisdiction_id INT,
+    IN p_department_id INT NULL
+)
 BEGIN
-    DELETE FROM Expenses WHERE id = p_expense_id AND user_id = p_user_id;
-    SELECT ROW_COUNT() AS affected_rows;
+    DECLARE user_id INT;
+    
+    -- Insert the new user
+    INSERT INTO users (username, password_hash, email, full_name)
+    VALUES (p_username, p_password_hash, p_email, p_full_name);
+    
+    SET user_id = LAST_INSERT_ID();
+    
+    -- Assign role and jurisdiction
+    INSERT INTO user_roles (user_id, role_id, jurisdiction_id, department_id)
+    VALUES (user_id, p_role_id, p_jurisdiction_id, p_department_id);
+    
+    -- Return the created user with role information
+    SELECT 
+        u.id, 
+        u.username, 
+        u.email, 
+        u.full_name,
+        r.name AS role,
+        j.name AS jurisdiction,
+        j.level AS jurisdiction_level,
+        d.name AS department
+    FROM users u
+    JOIN user_roles ur ON u.id = ur.user_id
+    JOIN roles r ON ur.role_id = r.id
+    JOIN jurisdictions j ON ur.jurisdiction_id = j.id
+    LEFT JOIN departments d ON ur.department_id = d.id
+    WHERE u.id = user_id;
 END //
 
--- Get User Expenses
-CREATE PROCEDURE GetUserExpenses(
-    IN p_user_id INT,
-    IN p_start_date DATE,
-    IN p_end_date DATE,
-    IN p_category VARCHAR(50))
+-- Enhanced: User authentication with permissions
+CREATE PROCEDURE AuthenticateUser(
+    IN p_username VARCHAR(50),
+    IN p_password VARCHAR(255)
+)
 BEGIN
-    SELECT * FROM Expenses
-    WHERE user_id = p_user_id
-    AND (p_start_date IS NULL OR date >= p_start_date)
-    AND (p_end_date IS NULL OR date <= p_end_date)
-    AND (p_category IS NULL OR category = p_category)
-    ORDER BY date DESC;
+    DECLARE user_count INT;
+    DECLARE user_id INT;
+    DECLARE stored_hash VARCHAR(255);
+    DECLARE user_active BOOLEAN;
+    
+    -- Check if user exists and get password hash
+    SELECT COUNT(*), id, password_hash, is_active 
+    INTO user_count, user_id, stored_hash, user_active
+    FROM users WHERE username = p_username;
+    
+    IF user_count = 0 THEN
+        SELECT NULL AS user, 'User not found' AS message;
+    ELSEIF NOT user_active THEN
+        SELECT NULL AS user, 'User account is inactive' AS message;
+    ELSEIF NOT (SELECT stored_hash = SHA2(p_password, 256)) THEN
+        SELECT NULL AS user, 'Invalid password' AS message;
+    ELSE
+        -- Return user data with primary role
+        SELECT 
+            u.id, 
+            u.username, 
+            u.email, 
+            u.full_name,
+            r.name AS role,
+            r.hierarchy_level,
+            j.id AS jurisdiction_id,
+            j.name AS jurisdiction_name,
+            j.level AS jurisdiction_level,
+            d.id AS department_id,
+            d.name AS department_name,
+            'success' AS message
+        FROM users u
+        JOIN user_roles ur ON u.id = ur.user_id
+        JOIN roles r ON ur.role_id = r.id
+        JOIN jurisdictions j ON ur.jurisdiction_id = j.id
+        LEFT JOIN departments d ON ur.department_id = d.id
+        WHERE u.id = user_id
+        ORDER BY r.hierarchy_level DESC
+        LIMIT 1;
+        
+        -- Return all permissions
+        SELECT 
+            r.name AS role, 
+            j.id AS jurisdiction_id, 
+            j.name AS jurisdiction_name,
+            j.level AS jurisdiction_level,
+            d.id AS department_id,
+            d.name AS department_name
+        FROM user_roles ur
+        JOIN roles r ON ur.role_id = r.id
+        JOIN jurisdictions j ON ur.jurisdiction_id = j.id
+        LEFT JOIN departments d ON ur.department_id = d.id
+        WHERE ur.user_id = user_id;
+    END IF;
 END //
 
--- Get Expense Summary by Category
-CREATE PROCEDURE GetExpenseSummary(
-    IN p_user_id INT,
-    IN p_month_year VARCHAR(7))
+-- Enhanced: Get budget for a jurisdiction
+CREATE PROCEDURE GetJurisdictionBudget(
+    IN p_jurisdiction_id INT,
+    IN p_fiscal_year INT
+)
 BEGIN
     SELECT 
-        category,
-        SUM(amount) AS total_amount,
-        COUNT(*) AS transaction_count
-    FROM Expenses
-    WHERE user_id = p_user_id
-    AND DATE_FORMAT(date, '%Y-%m') = p_month_year
-    GROUP BY category
-    ORDER BY total_amount DESC;
+        b.id,
+        b.allocated_amount,
+        b.spent_amount,
+        (b.allocated_amount - b.spent_amount) AS remaining_amount,
+        ROUND((b.spent_amount / b.allocated_amount) * 100, 2) AS utilization_percentage,
+        j.name AS jurisdiction_name,
+        j.level AS jurisdiction_level,
+        d.name AS department_name,
+        bc.name AS budget_category,
+        u.full_name AS created_by,
+        b.created_at,
+        b.updated_at
+    FROM budgets b
+    JOIN jurisdictions j ON b.jurisdiction_id = j.id
+    JOIN departments d ON b.department_id = d.id
+    JOIN budget_categories bc ON b.budget_category_id = bc.id
+    JOIN users u ON b.created_by = u.id
+    WHERE b.jurisdiction_id = p_jurisdiction_id
+    AND b.fiscal_year = p_fiscal_year;
+END //
+
+-- Enhanced: Add budget allocation
+CREATE PROCEDURE AddBudgetAllocation(
+    IN p_user_id INT,
+    IN p_jurisdiction_id INT,
+    IN p_department_id INT,
+    IN p_fiscal_year INT,
+    IN p_budget_category_id INT,
+    IN p_allocated_amount DECIMAL(15,2)
+)
+BEGIN
+    DECLARE user_role_level INT;
+    DECLARE user_jurisdiction_level VARCHAR(20);
+    
+    -- Check user permissions
+    SELECT r.hierarchy_level, j.level
+    INTO user_role_level, user_jurisdiction_level
+    FROM user_roles ur
+    JOIN roles r ON ur.role_id = r.id
+    JOIN jurisdictions j ON ur.jurisdiction_id = j.id
+    WHERE ur.user_id = p_user_id
+    ORDER BY r.hierarchy_level DESC
+    LIMIT 1;
+    
+    -- Only allow if user has sufficient privileges
+    IF user_role_level >= 50 THEN -- Budget Officer or higher
+        INSERT INTO budgets (
+            jurisdiction_id,
+            department_id,
+            fiscal_year,
+            budget_category_id,
+            allocated_amount,
+            created_by
+        )
+        VALUES (
+            p_jurisdiction_id,
+            p_department_id,
+            p_fiscal_year,
+            p_budget_category_id,
+            p_allocated_amount,
+            p_user_id
+        )
+        ON DUPLICATE KEY UPDATE 
+            allocated_amount = p_allocated_amount,
+            updated_at = CURRENT_TIMESTAMP;
+        
+        SELECT * FROM budgets WHERE id = LAST_INSERT_ID();
+    ELSE
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Insufficient privileges to modify budget';
+    END IF;
+END //
+
+-- Enhanced: Record expense against budget
+CREATE PROCEDURE RecordExpense(
+    IN p_user_id INT,
+    IN p_budget_id INT,
+    IN p_title VARCHAR(100),
+    IN p_amount DECIMAL(15,2),
+    IN p_date DATE,
+    IN p_description TEXT,
+    IN p_receipt_reference VARCHAR(100)
+)
+BEGIN
+    DECLARE budget_jurisdiction_id INT;
+    DECLARE user_has_access BOOLEAN DEFAULT FALSE;
+    
+    -- Get budget jurisdiction
+    SELECT jurisdiction_id INTO budget_jurisdiction_id
+    FROM budgets WHERE id = p_budget_id;
+    
+    -- Check if user has access to this jurisdiction
+    SELECT EXISTS (
+        SELECT 1 FROM user_roles 
+        WHERE user_id = p_user_id 
+        AND jurisdiction_id = budget_jurisdiction_id
+    ) INTO user_has_access;
+    
+    IF user_has_access THEN
+        -- Record the expense
+        INSERT INTO expenses (
+            budget_id,
+            user_id,
+            title,
+            amount,
+            date,
+            description,
+            receipt_reference
+        )
+        VALUES (
+            p_budget_id,
+            p_user_id,
+            p_title,
+            p_amount,
+            p_date,
+            p_description,
+            p_receipt_reference
+        );
+        
+        -- Update the spent amount in the budget
+        UPDATE budgets 
+        SET spent_amount = spent_amount + p_amount
+        WHERE id = p_budget_id;
+        
+        SELECT * FROM expenses WHERE id = LAST_INSERT_ID();
+    ELSE
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'User does not have access to this jurisdiction';
+    END IF;
+END //
+
+-- Enhanced: Get expense summary by jurisdiction
+CREATE PROCEDURE GetExpenseSummary(
+    IN p_user_id INT,
+    IN p_jurisdiction_id INT,
+    IN p_fiscal_year INT
+)
+BEGIN
+    DECLARE user_role_level INT;
+    DECLARE user_jurisdiction_level VARCHAR(20);
+    
+    -- Check user permissions
+    SELECT r.hierarchy_level, j.level
+    INTO user_role_level, user_jurisdiction_level
+    FROM user_roles ur
+    JOIN roles r ON ur.role_id = r.id
+    JOIN jurisdictions j ON ur.jurisdiction_id = j.id
+    WHERE ur.user_id = p_user_id
+    ORDER BY r.hierarchy_level DESC
+    LIMIT 1;
+    
+    -- Only proceed if user has sufficient privileges
+    IF user_role_level >= 40 THEN -- Viewer or higher
+        SELECT 
+            d.name AS department,
+            bc.name AS budget_category,
+            SUM(b.allocated_amount) AS allocated,
+            SUM(b.spent_amount) AS spent,
+            (SUM(b.allocated_amount) - SUM(b.spent_amount)) AS remaining,
+            ROUND((SUM(b.spent_amount) / SUM(b.allocated_amount)) * 100, 2) AS utilization_percentage
+        FROM budgets b
+        JOIN departments d ON b.department_id = d.id
+        JOIN budget_categories bc ON b.budget_category_id = bc.id
+        WHERE b.jurisdiction_id = p_jurisdiction_id
+        AND b.fiscal_year = p_fiscal_year
+        GROUP BY d.name, bc.name
+        ORDER BY d.name, bc.name;
+    ELSE
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Insufficient privileges to view this data';
+    END IF;
 END //
 
 DELIMITER ;
 
-GRANT EXECUTE ON budget_tracker.* TO 'your_username'@'localhost';
+-- Initial data setup
+INSERT INTO jurisdictions (name, code, level, parent_id) VALUES 
+('National Government', 'KE-NATIONAL', 'national', NULL),
+('Nairobi County', 'KE-047', 'county', 1),
+('Mombasa County', 'KE-001', 'county', 1),
+('Kisumu County', 'KE-042', 'county', 1),
+('Westlands Sub-County', 'KE-047-01', 'subcounty', 2),
+('Dagoretti Sub-County', 'KE-047-02', 'subcounty', 2),
+('Nyali Sub-County', 'KE-001-01', 'subcounty', 3);
 
-// -- Enable mysql_native_password for better compatibility in deployment phase
-ALTER USER 'budget_user'@'localhost' IDENTIFIED WITH mysql_native_password BY 'strong_password_123';
+INSERT INTO departments (jurisdiction_id, name, code) VALUES
+(1, 'National Treasury', 'NT'),
+(1, 'Ministry of Health', 'MOH'),
+(2, 'Nairobi County Health', 'NCH'),
+(2, 'Nairobi County Transport', 'NCT'),
+(5, 'Westlands Public Works', 'WPW');
 
--- Set global security parameters
+INSERT INTO roles (name, description, hierarchy_level) VALUES
+('Super Admin', 'Full system access', 100),
+('National Admin', 'National government level access', 90),
+('County Admin', 'County level access', 80),
+('Sub-County Admin', 'Sub-county level access', 70),
+('Department Head', 'Department-level access within jurisdiction', 60),
+('Budget Officer', 'Can enter and view budget data for assigned scope', 50),
+('Viewer', 'Read-only access for assigned scope', 40);
+
+INSERT INTO budget_categories (name, code, description) VALUES
+('Development', 'DEV', 'Development projects and infrastructure'),
+('Recurrent', 'REC', 'Recurrent expenditures and operations'),
+('Capital', 'CAP', 'Capital investments and equipment');
+
+-- Create application user with limited privileges
+CREATE USER IF NOT EXISTS 'budget_app'@'localhost' IDENTIFIED BY 'strong_password_123';
+GRANT SELECT, INSERT, UPDATE, EXECUTE ON budget_tracker.* TO 'budget_app'@'localhost';
+
+-- Security enhancements
 SET GLOBAL validate_password.policy = STRONG;
 SET GLOBAL max_connections = 100;
-
--- Set password expiration policy
-ALTER USER 'budget_user'@'localhost' PASSWORD EXPIRE INTERVAL 90 DAY;
-
--- Enable audit logging
 SET GLOBAL audit_log_format = JSON;
 SET GLOBAL audit_log_policy = ALL;
 SET GLOBAL audit_log_rotate_on_size = 100000000;
