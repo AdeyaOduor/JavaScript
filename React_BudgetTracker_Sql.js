@@ -1,4 +1,4 @@
-/* inside vscode terminal, create index file 
+/* inside terminal, 
 
 Updating node.js via CLI on ubuntu terminal
 sudo npm install -g n
