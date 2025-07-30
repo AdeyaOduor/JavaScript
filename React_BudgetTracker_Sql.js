@@ -1,16 +1,26 @@
-/* 
+/* inside vscode terminal, create index file 
+
+Updating node.js via CLI on ubuntu terminal
+sudo npm install -g n
+sudo n lts
+
+node --version 
+
 Step 1: Set Up Your React Application;
 npx create-react-app budget-tracker
 cd budget-tracker
-npm install axios react-bootstrap bootstrap react-chartjs-2 chart.js
+touch index.js 
+npm init -y 
+npm install axios react-bootstrap bootstrap react-chartjs-2 chart.js nodemon
+include "type":"module", inside package.json file to adopt ES6  
+place "start": "nodemon index.js", inside package.json file under the scripts before "tests".
+snap --version
+sudo snap install postman
 
 Step 2: Create the MySQL Database Connection, Server with Express, and models;
 In the root of your project, create a folder named backend. 
 cd backend
-npm install express body-parser bcryptjs jsonwebtoken sequelize mysql2 cors
-
-// # Install security-related packages only upon deployment / production phase
-// npm install helmet cors express-rate-limit
+npm install express body-parser bcryptjs helmet jsonwebtoken sequelize mysql2 cors express-rate-limit
 
 Inside backend folder, create files: db.js, User.js, server.js, and Expense.js;
 
@@ -834,8 +844,14 @@ app.listen(PORT, () => {
 // src/index.js:
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import './App.js';
+
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+
+
+
+export default index;
     
 
 // src/App.css):
