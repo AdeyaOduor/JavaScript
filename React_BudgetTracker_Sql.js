@@ -517,6 +517,7 @@ SET GLOBAL audit_log_policy = ALL;
 SET GLOBAL audit_log_rotate_on_size = 100000000;
 
 
+// ==================== Back End ===============================================================================================
 // backend/db.js; for database configuration using Sequelize:
 const { Sequelize } = require('sequelize');
 
@@ -828,7 +829,7 @@ app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
 
-
+// ==================== Front End =================================================================================================================
 
 // src/index.js:
 import 'bootstrap/dist/css/bootstrap.min.css';
