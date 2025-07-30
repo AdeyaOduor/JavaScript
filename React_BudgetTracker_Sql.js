@@ -30,10 +30,7 @@ Step 4: Create React components folder inside src folder;
 
 Step 5: Create the follwing files inside src/components: App.js, App.css, Navbar, Carousel, Login.js, Register.js, and BudgetTracker;
 
-Step 6: Update App Component
-Modify src/App.js to include the App.css, Navbar.js, Carousel.js, Login.js, Register.js, and BudgetTracker.js components:
-
-Step 7: Add Navbar Logo, and Background Images to Carousel
+Step 6: Add Navbar Logo, and Background Images to Carousel
 Inside public folder, add another image folder where the logo and background images will be stored
 Make sure to replace image1.jpg, image2.jpg, and image3.jpg in the Carousel.js with the paths to your actual image files.
 
@@ -1565,6 +1562,7 @@ import BudgetTracker from './BudgetTracker';
 import LoginModal from './LoginModal';
 import RegisterModal from './RegisterModal';
 import { Container } from 'react-bootstrap';
+// Modify src/App.js to include the App.css:
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
