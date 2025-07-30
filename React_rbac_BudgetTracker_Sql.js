@@ -163,7 +163,7 @@ BEGIN
 END //
 DELIMITER ;
 
-// ==================== Back End ====================
+// ==================== Back End =========================================================================================================
 
 // BackEnd API endpoints for authentication and authorization
 const express = require('express');
@@ -472,7 +472,7 @@ router.get('/search', async (req, res) => {
 module.exports = router;
 
 
-// ==================== Front End====================
+// ==================== Front End======================================================================================================================
 // src/context/AuthContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
