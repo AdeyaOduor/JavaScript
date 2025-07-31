@@ -216,3 +216,53 @@ class AuthService {
 }
 
 module.exports = new AuthService();
+
+// middlewares/authMiddleware.js
+const jwt = require('jsonwebtoken');
+const authService = require('../services/authService');
+
+async function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    
+    if (!token) return res.sendStatus(401);
+    
+    try {
+        const user = jwt.verify(token, process.env.JWT_SECRET);
+        
+        // Check if 2FA is required and verified
+        const [userData] = await db.query(
+            'SELECT two_factor_enabled, last_2fa_verification FROM users WHERE id = ?',
+            [user.userId]
+        );
+        
+        if (userData.two_factor_enabled) {
+            // Check if 2FA was recently verified (within 24 hours)
+            const lastVerified = new Date(userData.last_2fa_verification);
+            const hoursSinceVerification = (new Date() - lastVerified) / (1000 * 60 * 60);
+            
+            if (hoursSinceVerification > 24) {
+                return res.status(403).json({ 
+                    error: 'Two-factor authentication required',
+                    requires2FA: true
+                });
+            }
+        }
+        
+        req.user = user;
+        next();
+    } catch (err) {
+        return res.sendStatus(403);
+    }
+}
+
+function authorizeRole(requiredRole) {
+    return (req, res, next) => {
+        if (req.user.role !== requiredRole && req.user.role !== 'Super Admin') {
+            return res.status(403).json({ error: 'Insufficient permissions' });
+        }
+        next();
+    };
+}
+
+module.exports = { authenticateToken, authorizeRole };
