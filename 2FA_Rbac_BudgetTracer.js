@@ -398,3 +398,138 @@ router.post('/2fa/recovery/verify', async (req, res) => {
 });
 
 module.exports = router;
+
+// ======================================== FRONT END =================================================================================
+
+// components/auth/TwoFactorSetup.js
+import React, { useState, useEffect } from 'react';
+import { Button, Modal, Form, Alert, Row, Col } from 'react-bootstrap';
+import QRCode from 'qrcode.react';
+import axios from 'axios';
+
+const TwoFactorSetup = ({ show, onClose, onComplete }) => {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
+    const [setupData, setSetupData] = useState(null);
+    const [verificationCode, setVerificationCode] = useState('');
+    const [backupCodes, setBackupCodes] = useState([]);
+
+    useEffect(() => {
+        if (show && !setupData) {
+            enable2FA();
+        }
+    }, [show]);
+
+    const enable2FA = async () => {
+        setLoading(true);
+        setError('');
+        try {
+            const response = await axios.post('/api/auth/2fa/enable');
+            setSetupData(response.data);
+            setBackupCodes(response.data.backupCodes);
+        } catch (err) {
+            setError(err.response?.data?.error || 'Failed to enable 2FA');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const verifyCode = async () => {
+        if (!verificationCode) {
+            setError('Please enter a verification code');
+            return;
+        }
+
+        setLoading(true);
+        setError('');
+        try {
+            await axios.post('/api/auth/2fa/verify', {
+                code: verificationCode
+            });
+            setSuccess('Two-factor authentication successfully enabled!');
+            onComplete();
+        } catch (err) {
+            setError(err.response?.data?.error || 'Invalid verification code');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <Modal show={show} onHide={onClose} size="lg">
+            <Modal.Header closeButton>
+                <Modal.Title>Set Up Two-Factor Authentication</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                {error && <Alert variant="danger">{error}</Alert>}
+                {success && <Alert variant="success">{success}</Alert>}
+                
+                {setupData && !success && (
+                    <>
+                        <Row className="mb-4">
+                            <Col md={6}>
+                                <h5>Step 1: Scan QR Code</h5>
+                                <p>
+                                    Scan this QR code with your authenticator app (Google Authenticator, 
+                                    Authy, Microsoft Authenticator, etc.)
+                                </p>
+                                <div className="text-center">
+                                    <QRCode value={`otpauth://totp/Budget%20Tracker:${encodeURIComponent(user.email)}?secret=${setupData.secret}&issuer=Kenya%20Government`} />
+                                </div>
+                                <p className="mt-2 text-muted small">
+                                    Or enter this secret key manually: <code>{setupData.secret}</code>
+                                </p>
+                            </Col>
+                            <Col md={6}>
+                                <h5>Step 2: Verify Code</h5>
+                                <p>
+                                    Enter the 6-digit code from your authenticator app to verify setup.
+                                </p>
+                                <Form.Group>
+                                    <Form.Label>Verification Code</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="123456"
+                                        value={verificationCode}
+                                        onChange={(e) => setVerificationCode(e.target.value)}
+                                    />
+                                </Form.Group>
+                                <Button 
+                                    variant="primary" 
+                                    onClick={verifyCode}
+                                    disabled={loading}
+                                    className="mt-3"
+                                >
+                                    {loading ? 'Verifying...' : 'Verify & Enable'}
+                                </Button>
+                            </Col>
+                        </Row>
+                        
+                        <hr />
+                        
+                        <h5>Backup Codes</h5>
+                        <p className="text-danger">
+                            Save these backup codes in a secure place. You'll need them if you lose 
+                            access to your authenticator app.
+                        </p>
+                        <div className="bg-light p-3 mb-3">
+                            <Row>
+                                {backupCodes.map((code, index) => (
+                                    <Col key={index} sm={6} className="mb-2">
+                                        <code>{code.code}</code>
+                                    </Col>
+                                ))}
+                            </Row>
+                        </div>
+                        <p className="text-muted small">
+                            Each code can be used only once. You can generate new codes if needed.
+                        </p>
+                    </>
+                )}
+            </Modal.Body>
+        </Modal>
+    );
+};
+
+export default TwoFactorSetup;
