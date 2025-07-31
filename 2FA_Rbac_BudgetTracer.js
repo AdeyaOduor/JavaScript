@@ -266,3 +266,135 @@ function authorizeRole(requiredRole) {
 }
 
 module.exports = { authenticateToken, authorizeRole };
+
+// routes/authRoutes.js
+const express = require('express');
+const router = express.Router();
+const authService = require('../services/authService');
+const { authenticateToken } = require('../middlewares/authMiddleware');
+
+// Enable 2FA
+router.post('/2fa/enable', authenticateToken, async (req, res) => {
+    try {
+        const result = await authService.enable2FA(req.user.userId);
+        res.json(result);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+// Disable 2FA
+router.post('/2fa/disable', authenticateToken, async (req, res) => {
+    try {
+        await authService.disable2FA(req.user.userId);
+        res.json({ success: true });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+// Verify 2FA code
+router.post('/2fa/verify', async (req, res) => {
+    try {
+        const { userId, code } = req.body;
+        const verified = await authService.verify2FACode(userId, code);
+        
+        if (verified) {
+            // Generate new JWT with 2FA verified flag
+            const token = jwt.sign(
+                { 
+                    userId, 
+                    role: req.user.role,
+                    jurisdictionId: req.user.jurisdictionId,
+                    twoFactorVerified: true 
+                }, 
+                process.env.JWT_SECRET,
+                { expiresIn: '8h' }
+            );
+            
+            res.json({ token });
+        } else {
+            res.status(400).json({ error: 'Invalid verification code' });
+        }
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+// Request SMS 2FA code
+router.post('/2fa/send-sms', authenticateToken, async (req, res) => {
+    try {
+        const result = await authService.send2FACode(req.user.userId);
+        res.json(result);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+// Verify SMS 2FA code
+router.post('/2fa/verify-sms', async (req, res) => {
+    try {
+        const { userId, code } = req.body;
+        const verified = await authService.verifySMS2FA(userId, code);
+        
+        if (verified) {
+            // Generate new JWT with 2FA verified flag
+            const token = jwt.sign(
+                { 
+                    userId, 
+                    role: req.user.role,
+                    jurisdictionId: req.user.jurisdictionId,
+                    twoFactorVerified: true 
+                }, 
+                process.env.JWT_SECRET,
+                { expiresIn: '8h' }
+            );
+            
+            res.json({ token });
+        } else {
+            res.status(400).json({ error: 'Invalid verification code' });
+        }
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+// Generate recovery token
+router.post('/2fa/recovery/generate', authenticateToken, async (req, res) => {
+    try {
+        const token = await authService.generateRecoveryToken(req.user.userId);
+        res.json({ token });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+// Verify recovery token
+router.post('/2fa/recovery/verify', async (req, res) => {
+    try {
+        const { userId, token } = req.body;
+        const verified = await authService.verifyRecoveryToken(userId, token);
+        
+        if (verified) {
+            // Generate new JWT with 2FA verified flag
+            const token = jwt.sign(
+                { 
+                    userId, 
+                    role: req.user.role,
+                    jurisdictionId: req.user.jurisdictionId,
+                    twoFactorVerified: true 
+                }, 
+                process.env.JWT_SECRET,
+                { expiresIn: '8h' }
+            );
+            
+            res.json({ token });
+        } else {
+            res.status(400).json({ error: 'Invalid recovery token' });
+        }
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+module.exports = router;
