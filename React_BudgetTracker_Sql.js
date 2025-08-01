@@ -675,7 +675,7 @@ async function executeProcedure(procedureName, params) {
 // User Registration
 app.post('/register', async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const { username, password, county, sub-county, role, department, } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
         const result = await executeProcedure('RegisterUser', [username, hashedPassword]);
         res.status(201).json(result[0]);
@@ -1495,6 +1495,10 @@ import axios from 'axios';
 const RegisterModal = ({ show, onHide, onRegister }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [password, county] = useState('');
+  const [password, sub-county] = useState('');
+  const [password, role] = useState('');
+  const [password, department] = useState('');
   const [message, setMessage] = useState('');
 
   const handleSubmit = async (e) => {
