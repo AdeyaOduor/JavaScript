@@ -1495,16 +1495,35 @@ import axios from 'axios';
 const RegisterModal = ({ show, onHide, onRegister }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [password, county] = useState('');
-  const [password, sub-county] = useState('');
-  const [password, role] = useState('');
-  const [password, department] = useState('');
+  const [county, setCounty] = useState('');
+  const [subCounty, setSubCounty] = useState('');
+  const [role, setRole] = useState('');
+  const [department, setDepartment] = useState('');
   const [message, setMessage] = useState('');
+
+  // Sample data for dropdowns (you can replace with your actual data or fetch from API)
+  const counties = ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Eldoret'];
+  const subCounties = {
+    Nairobi: ['Westlands', 'Dagoretti', 'Langata', 'Kasarani', 'Embakasi'],
+    Mombasa: ['Changamwe', 'Jomvu', 'Kisauni', 'Likoni', 'Mvita'],
+    Kisumu: ['Kisumu Central', 'Kisumu East', 'Kisumu West', 'Seme', 'Nyando'],
+    Nakuru: ['Nakuru Town', 'Naivasha', 'Gilgil', 'Njoro', 'Molo'],
+    Eldoret: ['Kapseret', 'Kesses', 'Moiben', 'Soy', 'Turbo']
+  };
+  const roles = ['Admin', 'Manager', 'Officer', 'Staff', 'Viewer'];
+  const departments = ['Finance', 'Health', 'Education', 'Agriculture', 'Transport'];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/register', { username, password });
+      await axios.post('http://localhost:5000/register', { 
+        username, 
+        password,
+        county,
+        subCounty,
+        role,
+        department
+      });
       setMessage('Registration successful! Please login');
       setTimeout(() => {
         onRegister();
@@ -1536,6 +1555,7 @@ const RegisterModal = ({ show, onHide, onRegister }) => {
               required
             />
           </Form.Group>
+          
           <Form.Group className="mb-3">
             <Form.Label>Password</Form.Label>
             <Form.Control
@@ -1545,6 +1565,64 @@ const RegisterModal = ({ show, onHide, onRegister }) => {
               required
             />
           </Form.Group>
+          
+          <Form.Group className="mb-3">
+            <Form.Label>County</Form.Label>
+            <Form.Select 
+              value={county} 
+              onChange={(e) => setCounty(e.target.value)}
+              required
+            >
+              <option value="">Select County</option>
+              {counties.map((county, index) => (
+                <option key={index} value={county}>{county}</option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+          
+          <Form.Group className="mb-3">
+            <Form.Label>Sub-County</Form.Label>
+            <Form.Select 
+              value={subCounty} 
+              onChange={(e) => setSubCounty(e.target.value)}
+              required
+              disabled={!county}
+            >
+              <option value="">Select Sub-County</option>
+              {county && subCounties[county].map((subCounty, index) => (
+                <option key={index} value={subCounty}>{subCounty}</option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+          
+          <Form.Group className="mb-3">
+            <Form.Label>Role</Form.Label>
+            <Form.Select 
+              value={role} 
+              onChange={(e) => setRole(e.target.value)}
+              required
+            >
+              <option value="">Select Role</option>
+              {roles.map((role, index) => (
+                <option key={index} value={role}>{role}</option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+          
+          <Form.Group className="mb-3">
+            <Form.Label>Department</Form.Label>
+            <Form.Select 
+              value={department} 
+              onChange={(e) => setDepartment(e.target.value)}
+              required
+            >
+              <option value="">Select Department</option>
+              {departments.map((dept, index) => (
+                <option key={index} value={dept}>{dept}</option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+          
           <Button variant="primary" type="submit" className="w-100">
             Register
           </Button>
