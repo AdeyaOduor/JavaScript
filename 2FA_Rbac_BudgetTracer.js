@@ -688,3 +688,143 @@ const TwoFactorVerify = ({ show, userId, onSuccess, onRecovery }) => {
 };
 
 export default TwoFactorVerify;
+
+// context/AuthContext.js
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import TwoFactorVerify from '../components/auth/TwoFactorVerify';
+
+const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
+    const [permissions, setPermissions] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [requires2FA, setRequires2FA] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    setLoading(false);
+                    return;
+                }
+
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                const response = await axios.get('/api/auth/check');
+                
+                if (response.data.requires2FA) {
+                    setRequires2FA(true);
+                    setUser(response.data.user);
+                    setPermissions(response.data.permissions);
+                } else {
+                    setUser(response.data.user);
+                    setPermissions(response.data.permissions);
+                }
+            } catch (error) {
+                localStorage.removeItem('token');
+                delete axios.defaults.headers.common['Authorization'];
+            } finally {
+                setLoading(false);
+            }
+        };
+        checkAuth();
+    }, []);
+
+    const login = async (credentials) => {
+        try {
+            const response = await axios.post('/api/auth/login', credentials);
+            
+            if (response.data.requires2FA) {
+                setRequires2FA(true);
+                setUser(response.data.user);
+                return { requires2FA: true };
+            }
+
+            localStorage.setItem('token', response.data.token);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+            
+            setUser(response.data.user);
+            setPermissions(response.data.permissions);
+            
+            return { success: true };
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    const verify2FA = async (code) => {
+        try {
+            const response = await axios.post('/api/auth/2fa/verify', {
+                userId: user.id,
+                code
+            });
+            
+            localStorage.setItem('token', response.data.token);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+            
+            setRequires2FA(false);
+            return true;
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    const logout = async () => {
+        try {
+            await axios.post('/api/auth/logout');
+        } finally {
+            localStorage.removeItem('token');
+            delete axios.defaults.headers.common['Authorization'];
+            setUser(null);
+            setPermissions([]);
+            navigate('/login');
+        }
+    };
+
+    const hasPermission = (requiredRole, jurisdictionId = null) => {
+        if (!user) return false;
+        
+        // Super admin has all permissions
+        if (permissions.some(p => p.role === 'Super Admin')) return true;
+        
+        return permissions.some(p => 
+            p.role === requiredRole && 
+            (jurisdictionId === null || p.jurisdiction_id === jurisdictionId)
+        );
+    };
+
+    return (
+        <AuthContext.Provider value={{ 
+            user, 
+            permissions, 
+            loading, 
+            login, 
+            logout, 
+            verify2FA,
+            requires2FA,
+            hasPermission
+        }}>
+            {children}
+            {requires2FA && (
+                <TwoFactorVerify 
+                    show={requires2FA}
+                    userId={user?.id}
+                    onSuccess={(token) => {
+                        localStorage.setItem('token', token);
+                        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                        setRequires2FA(false);
+                    }}
+                    onRecovery={() => {
+                        // Handle recovery flow
+                    }}
+                />
+            )}
+        </AuthContext.Provider>
+    );
+};
+
+export const useAuth = () => useContext(AuthContext);
