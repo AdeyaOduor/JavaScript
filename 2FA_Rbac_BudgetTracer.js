@@ -533,3 +533,158 @@ const TwoFactorSetup = ({ show, onClose, onComplete }) => {
 };
 
 export default TwoFactorSetup;
+
+
+// components/auth/TwoFactorVerify.js
+import React, { useState } from 'react';
+import { Modal, Button, Form, Alert } from 'react-bootstrap';
+import axios from 'axios';
+
+const TwoFactorVerify = ({ show, userId, onSuccess, onRecovery }) => {
+    const [code, setCode] = useState('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [useRecovery, setUseRecovery] = useState(false);
+    const [recoveryToken, setRecoveryToken] = useState('');
+
+    const verifyCode = async () => {
+        if (!code) {
+            setError('Please enter a verification code');
+            return;
+        }
+
+        setLoading(true);
+        setError('');
+        try {
+            const response = await axios.post('/api/auth/2fa/verify', {
+                userId,
+                code
+            });
+            onSuccess(response.data.token);
+        } catch (err) {
+            setError(err.response?.data?.error || 'Invalid verification code');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const verifyRecoveryToken = async () => {
+        if (!recoveryToken) {
+            setError('Please enter a recovery token');
+            return;
+        }
+
+        setLoading(true);
+        setError('');
+        try {
+            const response = await axios.post('/api/auth/2fa/recovery/verify', {
+                userId,
+                token: recoveryToken
+            });
+            onSuccess(response.data.token);
+        } catch (err) {
+            setError(err.response?.data?.error || 'Invalid recovery token');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const requestSMS = async () => {
+        setLoading(true);
+        setError('');
+        try {
+            await axios.post('/api/auth/2fa/send-sms', { userId });
+            setError('SMS with verification code sent to your registered phone number');
+        } catch (err) {
+            setError(err.response?.data?.error || 'Failed to send SMS');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <Modal show={show} backdrop="static" keyboard={false}>
+            <Modal.Header>
+                <Modal.Title>Two-Factor Authentication Required</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                {error && <Alert variant="danger">{error}</Alert>}
+                
+                {!useRecovery ? (
+                    <>
+                        <p>
+                            Enter the 6-digit code from your authenticator app or SMS to continue.
+                        </p>
+                        <Form.Group>
+                            <Form.Label>Verification Code</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="123456"
+                                value={code}
+                                onChange={(e) => setCode(e.target.value)}
+                            />
+                        </Form.Group>
+                        <div className="d-flex justify-content-between mt-3">
+                            <Button 
+                                variant="primary" 
+                                onClick={verifyCode}
+                                disabled={loading}
+                            >
+                                {loading ? 'Verifying...' : 'Verify'}
+                            </Button>
+                            <Button 
+                                variant="link" 
+                                onClick={() => setUseRecovery(true)}
+                                disabled={loading}
+                            >
+                                Use Recovery Token
+                            </Button>
+                        </div>
+                        <div className="text-center mt-3">
+                            <Button 
+                                variant="outline-secondary" 
+                                onClick={requestSMS}
+                                size="sm"
+                            >
+                                Send SMS Code
+                            </Button>
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <p>
+                            Enter one of your recovery tokens to access your account.
+                        </p>
+                        <Form.Group>
+                            <Form.Label>Recovery Token</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Enter recovery token"
+                                value={recoveryToken}
+                                onChange={(e) => setRecoveryToken(e.target.value)}
+                            />
+                        </Form.Group>
+                        <div className="d-flex justify-content-between mt-3">
+                            <Button 
+                                variant="primary" 
+                                onClick={verifyRecoveryToken}
+                                disabled={loading}
+                            >
+                                {loading ? 'Verifying...' : 'Verify Token'}
+                            </Button>
+                            <Button 
+                                variant="link" 
+                                onClick={() => setUseRecovery(false)}
+                                disabled={loading}
+                            >
+                                Back to Code Verification
+                            </Button>
+                        </div>
+                    </>
+                )}
+            </Modal.Body>
+        </Modal>
+    );
+};
+
+export default TwoFactorVerify;
