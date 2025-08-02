@@ -874,6 +874,50 @@ reportWebVitals();
     
 
 // src/App.css):
+    /* App.css */
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Ensure carousel images are responsive */
+.carousel-item img {
+  width: 100%;
+  height: auto;
+  max-height: 60vh;
+  object-fit: cover;
+}
+
+/* Responsive typography */
+@media (max-width: 768px) {
+  .display-5 {
+    font-size: 2rem;
+  }
+  
+  .lead {
+    font-size: 1rem;
+  }
+}
+
+/* Footer styling */
+footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+}
+
+/* Ensure modals are centered and responsive */
+.modal-dialog {
+  max-width: 95vw;
+  margin: 1.75rem auto;
+}
+
+@media (min-width: 576px) {
+  .modal-dialog {
+    max-width: 500px;
+  }
+}
+
 .stats-container {
   display: flex;
   justify-content: space-between;
