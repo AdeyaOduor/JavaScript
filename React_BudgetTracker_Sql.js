@@ -871,17 +871,51 @@ reportWebVitals();
     <div id="root"></div>
   </body>
 </html>
+
+
+// src/index.css
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Bootstrap overrides for better mobile experience */
+.container {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Ensure buttons are large enough for touch devices */
+.btn {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Form controls */
+.form-control {
+  padding: 0.5rem 0.75rem;
+}
+
     
 
 // src/App.css):
-    /* App.css */
+/* Base App Layout */
 .App {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* Ensure carousel images are responsive */
+/* Carousel Styles */
 .carousel-item img {
   width: 100%;
   height: auto;
@@ -889,68 +923,6 @@ reportWebVitals();
   object-fit: cover;
 }
 
-/* Responsive typography */
-@media (max-width: 768px) {
-  .display-5 {
-    font-size: 2rem;
-  }
-  
-  .lead {
-    font-size: 1rem;
-  }
-}
-
-/* Footer styling */
-footer {
-  background-color: #f8f9fa;
-  border-top: 1px solid #dee2e6;
-}
-
-/* Ensure modals are centered and responsive */
-.modal-dialog {
-  max-width: 95vw;
-  margin: 1.75rem auto;
-}
-
-@media (min-width: 576px) {
-  .modal-dialog {
-    max-width: 500px;
-  }
-}
-
-.stats-container {
-  display: flex;
-  justify-content: space-between;
-  margin: 20px 0;
-}
-
-.stat-card {
-  background: #f8f9fa;
-  padding: 15px;
-  border-radius: 8px;
-  text-align: center;
-  flex: 1;
-  margin: 0 5px;
-}
-
-.stat-card h5 {
-  font-size: 1rem;
-  color: #6c757d;
-}
-
-.stat-card h3 {
-  font-size: 1.5rem;
-  margin-top: 5px;
-}
-
-.list-group-item {
-  transition: all 0.3s ease;
-}
-
-.list-group-item:hover {
-  background-color: #f8f9fa;
-}
-/* Carousel Styles */
 .carousel-image {
   display: flex;
   align-items: center;
@@ -972,7 +944,37 @@ footer {
   font-size: 1.2rem;
 }
 
-/* Modal Enhancements */
+/* Responsive Typography */
+@media (max-width: 768px) {
+  .display-5 {
+    font-size: 2rem;
+  }
+  
+  .lead {
+    font-size: 1rem;
+  }
+
+  .carousel-caption h3 {
+    font-size: 1.8rem;
+  }
+
+  .carousel-caption p {
+    font-size: 1rem;
+  }
+}
+
+/* Footer Styling */
+footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+}
+
+/* Modal Styles */
+.modal-dialog {
+  max-width: 95vw;
+  margin: 1.75rem auto;
+}
+
 .modal-content {
   border-radius: 15px;
 }
@@ -985,14 +987,97 @@ footer {
 .modal-title {
   font-weight: bold;
 }
+
+@media (min-width: 576px) {
+  .modal-dialog {
+    max-width: 500px;
+  }
+}
+
+/* Stats Container */
+.stats-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  flex: 1;
+  margin: 0 5px;
+  min-width: 150px;
+}
+
+.stat-card h5 {
+  font-size: 1rem;
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+}
+
+.stat-card h3 {
+  font-size: 1.5rem;
+  margin-top: 5px;
+}
+
+/* List Group Items */
+.list-group-item {
+  transition: all 0.3s ease;
+  padding: 1rem 1.25rem;
+}
+
+.list-group-item:hover {
+  background-color: #f8f9fa;
+  transform: translateX(5px);
+}
+
 /* Navbar Enhancements */
 .navbar {
   padding: 15px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .navbar-brand {
   font-weight: bold;
   font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .stats-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .stat-card {
+    margin: 5px 0;
+  }
+
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+}
+
+/* Accessibility Improvements */
+button, .btn {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Smooth transitions for interactive elements */
+a, button, .list-group-item {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Focus states for accessibility */
+*:focus {
+  outline: 2px solid #0d6efd;
+  outline-offset: 2px;
 }
 
 
