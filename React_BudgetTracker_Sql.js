@@ -1636,7 +1636,6 @@ export default RegisterModal;
 
 
 
-// src/App.js
 import React, { useState } from 'react';
 import AppNavbar from './Navbar';
 import ImageCarousel from './Carousel';
@@ -1644,7 +1643,7 @@ import BudgetTracker from './BudgetTracker';
 import LoginModal from './LoginModal';
 import RegisterModal from './RegisterModal';
 import { Container } from 'react-bootstrap';
-// Modify src/App.js to include the App.css:
+import './App.css'; // Keep this for component-specific styles
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -1663,7 +1662,7 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className="App d-flex flex-column min-vh-100">
       <AppNavbar 
         token={token} 
         onLogout={handleLogout}
@@ -1671,18 +1670,20 @@ function App() {
         onRegisterClick={() => setShowRegister(true)}
       />
       
-      {!token && <ImageCarousel />}
-      
-      <Container className="mt-4">
-        {token ? (
-          <BudgetTracker token={token} />
-        ) : (
-          <div className="text-center py-5">
-            <h2>Welcome to Budget Tracker</h2>
-            <p className="lead">Please login or register to manage your expenses</p>
-          </div>
-        )}
-      </Container>
+      <main className="flex-grow-1">
+        {!token && <ImageCarousel />}
+        
+        <Container className="mt-4 mb-5">
+          {token ? (
+            <BudgetTracker token={token} />
+          ) : (
+            <div className="text-center py-5">
+              <h2 className="display-5">Welcome to Budget Tracker</h2>
+              <p className="lead">Please login or register to manage your expenses</p>
+            </div>
+          )}
+        </Container>
+      </main>
 
       <LoginModal 
         show={showLogin} 
@@ -1702,6 +1703,12 @@ function App() {
           setShowLogin(true);
         }}
       />
+
+      <footer className="bg-light py-3 mt-auto">
+        <Container className="text-center">
+          <p className="mb-0">© {new Date().getFullYear()} Budget Tracker</p>
+        </Container>
+      </footer>
     </div>
   );
 }
