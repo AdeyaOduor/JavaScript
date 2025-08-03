@@ -20,4 +20,8 @@ sudo -u postgres psql -c "CREATE USER devuser WITH PASSWORD '@K3m1s_2025';"
 sudo -u postgres psql -c "CREATE DATABASE kemis_db WITH OWNER devuser;"
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE kemis_db TO devuser;"
 
+//Setup Backend
+mkdir education-management-system && cd education-management-system
+mkdir backend && cd backend
+
 */
