@@ -33,6 +33,22 @@ npm install --save-dev nodemon morgan
 
 touch server.js
 
+// Create .env file:
+echo "DB_NAME=kemis_db
+DB_USER=devuser
+DB_PASSWORD=@K3m1s_2025
+DB_HOST=localhost
+PORT=5000
+JWT_SECRET=your_jwt_secret_here" > .env
+
+// Add scripts to package.json:
+json
+
+"scripts": {
+  "start": "node server.js",
+  "dev": "nodemon server.js",
+  "test": "echo \"Error: no test specified\" && exit 1"
+}
 
 
 */
@@ -78,3 +94,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+
