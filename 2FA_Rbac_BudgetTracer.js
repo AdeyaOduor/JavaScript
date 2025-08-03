@@ -31,6 +31,19 @@ CREATE TABLE IF NOT EXISTS recovery_tokens (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+// ======================================== BACK END =================================================================================
+// Add Rate Limiting for 2FA Attempts to your Express app
+const rateLimit = require('express-rate-limit');
+
+const twoFALimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // limit each IP to 5 requests per windowMs
+    message: 'Too many 2FA attempts, please try again later'
+});
+
+// Apply to 2FA routes
+router.post('/2fa/verify', twoFALimiter, ...);
+router.post('/2fa/verify-sms', twoFALimiter, ...);
 
 // services/authService.js
 const speakeasy = require('speakeasy');
