@@ -24,4 +24,57 @@ sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE kemis_db TO devuser;"
 mkdir education-management-system && cd education-management-system
 mkdir backend && cd backend
 
+// initialize project
+npm init -y
+
+// Install required dependencies:
+npm install express pg sequelize cors dotenv bcryptjs jsonwebtoken
+npm install --save-dev nodemon morgan
+
+touch server.js
+
+
+
 */
+
+// server.js
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const morgan = require('morgan');
+
+const app = express();
+
+// Middleware
+app.use(cors());
+app.use(morgan('dev'));
+app.use(express.json());
+
+// Database connection
+const { Sequelize } = require('sequelize');
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    dialect: 'postgres',
+    logging: false
+  }
+);
+
+// Test database connection
+sequelize.authenticate()
+  .then(() => console.log('Database connected successfully'))
+  .catch(err => console.error('Unable to connect to the database:', err));
+
+// Routes
+app.get('/', (req, res) => {
+  res.json({ message: 'School Management System API' });
+});
+
+// Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
