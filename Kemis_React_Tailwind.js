@@ -183,3 +183,22 @@ export const GradeChart = () => {
 
   return <Bar options={options} data={data} />;
 };
+
+// src/App.js
+import React from 'react';
+import { GradeChart } from './components/GradeChart';
+
+function App() {
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold text-indigo-700 mb-6">
+        education Management System
+      </h1>
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <GradeChart />
+      </div>
+    </div>
+  );
+}
+
+export default App;
