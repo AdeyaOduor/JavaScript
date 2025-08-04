@@ -84,9 +84,18 @@ sequelize.authenticate()
   .then(() => console.log('Database connected successfully'))
   .catch(err => console.error('Unable to connect to the database:', err));
 
+// Update your CORS configuration
+const corsOptions = {
+  origin: 'http://localhost:3000', // Your React app's URL
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  optionsSuccessStatus: 204
+};
+
+app.use(cors(corsOptions));
 // Routes
 app.get('/', (req, res) => {
-  res.json({ message: 'School Management System API' });
+  res.json({ message: 'education Management System API' });
 });
 
 // Start server
