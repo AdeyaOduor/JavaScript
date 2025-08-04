@@ -50,6 +50,14 @@ json
   "test": "echo \"Error: no test specified\" && exit 1"
 }
 
+================================== FRONT END SETUP ================================================
+
+cd ..
+npx create-react-app frontend
+cd frontend
+
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
 
 */
 
