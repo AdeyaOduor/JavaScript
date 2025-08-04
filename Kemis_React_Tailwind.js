@@ -17,7 +17,7 @@ npm --version
 
 // Create postgre database
 sudo -u postgres psql -c "CREATE USER devuser WITH PASSWORD '@K3m1s_2025';"
-sudo -u postgres psql -c "CREATE DATABASE kemis_db WITH OWNER devuser;"
+sudo -u postgres psql -c "CREATE DATABASE education-management-system_db WITH OWNER devuser;"
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE kemis_db TO devuser;"
 
 //Setup Backend
@@ -76,6 +76,23 @@ echo '{
     "concurrently": "^7.0.0"
   }
 }' > package.json
+
+// Install Concurrently for running both servers, and Run both frontend and backend simultaneously:
+bash
+
+npm install --save-dev concurrently
+npm run dev
+
+Production Build:
+bash
+
+cd frontend && npm run build
+
+Process Manager (for production):
+bash
+
+sudo npm install -g pm2
+pm2 start backend/server.js
 
 */
 // ============================================== BACK END ============================================
