@@ -64,7 +64,7 @@ npm install --save-dev @tailwindcss/forms
 
 // education-management-system/package.json
 echo '{
-  "name": "school-management-system",
+  "name": "education-management-system",
   "version": "1.0.0",
   "scripts": {
     "backend": "cd backend && npm run dev",
