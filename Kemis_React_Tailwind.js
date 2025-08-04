@@ -62,6 +62,21 @@ npx tailwindcss init -p
 npm install axios react-router-dom react-chartjs-2 chart.js
 npm install --save-dev @tailwindcss/forms
 
+// education-management-system/package.json
+echo '{
+  "name": "school-management-system",
+  "version": "1.0.0",
+  "scripts": {
+    "backend": "cd backend && npm run dev",
+    "frontend": "cd frontend && npm start",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "setup": "cd backend && npm install && cd ../frontend && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^7.0.0"
+  }
+}' > package.json
+
 */
 // ============================================== BACK END ============================================
 // server.js
