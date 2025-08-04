@@ -59,8 +59,11 @@ cd frontend
 npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss init -p
 
-*/
+npm install axios react-router-dom react-chartjs-2 chart.js
+npm install --save-dev @tailwindcss/forms
 
+*/
+// ============================================== BACK END ============================================
 // server.js
 require('dotenv').config();
 const express = require('express');
