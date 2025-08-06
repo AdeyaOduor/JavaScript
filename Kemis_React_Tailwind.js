@@ -129,7 +129,30 @@ src/
 
 */
 // ============================================== BACK END ============================================
+
 // Sql
+-- Jurisdictions hierarchy (National -> County -> Sub-County)
+CREATE TABLE IF NOT EXISTS jurisdictions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    code VARCHAR(20) UNIQUE NOT NULL,
+    level ENUM('national', 'county', 'subcounty') NOT NULL,
+    parent_id INT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (parent_id) REFERENCES jurisdictions(id) ON DELETE CASCADE
+);
+
+-- Departments within each jurisdiction
+CREATE TABLE IF NOT EXISTS departments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    jurisdiction_id INT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    code VARCHAR(20) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (jurisdiction_id) REFERENCES jurisdictions(id) ON DELETE CASCADE,
+    UNIQUE KEY (jurisdiction_id, code)
+);
+
 -- Institutions
 CREATE TABLE institutions (
   institution_id VARCHAR(20) PRIMARY KEY,
