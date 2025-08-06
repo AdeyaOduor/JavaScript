@@ -447,7 +447,105 @@ const recordProgress = async (req, res) => {
 };
 
 
+// controllers/financialController.js
+const getFinancialReports = async (req, res) => {
+  try {
+    let queryOptions = {};
+    const userRole = req.user.role;
+    const institutionId = req.user.institution_id;
+    
+    // Apply filters based on role
+    if (userRole === 'institution_admin' || userRole === 'institution_staff') {
+      queryOptions.where = { institution_id: institutionId };
+    } else if (userRole === 'county_admin') {
+      // Get all institutions in the county
+      const institutions = await Institution.findAll({ 
+        where: { county_id: req.user.county_id },
+        attributes: ['institution_id']
+      });
+      queryOptions.where = { 
+        institution_id: institutions.map(i => i.institution_id)
+      };
+    }
+    
+    // Date filters if provided
+    if (req.query.startDate && req.query.endDate) {
+      queryOptions.where = {
+        ...queryOptions.where,
+        transaction_date: {
+          [Op.between]: [new Date(req.query.startDate), new Date(req.query.endDate)]
+        }
+      };
+    }
+    
+    const records = await FinancialRecord.findAll(queryOptions);
+    
+    // Generate summary report
+    const summary = records.reduce((acc, record) => {
+      if (!acc[record.record_type]) {
+        acc[record.record_type] = 0;
+      }
+      acc[record.record_type] += record.amount;
+      return acc;
+    }, {});
+    
+    res.json({
+      records,
+      summary,
+      totalRecords: records.length
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
+// controllers/publicController.js
+const searchLearner = async (req, res) => {
+  try {
+    const { upiNumber, birthCertificateNumber, institutionId, secretCode } = req.body;
+    
+    // Verify the secret code is valid for this learner/institution
+    const validAccess = await verifySearchAccess(
+      upiNumber, 
+      birthCertificateNumber, 
+      institutionId, 
+      secretCode
+    );
+    
+    if (!validAccess) {
+      return res.status(403).json({ message: 'Invalid search credentials' });
+    }
+    
+    const learner = await Learner.findOne({
+      where: { 
+        [Op.or]: [
+          { upi_number: upiNumber },
+          { national_id: birthCertificateNumber }
+        ],
+        institution_id: institutionId
+      },
+      include: [
+        {
+          model: Institution,
+          attributes: ['name', 'type']
+        },
+        {
+          model: LearnerProgress,
+          order: [['academic_year', 'DESC'], ['term', 'DESC']],
+          limit: 5
+        }
+      ]
+    });
+    
+    if (!learner) {
+      return res.status(404).json({ message: 'Learner not found' });
+    }
+    
+    res.json(learner);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 // Database connection
 const { Sequelize } = require('sequelize');
 const sequelize = new Sequelize(
