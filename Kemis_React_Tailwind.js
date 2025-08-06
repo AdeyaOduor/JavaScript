@@ -50,6 +50,16 @@ json
   "test": "echo \"Error: no test specified\" && exit 1"
 }
 
+// Backend/Node structure
+src/
+├── config/               # Configuration files
+├── controllers/         # Route controllers
+├── middleware/          # Custom middleware
+├── models/              # Database models
+├── routes/              # API routes
+├── services/            # Business logic
+├── utils/               # Utility classes/functions
+└── validators/          # Request validators
 ================================== FRONT END SETUP ================================================
 
 cd ..
@@ -94,7 +104,7 @@ bash
 sudo npm install -g pm2
 pm2 start backend/server.js
 
-
+// Frontend structure
 src/
 ├── assets/              # Static assets
 ├── components/         # Reusable components
