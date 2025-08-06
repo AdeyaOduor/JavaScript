@@ -94,6 +94,29 @@ bash
 sudo npm install -g pm2
 pm2 start backend/server.js
 
+
+src/
+├── assets/              # Static assets
+├── components/         # Reusable components
+│   ├── auth/
+│   ├── dashboard/
+│   ├── data/
+│   ├── forms/
+│   ├── layout/
+│   └── ui/
+├── contexts/           # React contexts
+├── hooks/              # Custom hooks
+├── pages/              # Page components
+│   ├── admin/
+│   ├── county/
+│   ├── institution/
+│   ├── public/
+│   └── shared/
+├── services/           # API service calls
+├── styles/             # Custom styles
+├── utils/              # Utility functions
+└── App.js              # Main app component
+
 */
 // ============================================== BACK END ============================================
 // server.js
