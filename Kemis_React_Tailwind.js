@@ -361,6 +361,86 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
+// middleware/roleMiddleware.js
+const checkRole = (roles) => {
+  return (req, res, next) => {
+    const userRole = req.user.role;
+    
+    if (!roles.includes(userRole)) {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+    
+    next();
+  };
+};
+
+// Usage in routes
+router.get('/county-data', authenticate, checkRole(['county_admin', 'national_admin']), countyController.getData);
+
+// controllers/institutionController.js
+const applyForRegistration = async (req, res) => {
+  try {
+    const { institutionName, institutionType, documents } = req.body;
+    const userId = req.user.user_id;
+    
+    // Generate unique institution ID
+    const institutionId = `INST-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    
+    const application = await InstitutionApplication.create({
+      application_id: `APP-${Date.now()}`,
+      institution_name: institutionName,
+      institution_type: institutionType,
+      applicant_user_id: userId,
+      documents,
+      status: 'Submitted'
+    });
+    
+    res.status(201).json(application);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const reviewApplication = async (req, res) => {
+  try {
+    const { applicationId, decision, notes } = req.body;
+    const reviewerId = req.user.user_id;
+    
+    const application = await InstitutionApplication.findByPk(applicationId);
+    
+    if (!application) {
+      return res.status(404).json({ message: 'Application not found' });
+    }
+    
+    if (decision === 'Approved') {
+      // Create the institution
+      const institution = await Institution.create({
+        institution_id: `INST-${Date.now()}`,
+        name: application.institution_name,
+        type: application.institution_type,
+        status: 'Approved',
+        // other fields...
+      });
+      
+      // Update the applicant's role
+      await User.update(
+        { role: 'institution_admin', institution_id: institution.institution_id },
+        { where: { user_id: application.applicant_user_id } }
+      );
+    }
+    
+    application.status = decision;
+    application.review_notes = notes;
+    application.reviewed_by = reviewerId;
+    application.reviewed_at = new Date();
+    await application.save();
+    
+    res.json(application);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 
 // ============================================= FRONY END =============================================================
 
