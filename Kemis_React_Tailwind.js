@@ -245,22 +245,30 @@ CREATE TABLE learners (
   learner_id VARCHAR(20) PRIMARY KEY,
   institution_id VARCHAR(20) NOT NULL,
   national_id VARCHAR(20) UNIQUE,
+  birth_certificate_no VARCHAR(50) UNIQUE,
   upi_number VARCHAR(20) UNIQUE,
   Surname_name VARCHAR(50) NULL,
   first_name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL,
   date_of_birth DATE,
-  gender ENUM('Male', 'Female', 'Other'),
+  gender ENUM('Male', 'Female', 'Other') NOT NULL,
   enrollment_date DATE,
   current_grade VARCHAR(20),
+  parent_guardian_phone VARCHAR(20) NOT NULL,
+  parent_guardian_email VARCHAR(100),
+  status ENUM('Active', 'Transferred', 'Graduated', 'Dropped Out', 'Deceased') DEFAULT 'Active',
+  exit_reason ENUM('TVET Graduate', 'University Graduate', 'Deceased', 'Dropout', 'Transferred') DEFAULT NULL,
+  exit_date DATE DEFAULT NULL,
   is_foreign BOOLEAN DEFAULT FALSE,
   foreign_passport_no VARCHAR(50),
   foreign_country VARCHAR(50),
   visa_type VARCHAR(50),
   visa_expiry DATE;
-  status ENUM('Active', 'Transferred', 'Graduated', 'Dropped Out') DEFAULT 'Active',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (institution_id) REFERENCES institutions(institution_id)
+  last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_learner_contact (parent_guardian_phone, parent_guardian_email),
+  INDEX idx_learner_status (status)
 );
  
 -- Create parent/guardian table
@@ -309,8 +317,11 @@ CREATE TABLE learner_progress (
   overall_remarks TEXT,
   teacher_id VARCHAR(20) NOT NULL,
   recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (learner_id) REFERENCES learners(learner_id),
-  FOREIGN KEY (teacher_id) REFERENCES users(user_id)
+  FOREIGN KEY (teacher_id) REFERENCES users(user_id),
+  FOREIGN KEY (academic_year) REFERENCES academic_years(year),
+  UNIQUE KEY (learner_id, academic_year, term)
 );
 
 -- Grade Progression Rules
