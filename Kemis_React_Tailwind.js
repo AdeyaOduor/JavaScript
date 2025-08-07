@@ -131,7 +131,6 @@ src/
 // ============================================== BACK END ============================================
 
 // Sql
--- Jurisdictions hierarchy (National -> County -> Sub-County)
 CREATE TABLE IF NOT EXISTS jurisdictions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -142,8 +141,7 @@ CREATE TABLE IF NOT EXISTS jurisdictions (
     FOREIGN KEY (parent_id) REFERENCES jurisdictions(id) ON DELETE CASCADE
 );
 
--- Departments within each jurisdiction
-CREATE TABLE IF NOT EXISTS departments (
+CREATE TABLE IF NOT EXISTS jurisdiction_departments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     jurisdiction_id INT NOT NULL,
     name VARCHAR(100) NOT NULL,
@@ -153,7 +151,6 @@ CREATE TABLE IF NOT EXISTS departments (
     UNIQUE KEY (jurisdiction_id, code)
 );
 
--- Institutions
 CREATE TABLE institutions (
   institution_id VARCHAR(20) PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
@@ -170,8 +167,7 @@ CREATE TABLE institutions (
   FOREIGN KEY (sub_county_id) REFERENCES sub_counties(id)
 );
 
--- Users/Roles
-CREATE TABLE users (
+CREATE TABLE users_roles (
   user_id VARCHAR(20) PRIMARY KEY,
   institution_id VARCHAR(20),
   national_id VARCHAR(20) UNIQUE,
@@ -188,7 +184,6 @@ CREATE TABLE users (
   FOREIGN KEY (institution_id) REFERENCES institutions(institution_id)
 );
 
--- Institution Applications
 CREATE TABLE institution_applications (
   application_id VARCHAR(20) PRIMARY KEY,
   institution_name VARCHAR(100) NOT NULL,
@@ -204,7 +199,6 @@ CREATE TABLE institution_applications (
   FOREIGN KEY (reviewed_by) REFERENCES users(user_id)
 );
 
--- Financial Records
 CREATE TABLE financial_records (
   id INT AUTO_INCREMENT PRIMARY KEY,
   institution_id VARCHAR(20) NOT NULL,
@@ -219,7 +213,6 @@ CREATE TABLE financial_records (
   FOREIGN KEY (recorded_by) REFERENCES users(user_id)
 );
 
--- Procurement
 CREATE TABLE procurement (
   id INT AUTO_INCREMENT PRIMARY KEY,
   institution_id VARCHAR(20) NOT NULL,
@@ -240,7 +233,6 @@ CREATE TABLE procurement (
   FOREIGN KEY (received_by) REFERENCES users(user_id)
 );
 
--- Learners
 CREATE TABLE learners (
   learner_id VARCHAR(20) PRIMARY KEY,
   institution_id VARCHAR(20) NOT NULL,
@@ -271,7 +263,6 @@ CREATE TABLE learners (
   INDEX idx_learner_status (status)
 );
  
--- Create parent/guardian table
 CREATE TABLE parent_guardians (
   id INT AUTO_INCREMENT PRIMARY KEY,
   learner_id VARCHAR(20) NOT NULL,
@@ -292,7 +283,6 @@ CREATE TABLE parent_guardians (
   INDEX idx_parent_phone (phone_number)
 );
 
--- Create table for foreign learner details
 CREATE TABLE foreign_learner_details (
   id INT AUTO_INCREMENT PRIMARY KEY,
   learner_id VARCHAR(20) NOT NULL,
@@ -304,6 +294,21 @@ CREATE TABLE foreign_learner_details (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (learner_id) REFERENCES learners(learner_id),
   UNIQUE KEY (passport_number)
+);
+
+CREATE TABLE learner_otp_verification (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    learner_id VARCHAR(20) NOT NULL,
+    contact_value VARCHAR(100) NOT NULL, -- phone or email
+    contact_type ENUM('phone', 'email') NOT NULL,
+    otp_code VARCHAR(6) NOT NULL,
+    generated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP NOT NULL,
+    is_used BOOLEAN DEFAULT FALSE,
+    attempts TINYINT DEFAULT 0,
+    FOREIGN KEY (learner_id) REFERENCES learners(learner_id),
+    INDEX idx_otp_expiry (expires_at),
+    INDEX idx_otp_contact (contact_value)
 );
 
 -- Learner Progress
@@ -359,11 +364,10 @@ CREATE TABLE learner_transfers (
   FOREIGN KEY (learner_id) REFERENCES learners(learner_id),
   FOREIGN KEY (from_institution_id) REFERENCES institutions(institution_id),
   FOREIGN KEY (to_institution_id) REFERENCES institutions(institution_id),
-  FOREIGN KEY (initiated_by) REFERENCES users(user_id),
-  FOREIGN KEY (approved_by) REFERENCES users(user_id)
+  FOREIGN KEY (initiated_by) REFERENCES users_roles(user_id),
+  FOREIGN KEY (approved_by) REFERENCES users_roles(user_id)
 );
 
--- Grievances
 CREATE TABLE grievances (
   id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(100) NOT NULL,
