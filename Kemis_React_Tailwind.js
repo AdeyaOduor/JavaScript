@@ -188,6 +188,58 @@ CREATE TABLE users (
   FOREIGN KEY (institution_id) REFERENCES institutions(institution_id)
 );
 
+-- Institution Applications
+CREATE TABLE institution_applications (
+  application_id VARCHAR(20) PRIMARY KEY,
+  institution_name VARCHAR(100) NOT NULL,
+  institution_type VARCHAR(50) NOT NULL,
+  applicant_user_id VARCHAR(20) NOT NULL,
+  documents JSON, -- {registration_cert: string, kra_pin: string, etc.}
+  status ENUM('Submitted', 'Under Review', 'Approved', 'Rejected') DEFAULT 'Submitted',
+  review_notes TEXT,
+  reviewed_by VARCHAR(20),
+  reviewed_at TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (applicant_user_id) REFERENCES users(user_id),
+  FOREIGN KEY (reviewed_by) REFERENCES users(user_id)
+);
+
+-- Financial Records
+CREATE TABLE financial_records (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  institution_id VARCHAR(20) NOT NULL,
+  record_type ENUM('Fee Payment', 'Government Funding', 'Donor Funding', 'Other Income', 'Expense') NOT NULL,
+  amount DECIMAL(12,2) NOT NULL,
+  description TEXT,
+  reference_number VARCHAR(50),
+  transaction_date DATE NOT NULL,
+  recorded_by VARCHAR(20) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
+  FOREIGN KEY (recorded_by) REFERENCES users(user_id)
+);
+
+-- Procurement
+CREATE TABLE procurement (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  institution_id VARCHAR(20) NOT NULL,
+  item_name VARCHAR(100) NOT NULL,
+  category ENUM('Learning Materials', 'Sanitary', 'Equipment', 'Other') NOT NULL,
+  quantity INT NOT NULL,
+  unit_price DECIMAL(10,2) NOT NULL,
+  total_price DECIMAL(10,2) NOT NULL,
+  supplier VARCHAR(100),
+  order_date DATE,
+  delivery_date DATE,
+  status ENUM('Requested', 'Ordered', 'Delivered', 'Cancelled') DEFAULT 'Requested',
+  ordered_by VARCHAR(20),
+  received_by VARCHAR(20),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
+  FOREIGN KEY (ordered_by) REFERENCES users(user_id),
+  FOREIGN KEY (received_by) REFERENCES users(user_id)
+);
+
 -- Learners
 CREATE TABLE learners (
   learner_id VARCHAR(20) PRIMARY KEY,
@@ -261,56 +313,24 @@ CREATE TABLE learner_progress (
   FOREIGN KEY (teacher_id) REFERENCES users(user_id)
 );
 
--- Institution Applications
-CREATE TABLE institution_applications (
-  application_id VARCHAR(20) PRIMARY KEY,
-  institution_name VARCHAR(100) NOT NULL,
-  institution_type VARCHAR(50) NOT NULL,
-  applicant_user_id VARCHAR(20) NOT NULL,
-  documents JSON, -- {registration_cert: string, kra_pin: string, etc.}
-  status ENUM('Submitted', 'Under Review', 'Approved', 'Rejected') DEFAULT 'Submitted',
-  review_notes TEXT,
-  reviewed_by VARCHAR(20),
-  reviewed_at TIMESTAMP,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (applicant_user_id) REFERENCES users(user_id),
-  FOREIGN KEY (reviewed_by) REFERENCES users(user_id)
+-- Grade Progression Rules
+CREATE TABLE grade_progression_rules (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    current_grade VARCHAR(20) NOT NULL,
+    next_grade VARCHAR(20),
+    institution_type ENUM('Early Learning', 'Primary', 'Junior Secondary', 'High School', 'TVET', 'University') NOT NULL,
+    is_final_grade BOOLEAN DEFAULT FALSE,
+    UNIQUE KEY (current_grade, institution_type)
 );
 
--- Financial Records
-CREATE TABLE financial_records (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  institution_id VARCHAR(20) NOT NULL,
-  record_type ENUM('Fee Payment', 'Government Funding', 'Donor Funding', 'Other Income', 'Expense') NOT NULL,
-  amount DECIMAL(12,2) NOT NULL,
-  description TEXT,
-  reference_number VARCHAR(50),
-  transaction_date DATE NOT NULL,
-  recorded_by VARCHAR(20) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
-  FOREIGN KEY (recorded_by) REFERENCES users(user_id)
-);
-
--- Procurement
-CREATE TABLE procurement (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  institution_id VARCHAR(20) NOT NULL,
-  item_name VARCHAR(100) NOT NULL,
-  category ENUM('Learning Materials', 'Sanitary', 'Equipment', 'Other') NOT NULL,
-  quantity INT NOT NULL,
-  unit_price DECIMAL(10,2) NOT NULL,
-  total_price DECIMAL(10,2) NOT NULL,
-  supplier VARCHAR(100),
-  order_date DATE,
-  delivery_date DATE,
-  status ENUM('Requested', 'Ordered', 'Delivered', 'Cancelled') DEFAULT 'Requested',
-  ordered_by VARCHAR(20),
-  received_by VARCHAR(20),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
-  FOREIGN KEY (ordered_by) REFERENCES users(user_id),
-  FOREIGN KEY (received_by) REFERENCES users(user_id)
+-- Academic Years
+CREATE TABLE academic_years (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    year VARCHAR(9) NOT NULL UNIQUE, -- e.g., "2023-2024"
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    is_current BOOLEAN DEFAULT FALSE,
+    is_active BOOLEAN DEFAULT TRUE
 );
 
 -- Learner Transfers
