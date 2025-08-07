@@ -16,7 +16,7 @@ node --version
 npm --version
 
 // Create postgre database
-sudo -u postgres psql -c "CREATE USER devuser WITH PASSWORD '@K3m1s_2025';"
+sudo -u postgres psql -c "CREATE USER devuser WITH PASSWORD '@K3m1s_xyz_number';"
 sudo -u postgres psql -c "CREATE DATABASE education-management-system_db WITH OWNER devuser;"
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE kemis_db TO devuser;"
 
@@ -177,6 +177,7 @@ CREATE TABLE users (
   national_id VARCHAR(20) UNIQUE,
   email VARCHAR(100) UNIQUE NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
+  Surname_name VARCHAR(50) NULL,
   first_name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL,
   phone VARCHAR(20),
@@ -193,6 +194,7 @@ CREATE TABLE learners (
   institution_id VARCHAR(20) NOT NULL,
   national_id VARCHAR(20) UNIQUE,
   upi_number VARCHAR(20) UNIQUE,
+  Surname_name VARCHAR(50) NULL,
   first_name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL,
   date_of_birth DATE,
@@ -214,6 +216,7 @@ CREATE TABLE parent_guardians (
   id INT AUTO_INCREMENT PRIMARY KEY,
   learner_id VARCHAR(20) NOT NULL,
   national_id VARCHAR(20),
+  Surname_name VARCHAR(50) NULL,
   first_name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL,
   relationship VARCHAR(50) NOT NULL,
