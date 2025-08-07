@@ -199,9 +199,48 @@ CREATE TABLE learners (
   gender ENUM('Male', 'Female', 'Other'),
   enrollment_date DATE,
   current_grade VARCHAR(20),
+  is_foreign BOOLEAN DEFAULT FALSE,
+  foreign_passport_no VARCHAR(50),
+  foreign_country VARCHAR(50),
+  visa_type VARCHAR(50),
+  visa_expiry DATE;
   status ENUM('Active', 'Transferred', 'Graduated', 'Dropped Out') DEFAULT 'Active',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (institution_id) REFERENCES institutions(institution_id)
+);
+ 
+-- Create parent/guardian table
+CREATE TABLE parent_guardians (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  learner_id VARCHAR(20) NOT NULL,
+  national_id VARCHAR(20),
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  relationship VARCHAR(50) NOT NULL,
+  phone_number VARCHAR(20) NOT NULL,
+  email VARCHAR(100),
+  address TEXT,
+  is_foreign BOOLEAN DEFAULT FALSE,
+  iprs_validated BOOLEAN DEFAULT FALSE,
+  validation_timestamp TIMESTAMP NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (learner_id) REFERENCES learners(learner_id),
+  INDEX idx_parent_national_id (national_id),
+  INDEX idx_parent_phone (phone_number)
+);
+
+-- Create table for foreign learner details
+CREATE TABLE foreign_learner_details (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  learner_id VARCHAR(20) NOT NULL,
+  passport_number VARCHAR(50) NOT NULL,
+  country_of_origin VARCHAR(50) NOT NULL,
+  visa_type VARCHAR(50),
+  visa_expiry DATE,
+  entry_date DATE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (learner_id) REFERENCES learners(learner_id),
+  UNIQUE KEY (passport_number)
 );
 
 -- Learner Progress
