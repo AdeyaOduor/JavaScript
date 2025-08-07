@@ -546,6 +546,73 @@ async function generateAndSendOTP(learnerId, phone, email) {
 
 
 
+// controllers/parentController.js
+const axios = require('axios');
+const { validationResult } = require('express-validator');
+
+// IPRS API configuration
+const IPRS_API_CONFIG = {
+  baseURL: process.env.IPRS_API_BASE_URL || 'https://iprs-api.example.com',
+  apiKey: process.env.IPRS_API_KEY,
+  timeout: 5000
+};
+
+const iprsClient = axios.create(IPRS_API_CONFIG);
+
+/**
+ * Validate parent/guardian details against IPRS
+ * POST /api/parents/validate
+ */
+exports.validateParent = async (req, res) => {
+  // Validate request
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const { nationalId, firstName, lastName, dateOfBirth } = req.body;
+
+  try {
+    // Call IPRS API to validate parent/guardian details
+    const response = await iprsClient.post('/verify', {
+      nationalId,
+      firstName,
+      lastName,
+      dateOfBirth
+    });
+
+    if (response.data.status === 'VALID') {
+      return res.json({
+        success: true,
+        message: 'Parent/guardian details validated successfully',
+        data: {
+          fullName: response.data.fullName,
+          dateOfBirth: response.data.dateOfBirth,
+          nationality: response.data.nationality,
+          isCitizen: response.data.isCitizen,
+          isForeigner: response.data.isForeigner,
+          validationTimestamp: new Date().toISOString()
+        }
+      });
+    } else {
+      return res.status(404).json({
+        success: false,
+        message: 'Parent/guardian details not found in IPRS',
+        details: response.data.reason
+      });
+    }
+  } catch (error) {
+    console.error('IPRS validation error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Error validating parent/guardian details',
+      error: error.response?.data || error.message
+    });
+  }
+};
+
+
+
 // controllers/institutionController.js
 const applyForRegistration = async (req, res) => {
   try {
