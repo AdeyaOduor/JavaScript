@@ -524,6 +524,29 @@ exports.validateLearner = [
   body('isForeign').isBoolean().withMessage('isForeign must be boolean')
 ];
 
+// routes/api.js
+const express = require('express');
+const router = express.Router();
+const parentController = require('../controllers/parentController');
+const learnerController = require('../controllers/learnerController');
+const {
+  validateParent,
+  validateForeignLearner,
+  validateLearner
+} = require('../validators/learnerValidator');
+
+// Parent validation endpoint
+router.post('/parents/validate', validateParent, parentController.validateParent);
+
+// Learner registration endpoint
+router.post(
+  '/learners/register',
+  [...validateLearner, ...validateParent, ...validateForeignLearner],
+  learnerController.registerLearner
+);
+
+module.exports = router;
+
 
 // controllers/financialController.js
 const getFinancialReports = async (req, res) => {
