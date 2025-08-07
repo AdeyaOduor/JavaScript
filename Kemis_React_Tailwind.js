@@ -357,6 +357,20 @@ const morgan = require('morgan');
 
 const app = express();
 
+// CORS configuration
+const corsOptions = {
+  origin: 'http://localhost:3000', // Your React app's URL
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  optionsSuccessStatus: 204
+};
+
+app.use(cors(corsOptions));
+// Routes
+app.get('/', (req, res) => {
+  res.json({ message: 'education Management System API' });
+});
+
 // Middleware
 app.use(cors());
 app.use(morgan('dev'));
@@ -378,20 +392,6 @@ const checkRole = (roles) => {
 // Usage in routes
 router.get('/county-data', authenticate, checkRole(['county_admin', 'national_admin']), countyController.getData);
 
-
-// CORS configuration
-const corsOptions = {
-  origin: 'http://localhost:3000', // Your React app's URL
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-  optionsSuccessStatus: 204
-};
-
-app.use(cors(corsOptions));
-// Routes
-app.get('/', (req, res) => {
-  res.json({ message: 'education Management System API' });
-});
 
 // controllers/institutionController.js
 const applyForRegistration = async (req, res) => {
@@ -484,6 +484,45 @@ const recordProgress = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// validators/learnerValidator.js
+const { body } = require('express-validator');
+
+exports.validateParent = [
+  body('nationalId')
+    .if(body('isForeign').equals('false'))
+    .notEmpty().withMessage('National ID is required for Kenyan parents')
+    .isLength({ min: 8, max: 12 }).withMessage('National ID must be 8-12 characters'),
+  
+  body('firstName').notEmpty().withMessage('First name is required'),
+  body('lastName').notEmpty().withMessage('Last name is required'),
+  body('dateOfBirth').isDate().withMessage('Valid date of birth is required'),
+  body('phone').notEmpty().withMessage('Phone number is required'),
+  body('relationship').notEmpty().withMessage('Relationship to learner is required')
+];
+
+exports.validateForeignLearner = [
+  body('passportNumber')
+    .if(body('isForeign').equals('true'))
+    .notEmpty().withMessage('Passport number is required for foreign learners'),
+  
+  body('country').if(body('isForeign').equals('true'))
+    .notEmpty().withMessage('Country of origin is required'),
+  
+  body('visaType').optional(),
+  body('visaExpiry').optional().isDate(),
+  body('entryDate').optional().isDate()
+];
+
+exports.validateLearner = [
+  body('institutionId').notEmpty().withMessage('Institution ID is required'),
+  body('firstName').notEmpty().withMessage('First name is required'),
+  body('lastName').notEmpty().withMessage('Last name is required'),
+  body('dateOfBirth').isDate().withMessage('Valid date of birth is required'),
+  body('gender').isIn(['Male', 'Female', 'Other']).withMessage('Valid gender is required'),
+  body('currentGrade').notEmpty().withMessage('Current grade is required'),
+  body('isForeign').isBoolean().withMessage('isForeign must be boolean')
+];
 
 
 // controllers/financialController.js
