@@ -393,6 +393,159 @@ const checkRole = (roles) => {
 router.get('/county-data', authenticate, checkRole(['county_admin', 'national_admin']), countyController.getData);
 
 
+// controllers/learnerController.js
+const { validationResult } = require('express-validator');
+const db = require('../models');
+
+/**
+ * Register a new learner (supports foreign origin)
+ * POST /api/learners/register
+ */
+exports.registerLearner = async (req, res) => {
+  // Validate request
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const {
+    institutionId,
+    firstName,
+    lastName,
+    dateOfBirth,
+    gender,
+    enrollmentDate,
+    currentGrade,
+    isForeign,
+    foreignDetails,
+    parentDetails
+  } = req.body;
+
+  try {
+    // Start transaction
+    const result = await db.sequelize.transaction(async (t) => {
+      // Generate unique learner ID
+      const learnerId = `LRN-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+      
+      // Handle foreign learner specifics
+      let nationalId = null;
+      let birthCertificateNo = null;
+      let upiNumber = null;
+      
+      if (!isForeign) {
+        // Kenyan learner - require national ID or birth certificate
+        if (!parentDetails.nationalId && !parentDetails.birthCertificateNo) {
+          throw new Error('Kenyan learners require either parent national ID or birth certificate number');
+        }
+        nationalId = parentDetails.nationalId;
+        birthCertificateNo = parentDetails.birthCertificateNo;
+        
+        // Generate UPI number for Kenyan learners
+        upiNumber = `UPI-${Date.now().toString().slice(-6)}`;
+      } else {
+        // Foreign learner - use passport details
+        if (!foreignDetails.passportNumber) {
+          throw new Error('Foreign learners require passport number');
+        }
+        nationalId = `FOREIGN-${foreignDetails.passportNumber}`;
+        birthCertificateNo = foreignDetails.birthCertificateNo || null;
+      }
+
+      // Create learner record
+      const learner = await db.Learner.create({
+        learner_id: learnerId,
+        institution_id: institutionId,
+        national_id: nationalId,
+        birth_certificate_no: birthCertificateNo,
+        upi_number: upiNumber,
+        first_name: firstName,
+        last_name: lastName,
+        date_of_birth: dateOfBirth,
+        gender: gender,
+        enrollment_date: enrollmentDate || new Date(),
+        current_grade: currentGrade,
+        parent_guardian_phone: parentDetails.phone,
+        parent_guardian_email: parentDetails.email,
+        is_foreign: isForeign,
+        foreign_passport_no: isForeign ? foreignDetails.passportNumber : null,
+        foreign_country: isForeign ? foreignDetails.country : null,
+        status: 'Active'
+      }, { transaction: t });
+
+      // Create parent/guardian record
+      const parent = await db.ParentGuardian.create({
+        learner_id: learnerId,
+        national_id: parentDetails.nationalId,
+        first_name: parentDetails.firstName,
+        last_name: parentDetails.lastName,
+        relationship: parentDetails.relationship,
+        phone_number: parentDetails.phone,
+        email: parentDetails.email,
+        address: parentDetails.address,
+        is_foreign: isForeign,
+        iprs_validated: !isForeign && parentDetails.nationalId ? true : false,
+        validation_timestamp: !isForeign && parentDetails.nationalId ? new Date() : null
+      }, { transaction: t });
+
+      // For foreign learners, store additional details
+      if (isForeign) {
+        await db.ForeignLearnerDetails.create({
+          learner_id: learnerId,
+          passport_number: foreignDetails.passportNumber,
+          country_of_origin: foreignDetails.country,
+          visa_type: foreignDetails.visaType,
+          visa_expiry: foreignDetails.visaExpiry,
+          entry_date: foreignDetails.entryDate
+        }, { transaction: t });
+      }
+
+      // Generate and send OTP to parent/guardian
+      // (Implementation would call your OTP service)
+      const otpResponse = await generateAndSendOTP(
+        learnerId,
+        parentDetails.phone,
+        parentDetails.email
+      );
+
+      return {
+        learner,
+        parent,
+        otpInfo: otpResponse
+      };
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: 'Learner registered successfully',
+      data: {
+        learnerId: result.learner.learner_id,
+        parentDetails: result.parent,
+        otpInfo: result.otpInfo
+      }
+    });
+  } catch (error) {
+    console.error('Learner registration error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Error registering learner',
+      error: error.message
+    });
+  }
+};
+
+// Helper function to generate and send OTP
+async function generateAndSendOTP(learnerId, phone, email) {
+  // Implementation would call your OTP service
+  // This is a simplified example
+  return {
+    sentTo: phone || email,
+    method: phone ? 'SMS' : 'EMAIL',
+    expiresIn: '24 hours'
+  };
+}
+
+
+
 // controllers/institutionController.js
 const applyForRegistration = async (req, res) => {
   try {
