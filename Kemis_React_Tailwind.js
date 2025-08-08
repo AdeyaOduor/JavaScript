@@ -573,6 +573,148 @@ END //
 
 DELIMITER ;
 
+DELIMITER //
+
+CREATE PROCEDURE sp_ProcessAnnualGradeProgression(
+    IN p_academic_year VARCHAR(9))
+BEGIN
+    DECLARE v_next_academic_year VARCHAR(9);
+    DECLARE v_done INT DEFAULT FALSE;
+    DECLARE v_learner_id VARCHAR(20);
+    DECLARE v_current_grade VARCHAR(20);
+    DECLARE v_institution_type VARCHAR(20);
+    DECLARE v_next_grade VARCHAR(20);
+    DECLARE v_is_final_grade BOOLEAN;
+    DECLARE v_years_without_progress INT;
+    DECLARE v_institution_id VARCHAR(20);
+    
+    DECLARE v_learner_cursor CURSOR FOR
+        SELECT l.learner_id, l.current_grade, i.type, l.institution_id
+        FROM learners l
+        JOIN institutions i ON l.institution_id = i.institution_id
+        WHERE l.status = 'Active';
+    
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_done = TRUE;
+    
+    -- Calculate next academic year
+    SET v_next_academic_year = CONCAT(
+        SUBSTRING(p_academic_year, 1, 4) + 1, '-', 
+        SUBSTRING(p_academic_year, 6, 4) + 1
+    );
+    
+    -- Process each active learner
+    OPEN v_learner_cursor;
+    
+    learner_loop: LOOP
+        FETCH v_learner_cursor INTO v_learner_id, v_current_grade, v_institution_type, v_institution_id;
+        IF v_done THEN
+            LEAVE learner_loop;
+        END IF;
+        
+        -- Check for learners with no progress in two consecutive years
+        SELECT COUNT(DISTINCT lp.academic_year) INTO v_years_without_progress
+        FROM learner_progress lp
+        WHERE lp.learner_id = v_learner_id
+          AND lp.academic_year IN (
+              p_academic_year,
+              CONCAT(SUBSTRING(p_academic_year, 1, 4) - 1, '-', SUBSTRING(p_academic_year, 6, 4) - 1)
+          );
+        
+        -- Mark as dropout if no progress for two years
+        IF v_years_without_progress = 0 THEN
+            UPDATE learners
+            SET status = 'Dropped Out',
+                exit_reason = 'Dropout',
+                exit_date = CURDATE(),
+                last_updated = NOW()
+            WHERE learner_id = v_learner_id;
+            
+            -- Create notification for institution
+            INSERT INTO notifications (recipient_id, subject, content, metadata)
+            SELECT user_id, 
+                   'Learner Marked as Dropout',
+                   CONCAT('Learner ', (SELECT CONCAT(first_name, ' ', last_name) FROM learners WHERE learner_id = v_learner_id),
+                          ' has been automatically marked as dropped out due to lack of progress.'),
+                   JSON_OBJECT('learner_id', v_learner_id, 'institution_id', v_institution_id)
+            FROM users 
+            WHERE institution_id = v_institution_id AND role = 'institution_admin';
+            
+            ITERATE learner_loop;
+        END IF;
+        
+        -- Get next grade based on progression rules
+        SELECT next_grade, is_final_grade 
+        INTO v_next_grade, v_is_final_grade
+        FROM grade_progression_rules
+        WHERE current_grade = v_current_grade
+          AND institution_type = v_institution_type;
+        
+        -- Handle graduation if this is the final grade
+        IF v_is_final_grade THEN
+            CASE v_institution_type
+                WHEN 'TVET' THEN
+                    UPDATE learners
+                    SET status = 'Graduated',
+                        exit_reason = 'TVET Graduate',
+                        exit_date = CURDATE(),
+                        last_updated = NOW()
+                    WHERE learner_id = v_learner_id;
+                
+                WHEN 'University' THEN
+                    UPDATE learners
+                    SET status = 'Graduated',
+                        exit_reason = 'University Graduate',
+                        exit_date = CURDATE(),
+                        last_updated = NOW()
+                    WHERE learner_id = v_learner_id;
+                
+                ELSE
+                    UPDATE learners
+                    SET status = 'Graduated',
+                        exit_reason = NULL,
+                        exit_date = CURDATE(),
+                        last_updated = NOW()
+                    WHERE learner_id = v_learner_id;
+            END CASE;
+            
+            -- Create notification for graduation
+            INSERT INTO notifications (recipient_id, subject, content, metadata)
+            SELECT user_id, 
+                   'Learner Graduated',
+                   CONCAT('Learner ', (SELECT CONCAT(first_name, ' ', last_name) FROM learners WHERE learner_id = v_learner_id),
+                          ' has graduated from ', v_current_grade, '.'),
+                   JSON_OBJECT('learner_id', v_learner_id, 'institution_id', v_institution_id)
+            FROM users 
+            WHERE institution_id = v_institution_id AND role = 'institution_admin';
+        ELSE
+            -- Move to next grade if progression rule exists
+            IF v_next_grade IS NOT NULL THEN
+                UPDATE learners
+                SET current_grade = v_next_grade,
+                    last_updated = NOW()
+                WHERE learner_id = v_learner_id;
+            END IF;
+        END IF;
+    END LOOP;
+    
+    CLOSE v_learner_cursor;
+    
+    -- Update academic year tracking
+    UPDATE academic_years
+    SET is_current = FALSE,
+        is_active = FALSE
+    WHERE year = p_academic_year;
+    
+    UPDATE academic_years
+    SET is_current = TRUE
+    WHERE year = v_next_academic_year;
+    
+    -- Log completion
+    INSERT INTO system_logs (action, details)
+    VALUES ('Annual Progression', CONCAT('Processed grade progression for academic year ', p_academic_year));
+END //
+
+DELIMITER ;
 
 // ========================================================================================================================
 
