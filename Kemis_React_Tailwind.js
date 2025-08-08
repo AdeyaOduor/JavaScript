@@ -716,6 +716,75 @@ END //
 
 DELIMITER ;
 
+
+DELIMITER //
+
+CREATE PROCEDURE sp_GetLearnerProgress(
+    IN p_learner_id VARCHAR(20),
+    IN p_auth_token VARCHAR(64),
+    IN p_contact_value VARCHAR(100))
+BEGIN
+    DECLARE v_token_valid BOOLEAN;
+    DECLARE v_contact_match BOOLEAN;
+    
+    -- Simplified token validation (in production, use proper JWT validation)
+    -- Here we just check if there's a recent valid OTP for this learner/contact
+    SELECT EXISTS (
+        SELECT 1 FROM learner_otp_verification
+        WHERE learner_id = p_learner_id
+          AND contact_value = p_contact_value
+          AND expires_at > NOW()
+          AND is_used = TRUE
+          AND generated_at > DATE_SUB(NOW(), INTERVAL 1 HOUR) -- Token valid for 1 hour
+    ) INTO v_token_valid;
+    
+    -- Verify contact belongs to learner
+    SELECT EXISTS (
+        SELECT 1 FROM learners
+        WHERE learner_id = p_learner_id
+          AND (parent_guardian_phone = p_contact_value OR parent_guardian_email = p_contact_value)
+    ) INTO v_contact_match;
+    
+    IF NOT v_token_valid OR NOT v_contact_match THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Authentication failed';
+    END IF;
+    
+    -- Return learner progress
+    SELECT 
+        l.learner_id,
+        l.upi_number,
+        l.national_id,
+        l.birth_certificate_no,
+        CONCAT(l.first_name, ' ', l.last_name) AS full_name,
+        l.date_of_birth,
+        l.gender,
+        l.current_grade,
+        i.name AS institution_name,
+        i.type AS institution_type,
+        lp.academic_year,
+        lp.term,
+        lp.grade,
+        lp.subjects,
+        lp.overall_remarks,
+        lp.recorded_at,
+        u.first_name AS teacher_first_name,
+        u.last_name AS teacher_last_name
+    FROM 
+        learners l
+    JOIN 
+        institutions i ON l.institution_id = i.institution_id
+    LEFT JOIN
+        learner_progress lp ON l.learner_id = lp.learner_id
+    LEFT JOIN
+        users u ON lp.teacher_id = u.user_id
+    WHERE 
+        l.learner_id = p_learner_id
+    ORDER BY 
+        lp.academic_year DESC, lp.term DESC;
+END //
+
+DELIMITER ;
+
 // ========================================================================================================================
 
 // server.js
