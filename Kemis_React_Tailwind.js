@@ -236,7 +236,7 @@ CREATE TABLE procurement (
 CREATE TABLE learners (
   learner_id VARCHAR(20) PRIMARY KEY,
   institution_id VARCHAR(20) NOT NULL,
-  national_id VARCHAR(20) UNIQUE,
+  national_id VARCHAR(20) NULL,
   birth_certificate_no VARCHAR(50) UNIQUE,
   upi_number VARCHAR(20) UNIQUE,
   Surname_name VARCHAR(50) NULL,
@@ -384,6 +384,75 @@ CREATE TABLE grievances (
   FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
   FOREIGN KEY (assigned_to) REFERENCES users(user_id)
 );
+
+DELIMITER //
+
+CREATE PROCEDURE sp_CreateUserWithRole(
+    IN p_national_id VARCHAR(20),
+    IN p_email VARCHAR(100),
+    IN p_password_hash VARCHAR(255),
+    IN p_first_name VARCHAR(50),
+    IN p_last_name VARCHAR(50),
+    IN p_phone VARCHAR(20),
+    IN p_role ENUM('national_admin', 'county_admin', 'subcounty_admin', 'institution_admin', 'institution_staff', 'public'),
+    IN p_institution_id VARCHAR(20),
+    OUT p_user_id VARCHAR(20)
+BEGIN
+    DECLARE user_count INT;
+    DECLARE institution_exists INT;
+    
+    -- Validate email uniqueness
+    SELECT COUNT(*) INTO user_count FROM users WHERE email = p_email;
+    IF user_count > 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Email already exists';
+    END IF;
+    
+    -- Validate national ID uniqueness if provided
+    IF p_national_id IS NOT NULL THEN
+        SELECT COUNT(*) INTO user_count FROM users WHERE national_id = p_national_id;
+        IF user_count > 0 THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'National ID already exists';
+        END IF;
+    END IF;
+    
+    -- Validate institution exists if role requires it
+    IF p_institution_id IS NOT NULL THEN
+        SELECT COUNT(*) INTO institution_exists FROM institutions WHERE institution_id = p_institution_id;
+        IF institution_exists = 0 THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Institution does not exist';
+        END IF;
+    END IF;
+    
+    -- Generate user ID
+    SET p_user_id = CONCAT('USR-', DATE_FORMAT(NOW(), '%Y%m%d'), '-', LPAD(FLOOR(RAND() * 10000), 4, '0'));
+    
+    -- Insert user
+    INSERT INTO users (
+        user_id,
+        national_id,
+        email,
+        password_hash,
+        first_name,
+        last_name,
+        phone,
+        role,
+        institution_id,
+        is_active
+    ) VALUES (
+        p_user_id,
+        p_national_id,
+        p_email,
+        p_password_hash,
+        p_first_name,
+        p_last_name,
+        p_phone,
+        p_role,
+        p_institution_id,
+        TRUE
+    );
+END //
+
+DELIMITER ;
 
 DELIMITER //
 
