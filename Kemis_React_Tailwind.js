@@ -385,6 +385,75 @@ CREATE TABLE grievances (
   FOREIGN KEY (assigned_to) REFERENCES users(user_id)
 );
 
+DELIMITER //
+
+CREATE PROCEDURE sp_RegisterLearnerWithGuardian(
+    IN p_institution_id VARCHAR(20),
+    IN p_national_id VARCHAR(20),
+    IN p_birth_certificate_no VARCHAR(50),
+    IN p_upi_number VARCHAR(20),
+    IN p_first_name VARCHAR(50),
+    IN p_last_name VARCHAR(50),
+    IN p_date_of_birth DATE,
+    IN p_gender ENUM('Male', 'Female', 'Other'),
+    IN p_enrollment_date DATE,
+    IN p_current_grade VARCHAR(20),
+    IN p_parent_guardian_phone VARCHAR(20),
+    IN p_parent_guardian_email VARCHAR(100),
+    IN p_created_by VARCHAR(20),
+    OUT p_learner_id VARCHAR(20))
+BEGIN
+    DECLARE v_institution_type VARCHAR(20);
+    DECLARE v_grade_exists BOOLEAN;
+    
+    -- Validate institution and get type
+    SELECT type INTO v_institution_type 
+    FROM institutions 
+    WHERE institution_id = p_institution_id;
+    
+    IF v_institution_type IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Institution does not exist';
+    END IF;
+    
+    -- Validate grade exists for this institution type
+    SELECT EXISTS (
+        SELECT 1 FROM grade_progression_rules 
+        WHERE current_grade = p_current_grade 
+        AND institution_type = v_institution_type
+    ) INTO v_grade_exists;
+    
+    IF NOT v_grade_exists THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid grade for this institution type';
+    END IF;
+    
+    -- Generate learner ID
+    SET p_learner_id = CONCAT('LRN-', DATE_FORMAT(NOW(), '%Y%m%d'), '-', 
+                        (SELECT COUNT(*) + 1 FROM learners 
+                         WHERE DATE(created_at) = CURDATE()));
+    
+    -- Insert learner
+    INSERT INTO learners (
+        learner_id, institution_id, national_id, birth_certificate_no, upi_number,
+        first_name, last_name, date_of_birth, gender, enrollment_date,
+        current_grade, parent_guardian_phone, parent_guardian_email, created_by
+    ) VALUES (
+        p_learner_id, p_institution_id, p_national_id, p_birth_certificate_no, p_upi_number,
+        p_first_name, p_last_name, p_date_of_birth, p_gender, p_enrollment_date,
+        p_current_grade, p_parent_guardian_phone, p_parent_guardian_email, p_created_by
+    );
+    
+    -- Generate and send OTP (implementation would call SMS/email service)
+    CALL sp_GenerateAndSendOTP(p_learner_id, p_parent_guardian_phone, 'phone');
+    
+    IF p_parent_guardian_email IS NOT NULL THEN
+        CALL sp_GenerateAndSendOTP(p_learner_id, p_parent_guardian_email, 'email');
+    END IF;
+END //
+
+DELIMITER ;
+
+
+
 // ========================================================================================================================
 
 // server.js
