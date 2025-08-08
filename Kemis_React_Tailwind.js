@@ -493,6 +493,86 @@ END //
 
 DELIMITER ;
 
+DELIMITER //
+
+CREATE PROCEDURE sp_VerifyOTPAndGetLearner(
+    IN p_contact_value VARCHAR(100),
+    IN p_otp_code VARCHAR(6),
+    OUT p_learner_id VARCHAR(20),
+    OUT p_auth_token VARCHAR(64))
+BEGIN
+    DECLARE v_otp_valid BOOLEAN DEFAULT FALSE;
+    DECLARE v_learner_exists BOOLEAN;
+    DECLARE v_attempts INT;
+    
+    -- Check OTP validity
+    SELECT 
+        learner_id, 
+        attempts,
+        expires_at > NOW() AND is_used = FALSE AS is_valid
+    INTO 
+        p_learner_id, v_attempts, v_otp_valid
+    FROM learner_otp_verification
+    WHERE contact_value = p_contact_value
+      AND otp_code = p_otp_code
+    ORDER BY generated_at DESC
+    LIMIT 1;
+    
+    -- Check if learner exists
+    SELECT EXISTS (
+        SELECT 1 FROM learners 
+        WHERE learner_id = p_learner_id 
+          AND (parent_guardian_phone = p_contact_value OR parent_guardian_email = p_contact_value)
+          AND status = 'Active'
+    ) INTO v_learner_exists;
+    
+    -- Handle invalid cases
+    IF p_learner_id IS NULL OR NOT v_learner_exists THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid OTP or learner not found';
+    ELSEIF v_attempts >= 3 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Too many failed attempts';
+    ELSEIF NOT v_otp_valid THEN
+        -- Increment attempt counter
+        UPDATE learner_otp_verification
+        SET attempts = attempts + 1
+        WHERE contact_value = p_contact_value
+          AND otp_code = p_otp_code;
+        
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid or expired OTP';
+    END IF;
+    
+    -- Mark OTP as used
+    UPDATE learner_otp_verification
+    SET is_used = TRUE
+    WHERE contact_value = p_contact_value
+      AND otp_code = p_otp_code;
+    
+    -- Generate auth token (simplified for example)
+    SET p_auth_token = SHA2(CONCAT(p_learner_id, NOW(), RAND()), 256);
+    
+    -- Return learner information
+    SELECT 
+        l.learner_id,
+        l.upi_number,
+        l.national_id,
+        l.birth_certificate_no,
+        CONCAT(l.first_name, ' ', l.last_name) AS full_name,
+        l.date_of_birth,
+        l.gender,
+        l.current_grade,
+        i.name AS institution_name,
+        i.type AS institution_type,
+        p_auth_token AS auth_token
+    FROM 
+        learners l
+    JOIN 
+        institutions i ON l.institution_id = i.institution_id
+    WHERE 
+        l.learner_id = p_learner_id;
+END //
+
+DELIMITER ;
+
 
 // ========================================================================================================================
 
