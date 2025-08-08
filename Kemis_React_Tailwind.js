@@ -453,6 +453,46 @@ END //
 DELIMITER ;
 
 
+DELIMITER //
+
+CREATE PROCEDURE sp_GenerateAndSendOTP(
+    IN p_learner_id VARCHAR(20),
+    IN p_contact_value VARCHAR(100),
+    IN p_contact_type ENUM('phone', 'email'))
+BEGIN
+    DECLARE v_otp_code VARCHAR(6);
+    DECLARE v_expires_at TIMESTAMP;
+    
+    -- Generate random 6-digit OTP
+    SET v_otp_code = LPAD(FLOOR(RAND() * 1000000), 6, '0');
+    SET v_expires_at = TIMESTAMPADD(HOUR, 24, NOW());
+    
+    -- Invalidate any existing OTPs for this learner/contact
+    UPDATE learner_otp_verification
+    SET is_used = TRUE
+    WHERE learner_id = p_learner_id 
+      AND contact_value = p_contact_value
+      AND is_used = FALSE;
+    
+    -- Store new OTP
+    INSERT INTO learner_otp_verification (
+        learner_id, contact_value, contact_type, 
+        otp_code, expires_at
+    ) VALUES (
+        p_learner_id, p_contact_value, p_contact_type,
+        v_otp_code, v_expires_at
+    );
+    
+    -- In production, you would integrate with SMS/email service here
+    -- For phone: Send SMS with OTP code
+    -- For email: Send email with OTP code
+    
+    -- For demonstration, return the OTP (remove in production)
+    SELECT v_otp_code AS otp_code, v_expires_at AS expires_at;
+END //
+
+DELIMITER ;
+
 
 // ========================================================================================================================
 
