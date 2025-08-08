@@ -391,6 +391,7 @@ CREATE PROCEDURE sp_CreateUserWithRole(
     IN p_national_id VARCHAR(20),
     IN p_email VARCHAR(100),
     IN p_password_hash VARCHAR(255),
+    IN p_sur_name VARCHAR(50),
     IN p_first_name VARCHAR(50),
     IN p_last_name VARCHAR(50),
     IN p_phone VARCHAR(20),
@@ -432,6 +433,7 @@ BEGIN
         national_id,
         email,
         password_hash,
+        sur_name,
         first_name,
         last_name,
         phone,
@@ -443,6 +445,7 @@ BEGIN
         p_national_id,
         p_email,
         p_password_hash,
+        p_sur_name,
         p_first_name,
         p_last_name,
         p_phone,
@@ -456,11 +459,72 @@ DELIMITER ;
 
 DELIMITER //
 
+CREATE PROCEDURE sp_AssignStaffPermissions(
+    IN p_institution_admin_id VARCHAR(20),
+    IN p_staff_id VARCHAR(20),
+    IN p_can_update_progress BOOLEAN,
+    IN p_can_manage_learners BOOLEAN,
+    IN p_can_view_finances BOOLEAN,
+    IN p_can_manage_procurement BOOLEAN)
+BEGIN
+    DECLARE admin_institution_id VARCHAR(20);
+    DECLARE staff_institution_id VARCHAR(20);
+    DECLARE is_admin BOOLEAN;
+    
+    -- Verify requesting user is an admin of the institution
+    SELECT institution_id, role = 'institution_admin' INTO admin_institution_id, is_admin
+    FROM users WHERE user_id = p_institution_admin_id;
+    
+    IF NOT is_admin OR admin_institution_id IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Only institution admins can assign permissions';
+    END IF;
+    
+    -- Verify staff belongs to the same institution
+    SELECT institution_id INTO staff_institution_id
+    FROM users WHERE user_id = p_staff_id;
+    
+    IF staff_institution_id != admin_institution_id THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Staff member must belong to your institution';
+    END IF;
+    
+    -- Update staff permissions
+    UPDATE user_permissions SET
+        can_update_progress = p_can_update_progress,
+        can_manage_learners = p_can_manage_learners,
+        can_view_finances = p_can_view_finances,
+        can_manage_procurement = p_can_manage_procurement,
+        updated_at = NOW()
+    WHERE user_id = p_staff_id;
+    
+    -- Insert if record doesn't exist
+    IF ROW_COUNT() = 0 THEN
+        INSERT INTO user_permissions (
+            user_id,
+            can_update_progress,
+            can_manage_learners,
+            can_view_finances,
+            can_manage_procurement
+        ) VALUES (
+            p_staff_id,
+            p_can_update_progress,
+            p_can_manage_learners,
+            p_can_view_finances,
+            p_can_manage_procurement
+        );
+    END IF;
+END //
+
+DELIMITER ;
+
+
+DELIMITER //
+
 CREATE PROCEDURE sp_RegisterLearnerWithGuardian(
     IN p_institution_id VARCHAR(20),
     IN p_national_id VARCHAR(20),
     IN p_birth_certificate_no VARCHAR(50),
     IN p_upi_number VARCHAR(20),
+    IN p_sur_name VARCHAR(50),
     IN p_first_name VARCHAR(50),
     IN p_last_name VARCHAR(50),
     IN p_date_of_birth DATE,
@@ -503,11 +567,11 @@ BEGIN
     -- Insert learner
     INSERT INTO learners (
         learner_id, institution_id, national_id, birth_certificate_no, upi_number,
-        first_name, last_name, date_of_birth, gender, enrollment_date,
+        sur_name,first_name, last_name, date_of_birth, gender, enrollment_date,
         current_grade, parent_guardian_phone, parent_guardian_email, created_by
     ) VALUES (
         p_learner_id, p_institution_id, p_national_id, p_birth_certificate_no, p_upi_number,
-        p_first_name, p_last_name, p_date_of_birth, p_gender, p_enrollment_date,
+        p_sur_name,p_first_name, p_last_name, p_date_of_birth, p_gender, p_enrollment_date,
         p_current_grade, p_parent_guardian_phone, p_parent_guardian_email, p_created_by
     );
     
