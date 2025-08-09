@@ -203,6 +203,7 @@ CREATE TABLE financial_records (
   id INT AUTO_INCREMENT PRIMARY KEY,
   institution_id VARCHAR(20) NOT NULL,
   record_type ENUM('Fee Payment', 'Government Funding', 'Donor Funding', 'Other Income', 'Expense') NOT NULL,
+  bank_acc ENUM('Tution', 'Maintanance', 'Development') NOT NULL,
   amount DECIMAL(12,2) NOT NULL,
   description TEXT,
   reference_number VARCHAR(50),
@@ -720,7 +721,6 @@ END //
 DELIMITER ;
 
 
-
 DELIMITER //
 
 CREATE PROCEDURE sp_RegisterLearnerWithGuardian(
@@ -921,6 +921,77 @@ BEGIN
         institutions i ON l.institution_id = i.institution_id
     WHERE 
         l.learner_id = p_learner_id;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE sp_RecordLearnerProgress(
+    IN p_learner_id VARCHAR(20),
+    IN p_academic_year VARCHAR(10),
+    IN p_term VARCHAR(20),
+    IN p_grade VARCHAR(20),
+    IN p_subjects JSON,
+    IN p_overall_remarks TEXT,
+    IN p_teacher_id VARCHAR(20))
+BEGIN
+    DECLARE learner_institution_id VARCHAR(20);
+    DECLARE teacher_institution_id VARCHAR(20);
+    DECLARE teacher_has_permission BOOLEAN;
+    
+    -- Validate learner exists and get institution
+    SELECT institution_id INTO learner_institution_id 
+    FROM learners 
+    WHERE learner_id = p_learner_id;
+    
+    IF learner_institution_id IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Learner not found';
+    END IF;
+    
+    -- Validate teacher exists and belongs to same institution
+    SELECT institution_id INTO teacher_institution_id 
+    FROM users 
+    WHERE user_id = p_teacher_id;
+    
+    IF teacher_institution_id != learner_institution_id THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You can only record progress for learners in your institution';
+    END IF;
+    
+    -- Validate teacher has permission
+    SELECT can_update_progress INTO teacher_has_permission 
+    FROM user_permissions 
+    WHERE user_id = p_teacher_id;
+    
+    IF NOT teacher_has_permission THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You do not have permission to record progress';
+    END IF;
+    
+    -- Insert progress record
+    INSERT INTO learner_progress (
+        learner_id,
+        academic_year,
+        term,
+        grade,
+        subjects,
+        overall_remarks,
+        teacher_id
+    ) VALUES (
+        p_learner_id,
+        p_academic_year,
+        p_term,
+        p_grade,
+        p_subjects,
+        p_overall_remarks,
+        p_teacher_id
+    );
+    
+    -- Update learner's current grade if different
+    IF p_grade IS NOT NULL THEN
+        UPDATE learners SET
+            current_grade = p_grade
+        WHERE learner_id = p_learner_id AND current_grade != p_grade;
+    END IF;
 END //
 
 DELIMITER ;
@@ -1133,6 +1204,114 @@ BEGIN
         l.learner_id = p_learner_id
     ORDER BY 
         lp.academic_year DESC, lp.term DESC;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE sp_RecordFinancialTransaction(
+    IN p_institution_id VARCHAR(20),
+    IN p_record_type ENUM('Fee Payment', 'Government Funding', 'Donor Funding', 'Other Income', 'Expense'),
+    IN p_bank_acc ENUM('Tution', 'Maintanance', 'Development'),
+    IN p_amount DECIMAL(12,2),
+    IN p_description TEXT,
+    IN p_reference_number VARCHAR(50),
+    IN p_transaction_date DATE,
+    IN p_recorded_by VARCHAR(20))
+BEGIN
+    DECLARE recorder_institution_id VARCHAR(20);
+    DECLARE recorder_has_permission BOOLEAN;
+    
+    -- Validate institution exists
+    IF NOT EXISTS (SELECT 1 FROM institutions WHERE institution_id = p_institution_id) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Institution does not exist';
+    END IF;
+    
+    -- Validate recorder belongs to institution
+    SELECT institution_id INTO recorder_institution_id 
+    FROM users 
+    WHERE user_id = p_recorded_by;
+    
+    IF recorder_institution_id != p_institution_id THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You can only record transactions for your institution';
+    END IF;
+    
+    -- Validate recorder has permission
+    SELECT can_view_finances INTO recorder_has_permission 
+    FROM user_permissions 
+    WHERE user_id = p_recorded_by;
+    
+    IF NOT recorder_has_permission THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You do not have permission to record financial transactions';
+    END IF;
+    
+    -- Insert transaction
+    INSERT INTO financial_records (
+        institution_id,
+        record_type,
+        amount,
+        description,
+        reference_number,
+        transaction_date,
+        recorded_by
+    ) VALUES (
+        p_institution_id,
+        p_record_type,
+        p_amount,
+        p_description,
+        p_reference_number,
+        COALESCE(p_transaction_date, CURDATE()),
+        p_recorded_by
+    );
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE sp_GenerateFinancialReport(
+    IN p_institution_id VARCHAR(20),
+    IN p_start_date DATE,
+    IN p_end_date DATE,
+    IN p_record_types JSON)
+BEGIN
+    -- Validate institution exists
+    IF NOT EXISTS (SELECT 1 FROM institutions WHERE institution_id = p_institution_id) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Institution does not exist';
+    END IF;
+    
+    -- Return summary report
+    SELECT 
+        record_type,
+        COUNT(*) AS transaction_count,
+        SUM(amount) AS total_amount,
+        MIN(transaction_date) AS first_transaction,
+        MAX(transaction_date) AS last_transaction
+    FROM financial_records
+    WHERE institution_id = p_institution_id
+      AND (p_start_date IS NULL OR transaction_date >= p_start_date)
+      AND (p_end_date IS NULL OR transaction_date <= p_end_date)
+      AND (p_record_types IS NULL OR JSON_CONTAINS(p_record_types, JSON_QUOTE(record_type), '$'))
+    GROUP BY record_type
+    ORDER BY record_type;
+    
+    -- Return detailed transactions
+    SELECT 
+        id,
+        record_type,
+        amount,
+        description,
+        reference_number,
+        transaction_date,
+        recorded_by,
+        created_at
+    FROM financial_records
+    WHERE institution_id = p_institution_id
+      AND (p_start_date IS NULL OR transaction_date >= p_start_date)
+      AND (p_end_date IS NULL OR transaction_date <= p_end_date)
+      AND (p_record_types IS NULL OR JSON_CONTAINS(p_record_types, JSON_QUOTE(record_type), '$'))
+    ORDER BY transaction_date DESC, record_type;
 END //
 
 DELIMITER ;
