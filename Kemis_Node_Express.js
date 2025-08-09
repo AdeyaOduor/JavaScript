@@ -131,29 +131,12 @@ src/
 // ============================================== BACK END ============================================
 
 // Sql
-CREATE TABLE IF NOT EXISTS jurisdictions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    code VARCHAR(20) UNIQUE NOT NULL,
-    level ENUM('national', 'county', 'subcounty') NOT NULL,
-    parent_id INT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (parent_id) REFERENCES jurisdictions(id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS jurisdiction_departments (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    jurisdiction_id INT NOT NULL,
-    name VARCHAR(100) NOT NULL,
-    code VARCHAR(20) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (jurisdiction_id) REFERENCES jurisdictions(id) ON DELETE CASCADE,
-    UNIQUE KEY (jurisdiction_id, code)
-);
-
 CREATE TABLE institutions (
   institution_id VARCHAR(20) PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
+  county VARCHAR(100) NOT NULL,
+  sub_county VARCHAR(100) NOT NULL,
+  zone VARCHAR(100) NOT NULL,
   type ENUM('Early Learning', 'Primary', 'Junior Secondary', 'High School', 'TVET', 'University') NOT NULL,
   registration_date DATE,
   status ENUM('Pending', 'Approved', 'Suspended', 'Deregistered') DEFAULT 'Pending',
@@ -187,6 +170,9 @@ CREATE TABLE users_roles (
 CREATE TABLE institution_applications (
   application_id VARCHAR(20) PRIMARY KEY,
   institution_name VARCHAR(100) NOT NULL,
+  institution_county VARCHAR(100) NOT NULL,
+  institution_sub_county VARCHAR(100) NOT NULL,
+  institution_zone VARCHAR(100) NOT NULL,
   institution_type VARCHAR(50) NOT NULL,
   applicant_user_id VARCHAR(20) NOT NULL,
   documents JSON, -- {registration_cert: string, kra_pin: string, etc.}
@@ -522,6 +508,9 @@ DELIMITER //
 CREATE PROCEDURE sp_SubmitInstitutionApplication(
     IN p_user_id VARCHAR(20),
     IN p_institution_name VARCHAR(100),
+    IN p_institution_county VARCHAR(100),
+    IN p_institution_sub_county VARCHAR(100),
+    IN p_institution_zone VARCHAR(100),
     IN p_institution_type ENUM('Early Learning', 'Primary', 'Junior Secondary', 'High School', 'TVET', 'University'),
     IN p_physical_address TEXT,
     IN p_county_id INT,
@@ -534,6 +523,7 @@ BEGIN
     DECLARE user_exists INT;
     DECLARE county_exists INT;
     DECLARE subcounty_exists INT;
+    DECLARE zone_exists INT;
     
     -- Validate user exists
     SELECT COUNT(*) INTO user_exists FROM users WHERE user_id = p_user_id;
@@ -550,7 +540,28 @@ BEGIN
     -- Validate sub-county exists and belongs to county
     SELECT COUNT(*) INTO subcounty_exists 
     FROM sub_counties 
-    WHERE id = p_sub_county_id AND county_id = p_county_id;
+    WHERE id = p_subcounty_id AND county_id = p_county_id;
+
+   IF application_status != 'Submitted' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Application has already been submitted';
+    END IF;
+    
+    -- Verify submitter is a subcounty admin for this county
+    SELECT role INTO submitter_role 
+    FROM users_role 
+    WHERE user_id = p_subcounty_admin_id;
+    
+    IF reviewer_role != 'subcounty_admin' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Only subcounty admins can submit applications';
+    END IF;
+    
+    -- Verify submitter is admin for this subcounty
+    IF NOT EXISTS (
+        SELECT 1 FROM subcounty_admins 
+        WHERE user_id = p_subcounty_admins_id AND county_id = county_id
+    ) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You are not authorized to submit applications for this county';
+    END IF;
     
     IF subcounty_exists = 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Sub-county does not exist or does not belong to specified county';
@@ -563,6 +574,9 @@ BEGIN
     INSERT INTO institution_applications (
         application_id,
         institution_name,
+        institution_county,
+        institution_sub_county,
+        institution_zone,
         institution_type,
         applicant_user_id,
         physical_address,
@@ -575,6 +589,9 @@ BEGIN
     ) VALUES (
         p_application_id,
         p_institution_name,
+        p_institution_county,
+        p_institution_sub_county,
+        p_institution_zone,
         p_institution_type,
         p_user_id,
         p_physical_address,
@@ -657,6 +674,9 @@ BEGIN
         -- Create institution
         INSERT INTO institutions (
             institution_id,
+            county,
+            sub_county,
+            zone,
             name,
             type,
             registration_date,
@@ -668,6 +688,9 @@ BEGIN
             contact_phone
         ) VALUES (
             institution_id,
+            institution_county,
+            institution_sub_county,
+            institution_zone,
             institution_name,
             institution_type,
             CURDATE(),
