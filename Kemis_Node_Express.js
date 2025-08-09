@@ -762,6 +762,21 @@ BEGIN
     IF NOT v_grade_exists THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid grade for this institution type';
     END IF;
+
+   -- Validate creator has permission to add learners to this institution
+    SELECT institution_id INTO creator_institution_id FROM users WHERE user_id = p_created_by;
+    
+    IF creator_institution_id != p_institution_id THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You can only add learners to your own institution';
+    END IF;
+    
+    SELECT can_manage_learners INTO creator_has_permission 
+    FROM user_permissions 
+    WHERE user_id = p_created_by;
+    
+    IF NOT creator_has_permission THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You do not have permission to add learners';
+    END IF;
     
     -- Generate learner ID
     SET p_learner_id = CONCAT('LRN-', DATE_FORMAT(NOW(), '%Y%m%d'), '-', 
