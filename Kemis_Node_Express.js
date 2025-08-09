@@ -516,6 +516,79 @@ END //
 
 DELIMITER ;
 
+DELIMITER //
+
+CREATE PROCEDURE sp_SubmitInstitutionApplication(
+    IN p_user_id VARCHAR(20),
+    IN p_institution_name VARCHAR(100),
+    IN p_institution_type ENUM('Early Learning', 'Primary', 'Junior Secondary', 'High School', 'TVET', 'University'),
+    IN p_physical_address TEXT,
+    IN p_county_id INT,
+    IN p_sub_county_id INT,
+    IN p_contact_email VARCHAR(100),
+    IN p_contact_phone VARCHAR(20),
+    IN p_documents JSON,
+    OUT p_application_id VARCHAR(20))
+BEGIN
+    DECLARE user_exists INT;
+    DECLARE county_exists INT;
+    DECLARE subcounty_exists INT;
+    
+    -- Validate user exists
+    SELECT COUNT(*) INTO user_exists FROM users WHERE user_id = p_user_id;
+    IF user_exists = 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'User does not exist';
+    END IF;
+    
+    -- Validate county exists
+    SELECT COUNT(*) INTO county_exists FROM counties WHERE id = p_county_id;
+    IF county_exists = 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'County does not exist';
+    END IF;
+    
+    -- Validate sub-county exists and belongs to county
+    SELECT COUNT(*) INTO subcounty_exists 
+    FROM sub_counties 
+    WHERE id = p_sub_county_id AND county_id = p_county_id;
+    
+    IF subcounty_exists = 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Sub-county does not exist or does not belong to specified county';
+    END IF;
+    
+    -- Generate application ID
+    SET p_application_id = CONCAT('APP-', DATE_FORMAT(NOW(), '%Y%m%d'), '-', LPAD(FLOOR(RAND() * 10000), 4, '0'));
+    
+    -- Insert application
+    INSERT INTO institution_applications (
+        application_id,
+        institution_name,
+        institution_type,
+        applicant_user_id,
+        physical_address,
+        county_id,
+        sub_county_id,
+        contact_email,
+        contact_phone,
+        documents,
+        status
+    ) VALUES (
+        p_application_id,
+        p_institution_name,
+        p_institution_type,
+        p_user_id,
+        p_physical_address,
+        p_county_id,
+        p_sub_county_id,
+        p_contact_email,
+        p_contact_phone,
+        p_documents,
+        'Submitted'
+    );
+END //
+
+DELIMITER ;
+
+
 
 DELIMITER //
 
