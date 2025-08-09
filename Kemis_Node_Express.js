@@ -588,6 +588,137 @@ END //
 
 DELIMITER ;
 
+DELIMITER //
+
+CREATE PROCEDURE sp_ReviewInstitutionApplication(
+    IN p_application_id VARCHAR(20),
+    IN p_reviewer_id VARCHAR(20),
+    IN p_decision ENUM('Approved', 'Rejected', 'Request More Info'),
+    IN p_notes TEXT)
+BEGIN
+    DECLARE application_status VARCHAR(20);
+    DECLARE applicant_id VARCHAR(20);
+    DECLARE reviewer_role VARCHAR(20);
+    DECLARE institution_name VARCHAR(100);
+    DECLARE institution_type VARCHAR(50);
+    DECLARE county_id INT;
+    DECLARE sub_county_id INT;
+    DECLARE institution_id VARCHAR(20);
+    
+    -- Get application details
+    SELECT 
+        status, applicant_user_id, institution_name, institution_type, 
+        county_id, sub_county_id
+    INTO 
+        application_status, applicant_id, institution_name, institution_type,
+        county_id, sub_county_id
+    FROM institution_applications 
+    WHERE application_id = p_application_id;
+    
+    IF application_status IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Application not found';
+    END IF;
+    
+    IF application_status != 'Submitted' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Application has already been reviewed';
+    END IF;
+    
+    -- Verify reviewer is a county admin for this county
+    SELECT role INTO reviewer_role 
+    FROM users 
+    WHERE user_id = p_reviewer_id;
+    
+    IF reviewer_role != 'county_admin' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Only county admins can review applications';
+    END IF;
+    
+    -- Verify reviewer is admin for this county
+    IF NOT EXISTS (
+        SELECT 1 FROM county_admins 
+        WHERE user_id = p_reviewer_id AND county_id = county_id
+    ) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You are not authorized to review applications for this county';
+    END IF;
+    
+    -- Update application status
+    UPDATE institution_applications SET
+        status = p_decision,
+        review_notes = p_notes,
+        reviewed_by = p_reviewer_id,
+        reviewed_at = NOW()
+    WHERE application_id = p_application_id;
+    
+    -- If approved, create the institution
+    IF p_decision = 'Approved' THEN
+        -- Generate institution ID
+        SET institution_id = CONCAT('INST-', DATE_FORMAT(NOW(), '%Y%m%d'), '-', LPAD(FLOOR(RAND() * 10000), 4, '0'));
+        
+        -- Create institution
+        INSERT INTO institutions (
+            institution_id,
+            name,
+            type,
+            registration_date,
+            status,
+            physical_address,
+            county_id,
+            sub_county_id,
+            contact_email,
+            contact_phone
+        ) VALUES (
+            institution_id,
+            institution_name,
+            institution_type,
+            CURDATE(),
+            'Approved',
+            (SELECT physical_address FROM institution_applications WHERE application_id = p_application_id),
+            county_id,
+            sub_county_id,
+            (SELECT contact_email FROM institution_applications WHERE application_id = p_application_id),
+            (SELECT contact_phone FROM institution_applications WHERE application_id = p_application_id)
+        );
+        
+        -- Update applicant to institution admin
+        UPDATE users SET
+            role = 'institution_admin',
+            institution_id = institution_id
+        WHERE user_id = applicant_id;
+        
+        -- Create notification
+        INSERT INTO notifications (
+            recipient_id,
+            subject,
+            content,
+            metadata
+        ) VALUES (
+            applicant_id,
+            'Institution Registration Approved',
+            CONCAT('Your institution "', institution_name, '" has been approved. Institution ID: ', institution_id),
+            JSON_OBJECT(
+                'institution_id', institution_id,
+                'application_id', p_application_id
+            )
+        );
+    ELSEIF p_decision = 'Rejected' THEN
+        -- Create notification for rejection
+        INSERT INTO notifications (
+            recipient_id,
+            subject,
+            content,
+            metadata
+        ) VALUES (
+            applicant_id,
+            'Institution Registration Rejected',
+            CONCAT('Your institution application for "', institution_name, '" has been rejected. Reason: ', p_notes),
+            JSON_OBJECT(
+                'application_id', p_application_id
+            )
+        );
+    END IF;
+END //
+
+DELIMITER ;
+
 
 
 DELIMITER //
