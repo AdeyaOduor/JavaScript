@@ -138,6 +138,7 @@ CREATE TABLE institutions (
   sub_county VARCHAR(100) NOT NULL,
   zone VARCHAR(100) NOT NULL,
   type ENUM('Early Learning', 'Primary', 'Junior Secondary', 'High School', 'TVET', 'University') NOT NULL,
+  category ENUM('Community Based', 'Faith Based', 'Private', 'Public') NOT NULL,
   registration_date DATE,
   status ENUM('Pending', 'Approved', 'Suspended', 'Deregistered') DEFAULT 'Pending',
   physical_address TEXT,
@@ -189,7 +190,7 @@ CREATE TABLE financial_records (
   id INT AUTO_INCREMENT PRIMARY KEY,
   institution_id VARCHAR(20) NOT NULL,
   record_type ENUM('Fee Payment', 'Government Funding', 'Donor Funding', 'Other Income', 'Expense') NOT NULL,
-  bank_acc ENUM('Tution', 'Maintanance', 'Development') NOT NULL,
+  bank_details ENUM('Tution', 'Maintanance', 'Development') NOT NULL,
   amount DECIMAL(12,2) NOT NULL,
   description TEXT,
   reference_number VARCHAR(50),
@@ -322,6 +323,7 @@ CREATE TABLE grade_progression_rules (
     current_grade VARCHAR(20) NOT NULL,
     next_grade VARCHAR(20),
     institution_type ENUM('Early Learning', 'Primary', 'Junior Secondary', 'High School', 'TVET', 'University') NOT NULL,
+    institution_category ENUM('Community Based', 'Faith Based', 'Private', 'Public') NOT NULL,
     is_final_grade BOOLEAN DEFAULT FALSE,
     UNIQUE KEY (current_grade, institution_type)
 );
@@ -451,7 +453,7 @@ CREATE PROCEDURE sp_AssignStaffPermissions(
     IN p_staff_id VARCHAR(20),
     IN p_can_update_progress BOOLEAN,
     IN p_can_manage_learners BOOLEAN,
-    IN p_can_view_finances BOOLEAN,
+    IN p_can_manage_finances BOOLEAN,
     IN p_can_manage_procurement BOOLEAN)
 BEGIN
     DECLARE admin_institution_id VARCHAR(20);
@@ -478,7 +480,7 @@ BEGIN
     UPDATE user_permissions SET
         can_update_progress = p_can_update_progress,
         can_manage_learners = p_can_manage_learners,
-        can_view_finances = p_can_view_finances,
+        can_manage_finances = p_can_view_finances,
         can_manage_procurement = p_can_manage_procurement,
         updated_at = NOW()
     WHERE user_id = p_staff_id;
@@ -489,13 +491,13 @@ BEGIN
             user_id,
             can_update_progress,
             can_manage_learners,
-            can_view_finances,
+            can_manage_finances,
             can_manage_procurement
         ) VALUES (
             p_staff_id,
             p_can_update_progress,
             p_can_manage_learners,
-            p_can_view_finances,
+            p_can_manage_finances,
             p_can_manage_procurement
         );
     END IF;
@@ -512,6 +514,7 @@ CREATE PROCEDURE sp_SubmitInstitutionApplication(
     IN p_institution_sub_county VARCHAR(100),
     IN p_institution_zone VARCHAR(100),
     IN p_institution_type ENUM('Early Learning', 'Primary', 'Junior Secondary', 'High School', 'TVET', 'University'),
+    IN p_institution_category ENUM('Community Based', 'Faith Based', 'Private', 'Public'),
     IN p_physical_address TEXT,
     IN p_county_id INT,
     IN p_sub_county_id INT,
@@ -546,12 +549,12 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Application has already been submitted';
     END IF;
     
-    -- Verify submitter is a subcounty admin for this county
+    -- Verify submitter is a subcounty admin for this subcounty
     SELECT role INTO submitter_role 
     FROM users_role 
     WHERE user_id = p_subcounty_admin_id;
     
-    IF reviewer_role != 'subcounty_admin' THEN
+    IF submitter_role != 'subcounty_admin' THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Only subcounty admins can submit applications';
     END IF;
     
@@ -578,6 +581,7 @@ BEGIN
         institution_sub_county,
         institution_zone,
         institution_type,
+        institution_category,
         applicant_user_id,
         physical_address,
         county_id,
@@ -593,6 +597,7 @@ BEGIN
         p_institution_sub_county,
         p_institution_zone,
         p_institution_type,
+        p_institution_category,
         p_user_id,
         p_physical_address,
         p_county_id,
@@ -1236,7 +1241,7 @@ DELIMITER //
 CREATE PROCEDURE sp_RecordFinancialTransaction(
     IN p_institution_id VARCHAR(20),
     IN p_record_type ENUM('Fee Payment', 'Government Funding', 'Donor Funding', 'Other Income', 'Expense'),
-    IN p_bank_acc ENUM('Tution', 'Maintanance', 'Development'),
+    IN p_bank_details ENUM('Tution', 'Maintanance', 'Development'),
     IN p_amount DECIMAL(12,2),
     IN p_description TEXT,
     IN p_reference_number VARCHAR(50),
@@ -1273,6 +1278,7 @@ BEGIN
     INSERT INTO financial_records (
         institution_id,
         record_type,
+        bank_details,
         amount,
         description,
         reference_number,
@@ -1281,6 +1287,7 @@ BEGIN
     ) VALUES (
         p_institution_id,
         p_record_type,
+        P_bank_details,
         p_amount,
         p_description,
         p_reference_number,
@@ -1323,6 +1330,7 @@ BEGIN
     SELECT 
         id,
         record_type,
+        bank_details,
         amount,
         description,
         reference_number,
