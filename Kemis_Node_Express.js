@@ -1347,6 +1347,97 @@ END //
 
 DELIMITER ;
 
+
+DELIMITER //
+
+CREATE PROCEDURE sp_CreateProcurementOrder(
+    IN p_institution_id VARCHAR(20),
+    IN p_item_name VARCHAR(100),
+    IN p_category ENUM('Learning Materials', 'Sanitary', 'Equipment', 'Other'),
+    IN p_quantity INT,
+    IN p_unit_price DECIMAL(10,2),
+    IN p_supplier VARCHAR(100),
+    IN p_ordered_by VARCHAR(20))
+BEGIN
+    DECLARE total_price DECIMAL(10,2);
+    DECLARE orderer_institution_id VARCHAR(20);
+    DECLARE orderer_has_permission BOOLEAN;
+    
+    -- Validate institution exists
+    IF NOT EXISTS (SELECT 1 FROM institutions WHERE institution_id = p_institution_id) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Institution does not exist';
+    END IF;
+    
+    -- Validate orderer belongs to institution
+    SELECT institution_id INTO orderer_institution_id 
+    FROM users 
+    WHERE user_id = p_ordered_by;
+    
+    IF orderer_institution_id != p_institution_id THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You can only create orders for your institution';
+    END IF;
+    
+    -- Validate orderer has permission
+    SELECT can_manage_procurement INTO orderer_has_permission 
+    FROM user_permissions 
+    WHERE user_id = p_ordered_by;
+    
+    IF NOT orderer_has_permission THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You do not have permission to manage procurement';
+    END IF;
+    
+    -- Calculate total price
+    SET total_price = p_quantity * p_unit_price;
+    
+    -- Insert order
+    INSERT INTO procurement (
+        institution_id,
+        item_name,
+        category,
+        quantity,
+        unit_price,
+        total_price,
+        supplier,
+        order_date,
+        status,
+        ordered_by
+    ) VALUES (
+        p_institution_id,
+        p_item_name,
+        p_category,
+        p_quantity,
+        p_unit_price,
+        total_price,
+        p_supplier,
+        CURDATE(),
+        'Ordered',
+        p_ordered_by
+    );
+    
+    -- Create notification for institution admin
+    INSERT INTO notifications (
+        recipient_id,
+        subject,
+        content,
+        metadata
+    ) SELECT 
+        user_id,
+        'New Procurement Order',
+        CONCAT('A new order for ', p_item_name, ' has been placed by ', 
+              (SELECT CONCAT(first_name, ' ', last_name) FROM users WHERE user_id = p_ordered_by)),
+        JSON_OBJECT(
+            'order_id', LAST_INSERT_ID(),
+            'item_name', p_item_name,
+            'total_price', total_price
+        )
+    FROM users 
+    WHERE institution_id = p_institution_id AND role = 'institution_admin';
+END //
+
+DELIMITER ;
+
+
+
 // ========================================================================================================================
 
 // server.js
