@@ -1460,6 +1460,125 @@ DELIMITER ;
 
 DELIMITER //
 
+CREATE PROCEDURE sp_SearchLearnerWithCredentials(
+    IN p_upi_number VARCHAR(20),
+    IN p_national_id VARCHAR(20),
+    IN p_birth_certificate_number VARCHAR(20),
+    IN p_contact_value VARCHAR(100), -- phone or email
+    IN p_otp_code VARCHAR(6),
+    IN p_institution_id VARCHAR(20))
+BEGIN
+    DECLARE valid_otp BOOLEAN DEFAULT FALSE;
+    DECLARE learner_id_val VARCHAR(20);
+    DECLARE otp_attempts INT;
+    DECLARE max_attempts INT DEFAULT 5;
+    
+    -- First try to find the learner based on provided identifiers
+    SELECT l.learner_id INTO learner_id_val
+    FROM learners l
+    WHERE (l.upi_number = p_upi_number 
+          OR l.national_id = p_national_id 
+          OR l.birth_certificate_no = p_birth_certificate_number)
+      AND l.institution_id = p_institution_id
+      AND l.status = 'Active'
+    LIMIT 1;
+    
+    IF learner_id_val IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Learner not found or not active';
+    END IF;
+    
+    -- Verify OTP is valid for this learner and contact method
+    SELECT 
+        COUNT(*),
+        SUM(CASE WHEN attempts >= max_attempts THEN 1 ELSE 0 END)
+    INTO 
+        valid_otp, otp_attempts
+    FROM learner_otp_verification
+    WHERE learner_id = learner_id_val
+      AND contact_value = p_contact_value
+      AND otp_code = p_otp_code
+      AND expires_at > NOW()
+      AND is_used = FALSE;
+    
+    IF valid_otp = 0 THEN
+        -- Increment attempt counter if OTP exists but is invalid
+        UPDATE learner_otp_verification
+        SET attempts = attempts + 1
+        WHERE learner_id = learner_id_val
+          AND contact_value = p_contact_value
+          AND otp_code = p_otp_code;
+        
+        IF otp_attempts > 3 THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Too many failed attempts. OTP blocked.';
+        ELSE
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid OTP or expired';
+        END IF;
+    END IF;
+    
+    -- Mark OTP as used
+    UPDATE learner_otp_verification
+    SET is_used = TRUE,
+        used_at = NOW()
+    WHERE learner_id = learner_id_val
+      AND contact_value = p_contact_value
+      AND otp_code = p_otp_code;
+    
+    -- Return comprehensive learner information
+    SELECT 
+        l.learner_id,
+        l.upi_number,
+        l.national_id,
+        l.birth_certificate_no,
+        CONCAT(l.first_name, ' ', l.last_name) AS full_name,
+        l.date_of_birth,
+        l.gender,
+        l.current_grade,
+        i.name AS institution_name,
+        i.type AS institution_type,
+        lp.academic_year,
+        lp.term,
+        lp.subjects,
+        lp.overall_remarks,
+        lp.recorded_at,
+        CONCAT(u.first_name, ' ', u.last_name) AS teacher_name
+    FROM 
+        learners l
+    JOIN 
+        institutions i ON l.institution_id = i.institution_id
+    LEFT JOIN
+        learner_progress lp ON l.learner_id = lp.learner_id
+    LEFT JOIN
+        users u ON lp.teacher_id = u.user_id
+    WHERE 
+        l.learner_id = learner_id_val
+    ORDER BY 
+        lp.academic_year DESC, lp.term DESC
+    LIMIT 5;
+    
+    -- Log the search activity
+    INSERT INTO learner_search_logs (
+        learner_id,
+        search_type,
+        contact_method,
+        institution_id,
+        searched_at
+    ) VALUES (
+        learner_id_val,
+        'OTP',
+        (SELECT contact_type FROM learner_otp_verification 
+         WHERE learner_id = learner_id_val 
+           AND contact_value = p_contact_value
+           AND otp_code = p_otp_code
+         LIMIT 1),
+        p_institution_id,
+        NOW()
+    );
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
 CREATE PROCEDURE sp_RecordFinancialTransaction(
     IN p_institution_id VARCHAR(20),
     IN p_record_type ENUM('Fee Payment', 'Government Funding', 'Donor Funding', 'Other Income', 'Expense'),
