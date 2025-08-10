@@ -1436,6 +1436,96 @@ END //
 
 DELIMITER ;
 
+DELIMITER //
+
+CREATE PROCEDURE sp_UpdateProcurementStatus(
+    IN p_order_id INT,
+    IN p_status ENUM('Requested', 'Ordered', 'Delivered', 'Cancelled'),
+    IN p_delivery_date DATE,
+    IN p_updated_by VARCHAR(20))
+BEGIN
+    DECLARE order_institution_id VARCHAR(20);
+    DECLARE updater_institution_id VARCHAR(20);
+    DECLARE updater_has_permission BOOLEAN;
+    DECLARE current_status VARCHAR(20);
+    
+    -- Get order details
+    SELECT institution_id, status INTO order_institution_id, current_status
+    FROM procurement 
+    WHERE id = p_order_id;
+    
+    IF order_institution_id IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Order not found';
+    END IF;
+    
+    -- Validate updater belongs to institution
+    SELECT institution_id INTO updater_institution_id 
+    FROM users 
+    WHERE user_id = p_updated_by;
+    
+    IF updater_institution_id != order_institution_id THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You can only update orders for your institution';
+    END IF;
+    
+    -- Validate updater has permission
+    SELECT can_manage_procurement INTO updater_has_permission 
+    FROM user_permissions 
+    WHERE user_id = p_updated_by;
+    
+    IF NOT updater_has_permission THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You do not have permission to manage procurement';
+    END IF;
+    
+    -- Validate status transition
+    IF current_status = 'Cancelled' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot update a cancelled order';
+    END IF;
+    
+    IF current_status = 'Delivered' AND p_status != 'Delivered' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot change status from Delivered';
+    END IF;
+    
+    -- Update order
+    IF p_status = 'Delivered' THEN
+        UPDATE procurement SET
+            status = p_status,
+            delivery_date = COALESCE(p_delivery_date, CURDATE()),
+            received_by = p_updated_by,
+            updated_at = NOW()
+        WHERE id = p_order_id;
+    ELSE
+        UPDATE procurement SET
+            status = p_status,
+            updated_at = NOW()
+        WHERE id = p_order_id;
+    END IF;
+    
+    -- Create notification if delivered
+    IF p_status = 'Delivered' THEN
+        INSERT INTO notifications (
+            recipient_id,
+            subject,
+            content,
+            metadata
+        ) SELECT 
+            user_id,
+            'Procurement Order Delivered',
+            CONCAT('Order #', p_order_id, ' for ', item_name, ' has been delivered'),
+            JSON_OBJECT(
+                'order_id', p_order_id,
+                'item_name', item_name
+            )
+        FROM procurement 
+        WHERE id = p_order_id
+        AND EXISTS (
+            SELECT 1 FROM users 
+            WHERE institution_id = order_institution_id 
+            AND (role = 'institution_admin' OR can_manage_procurement = 1)
+        );
+    END IF;
+END //
+
+DELIMITER ;
 
 
 // ========================================================================================================================
