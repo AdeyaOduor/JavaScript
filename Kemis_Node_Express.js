@@ -284,6 +284,8 @@ CREATE TABLE foreign_learner_details (
   UNIQUE KEY (passport_number)
 );
 
+
+-- OTP Verification Table
 CREATE TABLE learner_otp_verification (
     id INT AUTO_INCREMENT PRIMARY KEY,
     learner_id VARCHAR(20) NOT NULL,
@@ -293,10 +295,22 @@ CREATE TABLE learner_otp_verification (
     generated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     expires_at TIMESTAMP NOT NULL,
     is_used BOOLEAN DEFAULT FALSE,
+    used_at TIMESTAMP NULL,
     attempts TINYINT DEFAULT 0,
     FOREIGN KEY (learner_id) REFERENCES learners(learner_id),
-    INDEX idx_otp_expiry (expires_at),
-    INDEX idx_otp_contact (contact_value)
+    INDEX idx_otp_verification (learner_id, contact_value, otp_code)
+);
+
+-- Search Logs Table
+CREATE TABLE learner_search_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    learner_id VARCHAR(20) NOT NULL,
+    search_type ENUM('OTP', 'SecretCode') NOT NULL,
+    contact_method ENUM('phone', 'email') NULL,
+    institution_id VARCHAR(20) NOT NULL,
+    searched_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (learner_id) REFERENCES learners(learner_id),
+    FOREIGN KEY (institution_id) REFERENCES institutions(institution_id)
 );
 
 -- Learner Progress
