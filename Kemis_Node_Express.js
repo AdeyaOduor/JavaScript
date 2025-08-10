@@ -1236,6 +1236,112 @@ END //
 
 DELIMITER ;
 
+
+DELIMITER //
+
+CREATE PROCEDURE sp_InitiateLearnerTransfer(
+    IN p_learner_id VARCHAR(20),
+    IN p_from_institution_id VARCHAR(20),
+    IN p_to_institution_id VARCHAR(20),
+    IN p_reason TEXT,
+    IN p_initiated_by VARCHAR(20))
+BEGIN
+    DECLARE transfer_exists INT;
+    DECLARE learner_current_institution VARCHAR(20);
+    DECLARE initiator_institution_id VARCHAR(20);
+    DECLARE initiator_has_permission BOOLEAN;
+    
+    -- Validate institutions exist
+    IF NOT EXISTS (SELECT 1 FROM institutions WHERE institution_id = p_from_institution_id) OR
+       NOT EXISTS (SELECT 1 FROM institutions WHERE institution_id = p_to_institution_id) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'One or both institutions do not exist';
+    END IF;
+    
+    -- Validate learner exists and belongs to from institution
+    SELECT institution_id INTO learner_current_institution
+    FROM learners 
+    WHERE learner_id = p_learner_id AND status = 'Active';
+    
+    IF learner_current_institution IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Learner not found or not active';
+    END IF;
+    
+    IF learner_current_institution != p_from_institution_id THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Learner does not belong to the specified institution';
+    END IF;
+    
+    -- Validate initiator belongs to from institution
+    SELECT institution_id INTO initiator_institution_id 
+    FROM users 
+    WHERE user_id = p_initiated_by;
+    
+    IF initiator_institution_id != p_from_institution_id THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You can only initiate transfers from your institution';
+    END IF;
+    
+    -- Validate initiator has permission
+    SELECT can_manage_learners INTO initiator_has_permission 
+    FROM user_permissions 
+    WHERE user_id = p_initiated_by;
+    
+    IF NOT initiator_has_permission THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You do not have permission to transfer learners';
+    END IF;
+    
+    -- Check for existing pending transfer
+    SELECT COUNT(*) INTO transfer_exists
+    FROM learner_transfers
+    WHERE learner_id = p_learner_id 
+      AND status = 'Pending';
+    
+    IF transfer_exists > 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'There is already a pending transfer for this learner';
+    END IF;
+    
+    -- Create transfer record
+    INSERT INTO learner_transfers (
+        learner_id,
+        from_institution_id,
+        to_institution_id,
+        transfer_date,
+        reason,
+        initiated_by,
+        status
+    ) VALUES (
+        p_learner_id,
+        p_from_institution_id,
+        p_to_institution_id,
+        CURDATE(),
+        p_reason,
+        p_initiated_by,
+        'Pending'
+    );
+    
+    -- Create notification for receiving institution admin
+    INSERT INTO notifications (
+        recipient_id,
+        subject,
+        content,
+        metadata
+    ) SELECT 
+        user_id,
+        'Learner Transfer Request',
+        CONCAT('A transfer has been requested for learner ', 
+              (SELECT CONCAT(first_name, ' ', last_name) FROM learners WHERE learner_id = p_learner_id),
+              ' from ', (SELECT name FROM institutions WHERE institution_id = p_from_institution_id)),
+        JSON_OBJECT(
+            'transfer_id', LAST_INSERT_ID(),
+            'learner_id', p_learner_id,
+            'from_institution_id', p_from_institution_id,
+            'to_institution_id', p_to_institution_id
+        )
+    FROM users 
+    WHERE institution_id = p_to_institution_id AND role = 'institution_admin';
+END //
+
+DELIMITER ;
+
+
 DELIMITER //
 
 CREATE PROCEDURE sp_RecordFinancialTransaction(
