@@ -1344,6 +1344,122 @@ DELIMITER ;
 
 DELIMITER //
 
+CREATE PROCEDURE sp_ProcessLearnerTransfer(
+    IN p_transfer_id INT,
+    IN p_decision ENUM('Approved', 'Rejected'),
+    IN p_processed_by VARCHAR(20))
+BEGIN
+    DECLARE transfer_status VARCHAR(20);
+    DECLARE learner_id_val VARCHAR(20);
+    DECLARE from_institution_id_val VARCHAR(20);
+    DECLARE to_institution_id_val VARCHAR(20);
+    DECLARE processor_institution_id VARCHAR(20);
+    DECLARE processor_has_permission BOOLEAN;
+    
+    -- Get transfer details
+    SELECT 
+        status, learner_id, from_institution_id, to_institution_id
+    INTO 
+        transfer_status, learner_id_val, from_institution_id_val, to_institution_id_val
+    FROM learner_transfers 
+    WHERE id = p_transfer_id;
+    
+    IF transfer_status IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Transfer not found';
+    END IF;
+    
+    IF transfer_status != 'Pending' THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Transfer has already been processed';
+    END IF;
+    
+    -- Validate processor belongs to receiving institution
+    SELECT institution_id INTO processor_institution_id 
+    FROM users 
+    WHERE user_id = p_processed_by;
+    
+    IF processor_institution_id != to_institution_id_val THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You can only process transfers to your institution';
+    END IF;
+    
+    -- Validate processor has permission
+    SELECT can_manage_learners INTO processor_has_permission 
+    FROM user_permissions 
+    WHERE user_id = p_processed_by;
+    
+    IF NOT processor_has_permission THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You do not have permission to manage learner transfers';
+    END IF;
+    
+    -- Update transfer status
+    UPDATE learner_transfers SET
+        status = p_decision,
+        approved_by = CASE WHEN p_decision = 'Approved' THEN p_processed_by ELSE NULL END,
+        updated_at = NOW()
+    WHERE id = p_transfer_id;
+    
+    -- If approved, update learner's institution
+    IF p_decision = 'Approved' THEN
+        UPDATE learners SET
+            institution_id = to_institution_id_val,
+            status = 'Active',
+            updated_at = NOW()
+        WHERE learner_id = learner_id_val;
+        
+        -- Create notifications
+        INSERT INTO notifications (
+            recipient_id,
+            subject,
+            content,
+            metadata
+        ) VALUES 
+        (
+            (SELECT created_by FROM learners WHERE learner_id = learner_id_val),
+            'Learner Transfer Approved',
+            CONCAT('The transfer of ', (SELECT CONCAT(first_name, ' ', last_name) FROM learners WHERE learner_id = learner_id_val),
+                  ' to ', (SELECT name FROM institutions WHERE institution_id = to_institution_id_val), ' has been approved'),
+            JSON_OBJECT(
+                'transfer_id', p_transfer_id,
+                'learner_id', learner_id_val,
+                'new_institution_id', to_institution_id_val
+            )
+        ),
+        (
+            (SELECT initiated_by FROM learner_transfers WHERE id = p_transfer_id),
+            'Learner Transfer Approved',
+            CONCAT('Your transfer request for ', (SELECT CONCAT(first_name, ' ', last_name) FROM learners WHERE learner_id = learner_id_val),
+                  ' to ', (SELECT name FROM institutions WHERE institution_id = to_institution_id_val), ' has been approved'),
+            JSON_OBJECT(
+                'transfer_id', p_transfer_id,
+                'learner_id', learner_id_val,
+                'new_institution_id', to_institution_id_val
+            )
+        );
+    ELSE
+        -- Create notification for rejection
+        INSERT INTO notifications (
+            recipient_id,
+            subject,
+            content,
+            metadata
+        ) VALUES 
+        (
+            (SELECT initiated_by FROM learner_transfers WHERE id = p_transfer_id),
+            'Learner Transfer Rejected',
+            CONCAT('Your transfer request for ', (SELECT CONCAT(first_name, ' ', last_name) FROM learners WHERE learner_id = learner_id_val),
+                  ' has been rejected'),
+            JSON_OBJECT(
+                'transfer_id', p_transfer_id,
+                'learner_id', learner_id_val
+            )
+        );
+    END IF;
+END //
+
+DELIMITER ;
+
+
+DELIMITER //
+
 CREATE PROCEDURE sp_RecordFinancialTransaction(
     IN p_institution_id VARCHAR(20),
     IN p_record_type ENUM('Fee Payment', 'Government Funding', 'Donor Funding', 'Other Income', 'Expense'),
