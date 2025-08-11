@@ -15,7 +15,7 @@ module.exports = {
 @tailwind utilities;
 
 
-// Institutuion registration
+// Institutuion registration form
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { uploadDocuments } from '../services/documentService';
@@ -141,7 +141,7 @@ const InstitutionRegistrationForm = () => {
 
 export default InstitutionRegistrationForm;
 
-// RBAC Views
+// RBAC dashboards
 import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import CountyDashboard from './dashboards/CountyDashboard';
@@ -199,6 +199,11 @@ const ProgressEntryForm = ({ learner, onSuccess }) => {
   const [subjects, setSubjects] = useState([
     { name: 'Mathematics', marks: '', grade: '' },
     { name: 'English', marks: '', grade: '' },
+    { name: 'Kiswahil', marks: '', grade: '' },
+    { name: 'Integrated Science', marks: '', grade: '' },
+    { name: 'Home Science', marks: '', grade: '' },
+    { name: 'Creative Arts', marks: '', grade: '' },
+    { name: 'Performing Arts', marks: '', grade: '' },
     // More subjects...
   ]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -218,9 +223,16 @@ const ProgressEntryForm = ({ learner, onSuccess }) => {
 
   const calculateGrade = (marks) => {
     if (marks >= 80) return 'A';
-    if (marks >= 70) return 'B';
-    if (marks >= 60) return 'C';
-    if (marks >= 50) return 'D';
+    if (marks >= 75) return 'A-';
+    if (marks >= 70) return 'B+';
+    if (marks >= 65) return 'B';
+    if (marks >= 60) return 'B-';
+    if (marks >= 55) return 'C+';
+    if (marks >= 50) return 'C';
+    if (marks >= 45) return 'C-';
+    if (marks >= 40) return 'D+';
+    if (marks >= 35) return 'D';
+    if (marks >= 30) return 'D-';
     return 'E';
   };
 
