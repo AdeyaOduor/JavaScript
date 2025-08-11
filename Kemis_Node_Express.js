@@ -1946,6 +1946,7 @@ exports.registerLearner = async (req, res) => {
 
   const {
     institutionId,
+    surName,
     firstName,
     lastName,
     dateOfBirth,
@@ -1994,6 +1995,7 @@ exports.registerLearner = async (req, res) => {
         national_id: nationalId,
         birth_certificate_no: birthCertificateNo,
         upi_number: upiNumber,
+        sur_name: surName
         first_name: firstName,
         last_name: lastName,
         date_of_birth: dateOfBirth,
@@ -2012,6 +2014,7 @@ exports.registerLearner = async (req, res) => {
       const parent = await db.ParentGuardian.create({
         learner_id: learnerId,
         national_id: parentDetails.nationalId,
+        sur_name: parentDetails.surName
         first_name: parentDetails.firstName,
         last_name: parentDetails.lastName,
         relationship: parentDetails.relationship,
@@ -2106,12 +2109,13 @@ exports.validateParent = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { nationalId, firstName, lastName, dateOfBirth } = req.body;
+  const { nationalId, surName, firstName, lastName, dateOfBirth } = req.body;
 
   try {
     // Call IPRS API to validate parent/guardian details
     const response = await iprsClient.post('/verify', {
       nationalId,
+      surName,
       firstName,
       lastName,
       dateOfBirth
