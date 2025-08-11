@@ -251,11 +251,11 @@ CREATE TABLE institution_applications (
   INDEX idx_application_status (status)
 );
 
-CREATE TABLE financial_records (
+CCREATE TABLE financial_records (
   id INT AUTO_INCREMENT PRIMARY KEY,
   institution_id VARCHAR(20) NOT NULL,
   record_type ENUM('Fee Payment', 'Government Funding', 'Donor Funding', 'Other Income', 'Expense') NOT NULL,
-  bank_details ENUM('Tution', 'Maintanance', 'Development') NOT NULL,
+  bank_details ENUM('Tuition', 'Maintenance', 'Development') NOT NULL,
   amount DECIMAL(12,2) NOT NULL,
   description TEXT,
   reference_number VARCHAR(50),
@@ -263,7 +263,9 @@ CREATE TABLE financial_records (
   recorded_by VARCHAR(20) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
-  FOREIGN KEY (recorded_by) REFERENCES users(user_id)
+  FOREIGN KEY (recorded_by) REFERENCES users_roles(user_id),
+  INDEX idx_financial_date (transaction_date),
+  INDEX idx_financial_type (record_type)
 );
 
 CREATE TABLE procurement (
@@ -281,18 +283,21 @@ CREATE TABLE procurement (
   ordered_by VARCHAR(20),
   received_by VARCHAR(20),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
-  FOREIGN KEY (ordered_by) REFERENCES users(user_id),
-  FOREIGN KEY (received_by) REFERENCES users(user_id)
+  FOREIGN KEY (ordered_by) REFERENCES users_roles(user_id),
+  FOREIGN KEY (received_by) REFERENCES users_roles(user_id),
+  INDEX idx_procurement_status (status),
+  INDEX idx_procurement_category (category)
 );
 
 CREATE TABLE learners (
   learner_id VARCHAR(20) PRIMARY KEY,
   institution_id VARCHAR(20) NOT NULL,
-  national_id VARCHAR(20) NULL,
+  national_id VARCHAR(20),
   birth_certificate_no VARCHAR(50) UNIQUE,
   upi_number VARCHAR(20) UNIQUE,
-  Surname_name VARCHAR(50) NULL,
+  sur_name VARCHAR(50),
   first_name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL,
   date_of_birth DATE,
@@ -302,25 +307,28 @@ CREATE TABLE learners (
   parent_guardian_phone VARCHAR(20) NOT NULL,
   parent_guardian_email VARCHAR(100),
   status ENUM('Active', 'Transferred', 'Graduated', 'Dropped Out', 'Deceased') DEFAULT 'Active',
-  exit_reason ENUM('TVET Graduate', 'University Graduate', 'Deceased', 'Dropout', 'Transferred') DEFAULT NULL,
-  exit_date DATE DEFAULT NULL,
+  exit_reason ENUM('TVET Graduate', 'University Graduate', 'Deceased', 'Dropout', 'Transferred'),
+  exit_date DATE,
   is_foreign BOOLEAN DEFAULT FALSE,
   foreign_passport_no VARCHAR(50),
   foreign_country VARCHAR(50),
   visa_type VARCHAR(50),
-  visa_expiry DATE;
+  visa_expiry DATE,
+  created_by VARCHAR(20),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (institution_id) REFERENCES institutions(institution_id)
   last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
+  FOREIGN KEY (created_by) REFERENCES users_roles(user_id),
   INDEX idx_learner_contact (parent_guardian_phone, parent_guardian_email),
-  INDEX idx_learner_status (status)
+  INDEX idx_learner_status (status),
+  INDEX idx_learner_institution (institution_id)
 );
  
 CREATE TABLE parent_guardians (
   id INT AUTO_INCREMENT PRIMARY KEY,
   learner_id VARCHAR(20) NOT NULL,
   national_id VARCHAR(20),
-  Surname_name VARCHAR(50) NULL,
+  sur_name VARCHAR(50),
   first_name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL,
   relationship VARCHAR(50) NOT NULL,
@@ -329,7 +337,7 @@ CREATE TABLE parent_guardians (
   address TEXT,
   is_foreign BOOLEAN DEFAULT FALSE,
   iprs_validated BOOLEAN DEFAULT FALSE,
-  validation_timestamp TIMESTAMP NULL,
+  validation_timestamp TIMESTAMP,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (learner_id) REFERENCES learners(learner_id),
   INDEX idx_parent_national_id (national_id),
@@ -346,78 +354,80 @@ CREATE TABLE foreign_learner_details (
   entry_date DATE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (learner_id) REFERENCES learners(learner_id),
-  UNIQUE KEY (passport_number)
+  UNIQUE KEY uk_passport (passport_number),
+  INDEX idx_foreign_learner (learner_id)
 );
 
-
--- OTP Verification Table
 CREATE TABLE learner_otp_verification (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    learner_id VARCHAR(20) NOT NULL,
-    contact_value VARCHAR(100) NOT NULL, -- phone or email
-    contact_type ENUM('phone', 'email') NOT NULL,
-    otp_code VARCHAR(6) NOT NULL,
-    generated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    expires_at TIMESTAMP NOT NULL,
-    is_used BOOLEAN DEFAULT FALSE,
-    used_at TIMESTAMP NULL,
-    attempts TINYINT DEFAULT 0,
-    FOREIGN KEY (learner_id) REFERENCES learners(learner_id),
-    INDEX idx_otp_verification (learner_id, contact_value, otp_code)
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  learner_id VARCHAR(20) NOT NULL,
+  contact_value VARCHAR(100) NOT NULL,
+  contact_type ENUM('phone', 'email') NOT NULL,
+  otp_code VARCHAR(6) NOT NULL,
+  generated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  expires_at TIMESTAMP NOT NULL,
+  is_used BOOLEAN DEFAULT FALSE,
+  used_at TIMESTAMP,
+  attempts TINYINT DEFAULT 0,
+  FOREIGN KEY (learner_id) REFERENCES learners(learner_id),
+  INDEX idx_otp_verification (learner_id, contact_value, otp_code),
+  INDEX idx_otp_expiry (expires_at)
 );
 
--- Search Logs Table
 CREATE TABLE learner_search_logs (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    learner_id VARCHAR(20) NOT NULL,
-    search_type ENUM('OTP', 'SecretCode') NOT NULL,
-    contact_method ENUM('phone', 'email') NULL,
-    institution_id VARCHAR(20) NOT NULL,
-    searched_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (learner_id) REFERENCES learners(learner_id),
-    FOREIGN KEY (institution_id) REFERENCES institutions(institution_id)
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  learner_id VARCHAR(20) NOT NULL,
+  search_type ENUM('OTP', 'SecretCode') NOT NULL,
+  contact_method ENUM('phone', 'email'),
+  institution_id VARCHAR(20) NOT NULL,
+  searched_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (learner_id) REFERENCES learners(learner_id),
+  FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
+  INDEX idx_search_logs (learner_id, searched_at)
 );
 
--- Learner Progress
+-- Corrected learner_progress table
 CREATE TABLE learner_progress (
   id INT AUTO_INCREMENT PRIMARY KEY,
   learner_id VARCHAR(20) NOT NULL,
   academic_year VARCHAR(10) NOT NULL,
   term VARCHAR(20) NOT NULL,
   grade VARCHAR(20) NOT NULL,
-  subjects JSON, -- Stores subject grades {subject: string, marks: decimal, grade: string}
+  subjects JSON,
   overall_remarks TEXT,
   teacher_id VARCHAR(20) NOT NULL,
   recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (learner_id) REFERENCES learners(learner_id),
-  FOREIGN KEY (teacher_id) REFERENCES users(user_id),
+  FOREIGN KEY (teacher_id) REFERENCES users_roles(user_id),
   FOREIGN KEY (academic_year) REFERENCES academic_years(year),
-  UNIQUE KEY (learner_id, academic_year, term)
+  UNIQUE KEY uk_learner_progress (learner_id, academic_year, term),
+  INDEX idx_progress_learner (learner_id),
+  INDEX idx_progress_year (academic_year)
 );
 
--- Grade Progression Rules
 CREATE TABLE grade_progression_rules (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    current_grade VARCHAR(20) NOT NULL,
-    next_grade VARCHAR(20),
-    institution_type ENUM('Early Learning', 'Primary', 'Junior Secondary', 'High School', 'TVET', 'University') NOT NULL,
-    institution_category ENUM('Community Based', 'Faith Based', 'Private', 'Public') NOT NULL,
-    is_final_grade BOOLEAN DEFAULT FALSE,
-    UNIQUE KEY (current_grade, institution_type)
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  current_grade VARCHAR(20) NOT NULL,
+  next_grade VARCHAR(20),
+  institution_type ENUM('Early Learning', 'Primary', 'Junior Secondary', 'High School', 'TVET', 'University') NOT NULL,
+  institution_category ENUM('Community Based', 'Faith Based', 'Private', 'Public') NOT NULL,
+  is_final_grade BOOLEAN DEFAULT FALSE,
+  UNIQUE KEY uk_grade_progression (current_grade, institution_type),
+  INDEX idx_progression_rules (institution_type, current_grade)
 );
 
--- Academic Years
 CREATE TABLE academic_years (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    year VARCHAR(9) NOT NULL UNIQUE, -- e.g., "2023-2024"
-    start_date DATE NOT NULL,
-    end_date DATE NOT NULL,
-    is_current BOOLEAN DEFAULT FALSE,
-    is_active BOOLEAN DEFAULT TRUE
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  year VARCHAR(9) NOT NULL UNIQUE,
+  start_date DATE NOT NULL,
+  end_date DATE NOT NULL,
+  is_current BOOLEAN DEFAULT FALSE,
+  is_active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_academic_years (year, is_current)
 );
 
--- Learner Transfers
 CREATE TABLE learner_transfers (
   id INT AUTO_INCREMENT PRIMARY KEY,
   learner_id VARCHAR(20) NOT NULL,
@@ -429,11 +439,14 @@ CREATE TABLE learner_transfers (
   status ENUM('Pending', 'Approved', 'Rejected', 'Completed') DEFAULT 'Pending',
   approved_by VARCHAR(20),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (learner_id) REFERENCES learners(learner_id),
   FOREIGN KEY (from_institution_id) REFERENCES institutions(institution_id),
   FOREIGN KEY (to_institution_id) REFERENCES institutions(institution_id),
   FOREIGN KEY (initiated_by) REFERENCES users_roles(user_id),
-  FOREIGN KEY (approved_by) REFERENCES users_roles(user_id)
+  FOREIGN KEY (approved_by) REFERENCES users_roles(user_id),
+  INDEX idx_transfer_status (status),
+  INDEX idx_transfer_dates (transfer_date, created_at)
 );
 
 CREATE TABLE grievances (
@@ -443,14 +456,17 @@ CREATE TABLE grievances (
   category VARCHAR(50) NOT NULL,
   submitted_by VARCHAR(20) NOT NULL,
   institution_id VARCHAR(20),
+  frequency ENUM('First Time', 'Recurrent') DEFAULT 'First Time',
   status ENUM('Open', 'In Progress', 'Resolved', 'Closed') DEFAULT 'Open',
   assigned_to VARCHAR(20),
   resolution TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   resolved_at TIMESTAMP,
-  FOREIGN KEY (submitted_by) REFERENCES users(user_id),
+  FOREIGN KEY (submitted_by) REFERENCES users_roles(user_id),
   FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
-  FOREIGN KEY (assigned_to) REFERENCES users(user_id)
+  FOREIGN KEY (assigned_to) REFERENCES users_roles(user_id),
+  INDEX idx_grievance_status (status),
+  INDEX idx_grievance_institution (institution_id)
 );
 
 DELIMITER //
