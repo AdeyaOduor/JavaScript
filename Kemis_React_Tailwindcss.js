@@ -189,7 +189,160 @@ const Dashboard = () => {
 
 export default Dashboard;
   
+// Learner Progress
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { recordLearnerProgress } from '../services/progressService';
 
+const ProgressEntryForm = ({ learner, onSuccess }) => {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const [subjects, setSubjects] = useState([
+    { name: 'Mathematics', marks: '', grade: '' },
+    { name: 'English', marks: '', grade: '' },
+    // More subjects...
+  ]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubjectChange = (index, field, value) => {
+    const newSubjects = [...subjects];
+    newSubjects[index][field] = value;
+    
+    // Auto-calculate grade if marks are entered
+    if (field === 'marks' && value) {
+      const marks = parseFloat(value);
+      newSubjects[index].grade = calculateGrade(marks);
+    }
+    
+    setSubjects(newSubjects);
+  };
+
+  const calculateGrade = (marks) => {
+    if (marks >= 80) return 'A';
+    if (marks >= 70) return 'B';
+    if (marks >= 60) return 'C';
+    if (marks >= 50) return 'D';
+    return 'E';
+  };
+
+  const onSubmit = async (data) => {
+    setIsSubmitting(true);
+    try {
+      await recordLearnerProgress({
+        learnerId: learner.learner_id,
+        academicYear: data.academicYear,
+        term: data.term,
+        grade: data.grade,
+        subjects: subjects.map(subj => ({
+          subject: subj.name,
+          marks: parseFloat(subj.marks),
+          grade: subj.grade
+        })),
+        remarks: data.remarks
+      });
+      onSuccess();
+    } catch (error) {
+      console.error('Failed to record progress:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Academic Year</label>
+          <select
+            {...register("academicYear", { required: true })}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+          >
+            <option value="">Select year</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+          </select>
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Term</label>
+          <select
+            {...register("term", { required: true })}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+          >
+            <option value="">Select term</option>
+            <option value="Term 1">Term 1</option>
+            <option value="Term 2">Term 2</option>
+            <option value="Term 3">Term 3</option>
+          </select>
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Grade/Class</label>
+          <input
+            {...register("grade", { required: true })}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+          />
+        </div>
+      </div>
+      
+      <div className="space-y-2">
+        <h4 className="text-sm font-medium text-gray-700">Subjects</h4>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Marks</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grade</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {subjects.map((subject, index) => (
+                <tr key={index}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{subject.name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <input
+                      type="number"
+                      min="0"
+                      max="100"
+                      step="0.1"
+                      value={subject.marks}
+                      onChange={(e) => handleSubjectChange(index, 'marks', e.target.value)}
+                      className="block w-full rounded-md border-gray-300 shadow-sm"
+                    />
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {subject.grade || '-'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Remarks</label>
+        <textarea
+          {...register("remarks")}
+          rows={3}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+        />
+      </div>
+      
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
+      >
+        {isSubmitting ? 'Saving...' : 'Save Progress'}
+      </button>
+    </form>
+  );
+};
+
+export default ProgressEntryForm;
+
+  
 // src/components/GradeChart.js
 import React from 'react';
 import {
