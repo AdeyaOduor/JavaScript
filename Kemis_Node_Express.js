@@ -2156,7 +2156,7 @@ exports.validateParent = async (req, res) => {
 // controllers/institutionController.js
 const applyForRegistration = async (req, res) => {
   try {
-    const { institutionName, institutionType, documents } = req.body;
+    const { institutionName, institutionType, institutionCategory, documents } = req.body;
     const userId = req.user.user_id;
     
     // Generate unique institution ID
@@ -2166,6 +2166,7 @@ const applyForRegistration = async (req, res) => {
       application_id: `APP-${Date.now()}`,
       institution_name: institutionName,
       institution_type: institutionType,
+      institution_category: institutionCategory,
       applicant_user_id: userId,
       documents,
       status: 'Submitted'
@@ -2194,6 +2195,7 @@ const reviewApplication = async (req, res) => {
         institution_id: `INST-${Date.now()}`,
         name: application.institution_name,
         type: application.institution_type,
+        category: application.institution_category,
         status: 'Approved',
         // other fields...
       });
