@@ -131,6 +131,56 @@ src/
 // ============================================== BACK END ============================================
 
 // Sql
+CREATE TABLE counties (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  code VARCHAR(10) UNIQUE NOT NULL
+);
+
+CREATE TABLE sub_counties (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  county_id INT NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  code VARCHAR(10) UNIQUE NOT NULL,
+  FOREIGN KEY (county_id) REFERENCES counties(id)
+);
+
+CREATE TABLE zones (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  sub_county_id INT NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  code VARCHAR(10) UNIQUE NOT NULL,
+  FOREIGN KEY (sub_county_id) REFERENCES sub_counties(id)
+);
+
+CREATE TABLE user_permissions (
+  user_id VARCHAR(20) PRIMARY KEY,
+  can_update_progress BOOLEAN DEFAULT FALSE,
+  can_manage_learners BOOLEAN DEFAULT FALSE,
+  can_manage_finances BOOLEAN DEFAULT FALSE,
+  can_manage_procurement BOOLEAN DEFAULT FALSE,
+  FOREIGN KEY (user_id) REFERENCES users_roles(user_id)
+);
+
+CREATE TABLE notifications (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  recipient_id VARCHAR(20) NOT NULL,
+  subject VARCHAR(255) NOT NULL,
+  content TEXT NOT NULL,
+  is_read BOOLEAN DEFAULT FALSE,
+  metadata JSON,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (recipient_id) REFERENCES users_roles(user_id)
+);
+
+CREATE TABLE system_logs (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  action VARCHAR(100) NOT NULL,
+  details TEXT,
+  performed_by VARCHAR(20),
+  performed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE institutions (
   institution_id VARCHAR(20) PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
@@ -147,8 +197,11 @@ CREATE TABLE institutions (
   contact_email VARCHAR(100),
   contact_phone VARCHAR(20),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (county_id) REFERENCES counties(id),
-  FOREIGN KEY (sub_county_id) REFERENCES sub_counties(id)
+  FOREIGN KEY (sub_county_id) REFERENCES sub_counties(id),
+  INDEX idx_institution_status (status),
+  INDEX idx_institution_type (type)
 );
 
 CREATE TABLE users_roles (
@@ -157,7 +210,7 @@ CREATE TABLE users_roles (
   national_id VARCHAR(20) UNIQUE,
   email VARCHAR(100) UNIQUE NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
-  Surname_name VARCHAR(50) NULL,
+  sur_name VARCHAR(50),
   first_name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL,
   phone VARCHAR(20),
@@ -165,7 +218,10 @@ CREATE TABLE users_roles (
   is_active BOOLEAN DEFAULT TRUE,
   last_login TIMESTAMP,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (institution_id) REFERENCES institutions(institution_id)
+  last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
+  INDEX idx_user_role (role),
+  INDEX idx_user_institution (institution_id)
 );
 
 CREATE TABLE institution_applications (
@@ -175,15 +231,24 @@ CREATE TABLE institution_applications (
   institution_sub_county VARCHAR(100) NOT NULL,
   institution_zone VARCHAR(100) NOT NULL,
   institution_type VARCHAR(50) NOT NULL,
+  institution_category VARCHAR(50) NOT NULL,
   applicant_user_id VARCHAR(20) NOT NULL,
-  documents JSON, -- {registration_cert: string, kra_pin: string, etc.}
+  physical_address TEXT,
+  county_id INT,
+  sub_county_id INT,
+  contact_email VARCHAR(100),
+  contact_phone VARCHAR(20),
+  documents JSON,
   status ENUM('Submitted', 'Under Review', 'Approved', 'Rejected') DEFAULT 'Submitted',
   review_notes TEXT,
   reviewed_by VARCHAR(20),
   reviewed_at TIMESTAMP,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (applicant_user_id) REFERENCES users(user_id),
-  FOREIGN KEY (reviewed_by) REFERENCES users(user_id)
+  FOREIGN KEY (applicant_user_id) REFERENCES users_roles(user_id),
+  FOREIGN KEY (reviewed_by) REFERENCES users_roles(user_id),
+  FOREIGN KEY (county_id) REFERENCES counties(id),
+  FOREIGN KEY (sub_county_id) REFERENCES sub_counties(id),
+  INDEX idx_application_status (status)
 );
 
 CREATE TABLE financial_records (
