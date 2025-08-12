@@ -2039,6 +2039,7 @@ module.exports = checkRole;
 // controllers/learnerController.js
 const { validationResult } = require('express-validator');
 const db = require('../models');
+const { Op } = require('sequelize');
 
 /**
  * Register a new learner (supports foreign origin)
@@ -2102,7 +2103,7 @@ exports.registerLearner = async (req, res) => {
         national_id: nationalId,
         birth_certificate_no: birthCertificateNo,
         upi_number: upiNumber,
-        sur_name: surName
+        sur_name: surName,
         first_name: firstName,
         last_name: lastName,
         date_of_birth: dateOfBirth,
@@ -2121,7 +2122,7 @@ exports.registerLearner = async (req, res) => {
       const parent = await db.ParentGuardian.create({
         learner_id: learnerId,
         national_id: parentDetails.nationalId,
-        sur_name: parentDetails.surName
+        sur_name: parentDetails.surName,
         first_name: parentDetails.firstName,
         last_name: parentDetails.lastName,
         relationship: parentDetails.relationship,
@@ -2146,7 +2147,6 @@ exports.registerLearner = async (req, res) => {
       }
 
       // Generate and send OTP to parent/guardian
-      // (Implementation would call your OTP service)
       const otpResponse = await generateAndSendOTP(
         learnerId,
         parentDetails.phone,
@@ -2182,16 +2182,12 @@ exports.registerLearner = async (req, res) => {
 // Helper function to generate and send OTP
 async function generateAndSendOTP(learnerId, phone, email) {
   // Implementation would call your OTP service
-  // This is a simplified example
   return {
     sentTo: phone || email,
     method: phone ? 'SMS' : 'EMAIL',
     expiresIn: '24 hours'
   };
 }
-
-
-
 // controllers/parentController.js
 const axios = require('axios');
 const { validationResult } = require('express-validator');
