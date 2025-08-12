@@ -16,7 +16,7 @@ node --version
 npm --version
 
 // Create postgre database
-sudo -u postgres psql -c "CREATE USER devuser WITH PASSWORD '@K3m1s_xyz_number';"
+sudo -u postgres psql -c "CREATE USER devuser WITH PASSWORD '@Ad3m1s_xyz_number';"
 sudo -u postgres psql -c "CREATE DATABASE education-management-system_db WITH OWNER devuser;"
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE kemis_db TO devuser;"
 
