@@ -2020,6 +2020,21 @@ app.listen(PORT, () => {
 });
 
 
+// middleware/roleMiddleware.js
+const checkRole = (roles) => {
+  return (req, res, next) => {
+    const userRole = req.user.role;
+    
+    if (!roles.includes(userRole)) {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+    
+    next();
+  };
+};
+
+module.exports = checkRole;
+
 
 // controllers/learnerController.js
 const { validationResult } = require('express-validator');
