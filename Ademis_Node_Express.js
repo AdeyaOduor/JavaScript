@@ -2255,6 +2255,34 @@ exports.validateParent = async (req, res) => {
 };
 
 
+// routes/api.js
+const express = require('express');
+const router = express.Router();
+const parentController = require('../controllers/parentController');
+const learnerController = require('../controllers/learnerController');
+const authenticate = require('../middleware/authenticate');
+const checkRole = require('../middleware/roleMiddleware');
+const {
+  validateParent,
+  validateForeignLearner,
+  validateLearner
+} = require('../validators/learnerValidator');
+
+// Parent validation endpoint
+router.post('/parents/validate', validateParent, parentController.validateParent);
+
+
+// Learner registration endpoint
+router.post(
+  '/learners/register',
+  authenticate,
+  checkRole(['institution_admin', 'institution_staff']),
+  [...validateLearner, ...validateParent, ...validateForeignLearner],
+  learnerController.registerLearner
+);
+
+module.exports = router;
+
 
 // controllers/institutionController.js
 const applyForRegistration = async (req, res) => {
@@ -2389,28 +2417,6 @@ exports.validateLearner = [
   body('isForeign').isBoolean().withMessage('isForeign must be boolean')
 ];
 
-// routes/api.js
-const express = require('express');
-const router = express.Router();
-const parentController = require('../controllers/parentController');
-const learnerController = require('../controllers/learnerController');
-const {
-  validateParent,
-  validateForeignLearner,
-  validateLearner
-} = require('../validators/learnerValidator');
-
-// Parent validation endpoint
-router.post('/parents/validate', validateParent, parentController.validateParent);
-
-// Learner registration endpoint
-router.post(
-  '/learners/register',
-  [...validateLearner, ...validateParent, ...validateForeignLearner],
-  learnerController.registerLearner
-);
-
-module.exports = router;
 
 
 // controllers/financialController.js
