@@ -43,11 +43,9 @@ npm start
 
 */
 // create strored procedure in MySQL client
--- Create the database if it doesn't exist
 CREATE DATABASE IF NOT EXISTS budget_tracker;
 USE budget_tracker;
 
--- Jurisdictions hierarchy (National -> County -> Sub-County)
 CREATE TABLE IF NOT EXISTS jurisdictions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -78,19 +76,23 @@ CREATE TABLE IF NOT EXISTS roles (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Users table with enhanced structure
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     full_name VARCHAR(100) NOT NULL,
+    two_factor_enabled BOOLEAN DEFAULT FALSE,
+    two_factor_secret VARCHAR(32),
+    backup_codes TEXT,
+    phone_number VARCHAR(20),
+    last_2fa_verification TIMESTAMP NULL;
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+
 );
 
--- User roles assignment with jurisdiction scope
 CREATE TABLE IF NOT EXISTS user_roles (
     user_id INT NOT NULL,
     role_id INT NOT NULL,
