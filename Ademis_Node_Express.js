@@ -1964,17 +1964,34 @@ END //
 DELIMITER ;
 
 
-// ========================================================================================================================
-
+// ======================================================================================================================================================
 // server.js
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const { Sequelize } = require('sequelize');
 
 const app = express();
 
-// CORS configuration
+// Database connection
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    dialect: 'postgres',
+    logging: false
+  }
+);
+
+// Test database connection
+sequelize.authenticate()
+  .then(() => console.log('Database connected successfully'))
+  .catch(err => console.error('Unable to connect to the database:', err));
+
+// CORS configuration - moved before other middleware
 const corsOptions = {
   origin: 'http://localhost:3000', // Your React app's URL
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -1982,32 +1999,26 @@ const corsOptions = {
   optionsSuccessStatus: 204
 };
 
-app.use(cors(corsOptions));
-// Routes
-app.get('/', (req, res) => {
-  res.json({ message: 'education Management System API' });
-});
-
-// Middleware
-app.use(cors());
+// Middleware - ordered properly
+app.use(cors(corsOptions)); // Only use this once
 app.use(morgan('dev'));
 app.use(express.json());
 
-// middleware/roleMiddleware.js
-const checkRole = (roles) => {
-  return (req, res, next) => {
-    const userRole = req.user.role;
-    
-    if (!roles.includes(userRole)) {
-      return res.status(403).json({ message: 'Access denied' });
-    }
-    
-    next();
-  };
-};
+// Routes
+app.get('/', (req, res) => {
+  res.json({ message: 'Education Management System API' });
+});
 
-// Usage in routes
-router.get('/county-data', authenticate, checkRole(['county_admin', 'national_admin']), countyController.getData);
+// Import routes
+const apiRoutes = require('./routes/api');
+app.use('/api', apiRoutes);
+
+// Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
 
 
 // controllers/learnerController.js
@@ -2490,26 +2501,3 @@ const searchLearner = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-// Database connection
-const { Sequelize } = require('sequelize');
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    dialect: 'postgres',
-    logging: false
-  }
-);
-
-// Test database connection
-sequelize.authenticate()
-  .then(() => console.log('Database connected successfully'))
-  .catch(err => console.error('Unable to connect to the database:', err));
-
-// Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
