@@ -101,6 +101,22 @@ const InstitutionRegistrationForm = () => {
           {errors.institutionType && <span className="text-red-500 text-sm">This field is required</span>}
         </div>
       </div>
+
+      <div>
+          <label className="block text-sm font-medium text-gray-700">Institution Category</label>
+          <select
+            {...register("institutionCategory", { required: true })}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+          >
+            <option value="">Select type</option>
+            <option value="Community Based">Community Based</option>
+            <option value="Faith Based">Faith Based</option>
+            <option value="Private">Private</option>
+            <option value="Public">Public</option>
+          </select>
+          {errors.institutionCategory && <span className="text-red-500 text-sm">This field is required</span>}
+        </div>
+      </div>      
       
       <div className="space-y-4">
         <h3 className="text-lg font-medium">Required Documents</h3>
@@ -141,7 +157,7 @@ const InstitutionRegistrationForm = () => {
 
 export default InstitutionRegistrationForm;
 
-// RBAC dashboards
+// Dashboards
 import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import CountyDashboard from './dashboards/CountyDashboard';
@@ -269,8 +285,12 @@ const ProgressEntryForm = ({ learner, onSuccess }) => {
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
           >
             <option value="">Select year</option>
-            <option value="2023">2023</option>
-            <option value="2024">2024</option>
+            <option value="2023">2025</option>
+            <option value="2024">2026</option>
+            <option value="2023">2027</option>
+            <option value="2024">2028</option>
+            <option value="2023">2029</option>
+            <option value="2024">2030</option>
           </select>
         </div>
         
