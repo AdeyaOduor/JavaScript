@@ -397,6 +397,241 @@ const PasswordResetForm = ({ onSubmit }) => {
 
 export default PasswordResetForm;
 
+
+// Institution Registration
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+const InstitutionRegistrationForm = ({ onSubmit }) => {
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const [counties, setCounties] = useState([]);
+  const [subCounties, setSubCounties] = useState([]);
+  const [zones, setZones] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const selectedCounty = watch('county_id');
+  const selectedSubCounty = watch('sub_county_id');
+
+  // Fetch data functions would be implemented here
+  const fetchCounties = async () => { /* ... */ };
+  const fetchSubCounties = async (countyId) => { /* ... */ };
+  const fetchZones = async (subCountyId) => { /* ... */ };
+
+  const handleFormSubmit = async (data) => {
+    setIsSubmitting(true);
+    try {
+      await onSubmit(data);
+    } catch (error) {
+      console.error('Institution registration error:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+      <div>
+        <label htmlFor="institutionName" className="block text-sm font-medium text-gray-700">
+          Institution Name*
+        </label>
+        <input
+          type="text"
+          id="institutionName"
+          {...register('institutionName', { required: 'Institution name is required' })}
+          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.institutionName ? 'border-red-500' : ''}`}
+        />
+        {errors.institutionName && <p className="mt-1 text-sm text-red-600">{errors.institutionName.message}</p>}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label htmlFor="institutionType" className="block text-sm font-medium text-gray-700">
+            Institution Type*
+          </label>
+          <select
+            id="institutionType"
+            {...register('institutionType', { required: 'Institution type is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.institutionType ? 'border-red-500' : ''}`}
+          >
+            <option value="">Select type</option>
+            <option value="Early Learning">Early Learning</option>
+            <option value="Primary">Primary</option>
+            <option value="Junior Secondary">Junior Secondary</option>
+            <option value="High School">High School</option>
+            <option value="TVET">TVET</option>
+            <option value="University">University</option>
+          </select>
+          {errors.institutionType && <p className="mt-1 text-sm text-red-600">{errors.institutionType.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="institutionCategory" className="block text-sm font-medium text-gray-700">
+            Institution Category*
+          </label>
+          <select
+            id="institutionCategory"
+            {...register('institutionCategory', { required: 'Institution category is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.institutionCategory ? 'border-red-500' : ''}`}
+          >
+            <option value="">Select category</option>
+            <option value="Community Based">Community Based</option>
+            <option value="Faith Based">Faith Based</option>
+            <option value="Private">Private</option>
+            <option value="Public">Public</option>
+          </select>
+          {errors.institutionCategory && <p className="mt-1 text-sm text-red-600">{errors.institutionCategory.message}</p>}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <label htmlFor="county_id" className="block text-sm font-medium text-gray-700">
+            County*
+          </label>
+          <select
+            id="county_id"
+            {...register('county_id', { required: 'County is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.county_id ? 'border-red-500' : ''}`}
+            onChange={(e) => fetchSubCounties(e.target.value)}
+          >
+            <option value="">Select county</option>
+            {counties.map(county => (
+              <option key={county.id} value={county.id}>{county.name}</option>
+            ))}
+          </select>
+          {errors.county_id && <p className="mt-1 text-sm text-red-600">{errors.county_id.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="sub_county_id" className="block text-sm font-medium text-gray-700">
+            Subcounty*
+          </label>
+          <select
+            id="sub_county_id"
+            {...register('sub_county_id', { required: 'Subcounty is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.sub_county_id ? 'border-red-500' : ''}`}
+            disabled={!selectedCounty}
+            onChange={(e) => fetchZones(e.target.value)}
+          >
+            <option value="">Select subcounty</option>
+            {subCounties.map(subCounty => (
+              <option key={subCounty.id} value={subCounty.id}>{subCounty.name}</option>
+            ))}
+          </select>
+          {errors.sub_county_id && <p className="mt-1 text-sm text-red-600">{errors.sub_county_id.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="zone_id" className="block text-sm font-medium text-gray-700">
+            Zone*
+          </label>
+          <select
+            id="zone_id"
+            {...register('zone_id', { required: 'Zone is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.zone_id ? 'border-red-500' : ''}`}
+            disabled={!selectedSubCounty}
+          >
+            <option value="">Select zone</option>
+            {zones.map(zone => (
+              <option key={zone.id} value={zone.id}>{zone.name}</option>
+            ))}
+          </select>
+          {errors.zone_id && <p className="mt-1 text-sm text-red-600">{errors.zone_id.message}</p>}
+        </div>
+      </div>
+
+      <div>
+        <label htmlFor="physicalAddress" className="block text-sm font-medium text-gray-700">
+          Physical Address*
+        </label>
+        <textarea
+          id="physicalAddress"
+          rows={3}
+          {...register('physicalAddress', { required: 'Physical address is required' })}
+          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.physicalAddress ? 'border-red-500' : ''}`}
+        />
+        {errors.physicalAddress && <p className="mt-1 text-sm text-red-600">{errors.physicalAddress.message}</p>}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label htmlFor="contactEmail" className="block text-sm font-medium text-gray-700">
+            Contact Email*
+          </label>
+          <input
+            type="email"
+            id="contactEmail"
+            {...register('contactEmail', { 
+              required: 'Contact email is required',
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: 'Invalid email address'
+              }
+            })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.contactEmail ? 'border-red-500' : ''}`}
+          />
+          {errors.contactEmail && <p className="mt-1 text-sm text-red-600">{errors.contactEmail.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="contactPhone" className="block text-sm font-medium text-gray-700">
+            Contact Phone*
+          </label>
+          <input
+            type="tel"
+            id="contactPhone"
+            {...register('contactPhone', { required: 'Contact phone is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.contactPhone ? 'border-red-500' : ''}`}
+          />
+          {errors.contactPhone && <p className="mt-1 text-sm text-red-600">{errors.contactPhone.message}</p>}
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">
+          Registration Documents*
+        </label>
+        <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+          <div className="space-y-1 text-center">
+            <div className="flex text-sm text-gray-600">
+              <label
+                htmlFor="documents"
+                className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500"
+              >
+                <span>Upload files</span>
+                <input
+                  id="documents"
+                  type="file"
+                  multiple
+                  {...register('documents', { required: 'Registration documents are required' })}
+                  className="sr-only"
+                />
+              </label>
+              <p className="pl-1">or drag and drop</p>
+            </div>
+            <p className="text-xs text-gray-500">
+              PDF, JPG, PNG up to 10MB
+            </p>
+          </div>
+        </div>
+        {errors.documents && <p className="mt-1 text-sm text-red-600">{errors.documents.message}</p>}
+      </div>
+
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+        >
+          {isSubmitting ? 'Submitting...' : 'Submit Application'}
+        </button>
+      </div>
+    </form>
+  );
+};
+
+export default InstitutionRegistrationForm;
+
 // Institutuion registration form
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
