@@ -1,28 +1,3 @@
-/*
-Two-Factor Authentication (2FA) in RBAC for Budget Tracker*/
--- Create table for 2FA verification attempts
-CREATE TABLE IF NOT EXISTS two_factor_attempts (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    code VARCHAR(6) NOT NULL,
-    expires_at TIMESTAMP NOT NULL,
-    used BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
-
--- Create table for recovery tokens
-CREATE TABLE IF NOT EXISTS recovery_tokens (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    token VARCHAR(64) NOT NULL,
-    expires_at TIMESTAMP NOT NULL,
-    used BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
-
-// ======================================== BACK END =================================================================================
 // Add Rate Limiting for 2FA Attempts to your Express app
 const rateLimit = require('express-rate-limit');
 
