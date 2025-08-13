@@ -15,6 +15,307 @@ module.exports = {
 @tailwind utilities;
 
 
+// User registration form
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { roles, institutionTypes, institutionCategories } from '../constants';
+
+const UserRegistrationForm = ({ onSubmit }) => {
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const [counties, setCounties] = useState([]);
+  const [subCounties, setSubCounties] = useState([]);
+  const [institutions, setInstitutions] = useState([]);
+  
+  const selectedRole = watch('role');
+  const selectedCounty = watch('county_id');
+
+  // Fetch counties, subcounties, and institutions based on selections
+  // Implement these functions as needed
+  const fetchCounties = async () => { /* ... */ };
+  const fetchSubCounties = async (countyId) => { /* ... */ };
+  const fetchInstitutions = async (subCountyId) => { /* ... */ };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+            First Name*
+          </label>
+          <input
+            type="text"
+            id="firstName"
+            {...register('firstName', { required: 'First name is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.firstName ? 'border-red-500' : ''}`}
+          />
+          {errors.firstName && <p className="mt-1 text-sm text-red-600">{errors.firstName.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+            Last Name*
+          </label>
+          <input
+            type="text"
+            id="lastName"
+            {...register('lastName', { required: 'Last name is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.lastName ? 'border-red-500' : ''}`}
+          />
+          {errors.lastName && <p className="mt-1 text-sm text-red-600">{errors.lastName.message}</p>}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            Email*
+          </label>
+          <input
+            type="email"
+            id="email"
+            {...register('email', { 
+              required: 'Email is required',
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: 'Invalid email address'
+              }
+            })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.email ? 'border-red-500' : ''}`}
+          />
+          {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+            Phone Number*
+          </label>
+          <input
+            type="tel"
+            id="phone"
+            {...register('phone', { required: 'Phone number is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.phone ? 'border-red-500' : ''}`}
+          />
+          {errors.phone && <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label htmlFor="nationalId" className="block text-sm font-medium text-gray-700">
+            National ID
+          </label>
+          <input
+            type="text"
+            id="nationalId"
+            {...register('nationalId')}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+            Role*
+          </label>
+          <select
+            id="role"
+            {...register('role', { required: 'Role is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.role ? 'border-red-500' : ''}`}
+          >
+            <option value="">Select a role</option>
+            {roles.map(role => (
+              <option key={role.value} value={role.value}>{role.label}</option>
+            ))}
+          </select>
+          {errors.role && <p className="mt-1 text-sm text-red-600">{errors.role.message}</p>}
+        </div>
+      </div>
+
+      {/* Conditional fields based on role */}
+      {selectedRole === 'county_admin' && (
+        <div>
+          <label htmlFor="county_id" className="block text-sm font-medium text-gray-700">
+            County*
+          </label>
+          <select
+            id="county_id"
+            {...register('county_id', { required: 'County is required for county admin' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.county_id ? 'border-red-500' : ''}`}
+            onChange={(e) => fetchSubCounties(e.target.value)}
+          >
+            <option value="">Select a county</option>
+            {counties.map(county => (
+              <option key={county.id} value={county.id}>{county.name}</option>
+            ))}
+          </select>
+          {errors.county_id && <p className="mt-1 text-sm text-red-600">{errors.county_id.message}</p>}
+        </div>
+      )}
+
+      {selectedRole === 'subcounty_admin' && (
+        <>
+          <div>
+            <label htmlFor="county_id" className="block text-sm font-medium text-gray-700">
+              County*
+            </label>
+            <select
+              id="county_id"
+              {...register('county_id', { required: 'County is required for subcounty admin' })}
+              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.county_id ? 'border-red-500' : ''}`}
+              onChange={(e) => fetchSubCounties(e.target.value)}
+            >
+              <option value="">Select a county</option>
+              {counties.map(county => (
+                <option key={county.id} value={county.id}>{county.name}</option>
+              ))}
+            </select>
+            {errors.county_id && <p className="mt-1 text-sm text-red-600">{errors.county_id.message}</p>}
+          </div>
+
+          <div>
+            <label htmlFor="sub_county_id" className="block text-sm font-medium text-gray-700">
+              Subcounty*
+            </label>
+            <select
+              id="sub_county_id"
+              {...register('sub_county_id', { required: 'Subcounty is required for subcounty admin' })}
+              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.sub_county_id ? 'border-red-500' : ''}`}
+            >
+              <option value="">Select a subcounty</option>
+              {subCounties.map(subCounty => (
+                <option key={subCounty.id} value={subCounty.id}>{subCounty.name}</option>
+              ))}
+            </select>
+            {errors.sub_county_id && <p className="mt-1 text-sm text-red-600">{errors.sub_county_id.message}</p>}
+          </div>
+        </>
+      )}
+
+      {selectedRole === 'institution_admin' || selectedRole === 'institution_staff' && (
+        <>
+          <div>
+            <label htmlFor="county_id" className="block text-sm font-medium text-gray-700">
+              County*
+            </label>
+            <select
+              id="county_id"
+              {...register('county_id', { required: 'County is required' })}
+              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.county_id ? 'border-red-500' : ''}`}
+              onChange={(e) => fetchSubCounties(e.target.value)}
+            >
+              <option value="">Select a county</option>
+              {counties.map(county => (
+                <option key={county.id} value={county.id}>{county.name}</option>
+              ))}
+            </select>
+            {errors.county_id && <p className="mt-1 text-sm text-red-600">{errors.county_id.message}</p>}
+          </div>
+
+          <div>
+            <label htmlFor="sub_county_id" className="block text-sm font-medium text-gray-700">
+              Subcounty*
+            </label>
+            <select
+              id="sub_county_id"
+              {...register('sub_county_id', { required: 'Subcounty is required' })}
+              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.sub_county_id ? 'border-red-500' : ''}`}
+              onChange={(e) => fetchInstitutions(e.target.value)}
+            >
+              <option value="">Select a subcounty</option>
+              {subCounties.map(subCounty => (
+                <option key={subCounty.id} value={subCounty.id}>{subCounty.name}</option>
+              ))}
+            </select>
+            {errors.sub_county_id && <p className="mt-1 text-sm text-red-600">{errors.sub_county_id.message}</p>}
+          </div>
+
+          <div>
+            <label htmlFor="institution_id" className="block text-sm font-medium text-gray-700">
+              Institution*
+            </label>
+            <select
+              id="institution_id"
+              {...register('institution_id', { required: 'Institution is required' })}
+              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.institution_id ? 'border-red-500' : ''}`}
+            >
+              <option value="">Select an institution</option>
+              {institutions.map(institution => (
+                <option key={institution.institution_id} value={institution.institution_id}>
+                  {institution.name} ({institution.type})
+                </option>
+              ))}
+            </select>
+            {errors.institution_id && <p className="mt-1 text-sm text-red-600">{errors.institution_id.message}</p>}
+          </div>
+        </>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            Password*
+          </label>
+          <input
+            type="password"
+            id="password"
+            {...register('password', { 
+              required: 'Password is required',
+              minLength: {
+                value: 8,
+                message: 'Password must be at least 8 characters'
+              }
+            })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.password ? 'border-red-500' : ''}`}
+          />
+          {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+            Confirm Password*
+          </label>
+          <input
+            type="password"
+            id="confirmPassword"
+            {...register('confirmPassword', { 
+              required: 'Please confirm your password',
+              validate: value => 
+                value === watch('password') || 'Passwords do not match'
+            })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.confirmPassword ? 'border-red-500' : ''}`}
+          />
+          {errors.confirmPassword && <p className="mt-1 text-sm text-red-600">{errors.confirmPassword.message}</p>}
+        </div>
+      </div>
+
+      <div className="flex items-center">
+        <input
+          id="terms"
+          name="terms"
+          type="checkbox"
+          {...register('terms', { required: 'You must accept the terms and conditions' })}
+          className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+        />
+        <label htmlFor="terms" className="ml-2 block text-sm text-gray-900">
+          I accept the terms and conditions
+        </label>
+      </div>
+      {errors.terms && <p className="mt-1 text-sm text-red-600">{errors.terms.message}</p>}
+
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          Register
+        </button>
+      </div>
+    </form>
+  );
+};
+
+export default UserRegistrationForm;
+
+
 // Institutuion registration form
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
