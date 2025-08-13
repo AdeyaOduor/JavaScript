@@ -401,21 +401,57 @@ export default PasswordResetForm;
 // Institution Registration
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { uploadDocuments } from '../services/documentService';
+import { applyForInstitutionRegistration } from '../services/institutionService';
 
 const InstitutionRegistrationForm = ({ onSubmit }) => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const [counties, setCounties] = useState([]);
   const [subCounties, setSubCounties] = useState([]);
   const [zones, setZones] = useState([]);
+  const [documents, setDocuments] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
-  const selectedCounty = watch('county_id');
-  const selectedSubCounty = watch('sub_county_id');
+  const [success, setSuccess] = useState(false);
 
   // Fetch data functions would be implemented here
   const fetchCounties = async () => { /* ... */ };
   const fetchSubCounties = async (countyId) => { /* ... */ };
   const fetchZones = async (subCountyId) => { /* ... */ };
+
+  const handleDocumentUpload = async (e, fieldName) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    try {
+      const uploadResult = await uploadDocuments(file);
+      setDocuments(prev => ({
+        ...prev,
+        [fieldName]: uploadResult.filePath
+      }));
+    } catch (error) {
+      console.error('Upload failed:', error);
+    }
+  };
+
+  const onSubmit = async (data) => {
+    if (Object.keys(documents).length < 3) {
+      alert('Please upload all required documents');
+      return;
+    }
+    
+    setIsSubmitting(true);
+    try {
+      await applyForInstitutionRegistration({
+        ...data,
+        documents
+      });
+      setSuccess(true);
+    } catch (error) {
+      console.error('Application failed:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const handleFormSubmit = async (data) => {
     setIsSubmitting(true);
@@ -449,6 +485,7 @@ const InstitutionRegistrationForm = ({ onSubmit }) => {
             Institution Type*
           </label>
           <select
+            type="check box"
             id="institutionType"
             {...register('institutionType', { required: 'Institution type is required' })}
             className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.institutionType ? 'border-red-500' : ''}`}
@@ -469,6 +506,7 @@ const InstitutionRegistrationForm = ({ onSubmit }) => {
             Institution Category*
           </label>
           <select
+            type="drop down"
             id="institutionCategory"
             {...register('institutionCategory', { required: 'Institution category is required' })}
             className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.institutionCategory ? 'border-red-500' : ''}`}
@@ -489,6 +527,7 @@ const InstitutionRegistrationForm = ({ onSubmit }) => {
             County*
           </label>
           <select
+            type="drop down"
             id="county_id"
             {...register('county_id', { required: 'County is required' })}
             className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.county_id ? 'border-red-500' : ''}`}
@@ -507,6 +546,7 @@ const InstitutionRegistrationForm = ({ onSubmit }) => {
             Subcounty*
           </label>
           <select
+            type="drop down"
             id="sub_county_id"
             {...register('sub_county_id', { required: 'Subcounty is required' })}
             className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.sub_county_id ? 'border-red-500' : ''}`}
@@ -525,7 +565,7 @@ const InstitutionRegistrationForm = ({ onSubmit }) => {
           <label htmlFor="zone_id" className="block text-sm font-medium text-gray-700">
             Zone*
           </label>
-          <select
+          <textarea
             id="zone_id"
             {...register('zone_id', { required: 'Zone is required' })}
             className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.zone_id ? 'border-red-500' : ''}`}
@@ -602,6 +642,7 @@ const InstitutionRegistrationForm = ({ onSubmit }) => {
                 <input
                   id="documents"
                   type="file"
+                  onChange={(e) => handleDocumentUpload(e, 'CertificateOfIncoporation', 'kraPin', 'PremiseTitle', )}
                   multiple
                   {...register('documents', { required: 'Registration documents are required' })}
                   className="sr-only"
@@ -617,6 +658,7 @@ const InstitutionRegistrationForm = ({ onSubmit }) => {
         {errors.documents && <p className="mt-1 text-sm text-red-600">{errors.documents.message}</p>}
       </div>
 
+          
       <div className="flex justify-end">
         <button
           type="submit"
@@ -632,147 +674,6 @@ const InstitutionRegistrationForm = ({ onSubmit }) => {
 
 export default InstitutionRegistrationForm;
 
-// Institutuion registration form
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { uploadDocuments } from '../services/documentService';
-import { applyForInstitutionRegistration } from '../services/institutionService';
-
-const InstitutionRegistrationForm = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
-  const [documents, setDocuments] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [success, setSuccess] = useState(false);
-
-  const handleDocumentUpload = async (e, fieldName) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    
-    try {
-      const uploadResult = await uploadDocuments(file);
-      setDocuments(prev => ({
-        ...prev,
-        [fieldName]: uploadResult.filePath
-      }));
-    } catch (error) {
-      console.error('Upload failed:', error);
-    }
-  };
-
-  const onSubmit = async (data) => {
-    if (Object.keys(documents).length < 3) {
-      alert('Please upload all required documents');
-      return;
-    }
-    
-    setIsSubmitting(true);
-    try {
-      await applyForInstitutionRegistration({
-        ...data,
-        documents
-      });
-      setSuccess(true);
-    } catch (error) {
-      console.error('Application failed:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  if (success) {
-    return (
-      <div className="p-4 bg-green-100 text-green-800 rounded-lg">
-        <h3 className="font-bold text-lg">Application Submitted Successfully!</h3>
-        <p>Your application ID is: {Date.now()}</p>
-        <p>You will be notified once your application is reviewed.</p>
-      </div>
-    );
-  }
-
-  return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Institution Name</label>
-          <input
-            {...register("institutionName", { required: true })}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-          />
-          {errors.institutionName && <span className="text-red-500 text-sm">This field is required</span>}
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Institution Type</label>
-          <select
-            {...register("institutionType", { required: true })}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-          >
-            <option value="">Select type</option>
-            <option value="Early Learning">Early Learning</option>
-            <option value="Primary">Primary</option>
-            <option value="Junior Secondary">Junior Secondary</option>
-            <option value="High School">High School</option>
-            <option value="TVET">TVET</option>
-            <option value="University">University</option>
-          </select>
-          {errors.institutionType && <span className="text-red-500 text-sm">This field is required</span>}
-        </div>
-      </div>
-
-      <div>
-          <label className="block text-sm font-medium text-gray-700">Institution Category</label>
-          <select
-            {...register("institutionCategory", { required: true })}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-          >
-            <option value="">Select type</option>
-            <option value="Community Based">Community Based</option>
-            <option value="Faith Based">Faith Based</option>
-            <option value="Private">Private</option>
-            <option value="Public">Public</option>
-          </select>
-          {errors.institutionCategory && <span className="text-red-500 text-sm">This field is required</span>}
-        </div>
-      </div>      
-      
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium">Required Documents</h3>
-        
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Registration Certificate</label>
-          <input
-            type="file"
-            onChange={(e) => handleDocumentUpload(e, 'registrationCertificate')}
-            className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-            accept=".pdf,.jpg,.jpeg,.png"
-          />
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium text-gray-700">KRA Pin Certificate</label>
-          <input
-            type="file"
-            onChange={(e) => handleDocumentUpload(e, 'kraPin')}
-            className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-            accept=".pdf,.jpg,.jpeg,.png"
-          />
-        </div>
-        
-        {/* More document upload fields */}
-      </div>
-      
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-      >
-        {isSubmitting ? 'Submitting...' : 'Submit Application'}
-      </button>
-    </form>
-  );
-};
-
-export default InstitutionRegistrationForm;
 
 // Dashboards
 import { useEffect, useState } from 'react';
