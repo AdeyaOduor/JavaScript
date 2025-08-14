@@ -138,6 +138,7 @@ const UserRegistrationForm = ({ onSubmit }) => {
           </label>
           <select
             id="county_id"
+            type="radio"
             {...register('county_id', { required: 'County is required for county admin' })}
             className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.county_id ? 'border-red-500' : ''}`}
             onChange={(e) => fetchSubCounties(e.target.value)}
@@ -159,6 +160,7 @@ const UserRegistrationForm = ({ onSubmit }) => {
             </label>
             <select
               id="county_id"
+              type="radio"
               {...register('county_id', { required: 'County is required for subcounty admin' })}
               className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.county_id ? 'border-red-500' : ''}`}
               onChange={(e) => fetchSubCounties(e.target.value)}
@@ -177,6 +179,7 @@ const UserRegistrationForm = ({ onSubmit }) => {
             </label>
             <select
               id="sub_county_id"
+              type="radio"
               {...register('sub_county_id', { required: 'Subcounty is required for subcounty admin' })}
               className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.sub_county_id ? 'border-red-500' : ''}`}
             >
@@ -198,6 +201,7 @@ const UserRegistrationForm = ({ onSubmit }) => {
             </label>
             <select
               id="county_id"
+              type="radio"
               {...register('county_id', { required: 'County is required' })}
               className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.county_id ? 'border-red-500' : ''}`}
               onChange={(e) => fetchSubCounties(e.target.value)}
@@ -216,6 +220,7 @@ const UserRegistrationForm = ({ onSubmit }) => {
             </label>
             <select
               id="sub_county_id"
+              type="radio"
               {...register('sub_county_id', { required: 'Subcounty is required' })}
               className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.sub_county_id ? 'border-red-500' : ''}`}
               onChange={(e) => fetchInstitutions(e.target.value)}
@@ -485,7 +490,7 @@ const InstitutionRegistrationForm = ({ onSubmit }) => {
             Institution Type*
           </label>
           <select
-            type="check box"
+            type="checkbox"
             id="institutionType"
             {...register('institutionType', { required: 'Institution type is required' })}
             className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.institutionType ? 'border-red-500' : ''}`}
@@ -506,7 +511,7 @@ const InstitutionRegistrationForm = ({ onSubmit }) => {
             Institution Category*
           </label>
           <select
-            type="drop down"
+            type="dropdown"
             id="institutionCategory"
             {...register('institutionCategory', { required: 'Institution category is required' })}
             className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.institutionCategory ? 'border-red-500' : ''}`}
@@ -527,7 +532,7 @@ const InstitutionRegistrationForm = ({ onSubmit }) => {
             County*
           </label>
           <select
-            type="drop down"
+            type="dropdown"
             id="county_id"
             {...register('county_id', { required: 'County is required' })}
             className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.county_id ? 'border-red-500' : ''}`}
@@ -546,7 +551,7 @@ const InstitutionRegistrationForm = ({ onSubmit }) => {
             Subcounty*
           </label>
           <select
-            type="drop down"
+            type="dropdown"
             id="sub_county_id"
             {...register('sub_county_id', { required: 'Subcounty is required' })}
             className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.sub_county_id ? 'border-red-500' : ''}`}
