@@ -1056,11 +1056,13 @@ const LearnerRegistrationForm = ({ institutionId, onSubmit }) => {
 
 export default LearnerRegistrationForm;
 
+
+// Learner Progress
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { recordLearnerProgress } from '../services/progressService';
 
-const CombinedProgressForm = ({ learner, academicYears, onSuccess }) => {
+const ProgressForm = ({ learner, academicYears, onSuccess }) => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [subjects, setSubjects] = useState([
     { name: 'Mathematics', marks: '', grade: '' },
@@ -1226,7 +1228,7 @@ const CombinedProgressForm = ({ learner, academicYears, onSuccess }) => {
   );
 };
 
-export default CombinedProgressForm;
+export default ProgressForm;
 
 
 // Dashboards
