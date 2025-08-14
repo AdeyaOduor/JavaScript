@@ -357,7 +357,7 @@ const PasswordResetForm = ({ onSubmit }) => {
             </h3>
             <div className="mt-2 text-sm text-green-700">
               <p>
-                We've sent a password reset link to your email. This link will expire in 90 days.
+                We've sent a password reset link to your email. This link will expire in 30 Minutes.
               </p>
             </div>
           </div>
@@ -645,9 +645,10 @@ const InstitutionRegistrationForm = ({ onSubmit }) => {
               >
                 <span>Upload files</span>
                 <input
-                  id="documents"
-                  type="file"
-                  onChange={(e) => handleDocumentUpload(e, 'CertificateOfIncoporation', 'kraPin', 'PremiseTitle', )}
+                  id="file-upload" 
+                  name="file-upload" 
+                  type="file" 
+                  // onChange={(e) => handleDocumentUpload(e, 'CertificateOfIncoporation', 'kraPin', 'PremiseTitle', )}
                   multiple
                   {...register('documents', { required: 'Registration documents are required' })}
                   className="sr-only"
@@ -742,6 +743,7 @@ const InstitutionStatusForm = ({ institution, onSubmit }) => {
 export default InstitutionStatusForm;
 
 
+// Learner Registration
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -880,7 +882,7 @@ const LearnerRegistrationForm = ({ institutionId, onSubmit }) => {
         <input
           id="isForeign"
           name="isForeign"
-          type="radio"
+          type="checkbox"
           checked={isForeign}
           onChange={(e) => setIsForeign(e.target.checked)}
           className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
@@ -1003,8 +1005,8 @@ const LearnerRegistrationForm = ({ institutionId, onSubmit }) => {
             {...register('relationship', { required: 'Relationship is required' })}
             className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.relationship ? 'border-red-500' : ''}`}
           >
-            <option value="">Select gender</option>
-            <option value="Mother">Male</option>
+            <option value="">Select relationship</option>
+            <option value="Mother">Mother</option>
             <option value="Father">Father</option>
             <option value="guardian">guardian</option>
           </select>
