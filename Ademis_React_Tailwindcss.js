@@ -742,6 +742,320 @@ const InstitutionStatusForm = ({ institution, onSubmit }) => {
 export default InstitutionStatusForm;
 
 
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+const LearnerRegistrationForm = ({ institutionId, onSubmit }) => {
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const [isForeign, setIsForeign] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleFormSubmit = async (data) => {
+    setIsSubmitting(true);
+    try {
+      await onSubmit({
+        ...data,
+        institutionId,
+        isForeign
+      });
+    } catch (error) {
+      console.error('Learner registration error:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <label htmlFor="surName" className="block text-sm font-medium text-gray-700">
+            Surname
+          </label>
+          <input
+            type="text"
+            id="surName"
+            {...register('surName')}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+            First Name*
+          </label>
+          <input
+            type="text"
+            id="firstName"
+            {...register('firstName', { required: 'First name is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.firstName ? 'border-red-500' : ''}`}
+          />
+          {errors.firstName && <p className="mt-1 text-sm text-red-600">{errors.firstName.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+            Last Name*
+          </label>
+          <input
+            type="text"
+            id="lastName"
+            {...register('lastName', { required: 'Last name is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.lastName ? 'border-red-500' : ''}`}
+          />
+          {errors.lastName && <p className="mt-1 text-sm text-red-600">{errors.lastName.message}</p>}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">
+            Date of Birth*
+          </label>
+          <input
+            type="date"
+            id="dateOfBirth"
+            {...register('dateOfBirth', { required: 'Date of birth is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.dateOfBirth ? 'border-red-500' : ''}`}
+          />
+          {errors.dateOfBirth && <p className="mt-1 text-sm text-red-600">{errors.dateOfBirth.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="gender" className="block text-sm font-medium text-gray-700">
+            Gender*
+          </label>
+          <select
+            type="radio"
+            id="gender"
+            {...register('gender', { required: 'Gender is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.gender ? 'border-red-500' : ''}`}
+          >
+            <option value="">Select gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+          {errors.gender && <p className="mt-1 text-sm text-red-600">{errors.gender.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="currentGrade" className="block text-sm font-medium text-gray-700">
+            Current Grade*
+          </label>
+          <select
+            type="dropdown"
+            id="currentGrade"
+            {...register('currentGrade', { required: 'Current grade is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.currentGrade ? 'border-red-500' : ''}`}
+          >
+            <option value="">Select grade</option>
+            <option value="pp1">pp1</option>
+            <option value="pp2">pp2</option>
+            <option value="garde1">garde1</option>
+            <option value="grade2">grade2</option>
+            <option value="grade3">grade3</option>
+            <option value="grade4">garde4</option>
+            <option value="grade5">grade5</option>
+            <option value="grade6">grade6</option>
+            <option value="grade7">grade7</option>
+            <option value="grade8">grade8</option>
+            <option value="grade9">grade9</option>
+            <option value="form1">form1</option>
+            <option value="form2">form2</option>
+            <option value="form3">form3</option>
+            <option value="tivet4">tivet4</option>
+            <option value="tivet5">tivet5</option>
+            <option value="tivet6">tivet6</option>
+            <option value="university_first_year">university_first_year</option>
+            <option value="university_first_year">university_second_year</option>
+            <option value="university_first_year">university_third_year</option>
+            <option value="university_first_year">university_fourth_year</option>
+          </select>
+          {errors.currentGrade && <p className="mt-1 text-sm text-red-600">{errors.currentGrade.message}</p>}
+        </div>
+      </div>
+
+      <div className="flex items-center">
+        <input
+          id="isForeign"
+          name="isForeign"
+          type="radio"
+          checked={isForeign}
+          onChange={(e) => setIsForeign(e.target.checked)}
+          className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+        />
+        <label htmlFor="isForeign" className="ml-2 block text-sm text-gray-900">
+          Foreign Learner
+        </label>
+      </div>
+
+      {isForeign ? (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <label htmlFor="passportNumber" className="block text-sm font-medium text-gray-700">
+              Passport Number*
+            </label>
+            <input
+              type="text"
+              id="passportNumber"
+              {...register('passportNumber', { 
+                required: isForeign ? 'Passport number is required for foreign learners' : false 
+              })}
+              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.passportNumber ? 'border-red-500' : ''}`}
+            />
+            {errors.passportNumber && <p className="mt-1 text-sm text-red-600">{errors.passportNumber.message}</p>}
+          </div>
+
+          <div>
+            <label htmlFor="country" className="block text-sm font-medium text-gray-700">
+              Country of Origin*
+            </label>
+            <input
+              type="text"
+              id="country"
+              {...register('country', { 
+                required: isForeign ? 'Country is required for foreign learners' : false 
+              })}
+              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.country ? 'border-red-500' : ''}`}
+            />
+            {errors.country && <p className="mt-1 text-sm text-red-600">{errors.country.message}</p>}
+          </div>
+
+          <div>
+            <label htmlFor="visaType" className="block text-sm font-medium text-gray-700">
+              Visa Type
+            </label>
+            <input
+              type="text"
+              id="visaType"
+              {...register('visaType')}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label htmlFor="nationalId" className="block text-sm font-medium text-gray-700">
+              National ID
+            </label>
+            <input
+              type="text"
+              id="nationalId"
+              {...register('nationalId')}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="birthCertificateNo" className="block text-sm font-medium text-gray-700">
+              Birth Certificate No.
+            </label>
+            <input
+              type="text"
+              id="birthCertificateNo"
+              {...register('birthCertificateNo')}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+            />
+          </div>
+        </div>
+      )}
+
+      <div className="border-t border-gray-200 pt-6">
+        <h3 className="text-lg font-medium text-gray-900">Parent/Guardian Information</h3>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <label htmlFor="parentFirstName" className="block text-sm font-medium text-gray-700">
+            First Name*
+          </label>
+          <input
+            type="text"
+            id="parentFirstName"
+            {...register('parentFirstName', { required: 'Parent first name is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.parentFirstName ? 'border-red-500' : ''}`}
+          />
+          {errors.parentFirstName && <p className="mt-1 text-sm text-red-600">{errors.parentFirstName.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="parentLastName" className="block text-sm font-medium text-gray-700">
+            Last Name*
+          </label>
+          <input
+            type="text"
+            id="parentLastName"
+            {...register('parentLastName', { required: 'Parent last name is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.parentLastName ? 'border-red-500' : ''}`}
+          />
+          {errors.parentLastName && <p className="mt-1 text-sm text-red-600">{errors.parentLastName.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="relationship" className="block text-sm font-medium text-gray-700">
+            Relationship*
+          </label>
+          <select
+            type="radio"
+            id="relationship"
+            {...register('relationship', { required: 'Relationship is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.relationship ? 'border-red-500' : ''}`}
+          >
+            <option value="">Select gender</option>
+            <option value="Mother">Male</option>
+            <option value="Father">Father</option>
+            <option value="guardian">guardian</option>
+          </select>
+          {errors.relationship && <p className="mt-1 text-sm text-red-600">{errors.relationship.message}</p>}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label htmlFor="parentPhone" className="block text-sm font-medium text-gray-700">
+            Phone Number*
+          </label>
+          <input
+            type="tel"
+            id="parentPhone"
+            {...register('parentPhone', { required: 'Phone number is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.parentPhone ? 'border-red-500' : ''}`}
+          />
+          {errors.parentPhone && <p className="mt-1 text-sm text-red-600">{errors.parentPhone.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="parentEmail" className="block text-sm font-medium text-gray-700">
+            Email
+          </label>
+          <input
+            type="email"
+            id="parentEmail"
+            {...register('parentEmail')}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+          />
+        </div>
+      </div>
+
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+        >
+          {isSubmitting ? 'Registering...' : 'Register Learner'}
+        </button>
+      </div>
+    </form>
+  );
+};
+
+export default LearnerRegistrationForm;
+
+
+
 // Dashboards
 import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
