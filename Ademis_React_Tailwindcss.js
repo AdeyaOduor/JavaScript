@@ -1056,6 +1056,150 @@ const LearnerRegistrationForm = ({ institutionId, onSubmit }) => {
 
 export default LearnerRegistrationForm;
 
+// Learner Progress
+import { useForm } from 'react-hook-form';
+
+const LearnerProgressForm = ({ learner, academicYears, onSubmit }) => {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <label htmlFor="academicYear" className="block text-sm font-medium text-gray-700">
+            Academic Year*
+          </label>
+          <input
+            // type="dropdown"
+            input="text"
+            id="academicYear"
+            {...register('academicYear', { required: 'Academic year is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.academicYear ? 'border-red-500' : ''}`}
+          // >
+            // <option value="">Select year</option>
+            // <option value="2025">2025</option>
+            // <option value="2026">2026</option>
+            // <option value="2027">2027</option>
+            // <option value="2028">2028</option>
+            // <option value="2029">2029</option>
+            // <option value="2030">2030</option>
+            {academicYears.map(year => (
+              <option key={year.id} value={year.year}>{year.year}</option>
+            ))}
+          // </select>
+          />
+          {errors.academicYear && <p className="mt-1 text-sm text-red-600">{errors.academicYear.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="term" className="block text-sm font-medium text-gray-700">
+            Term*
+          </label>
+          <select
+            type="dropdown"
+            id="term"
+            {...register('term', { required: 'Term is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.term ? 'border-red-500' : ''}`}
+          >
+            <option value="">Select term</option>
+            <option value="Term 1">Term 1</option>
+            <option value="Term 2">Term 2</option>
+            <option value="Term 3">Term 3</option>
+          </select>
+          {errors.term && <p className="mt-1 text-sm text-red-600">{errors.term.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="grade" className="block text-sm font-medium text-gray-700">
+            Grade*
+          </label>
+          <input
+            // type="dropdown"
+            input="text"
+            id="grade"
+            {...register('grade', { required: 'Grade is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.grade ? 'border-red-500' : ''}`}
+          // >
+          //   <option value="">Select grade</option>
+          //   <option value="pp1">pp1</option>
+          //   <option value="pp2">pp2</option>
+          //   <option value="garde1">garde1</option>
+          //   <option value="grade2">grade2</option>
+          //   <option value="grade3">grade3</option>
+          //   <option value="grade4">garde4</option>
+          //   <option value="grade5">grade5</option>
+          //   <option value="grade6">grade6</option>
+          //   <option value="grade7">grade7</option>
+          //   <option value="grade8">grade8</option>
+          //   <option value="grade9">grade9</option>
+          //   <option value="form1">form1</option>
+          //   <option value="form2">form2</option>
+          //   <option value="form3">form3</option>
+          //   <option value="tivet4">tivet4</option>
+          //   <option value="tivet5">tivet5</option>
+          //   <option value="tivet6">tivet6</option>
+          //   <option value="university_first_year">university_first_year</option>
+          //   <option value="university_first_year">university_second_year</option>
+          //   <option value="university_first_year">university_third_year</option>
+          //   <option value="university_first_year">university_fourth_year</option>
+          // </select>
+          />
+          {errors.grade && <p className="mt-1 text-sm text-red-600">{errors.grade.message}</p>}
+        </div>
+      </div>
+
+      <div>
+        <label htmlFor="subjects" className="block text-sm font-medium text-gray-700">
+          Subjects and Scores*
+        </label>
+        <p className="mt-1 text-sm text-gray-500">
+          Enter subjects and scores in JSON format, e.g.: {"{"}"Math": 85, "English": 78{"}"}
+        </p>
+        <textarea
+          id="subjects"
+          rows={4}
+          {...register('subjects', { 
+            required: 'Subjects are required',
+            validate: value => {
+              try {
+                JSON.parse(value);
+                return true;
+              } catch {
+                return 'Invalid JSON format';
+              }
+            }
+          })}
+          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.subjects ? 'border-red-500' : ''}`}
+        />
+        {errors.subjects && <p className="mt-1 text-sm text-red-600">{errors.subjects.message}</p>}
+      </div>
+
+      <div>
+        <label htmlFor="overallRemarks" className="block text-sm font-medium text-gray-700">
+          Overall Remarks*
+        </label>
+        <textarea
+          id="overallRemarks"
+          rows={3}
+          {...register('overallRemarks', { required: 'Remarks are required' })}
+          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.overallRemarks ? 'border-red-500' : ''}`}
+        />
+        {errors.overallRemarks && <p className="mt-1 text-sm text-red-600">{errors.overallRemarks.message}</p>}
+      </div>
+
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          Record Progress
+        </button>
+      </div>
+    </form>
+  );
+};
+
+export default LearnerProgressForm;
 
 
 // Dashboards
@@ -1106,7 +1250,7 @@ const Dashboard = () => {
 
 export default Dashboard;
   
-// Learner Progress
+// Learner ProgressEntry
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { recordLearnerProgress } from '../services/progressService';
