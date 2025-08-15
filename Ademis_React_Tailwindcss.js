@@ -1247,6 +1247,7 @@ const ProgressForm = ({ learner, academicYears, onSuccess }) => {
 export default ProgressForm;
 
 
+// Learner Transfer Form
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -1346,6 +1347,131 @@ const LearnerTransferForm = ({ learner, institutions, onSubmit }) => {
 };
 
 export default LearnerTransferForm;
+
+
+// FInancial Records
+import { useForm } from 'react-hook-form';
+
+const FinancialRecordForm = ({ institutionId, onSubmit }) => {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <input type="hidden" {...register('institutionId')} value={institutionId} />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label htmlFor="recordType" className="block text-sm font-medium text-gray-700">
+            Record Type*
+          </label>
+          <select
+            id="recordType"
+            {...register('recordType', { required: 'Record type is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.recordType ? 'border-red-500' : ''}`}
+          >
+            <option value="">Select type</option>
+            <option value="Fee Payment">Fee Payment</option>
+            <option value="Government Funding">Government Funding</option>
+            <option value="Donor Funding">Donor Funding</option>
+            <option value="Other Income">Other Income</option>
+            <option value="Expense">Expense</option>
+          </select>
+          {errors.recordType && <p className="mt-1 text-sm text-red-600">{errors.recordType.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="bankDetails" className="block text-sm font-medium text-gray-700">
+            Bank Account*
+          </label>
+          <select
+            id="bankDetails"
+            {...register('bankDetails', { required: 'Bank account is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.bankDetails ? 'border-red-500' : ''}`}
+          >
+            <option value="">Select account</option>
+            <option value="Tuition">Tuition Account</option>
+            <option value="Maintenance">Maintenance Account</option>
+            <option value="Development">Development Account</option>
+          </select>
+          {errors.bankDetails && <p className="mt-1 text-sm text-red-600">{errors.bankDetails.message}</p>}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label htmlFor="amount" className="block text-sm font-medium text-gray-700">
+            Amount*
+          </label>
+          <div className="mt-1 relative rounded-md shadow-sm">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <span className="text-gray-500 sm:text-sm">KES</span>
+            </div>
+            <input
+              type="number"
+              id="amount"
+              step="0.01"
+              {...register('amount', { 
+                required: 'Amount is required',
+                min: { value: 0.01, message: 'Amount must be greater than 0' }
+              })}
+              className={`block w-full pl-12 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.amount ? 'border-red-500' : ''}`}
+            />
+          </div>
+          {errors.amount && <p className="mt-1 text-sm text-red-600">{errors.amount.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="transactionDate" className="block text-sm font-medium text-gray-700">
+            Transaction Date*
+          </label>
+          <input
+            type="date"
+            id="transactionDate"
+            {...register('transactionDate', { required: 'Transaction date is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.transactionDate ? 'border-red-500' : ''}`}
+          />
+          {errors.transactionDate && <p className="mt-1 text-sm text-red-600">{errors.transactionDate.message}</p>}
+        </div>
+      </div>
+
+      <div>
+        <label htmlFor="referenceNumber" className="block text-sm font-medium text-gray-700">
+          Reference Number
+        </label>
+        <input
+          type="text"
+          id="referenceNumber"
+          {...register('referenceNumber')}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+          Description*
+        </label>
+        <textarea
+          id="description"
+          rows={3}
+          {...register('description', { required: 'Description is required' })}
+          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.description ? 'border-red-500' : ''}`}
+        />
+        {errors.description && <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>}
+      </div>
+
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          Record Transaction
+        </button>
+      </div>
+    </form>
+  );
+};
+
+export default FinancialRecordForm;
 
 
 // Dashboards
