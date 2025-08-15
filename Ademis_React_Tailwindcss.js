@@ -1473,6 +1473,101 @@ const FinancialRecordForm = ({ institutionId, onSubmit }) => {
 
 export default FinancialRecordForm;
 
+// FInancial Report Filters
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+const FinancialReportFilterForm = ({ onSubmit }) => {
+  const { register, handleSubmit, watch } = useForm();
+  const [recordTypes, setRecordTypes] = useState([
+    { name: 'Fee Payment', selected: true },
+    { name: 'Government Funding', selected: true },
+    { name: 'Donor Funding', selected: true },
+    { name: 'Other Income', selected: true },
+    { name: 'Expense', selected: true }
+  ]);
+
+  const toggleRecordType = (index) => {
+    const newTypes = [...recordTypes];
+    newTypes[index].selected = !newTypes[index].selected;
+    setRecordTypes(newTypes);
+  };
+
+  const handleFormSubmit = (data) => {
+    const selectedTypes = recordTypes
+      .filter(type => type.selected)
+      .map(type => type.name);
+    
+    onSubmit({
+      ...data,
+      recordTypes: selectedTypes
+    });
+  };
+
+  return (
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label htmlFor="startDate" className="block text-sm font-medium text-gray-700">
+            Start Date
+          </label>
+          <input
+            type="date"
+            id="startDate"
+            {...register('startDate')}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="endDate" className="block text-sm font-medium text-gray-700">
+            End Date
+          </label>
+          <input
+            type="date"
+            id="endDate"
+            {...register('endDate')}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Record Types
+        </label>
+        <div className="flex flex-wrap gap-2">
+          {recordTypes.map((type, index) => (
+            <button
+              key={type.name}
+              type="button"
+              onClick={() => toggleRecordType(index)}
+              className={`px-3 py-1 rounded-full text-xs font-medium ${
+                type.selected 
+                  ? 'bg-blue-100 text-blue-800' 
+                  : 'bg-gray-100 text-gray-800'
+              }`}
+            >
+              {type.name}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          Generate Report
+        </button>
+      </div>
+    </form>
+  );
+};
+
+export default FinancialReportFilterForm;
+
 
 // Dashboards
 import { useEffect, useState } from 'react';
