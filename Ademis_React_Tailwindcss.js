@@ -834,8 +834,8 @@ const LearnerRegistrationForm = ({ institutionId, onSubmit }) => {
         {errors.dateOfBirth && <p className="mt-1 text-sm text-red-600">{errors.dateOfBirth.message}</p>}
       </div>
     </div>
-            );
-};
+     );
+   };
 
         <div>
           <label htmlFor="gender" className="block text-sm font-medium text-gray-700">
@@ -1078,15 +1078,7 @@ import { recordLearnerProgress } from '../services/progressService';
 
 const ProgressForm = ({ learner, academicYears, onSuccess }) => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const [subjects, setSubjects] = useState([
-    { name: 'Mathematics', marks: '', grade: '' },
-    { name: 'English', marks: '', grade: '' },
-    { name: 'Kiswahili', marks: '', grade: '' },
-    { name: 'Integrated Science', marks: '', grade: '' },
-    { name: 'Home Science', marks: '', grade: '' },
-    { name: 'Creative Arts', marks: '', grade: '' },
-    { name: 'Performing Arts', marks: '', grade: '' },
-  ]);
+  const [subjects, setSubjects] = useState([{ name: '', marks: '', grade: '' } ]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubjectChange = (index, field, value) => {
@@ -1145,6 +1137,7 @@ const ProgressForm = ({ learner, academicYears, onSuccess }) => {
         <div>
           <label htmlFor="academicYear" className="block text-sm font-medium text-gray-700">Academic Year*</label>
           <select
+            type="dropdown"
             id="academicYear"
             {...register('academicYear', { required: 'Academic year is required' })}
             className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.academicYear ? 'border-red-500' : ''}`}
@@ -1153,6 +1146,14 @@ const ProgressForm = ({ learner, academicYears, onSuccess }) => {
             {academicYears.map(year => (
               <option key={year.id} value={year.year}>{year.year}</option>
             ))}
+              <option value="">Select term</option>
+              <option value="2025">2025 </option>
+              <option value="2026">2026 </option>
+              <option value="2027">2027 </option>
+              <option value="2028">2028 </option>
+              <option value="2029">2029 </option>
+              <option value="2030">2030 </option>
+              <option value="2031">2031 </option>
           </select>
           {errors.academicYear && <p className="mt-1 text-sm text-red-600">{errors.academicYear.message}</p>}
         </div>
@@ -1160,6 +1161,7 @@ const ProgressForm = ({ learner, academicYears, onSuccess }) => {
         <div>
           <label htmlFor="term" className="block text-sm font-medium text-gray-700">Term*</label>
           <select
+            type="dropdown"
             id="term"
             {...register('term', { required: 'Term is required' })}
             className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.term ? 'border-red-500' : ''}`}
@@ -1190,6 +1192,9 @@ const ProgressForm = ({ learner, academicYears, onSuccess }) => {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
+                <p className="mt-1 text-sm text-gray-500">
+                     Enter subjects and scores, e.g.: {"{"}"Math": 85, "Grade": A {"}"}
+                </p>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Marks</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grade</th>
