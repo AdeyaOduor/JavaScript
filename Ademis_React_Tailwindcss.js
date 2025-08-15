@@ -1192,9 +1192,6 @@ const ProgressForm = ({ learner, academicYears, onSuccess }) => {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <p className="mt-1 text-sm text-gray-500">
-                     Enter subjects and scores, e.g.: {"{"}"Math": 85, "Grade": A {"}"}
-                </p>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Marks</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grade</th>
@@ -1248,6 +1245,107 @@ const ProgressForm = ({ learner, academicYears, onSuccess }) => {
 };
 
 export default ProgressForm;
+
+
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+const LearnerTransferForm = ({ learner, institutions, onSubmit }) => {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleFormSubmit = async (data) => {
+    setIsSubmitting(true);
+    try {
+      await onSubmit(data);
+    } catch (error) {
+      console.error('Transfer error:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label htmlFor="fromInstitutionId" className="block text-sm font-medium text-gray-700">
+            Current Institution
+          </label>
+          <input
+            type="text"
+            id="fromInstitutionId"
+            value={learner.institution.name}
+            readOnly
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-gray-100"
+          />
+          <input
+            type="hidden"
+            {...register('fromInstitutionId')}
+            value={learner.institution.institution_id}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="toInstitutionId" className="block text-sm font-medium text-gray-700">
+            New Institution*
+          </label>
+          <select
+            id="toInstitutionId"
+            {...register('toInstitutionId', { required: 'New institution is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.toInstitutionId ? 'border-red-500' : ''}`}
+          >
+            <option value="">Select institution</option>
+            {institutions.map(institution => (
+              <option key={institution.institution_id} value={institution.institution_id}>
+                {institution.name} ({institution.type})
+              </option>
+            ))}
+          </select>
+          {errors.toInstitutionId && <p className="mt-1 text-sm text-red-600">{errors.toInstitutionId.message}</p>}
+        </div>
+      </div>
+
+      <div>
+        <label htmlFor="transferDate" className="block text-sm font-medium text-gray-700">
+          Transfer Date*
+        </label>
+        <input
+          type="date"
+          id="transferDate"
+          {...register('transferDate', { required: 'Transfer date is required' })}
+          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.transferDate ? 'border-red-500' : ''}`}
+        />
+        {errors.transferDate && <p className="mt-1 text-sm text-red-600">{errors.transferDate.message}</p>}
+      </div>
+
+      <div>
+        <label htmlFor="reason" className="block text-sm font-medium text-gray-700">
+          Reason for Transfer*
+        </label>
+        <textarea
+          id="reason"
+          rows={3}
+          {...register('reason', { required: 'Reason is required' })}
+          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.reason ? 'border-red-500' : ''}`}
+        />
+        {errors.reason && <p className="mt-1 text-sm text-red-600">{errors.reason.message}</p>}
+      </div>
+
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+        >
+          {isSubmitting ? 'Submitting...' : 'Initiate Transfer'}
+        </button>
+      </div>
+    </form>
+  );
+};
+
+export default LearnerTransferForm;
 
 
 // Dashboards
