@@ -137,8 +137,8 @@ const UserRegistrationForm = ({ onSubmit }) => {
             County*
           </label>
           <select
-            id="county_id"
             type="radio"
+            id="county_id"
             {...register('county_id', { required: 'County is required for county admin' })}
             className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.county_id ? 'border-red-500' : ''}`}
             onChange={(e) => fetchSubCounties(e.target.value)}
@@ -159,8 +159,8 @@ const UserRegistrationForm = ({ onSubmit }) => {
               County*
             </label>
             <select
-              id="county_id"
               type="radio"
+              id="county_id"
               {...register('county_id', { required: 'County is required for subcounty admin' })}
               className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.county_id ? 'border-red-500' : ''}`}
               onChange={(e) => fetchSubCounties(e.target.value)}
@@ -746,11 +746,16 @@ export default InstitutionStatusForm;
 // Learner Registration
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const LearnerRegistrationForm = ({ institutionId, onSubmit }) => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const [isForeign, setIsForeign] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const DateOfBirthPicker = ({ register, errors }) => {
+  const [startDate, setStartDate] = useState(null);
+
 
   const handleFormSubmit = async (data) => {
     setIsSubmitting(true);
@@ -810,18 +815,27 @@ const LearnerRegistrationForm = ({ institutionId, onSubmit }) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div>
-          <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">
-            Date of Birth*
-          </label>
-          <input
-            type="date"
-            id="dateOfBirth"
-            {...register('dateOfBirth', { required: 'Date of birth is required' })}
-            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.dateOfBirth ? 'border-red-500' : ''}`}
-          />
-          {errors.dateOfBirth && <p className="mt-1 text-sm text-red-600">{errors.dateOfBirth.message}</p>}
-        </div>
+      <div>
+        <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">
+          Date of Birth*
+        </label>
+        <DatePicker
+          id="dateOfBirth"
+          selected={startDate}
+          onChange={(date) => {
+            setStartDate(date);
+            // Update the form value for react-hook-form
+            register('dateOfBirth', { required: 'Date of birth is required' }).onChange(date);
+          }}
+          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.dateOfBirth ? 'border-red-500' : ''}`}
+          dateFormat="yyyy/MM/dd"
+          placeholderText="Select date"
+        />
+        {errors.dateOfBirth && <p className="mt-1 text-sm text-red-600">{errors.dateOfBirth.message}</p>}
+      </div>
+    </div>
+            );
+};
 
         <div>
           <label htmlFor="gender" className="block text-sm font-medium text-gray-700">
