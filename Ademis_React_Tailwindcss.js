@@ -1568,6 +1568,177 @@ const FinancialReportFilterForm = ({ onSubmit }) => {
 
 export default FinancialReportFilterForm;
 
+// ProcurementOrderForm
+import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+
+const ProcurementOrderForm = ({ institutionId, onSubmit }) => {
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const [totalPrice, setTotalPrice] = useState(0);
+  
+  const quantity = watch('quantity');
+  const unitPrice = watch('unitPrice');
+
+  useEffect(() => {
+    if (quantity && unitPrice) {
+      setTotalPrice(quantity * unitPrice);
+    } else {
+      setTotalPrice(0);
+    }
+  }, [quantity, unitPrice]);
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <input type="hidden" {...register('institutionId')} value={institutionId} />
+
+      <div>
+        <label htmlFor="itemName" className="block text-sm font-medium text-gray-700">
+          Item Name*
+        </label>
+        <input
+          type="text"
+          id="itemName"
+          {...register('itemName', { required: 'Item name is required' })}
+          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.itemName ? 'border-red-500' : ''}`}
+        />
+        {errors.itemName && <p className="mt-1 text-sm text-red-600">{errors.itemName.message}</p>}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label htmlFor="category" className="block text-sm font-medium text-gray-700">
+            Category*
+          </label>
+          <select
+            id="category"
+            {...register('category', { required: 'Category is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.category ? 'border-red-500' : ''}`}
+          >
+            <option value="">Select category</option>
+            <option value="Learning Materials">Learning Materials</option>
+            <option value="Sanitary">Sanitary</option>
+            <option value="Equipment">Equipment</option>
+            <option value="Other">Other</option>
+          </select>
+          {errors.category && <p className="mt-1 text-sm text-red-600">{errors.category.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="supplier" className="block text-sm font-medium text-gray-700">
+            Supplier
+          </label>
+          <input
+            type="text"
+            id="supplier"
+            {...register('supplier')}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <label htmlFor="quantity" className="block text-sm font-medium text-gray-700">
+            Quantity*
+          </label>
+          <input
+            type="number"
+            id="quantity"
+            min="1"
+            {...register('quantity', { 
+              required: 'Quantity is required',
+              min: { value: 1, message: 'Quantity must be at least 1' }
+            })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.quantity ? 'border-red-500' : ''}`}
+          />
+          {errors.quantity && <p className="mt-1 text-sm text-red-600">{errors.quantity.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="unitPrice" className="block text-sm font-medium text-gray-700">
+            Unit Price (KES)*
+          </label>
+          <input
+            type="number"
+            id="unitPrice"
+            step="0.01"
+            min="0.01"
+            {...register('unitPrice', { 
+              required: 'Unit price is required',
+              min: { value: 0.01, message: 'Price must be greater than 0' }
+            })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.unitPrice ? 'border-red-500' : ''}`}
+          />
+          {errors.unitPrice && <p className="mt-1 text-sm text-red-600">{errors.unitPrice.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="totalPrice" className="block text-sm font-medium text-gray-700">
+            Total Price (KES)
+          </label>
+          <input
+            type="text"
+            id="totalPrice"
+            value={totalPrice.toFixed(2)}
+            readOnly
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-gray-100"
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label htmlFor="orderDate" className="block text-sm font-medium text-gray-700">
+            Order Date*
+          </label>
+          <input
+            type="date"
+            id="orderDate"
+            {...register('orderDate', { required: 'Order date is required' })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.orderDate ? 'border-red-500' : ''}`}
+          />
+          {errors.orderDate && <p className="mt-1 text-sm text-red-600">{errors.orderDate.message}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="expectedDeliveryDate" className="block text-sm font-medium text-gray-700">
+            Expected Delivery Date
+          </label>
+          <input
+            type="date"
+            id="expectedDeliveryDate"
+            {...register('expectedDeliveryDate')}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label htmlFor="notes" className="block text-sm font-medium text-gray-700">
+          Notes
+        </label>
+        <textarea
+          id="notes"
+          rows={3}
+          {...register('notes')}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+        />
+      </div>
+
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          Create Order
+        </button>
+      </div>
+    </form>
+  );
+};
+
+export default ProcurementOrderForm;
+
 
 // Dashboards
 import { useEffect, useState } from 'react';
