@@ -2131,6 +2131,93 @@ const LocationFilter = ({ userRole, counties, subCounties, onFilterChange }) => 
 export default LocationFilter;
 
 
+// Institution Filter Component
+import { useState } from 'react';
+
+const InstitutionFilter = ({ institutions, onFilterChange }) => {
+  const [filters, setFilters] = useState({
+    type: '',
+    category: '',
+    status: ''
+  });
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    const newFilters = {
+      ...filters,
+      [name]: value
+    };
+    setFilters(newFilters);
+    onFilterChange(newFilters);
+  };
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div>
+        <label htmlFor="type" className="block text-sm font-medium text-gray-700">
+          Institution Type
+        </label>
+        <select
+          id="type"
+          name="type"
+          value={filters.type}
+          onChange={handleFilterChange}
+          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+        >
+          <option value="">All Types</option>
+          <option value="Early Learning">Early Learning</option>
+          <option value="Primary">Primary</option>
+          <option value="Junior Secondary">Junior Secondary</option>
+          <option value="High School">High School</option>
+          <option value="TVET">TVET</option>
+          <option value="University">University</option>
+        </select>
+      </div>
+
+      <div>
+        <label htmlFor="category" className="block text-sm font-medium text-gray-700">
+          Institution Category
+        </label>
+        <select
+          id="category"
+          name="category"
+          value={filters.category}
+          onChange={handleFilterChange}
+          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+        >
+          <option value="">All Categories</option>
+          <option value="Community Based">Community Based</option>
+          <option value="Faith Based">Faith Based</option>
+          <option value="Private">Private</option>
+          <option value="Public">Public</option>
+        </select>
+      </div>
+
+      <div>
+        <label htmlFor="status" className="block text-sm font-medium text-gray-700">
+          Status
+        </label>
+        <select
+          id="status"
+          name="status"
+          value={filters.status}
+          onChange={handleFilterChange}
+          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+        >
+          <option value="">All Statuses</option>
+          <option value="Pending">Pending</option>
+          <option value="Approved">Approved</option>
+          <option value="Suspended">Suspended</option>
+          <option value="Deregistered">Deregistered</option>
+        </select>
+      </div>
+    </div>
+  );
+};
+
+export default InstitutionFilter;
+
+          
 // Dashboards
 import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
