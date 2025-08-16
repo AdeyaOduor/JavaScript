@@ -69,7 +69,7 @@ cd frontend
 npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss init -p
 
-npm install axios react-router-dom react-chartjs-2 chart.js
+npm install axios react-router-dom react-hook-form react-chartjs-2 chart.js
 npm install --save-dev @tailwindcss/forms
 npm install react-datepicker
 
