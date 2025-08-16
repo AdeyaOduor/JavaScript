@@ -1966,6 +1966,93 @@ const LearnerSearchForm = ({ onSubmit }) => {
 
 export default LearnerSearchForm;
 
+// OTPVerificationForm
+import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+
+const OTPVerificationForm = ({ contactValue, contactType, onResend, onSubmit }) => {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const [timeLeft, setTimeLeft] = useState(300); // 5 minutes in seconds
+
+  useEffect(() => {
+    if (timeLeft <= 0) return;
+
+    const timer = setTimeout(() => {
+      setTimeLeft(timeLeft - 1);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [timeLeft]);
+
+  const handleResend = () => {
+    onResend();
+    setTimeLeft(300); // Reset timer
+  };
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <div className="text-center">
+        <p className="text-sm text-gray-600">
+          We've sent a 6-digit verification code to your {contactType}:
+        </p>
+        <p className="mt-1 font-medium text-gray-900">{contactValue}</p>
+      </div>
+
+      <div>
+        <label htmlFor="otp" className="block text-sm font-medium text-gray-700">
+          Verification Code*
+        </label>
+        <input
+          type="text"
+          id="otp"
+          maxLength={6}
+          {...register('otp', { 
+            required: 'Verification code is required',
+            minLength: {
+              value: 6,
+              message: 'Code must be 6 digits'
+            }
+          })}
+          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.otp ? 'border-red-500' : ''}`}
+        />
+        {errors.otp && <p className="mt-1 text-sm text-red-600">{errors.otp.message}</p>}
+      </div>
+
+      <div className="text-center text-sm">
+        {timeLeft > 0 ? (
+          <p className="text-gray-500">
+            You can request a new code in {formatTime(timeLeft)}
+          </p>
+        ) : (
+          <button
+            type="button"
+            onClick={handleResend}
+            className="font-medium text-blue-600 hover:text-blue-500"
+          >
+            Resend Verification Code
+          </button>
+        )}
+      </div>
+
+      <div>
+        <button
+          type="submit"
+          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          Verify
+        </button>
+      </div>
+    </form>
+  );
+};
+
+export default OTPVerificationForm;
 
 
 // Dashboards
