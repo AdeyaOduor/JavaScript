@@ -2054,6 +2054,82 @@ const OTPVerificationForm = ({ contactValue, contactType, onResend, onSubmit }) 
 
 export default OTPVerificationForm;
 
+// County/Subcounty Filter Component (for National/County Admins)
+import { useEffect, useState } from 'react';
+
+const LocationFilter = ({ userRole, counties, subCounties, onFilterChange }) => {
+  const [selectedCounty, setSelectedCounty] = useState('');
+  const [selectedSubCounty, setSelectedSubCounty] = useState('');
+
+  useEffect(() => {
+    if (userRole === 'county_admin') {
+      // Pre-select the county admin's county
+      const adminCounty = counties.find(c => c.id === userCountyId);
+      if (adminCounty) {
+        setSelectedCounty(adminCounty.id);
+        onFilterChange({ countyId: adminCounty.id });
+      }
+    }
+  }, [userRole, counties]);
+
+  const handleCountyChange = (e) => {
+    const countyId = e.target.value;
+    setSelectedCounty(countyId);
+    setSelectedSubCounty('');
+    onFilterChange({ countyId });
+  };
+
+  const handleSubCountyChange = (e) => {
+    const subCountyId = e.target.value;
+    setSelectedSubCounty(subCountyId);
+    onFilterChange({ countyId: selectedCounty, subCountyId });
+  };
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label htmlFor="county" className="block text-sm font-medium text-gray-700">
+          County
+        </label>
+        <select
+          id="county"
+          value={selectedCounty}
+          onChange={handleCountyChange}
+          disabled={userRole === 'county_admin'}
+          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+        >
+          <option value="">All Counties</option>
+          {counties.map(county => (
+            <option key={county.id} value={county.id}>{county.name}</option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label htmlFor="subCounty" className="block text-sm font-medium text-gray-700">
+          Subcounty
+        </label>
+        <select
+          id="subCounty"
+          value={selectedSubCounty}
+          onChange={handleSubCountyChange}
+          disabled={!selectedCounty}
+          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+        >
+          <option value="">All Subcounties</option>
+          {subCounties
+            .filter(sc => sc.county_id === selectedCounty)
+            .map(subCounty => (
+              <option key={subCounty.id} value={subCounty.id}>{subCounty.name}</option>
+            ))}
+        </select>
+      </div>
+    </div>
+  );
+};
+
+export default LocationFilter;
+
 
 // Dashboards
 import { useEffect, useState } from 'react';
