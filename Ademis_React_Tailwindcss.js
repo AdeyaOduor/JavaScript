@@ -1821,6 +1821,153 @@ const ProcurementStatusForm = ({ order, onSubmit }) => {
 export default ProcurementStatusForm;
 
 
+// LearnerSearchForm
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+const LearnerSearchForm = ({ onSubmit }) => {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const [searchMethod, setSearchMethod] = useState('upi');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleFormSubmit = async (data) => {
+    setIsSubmitting(true);
+    try {
+      await onSubmit({
+        ...data,
+        searchMethod
+      });
+    } catch (error) {
+      console.error('Search error:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+      <div className="flex space-x-4">
+        <div className="flex items-center">
+          <input
+            id="upiMethod"
+            name="searchMethod"
+            type="radio"
+            checked={searchMethod === 'upi'}
+            onChange={() => setSearchMethod('upi')}
+            className="h-4 w-4 text-blue-600 focus:ring-blue-500"
+          />
+          <label htmlFor="upiMethod" className="ml-2 block text-sm text-gray-900">
+            UPI Number
+          </label>
+        </div>
+        <div className="flex items-center">
+          <input
+            id="birthCertMethod"
+            name="searchMethod"
+            type="radio"
+            checked={searchMethod === 'birthCert'}
+            onChange={() => setSearchMethod('birthCert')}
+            className="h-4 w-4 text-blue-600 focus:ring-blue-500"
+          />
+          <label htmlFor="birthCertMethod" className="ml-2 block text-sm text-gray-900">
+            Birth Certificate
+          </label>
+        </div>
+      </div>
+
+      {searchMethod === 'upi' ? (
+        <div>
+          <label htmlFor="upiNumber" className="block text-sm font-medium text-gray-700">
+            UPI Number*
+          </label>
+          <input
+            type="text"
+            id="upiNumber"
+            {...register('upiNumber', { 
+              required: searchMethod === 'upi' ? 'UPI number is required' : false 
+            })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.upiNumber ? 'border-red-500' : ''}`}
+          />
+          {errors.upiNumber && <p className="mt-1 text-sm text-red-600">{errors.upiNumber.message}</p>}
+        </div>
+      ) : (
+        <div>
+          <label htmlFor="birthCertificateNumber" className="block text-sm font-medium text-gray-700">
+            Birth Certificate Number*
+          </label>
+          <input
+            type="text"
+            id="birthCertificateNumber"
+            {...register('birthCertificateNumber', { 
+              required: searchMethod === 'birthCert' ? 'Birth certificate number is required' : false 
+            })}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.birthCertificateNumber ? 'border-red-500' : ''}`}
+          />
+          {errors.birthCertificateNumber && <p className="mt-1 text-sm text-red-600">{errors.birthCertificateNumber.message}</p>}
+        </div>
+      )}
+
+      <div>
+        <label htmlFor="institutionId" className="block text-sm font-medium text-gray-700">
+          Institution*
+        </label>
+        <select
+          id="institutionId"
+          {...register('institutionId', { required: 'Institution is required' })}
+          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.institutionId ? 'border-red-500' : ''}`}
+        >
+          <option value="">Select institution</option>
+          {/* Institutions would be populated from API */}
+        </select>
+        {errors.institutionId && <p className="mt-1 text-sm text-red-600">{errors.institutionId.message}</p>}
+      </div>
+
+      <div>
+        <label htmlFor="contactValue" className="block text-sm font-medium text-gray-700">
+          Contact (Phone or Email)*
+        </label>
+        <input
+          type="text"
+          id="contactValue"
+          {...register('contactValue', { required: 'Contact information is required' })}
+          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.contactValue ? 'border-red-500' : ''}`}
+        />
+        {errors.contactValue && <p className="mt-1 text-sm text-red-600">{errors.contactValue.message}</p>}
+      </div>
+
+      <div>
+        <label htmlFor="secretCode" className="block text-sm font-medium text-gray-700">
+          Verification Code*
+        </label>
+        <input
+          type="text"
+          id="secretCode"
+          {...register('secretCode', { required: 'Verification code is required' })}
+          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.secretCode ? 'border-red-500' : ''}`}
+        />
+        <p className="mt-1 text-sm text-gray-500">
+          We've sent a verification code to your contact method.
+        </p>
+        {errors.secretCode && <p className="mt-1 text-sm text-red-600">{errors.secretCode.message}</p>}
+      </div>
+
+      <div>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+        >
+          {isSubmitting ? 'Searching...' : 'Search Learner'}
+        </button>
+      </div>
+    </form>
+  );
+};
+
+export default LearnerSearchForm;
+
+
+
 // Dashboards
 import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
