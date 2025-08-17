@@ -750,12 +750,10 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const LearnerRegistrationForm = ({ institutionId, onSubmit }) => {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
   const [isForeign, setIsForeign] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const DateOfBirthPicker = ({ register, errors }) => {
-  const [startDate, setStartDate] = useState(null);
-
+  const [dateOfBirth, setDateOfBirth] = useState(null);
 
   const handleFormSubmit = async (data) => {
     setIsSubmitting(true);
@@ -815,34 +813,30 @@ const LearnerRegistrationForm = ({ institutionId, onSubmit }) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div>
-        <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">
-          Date of Birth*
-        </label>
-        <DatePicker
-          id="dateOfBirth"
-          selected={startDate}
-          onChange={(date) => {
-            setStartDate(date);
-            // Update the form value for react-hook-form
-            register('dateOfBirth', { required: 'Date of birth is required' }).onChange(date);
-          }}
-          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.dateOfBirth ? 'border-red-500' : ''}`}
-          dateFormat="yyyy/MM/dd"
-          placeholderText="Select date"
-        />
-        {errors.dateOfBirth && <p className="mt-1 text-sm text-red-600">{errors.dateOfBirth.message}</p>}
-      </div>
-    </div>
-     );
-   };
+        <div>
+          <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">
+            Date of Birth*
+          </label>
+          <DatePicker
+            id="dateOfBirth"
+            selected={dateOfBirth}
+            onChange={(date) => {
+              setDateOfBirth(date);
+              setValue('dateOfBirth', date);
+            }}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.dateOfBirth ? 'border-red-500' : ''}`}
+            dateFormat="yyyy/MM/dd"
+            placeholderText="Select date"
+            required
+          />
+          {errors.dateOfBirth && <p className="mt-1 text-sm text-red-600">Date of birth is required</p>}
+        </div>
 
         <div>
           <label htmlFor="gender" className="block text-sm font-medium text-gray-700">
             Gender*
           </label>
           <select
-            type="radio"
             id="gender"
             {...register('gender', { required: 'Gender is required' })}
             className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.gender ? 'border-red-500' : ''}`}
@@ -860,7 +854,6 @@ const LearnerRegistrationForm = ({ institutionId, onSubmit }) => {
             Current Grade*
           </label>
           <select
-            type="dropdown"
             id="currentGrade"
             {...register('currentGrade', { required: 'Current grade is required' })}
             className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.currentGrade ? 'border-red-500' : ''}`}
@@ -868,10 +861,10 @@ const LearnerRegistrationForm = ({ institutionId, onSubmit }) => {
             <option value="">Select grade</option>
             <option value="pp1">pp1</option>
             <option value="pp2">pp2</option>
-            <option value="garde1">garde1</option>
+            <option value="grade1">grade1</option>
             <option value="grade2">grade2</option>
             <option value="grade3">grade3</option>
-            <option value="grade4">garde4</option>
+            <option value="grade4">grade4</option>
             <option value="grade5">grade5</option>
             <option value="grade6">grade6</option>
             <option value="grade7">grade7</option>
@@ -884,9 +877,9 @@ const LearnerRegistrationForm = ({ institutionId, onSubmit }) => {
             <option value="tivet5">tivet5</option>
             <option value="tivet6">tivet6</option>
             <option value="university_first_year">university_first_year</option>
-            <option value="university_first_year">university_second_year</option>
-            <option value="university_first_year">university_third_year</option>
-            <option value="university_first_year">university_fourth_year</option>
+            <option value="university_second_year">university_second_year</option>
+            <option value="university_third_year">university_third_year</option>
+            <option value="university_fourth_year">university_fourth_year</option>
           </select>
           {errors.currentGrade && <p className="mt-1 text-sm text-red-600">{errors.currentGrade.message}</p>}
         </div>
@@ -1014,7 +1007,6 @@ const LearnerRegistrationForm = ({ institutionId, onSubmit }) => {
             Relationship*
           </label>
           <select
-            type="radio"
             id="relationship"
             {...register('relationship', { required: 'Relationship is required' })}
             className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${errors.relationship ? 'border-red-500' : ''}`}
