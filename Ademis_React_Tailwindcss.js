@@ -30,7 +30,7 @@ const UserRegistrationForm = ({ onSubmit }) => {
   const selectedCounty = watch('county_id');
 
   // Fetch counties, subcounties, and institutions based on selections
-  // Implement these functions as needed
+  // Implement these functions as per kenyan administrative levels i.e map all subcounties to their respectine counties
   const fetchCounties = async () => { /* ... */ };
   const fetchSubCounties = async (countyId) => { /* ... */ };
   const fetchInstitutions = async (subCountyId) => { /* ... */ };
