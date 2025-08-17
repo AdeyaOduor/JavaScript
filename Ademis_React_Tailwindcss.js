@@ -2,11 +2,54 @@
 module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
+    "./public/index.html"
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: {
+          50: '#f0f9ff',
+          100: '#e0f2fe',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+        },
+        success: {
+          50: '#f0fdf4',
+          500: '#22c55e',
+          600: '#16a34a',
+        },
+        warning: {
+          50: '#fefce8',
+          500: '#f59e0b',
+          600: '#d97706',
+        },
+        danger: {
+          50: '#fef2f2',
+          500: '#ef4444',
+          600: '#dc2626',
+        },
+      },
+      spacing: {
+        4.5: '1.125rem',
+        18: '4.5rem',
+      },
+    },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+  ],
+  safelist: [
+    'bg-blue-500',
+    'bg-green-500',
+    'bg-red-500',
+    'bg-yellow-500',
+    'text-blue-500',
+    'text-green-500',
+    'text-red-500',
+    'text-yellow-500',
+  ]
 }
 
 // src/index.css
