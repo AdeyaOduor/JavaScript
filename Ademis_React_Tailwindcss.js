@@ -59,24 +59,73 @@ module.exports = {
 
 
 // User registration form
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { roles, institutionTypes, institutionCategories } from '../constants';
 
+  
+const selectedRole = watch('role');
+const selectedCounty = watch('county_id');
 const UserRegistrationForm = ({ onSubmit }) => {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const { 
+    register, 
+    handleSubmit, 
+    watch, 
+    formState: { errors, isSubmitting } 
+  } = useForm();
+  
   const [counties, setCounties] = useState([]);
   const [subCounties, setSubCounties] = useState([]);
   const [institutions, setInstitutions] = useState([]);
-  
-  const selectedRole = watch('role');
-  const selectedCounty = watch('county_id');
+  const [loading, setLoading] = useState(false);
 
-  // Fetch counties, subcounties, and institutions based on selections
-  // Implement these functions as per kenyan administrative levels i.e map all subcounties to their respectine counties
-  const fetchCounties = async () => { /* ... */ };
-  const fetchSubCounties = async (countyId) => { /* ... */ };
-  const fetchInstitutions = async (subCountyId) => { /* ... */ };
+  // Fetch counties on mount
+  useEffect(() => {
+    const fetchCounties = async () => {
+      setLoading(true);
+      try {
+        // Replace with actual API call
+        const response = await fetch('/api/counties');
+        const data = await response.json();
+        setCounties(data);
+      } catch (error) {
+        console.error('Failed to fetch counties:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchCounties();
+  }, []);
+
+  // Fetch sub-counties when county changes
+  useEffect(() => {
+    if (!selectedCounty) return;
+    
+    const fetchSubCounties = async () => {
+      setLoading(true);
+      try {
+        // Replace with actual API call
+        const response = await fetch(`/api/counties/${selectedCounty}/subcounties`);
+        const data = await response.json();
+        setSubCounties(data);
+      } catch (error) {
+        console.error('Failed to fetch sub-counties:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchSubCounties();
+  }, [selectedCounty]);
+
+  const handleFormSubmit = async (data) => {
+    try {
+      await onSubmit(data);
+    } catch (error) {
+      console.error('Registration error:', error);
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
