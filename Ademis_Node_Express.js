@@ -2303,6 +2303,70 @@ async function generateAndSendOTP(learnerId, phone, email) {
     expiresIn: '24 hours'
   };
 }
+
+const generateDigitalID = async (learnerId) => {
+  try {
+    // Call the stored procedure
+    const [results] = await db.sequelize.query(
+      `CALL sp_GenerateAndDeliverDigitalID(:learnerId)`,
+      {
+        replacements: { learnerId },
+        type: db.sequelize.QueryTypes.SELECT
+      }
+    );
+
+    // In production, implement these services:
+    if (results.email_sent) {
+      await emailService.sendDigitalID(
+        results.parent_guardian_email,
+        results.digital_id_content,
+        results.qr_code_url
+      );
+    }
+
+    if (results.sms_sent) {
+      await smsService.sendDigitalID(
+        results.parent_guardian_phone,
+        results.digital_id_content,
+        results.qr_code_url
+      );
+    }
+
+    return {
+      success: true,
+      message: 'Digital ID generated and sent successfully',
+      data: {
+        learnerId: results.learner_id,
+        digitalId: JSON.parse(results.digital_id_content),
+        deliveryMethods: {
+          email: results.email_sent,
+          sms: results.sms_sent
+        }
+      }
+    };
+  } catch (error) {
+    console.error('Digital ID generation error:', error);
+    throw new Error('Failed to generate and deliver digital ID');
+  }
+};
+
+// API Endpoint
+exports.generateDigitalID = async (req, res) => {
+  try {
+    const { learnerId } = req.params;
+    
+    const result = await generateDigitalID(learnerId);
+    
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+
 // controllers/parentController.js
 const axios = require('axios');
 const { validationResult } = require('express-validator');
