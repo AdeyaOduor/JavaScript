@@ -1165,6 +1165,37 @@ DELIMITER ;
 
 DELIMITER //
 
+CREATE PROCEDURE sp_CompleteLearnerRegistration(
+    IN p_learner_id VARCHAR(20))
+BEGIN
+    DECLARE v_verified BOOLEAN;
+    
+    -- Check if learner is verified
+    SELECT is_verified INTO v_verified FROM learners WHERE learner_id = p_learner_id;
+    
+    IF NOT v_verified THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Learner not verified';
+    END IF;
+    
+    -- Generate and deliver digital ID
+    CALL sp_GenerateAndDeliverDigitalID(p_learner_id);
+    
+    -- Update registration status
+    UPDATE learners 
+    SET registration_complete = TRUE,
+        registration_completed_at = NOW()
+    WHERE learner_id = p_learner_id;
+    
+    -- Return success
+    SELECT 'Digital ID generated and delivered successfully' AS message;
+END //
+
+DELIMITER ;
+
+
+
+DELIMITER //
+
 CREATE PROCEDURE sp_RecordLearnerProgress(
     IN p_learner_id VARCHAR(20),
     IN p_academic_year VARCHAR(10),
