@@ -328,6 +328,16 @@ CREATE TABLE learners (
   INDEX idx_learner_status (status),
   INDEX idx_learner_institution (institution_id)
 );
+
+CREATE TABLE digital_id_delivery_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    learner_id VARCHAR(20) NOT NULL,
+    delivery_method ENUM('email', 'sms') NOT NULL,
+    delivery_status ENUM('pending', 'sent', 'failed') NOT NULL DEFAULT 'pending',
+    delivery_timestamp TIMESTAMP NULL,
+    error_message TEXT,
+    FOREIGN KEY (learner_id) REFERENCES learners(learner_id)
+);
  
 CREATE TABLE parent_guardians (
   id INT AUTO_INCREMENT PRIMARY KEY,
