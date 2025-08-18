@@ -1065,6 +1065,106 @@ DELIMITER ;
 
 DELIMITER //
 
+CREATE PROCEDURE sp_GenerateAndDeliverDigitalID(
+    IN p_learner_id VARCHAR(20))
+BEGIN
+    DECLARE v_first_name VARCHAR(50);
+    DECLARE v_last_name VARCHAR(50);
+    DECLARE v_upi_number VARCHAR(20);
+    DECLARE v_institution_name VARCHAR(100);
+    DECLARE v_institution_id VARCHAR(20);
+    DECLARE v_current_grade VARCHAR(20);
+    DECLARE v_email VARCHAR(100);
+    DECLARE v_phone VARCHAR(20);
+    DECLARE v_digital_id TEXT;
+    DECLARE v_qr_code_url VARCHAR(255);
+    DECLARE v_email_status BOOLEAN DEFAULT FALSE;
+    DECLARE v_sms_status BOOLEAN DEFAULT FALSE;
+    
+    -- Get learner details
+    SELECT 
+        l.first_name, l.last_name, l.upi_number, 
+        i.name, l.institution_id, l.current_grade,
+        l.parent_guardian_email, l.parent_guardian_phone
+    INTO 
+        v_first_name, v_last_name, v_upi_number,
+        v_institution_name, v_institution_id, v_current_grade,
+        v_email, v_phone
+    FROM learners l
+    JOIN institutions i ON l.institution_id = i.institution_id
+    WHERE l.learner_id = p_learner_id;
+    
+    -- Generate digital ID content (JSON format)
+    SET v_digital_id = JSON_OBJECT(
+        'learner_id', p_learner_id,
+        'upi_number', v_upi_number,
+        'full_name', CONCAT(v_first_name, ' ', v_last_name),
+        'institution', JSON_OBJECT(
+            'id', v_institution_id,
+            'name', v_institution_name
+        ),
+        'current_grade', v_current_grade,
+        'issue_date', DATE_FORMAT(NOW(), '%Y-%m-%d'),
+        'expiry_date', DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 1 YEAR), '%Y-%m-%d')
+    );
+    
+    -- Generate QR code URL (would be implemented in your application)
+    SET v_qr_code_url = CONCAT('https://api.yourschoolsystem.com/qr?id=', p_learner_id);
+    
+    -- Hash the digital ID for storage
+    UPDATE learners
+    SET digital_id_hash = SHA2(v_digital_id, 256),
+        digital_id_generated_at = NOW()
+    WHERE learner_id = p_learner_id;
+    
+    -- Send via email if available
+    IF v_email IS NOT NULL THEN
+        -- In production, this would call your email service
+        -- For demonstration, we'll simulate it
+        INSERT INTO digital_id_delivery_logs (
+            learner_id, delivery_method, delivery_status, delivery_timestamp
+        ) VALUES (
+            p_learner_id, 'email', 'sent', NOW()
+        );
+        
+        UPDATE learners SET digital_id_sent_via_email = TRUE WHERE learner_id = p_learner_id;
+        SET v_email_status = TRUE;
+        
+        -- Here you would actually call your email service API
+        -- Example: CALL SendDigitalIDEmail(v_email, v_digital_id, v_qr_code_url);
+    END IF;
+    
+    -- Send via SMS if phone available
+    IF v_phone IS NOT NULL THEN
+        -- In production, this would call your SMS gateway
+        -- For demonstration, we'll simulate it
+        INSERT INTO digital_id_delivery_logs (
+            learner_id, delivery_method, delivery_status, delivery_timestamp
+        ) VALUES (
+            p_learner_id, 'sms', 'sent', NOW()
+        );
+        
+        UPDATE learners SET digital_id_sent_via_sms = TRUE WHERE learner_id = p_learner_id;
+        SET v_sms_status = TRUE;
+        
+        -- Here you would actually call your SMS service API
+        -- Example: CALL SendDigitalIDSMS(v_phone, v_digital_id, v_qr_code_url);
+    END IF;
+    
+    -- Return status
+    SELECT 
+        p_learner_id AS learner_id,
+        v_email_status AS email_sent,
+        v_sms_status AS sms_sent,
+        v_digital_id AS digital_id_content,
+        v_qr_code_url AS qr_code_url;
+END //
+
+DELIMITER ;
+
+
+DELIMITER //
+
 CREATE PROCEDURE sp_RecordLearnerProgress(
     IN p_learner_id VARCHAR(20),
     IN p_academic_year VARCHAR(10),
