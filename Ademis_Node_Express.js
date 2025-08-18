@@ -2697,3 +2697,81 @@ const searchLearner = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+// services/emailService.js
+
+const sendDigitalID = async (email, digitalId, qrCodeUrl) => {
+  const mailOptions = {
+    from: 'noreply@schoolsystem.edu',
+    to: email,
+    subject: `${digitalId.full_name}'s Digital Student ID`,
+    html: `
+      <!DOCTYPE html>
+      <html>
+      <head>
+          <style>
+              .card {
+                  border: 1px solid #e2e8f0;
+                  border-radius: 8px;
+                  padding: 20px;
+                  max-width: 500px;
+                  margin: 0 auto;
+                  font-family: Arial, sans-serif;
+              }
+              .header {
+                  color: #1a365d;
+                  text-align: center;
+                  margin-bottom: 20px;
+              }
+              .qr-code {
+                  text-align: center;
+                  margin: 20px 0;
+              }
+              .details div {
+                  margin-bottom: 10px;
+              }
+              .label {
+                  font-weight: bold;
+                  color: #4a5568;
+              }
+          </style>
+      </head>
+      <body>
+          <div class="card">
+              <div class="header">
+                  <h2>Student Digital ID</h2>
+                  <p>${digitalId.institution.name}</p>
+              </div>
+              
+              <div class="qr-code">
+                  <img src="${qrCodeUrl}" alt="Student ID QR Code" width="150">
+                  <p>Scan this code to verify</p>
+              </div>
+              
+              <div class="details">
+                  <div><span class="label">Name:</span> ${digitalId.full_name}</div>
+                  <div><span class="label">UPI:</span> ${digitalId.upi_number}</div>
+                  <div><span class="label">Institution:</span> ${digitalId.institution.name}</div>
+                  <div><span class="label">Grade:</span> ${digitalId.current_grade}</div>
+                  <div><span class="label">Valid Until:</span> ${digitalId.expiry_date}</div>
+              </div>
+              
+              <p style="margin-top: 20px;">
+                  This digital ID can be used for school verification purposes.
+                  Please keep it secure and do not share with unauthorized parties.
+              </p>
+          </div>
+      </body>
+      </html>
+    `,
+    attachments: [{
+      filename: 'student-id.json',
+      content: JSON.stringify(digitalId, null, 2),
+      contentType: 'application/json'
+    }]
+  };
+
+  // Send email using your email service (Nodemailer, SendGrid, etc.)
+  return transporter.sendMail(mailOptions);
+};
