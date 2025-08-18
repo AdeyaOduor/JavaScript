@@ -318,6 +318,10 @@ CREATE TABLE learners (
   created_by VARCHAR(20),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  digital_id_hash VARCHAR(255);
+  digital_id_generated_at TIMESTAMP NULL;
+  digital_id_sent_via_email BOOLEAN DEFAULT FALSE;
+  digital_id_sent_via_sms BOOLEAN DEFAULT FALSE;
   FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
   FOREIGN KEY (created_by) REFERENCES users_roles(user_id),
   INDEX idx_learner_contact (parent_guardian_phone, parent_guardian_email),
