@@ -427,3 +427,47 @@ Payment of KES {amount} received for {learnerName} ({grade}) for {term} {academi
 Receipt: {receiptNumber}
 New Balance: KES {balance}
 Thank you.
+
+
+    // Email Notification Template
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .details { margin: 20px 0; }
+        .receipt { background: #f9f9f9; padding: 15px; border-radius: 5px; }
+        .footer { margin-top: 20px; font-size: 0.9em; color: #7f8c8d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Payment Receipt</h2>
+            <p>{institutionName}</p>
+        </div>
+        
+        <div class="details">
+            <p><strong>Learner:</strong> {learnerName}</p>
+            <p><strong>Grade:</strong> {grade}</p>
+            <p><strong>Term:</strong> {term} {academicYear}</p>
+        </div>
+        
+        <div class="receipt">
+            <h3>Payment Details</h3>
+            <p><strong>Amount:</strong> KES {amount}</p>
+            <p><strong>Date:</strong> {paymentDate}</p>
+            <p><strong>Receipt Number:</strong> {receiptNumber}</p>
+            <p><strong>Payment Method:</strong> M-Pesa</p>
+            <p><strong>Current Balance:</strong> KES {balance}</p>
+        </div>
+        
+        <div class="footer">
+            <p>This is an automated receipt. Please keep it for your records.</p>
+            <p>Contact the school office for any queries.</p>
+        </div>
+    </div>
+</body>
+</html>
