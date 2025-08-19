@@ -292,3 +292,24 @@ class MpesaService {
 }
 
 module.exports = new MpesaService();
+
+
+// routes/feeRoutes.js
+const express = require('express');
+const router = express.Router();
+const feeController = require('../controllers/feeController');
+const { validatePayment } = require('../validators/feeValidator');
+
+// Initiate M-Pesa payment
+router.post('/payments/mpesa', validatePayment, feeController.initiateMpesaPayment);
+
+// M-Pesa callback endpoint
+router.post('/payments/mpesa/callback', feeController.handleMpesaCallback);
+
+// Get fee balance
+router.get('/learners/:learnerId/balance', feeController.getFeeBalance);
+
+// Get payment history
+router.get('/learners/:learnerId/payments', feeController.getPaymentHistory);
+
+module.exports = router;
