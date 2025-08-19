@@ -419,3 +419,11 @@ async function getCurrentAcademicYear() {
   // Implement your logic to determine current academic year
   return '2023-2024';
 }
+
+
+// SMS Notification Template
+Dear Parent/Guardian,
+Payment of KES {amount} received for {learnerName} ({grade}) for {term} {academicYear}.
+Receipt: {receiptNumber}
+New Balance: KES {balance}
+Thank you.
