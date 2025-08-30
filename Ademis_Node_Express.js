@@ -69,6 +69,8 @@ npx create-react-app frontend // deprecated
 npx create-rsbuild --template react
 npm create vite@latest frontend -- --template react
 npm install --save-dev parcel
+
+https://reactrouter.com/start/data/custom
 cd frontend
 
 npm install -D tailwindcss postcss autoprefixer
