@@ -65,7 +65,7 @@ src/
 cd ..
 npx create-react-app frontend // deprecated
 
-//use any of the following instead
+//use any of the following instead from https://react.dev/learn/build-a-react-app-from-scratch
 npx create-rsbuild --template react
 npm create vite@latest frontend -- --template react
 npm install --save-dev parcel
