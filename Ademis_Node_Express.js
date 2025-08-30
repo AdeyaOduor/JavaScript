@@ -71,6 +71,7 @@ npm create vite@latest frontend -- --template react
 npm install --save-dev parcel
 
 https://reactrouter.com/start/data/custom
+https://tanstack.com/query/v3/
 cd frontend
 
 npm install -D tailwindcss postcss autoprefixer
