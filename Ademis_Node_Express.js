@@ -63,7 +63,11 @@ src/
 ================================== FRONT END SETUP ================================================
 
 cd ..
-npx create-react-app frontend
+npx create-react-app frontend // deprecated
+
+//use any of the following instead
+npx create-rsbuild --frontend react
+
 cd frontend
 
 npm install -D tailwindcss postcss autoprefixer
