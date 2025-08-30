@@ -67,7 +67,7 @@ npx create-react-app frontend // deprecated
 
 //use any of the following instead
 npx create-rsbuild --frontend react
-
+npm install --save-dev parcel
 cd frontend
 
 npm install -D tailwindcss postcss autoprefixer
