@@ -49,17 +49,6 @@ json
   "dev": "nodemon server.js",
   "test": "echo \"Error: no test specified\" && exit 1"
 }
-
-// Backend/Node structure
-src/
-├── config/               # Configuration files
-├── controllers/         # Route controllers
-├── middleware/          # Custom middleware
-├── models/              # Database models
-├── routes/              # API routes
-├── services/            # Business logic
-├── utils/               # Utility classes/functions
-└── validators/          # Request validators
 ================================== FRONT END SETUP ================================================
 
 cd ..
