@@ -104,26 +104,104 @@ pm2 start backend/server.js
 
 // Frontend structure
 src/
-├── assets/              # Static assets
-├── components/         # Reusable components
+├── assets/
+│   ├── images/
+│   │   ├── logo.png
+│   │   └── placeholder-avatar.png
+│   └── styles/
+│       └── tailwind.css
+├── components/
 │   ├── auth/
+│   │   ├── LoginForm.jsx
+│   │   ├── RegisterForm.jsx
+│   │   └── OTPVerification.jsx
 │   ├── dashboard/
+│   │   ├── DashboardHeader.jsx
+│   │   ├── StatsCard.jsx
+│   │   ├── RecentActivity.jsx
+│   │   └── QuickActions.jsx
 │   ├── data/
+│   │   ├── DataTable.jsx
+│   │   ├── SearchBar.jsx
+│   │   ├── Pagination.jsx
+│   │   └── Filters.jsx
 │   ├── forms/
+│   │   ├── LearnerRegistrationForm.jsx
+│   │   ├── ParentValidationForm.jsx
+│   │   ├── ProgressEntryForm.jsx
+│   │   ├── FeePaymentForm.jsx
+│   │   └── InstitutionApplicationForm.jsx
 │   ├── layout/
+│   │   ├── Header.jsx
+│   │   ├── Sidebar.jsx
+│   │   ├── Footer.jsx
+│   │   ├── Layout.jsx
+│   │   └── Breadcrumb.jsx
 │   └── ui/
-├── contexts/           # React contexts
-├── hooks/              # Custom hooks
-├── pages/              # Page components
+│       ├── Button.jsx
+│       ├── Modal.jsx
+│       ├── Card.jsx
+│       ├── Alert.jsx
+│       ├── Loader.jsx
+│       └── Badge.jsx
+├── contexts/
+│   ├── AuthContext.jsx
+│   ├── ThemeContext.jsx
+│   └── NotificationContext.jsx
+├── hooks/
+│   ├── useAuth.js
+│   ├── useApi.js
+│   ├── useForm.js
+│   └── useLocalStorage.js
+├── pages/
 │   ├── admin/
+│   │   ├── Dashboard.jsx
+│   │   ├── UsersManagement.jsx
+│   │   ├── SystemSettings.jsx
+│   │   └── Reports.jsx
 │   ├── county/
+│   │   ├── Dashboard.jsx
+│   │   ├── Institutions.jsx
+│   │   ├── Applications.jsx
+│   │   └── Analytics.jsx
 │   ├── institution/
+│   │   ├── Dashboard.jsx
+│   │   ├── Learners.jsx
+│   │   ├── Staff.jsx
+│   │   ├── Finance.jsx
+│   │   ├── Progress.jsx
+│   │   └── Settings.jsx
 │   ├── public/
+│   │   ├── Home.jsx
+│   │   ├── About.jsx
+│   │   ├── Contact.jsx
+│   │   └── Search.jsx
 │   └── shared/
-├── services/           # API service calls
-├── styles/             # Custom styles
-├── utils/              # Utility functions
-└── App.js              # Main app component
+│       ├── Profile.jsx
+│       ├── Notifications.jsx
+│       └── Help.jsx
+├── services/
+│   ├── api.js
+│   ├── authService.js
+│   ├── learnerService.js
+│   ├── parentService.js
+│   ├── institutionService.js
+│   ├── progressService.js
+│   ├── financeService.js
+│   └── notificationService.js
+├── styles/
+│   ├── index.css
+│   ├── components.css
+│   └── utilities.css
+├── utils/
+│   ├── constants.js
+│   ├── helpers.js
+│   ├── validators.js
+│   └── formatters.js
+├── App.js
+├── App.css
+├── index.js
+└── index.css
 
 */
 // ============================================== BACK END ============================================
