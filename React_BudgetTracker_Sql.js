@@ -192,7 +192,6 @@ CREATE TABLE IF NOT EXISTS audit_logs (
 
 DELIMITER //
 
--- Fixed: Add missing closing parenthesis in AddExpense procedure
 CREATE PROCEDURE AddExpense(
     IN p_user_id INT,
     IN p_title VARCHAR(100),
@@ -207,7 +206,6 @@ BEGIN
     SELECT * FROM Expenses WHERE id = LAST_INSERT_ID();
 END //
 
--- Fixed: Add missing closing parenthesis in UpdateExpense procedure
 CREATE PROCEDURE UpdateExpense(
     IN p_expense_id INT,
     IN p_user_id INT,
@@ -222,7 +220,6 @@ BEGIN
     SELECT * FROM Expenses WHERE id = p_expense_id;
 END //
 
--- Enhanced: User registration with jurisdiction and role assignment
 CREATE PROCEDURE RegisterUser(
     IN p_username VARCHAR(50),
     IN p_password_hash VARCHAR(255),
