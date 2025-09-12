@@ -322,7 +322,6 @@ BEGIN
     END IF;
 END //
 
--- Enhanced: Get budget for a jurisdiction
 CREATE PROCEDURE GetJurisdictionBudget(
     IN p_jurisdiction_id INT,
     IN p_fiscal_year INT
@@ -350,7 +349,6 @@ BEGIN
     AND b.fiscal_year = p_fiscal_year;
 END //
 
--- Enhanced: Add budget allocation
 CREATE PROCEDURE AddBudgetAllocation(
     IN p_user_id INT,
     IN p_jurisdiction_id INT,
@@ -402,7 +400,6 @@ BEGIN
     END IF;
 END //
 
--- Enhanced: Record expense against budget
 CREATE PROCEDURE RecordExpense(
     IN p_user_id INT,
     IN p_budget_id INT,
