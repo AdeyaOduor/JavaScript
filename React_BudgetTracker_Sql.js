@@ -12,8 +12,10 @@ cd budget-tracker
 touch index.js 
 npm init -y 
 npm install axios react-bootstrap bootstrap react-chartjs-2 chart.js nodemon
+
 include "type":"module", inside package.json file to adopt ES6  
 place "start": "nodemon index.js", inside package.json file under the scripts before "tests".
+
 snap --version
 sudo snap install postman
 
