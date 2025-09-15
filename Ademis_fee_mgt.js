@@ -429,9 +429,8 @@ New Balance: KES {balance}
 Thank you.
 
 
-    // Email Notification Template
-<!DOCTYPE html>
-<html>
+// email.html
+<!DOCTYPE html><html>
 <head>
     <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; }
