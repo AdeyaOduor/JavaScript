@@ -24,8 +24,14 @@ sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE kemis_db TO devuser;"
 mkdir education-management-system && cd education-management-system
 mkdir backend && cd backend
 
-// initialize project
+// initialize project and Add scripts to package.json:
 npm init -y
+
+"scripts": {
+  "start": "node server.js",
+  "dev": "nodemon server.js",
+  "test": "echo \"Error: no test specified\" && exit 1"
+}
 
 // Install required dependencies:
 npm install express pg sequelize cors dotenv bcryptjs jsonwebtoken
@@ -40,15 +46,6 @@ DB_PASSWORD=@K3m1s_2025
 DB_HOST=localhost
 PORT=5000
 JWT_SECRET=your_jwt_secret_here" > .env
-
-// Add scripts to package.json:
-json
-
-"scripts": {
-  "start": "node server.js",
-  "dev": "nodemon server.js",
-  "test": "echo \"Error: no test specified\" && exit 1"
-}
 ================================== FRONT END SETUP ================================================
 
 cd ..
