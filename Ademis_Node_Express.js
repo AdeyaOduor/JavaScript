@@ -4,7 +4,7 @@ Linux CLI Setup for Full-Stack Development (React, Node.js, Express, PostgreSQL,
 //update packages
 sudo apt update && sudo apt upgrade -y
 
-//install essential buid tools
+//install essential build tools
 sudo apt install -y build-essential curl git
 
 // install nodesource repository latest version
@@ -34,7 +34,7 @@ npm install --save-dev nodemon morgan
 touch server.js
 
 // Create .env file:
-echo "DB_NAME=kemis_db
+echo "DB_NAME=ademis_db
 DB_USER=devuser
 DB_PASSWORD=@K3m1s_2025
 DB_HOST=localhost
