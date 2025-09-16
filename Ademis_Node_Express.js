@@ -26,11 +26,40 @@ mkdir backend && cd backend
 
 // initialize project and Add scripts to package.json:
 npm init -y
-
-"scripts": {
-  "start": "node server.js",
-  "dev": "nodemon server.js",
-  "test": "echo \"Error: no test specified\" && exit 1"
+{
+  "name": "education-management-backend",
+  "version": "1.0.0",
+  "description": "Backend for education Management System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "test": "jest",
+    "migrate": "sequelize-cli db:migrate",
+    "seed": "sequelize-cli db:seed:all"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "morgan": "^1.10.0",
+    "dotenv": "^16.3.1",
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.32.1",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "axios": "^1.5.0",
+    "express-validator": "^7.0.1",
+    "nodemailer": "^6.9.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "sequelize-cli": "^6.6.1",
+    "jest": "^29.6.4"
+  },
+  "keywords": [],
+  "author": "AdeyaOduor",
+  "license": "ISC"
 }
 
 // Install required dependencies:
