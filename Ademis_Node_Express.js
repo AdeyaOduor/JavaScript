@@ -83,7 +83,10 @@ npx create-react-app frontend // deprecated
 //use any of the following instead from https://react.dev/learn/build-a-react-app-from-scratch
 npm install -g create-vite 
 npm create vite@latest Ademis-app -- --template react 
-npm install --save-dev parcel
+follow prompts
+cd Ademis-app 
+npm install 
+npm run dev 
 
 https://reactrouter.com/start/data/custom
 https://tanstack.com/query/v3/
