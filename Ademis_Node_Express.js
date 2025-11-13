@@ -81,8 +81,8 @@ cd ..
 npx create-react-app frontend // deprecated
 
 //use any of the following instead from https://react.dev/learn/build-a-react-app-from-scratch
-npx create-rsbuild --template react
-npm create vite@latest frontend -- --template react
+npm install -g create-vite 
+npm create vite@latest Ademis-app -- --template react 
 npm install --save-dev parcel
 
 https://reactrouter.com/start/data/custom
