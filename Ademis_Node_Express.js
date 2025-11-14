@@ -23,6 +23,10 @@ sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE Ademis_db TO devuser;
 //Setup Backend
 mkdir Ademis_backend && cd Ademis_backend
 
+// Install required dependencies:
+npm install express pg sequelize cors dotenv bcryptjs jsonwebtoken
+npm install --save-dev nodemon morgan
+
 // initialize project and Add scripts to package.json:
 npm init -y
 {
@@ -61,10 +65,6 @@ npm init -y
   "license": "ISC"
 }
 
-// Install required dependencies:
-npm install express pg sequelize cors dotenv bcryptjs jsonwebtoken
-npm install --save-dev nodemon morgan
-
 touch server.js
 
 // Create .env file:
@@ -77,9 +77,6 @@ JWT_SECRET=your_jwt_secret_here" > .env
 ================================== FRONT END SETUP ================================================
 
 cd ..
-npx create-react-app frontend // deprecated
-
-//use any of the following instead from https://react.dev/learn/build-a-react-app-from-scratch
 npm install -g create-vite 
 npm create vite@latest Ademis-app -- --template react 
 follow prompts
