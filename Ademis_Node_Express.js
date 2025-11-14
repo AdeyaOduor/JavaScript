@@ -17,12 +17,11 @@ npm --version
 
 // Create postgre database
 sudo -u postgres psql -c "CREATE USER devuser WITH PASSWORD '@Ad3m1s_xyz_number';"
-sudo -u postgres psql -c "CREATE DATABASE education-management-system_db WITH OWNER devuser;"
-sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE kemis_db TO devuser;"
+sudo -u postgres psql -c "CREATE DATABASE Ademis_db WITH OWNER devuser;"
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE Ademis_db TO devuser;"
 
 //Setup Backend
-mkdir education-management-system && cd education-management-system
-mkdir backend && cd backend
+mkdir Ademis_backend && cd Ademis_backend
 
 // initialize project and Add scripts to package.json:
 npm init -y
