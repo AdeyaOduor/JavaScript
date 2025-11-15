@@ -1,8 +1,8 @@
 /*
 1. Backend Setup (Node.js + Express + MySQL) in terminal:
 
-mkdir animal-quiz-app
-cd animal-quiz-app
+mkdir quiz-app
+cd quiz-app
 mkdir backend frontend
 cd backend
 npm init -y
@@ -13,7 +13,8 @@ npm install express mysql2 bcryptjs jsonwebtoken cors body-parser dotenv
 3.Frontend Setup (React + Bootstrap 5)
 
 cd ../frontend
-npx create-react-app .
+npm install -g create-vite 
+npm create vite@latest quiz-app -- --template react 
 npm install axios react-bootstrap bootstrap react-router-dom
 
 */
