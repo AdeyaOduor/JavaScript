@@ -15,7 +15,10 @@ npm install express mysql2 bcryptjs jsonwebtoken cors body-parser dotenv
 cd ../frontend
 npm install -g create-vite 
 npm create vite@latest quiz-app -- --template react 
+cd quiz-app 
 npm install axios react-bootstrap bootstrap react-router-dom
+
+npm run dev
 
 */
 
