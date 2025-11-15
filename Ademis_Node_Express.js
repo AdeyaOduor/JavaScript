@@ -20,50 +20,28 @@ sudo -u postgres psql -c "CREATE USER devuser WITH PASSWORD '@Ad3m1s_xyz_number'
 sudo -u postgres psql -c "CREATE DATABASE Ademis_db WITH OWNER devuser;"
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE Ademis_db TO devuser;"
 
-//Setup Backend
-mkdir Ademis_backend && cd Ademis_backend
+1. Backend Setup (Node.js + Express + MySQL) in terminal:
 
-// Install required dependencies:
+mkdir Ademis-app
+cd Ademis-app
+mkdir backend frontend
+cd backend
 npm install express pg sequelize cors dotenv bcryptjs jsonwebtoken
 npm install --save-dev nodemon morgan
-
-// initialize project and Add scripts to package.json:
 npm init -y
-{
-  "name": "education-management-backend",
-  "version": "1.0.0",
-  "description": "Backend for education Management System",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
-    "test": "jest",
-    "migrate": "sequelize-cli db:migrate",
-    "seed": "sequelize-cli db:seed:all"
-  },
-  "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "morgan": "^1.10.0",
-    "dotenv": "^16.3.1",
-    "pg": "^8.11.3",
-    "pg-hstore": "^2.3.4",
-    "sequelize": "^6.32.1",
-    "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2",
-    "axios": "^1.5.0",
-    "express-validator": "^7.0.1",
-    "nodemailer": "^6.9.4"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.1",
-    "sequelize-cli": "^6.6.1",
-    "jest": "^29.6.4"
-  },
-  "keywords": [],
-  "author": "AdeyaOduor",
-  "license": "ISC"
-}
+
+2. Database Setup (SQL) in client or sql_stored_procedure inside the directory but run with the apprppriate command in linux
+
+3.Frontend Setup (React + Bootstrap 5)
+
+cd ../frontend
+npm install -g create-vite 
+npm create vite@latest Ademis-app -- --template react 
+cd Ademis-app 
+npm install axios react-bootstrap bootstrap react-router-dom
+npm init -y
+
+npm run dev
 
 touch server.js
 
