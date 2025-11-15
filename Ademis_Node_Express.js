@@ -28,6 +28,7 @@ mkdir backend frontend
 cd backend
 npm install express pg sequelize cors dotenv bcryptjs jsonwebtoken
 npm install --save-dev nodemon morgan
+
 npm init -y
 
 2. Database Setup (SQL) in client or sql_stored_procedure inside the directory but run with the apprppriate command in linux
@@ -37,6 +38,7 @@ npm init -y
 cd ../frontend
 npm install -g create-vite 
 npm create vite@latest Ademis-app -- --template react 
+follow prompts
 cd Ademis-app 
 npm install -D tailwindcss postcss autoprefixer
 
@@ -47,37 +49,7 @@ npm init -y
 
 // npx tailwindcss init -p
 
-npm run dev
-
 touch server.js .env file
-================================== FRONT END SETUP ================================================
-
-cd ..
-npm install -g create-vite 
-npm create vite@latest Ademis-app -- --template react 
-follow prompts
-cd Ademis-app 
-npm install 
-npm run dev 
-
-https://reactrouter.com/start/data/custom
-https://tanstack.com/query/v3/
-cd frontend
-
-// education-management-system/package.json
-echo '{
-  "name": "education-management-system",
-  "version": "1.0.0",
-  "scripts": {
-    "backend": "cd backend && npm run dev",
-    "frontend": "cd frontend && npm start",
-    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
-    "setup": "cd backend && npm install && cd ../frontend && npm install"
-  },
-  "devDependencies": {
-    "concurrently": "^7.0.0"
-  }
-}' > package.json
 
 // Install Concurrently for running both servers, and Run both frontend and backend simultaneously:
 bash
@@ -95,7 +67,7 @@ bash
 
 sudo npm install -g pm2
 pm2 start backend/server.js
-
+================================== FRONT END SETUP ================================================
 // Frontend structure
 src/
 ├── assets/
