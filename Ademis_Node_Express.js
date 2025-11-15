@@ -50,14 +50,6 @@ npm init -y
 npm run dev
 
 touch server.js .env file
-
-// Create :
-echo "DB_NAME=ademis_db
-DB_USER=devuser
-DB_PASSWORD=@K3m1s_2025
-DB_HOST=localhost
-PORT=5000
-JWT_SECRET=your_jwt_secret_here" > .env
 ================================== FRONT END SETUP ================================================
 
 cd ..
@@ -206,6 +198,13 @@ src/
 └── index.css
 */
 // ============================================== BACK END ============================================
+// .env file
+echo "DB_NAME=ademis_db
+DB_USER=devuser
+DB_PASSWORD=@K3m1s_2025
+DB_HOST=localhost
+PORT=5000
+JWT_SECRET=your_jwt_secret_here" > .env
 
 // Sql
 CREATE TABLE counties (
