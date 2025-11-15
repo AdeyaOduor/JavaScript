@@ -38,14 +38,20 @@ cd ../frontend
 npm install -g create-vite 
 npm create vite@latest Ademis-app -- --template react 
 cd Ademis-app 
-npm install axios react-bootstrap bootstrap react-router-dom
+npm install -D tailwindcss postcss autoprefixer
+
+npm install axios react-router-dom react-hook-form react-chartjs-2 chart.js
+npm install react-hook-form @tailwindcss/forms
+npm install react-datepicker
 npm init -y
+
+// npx tailwindcss init -p
 
 npm run dev
 
-touch server.js
+touch server.js .env file
 
-// Create .env file:
+// Create :
 echo "DB_NAME=ademis_db
 DB_USER=devuser
 DB_PASSWORD=@K3m1s_2025
@@ -65,13 +71,6 @@ npm run dev
 https://reactrouter.com/start/data/custom
 https://tanstack.com/query/v3/
 cd frontend
-
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
-
-npm install axios react-router-dom react-hook-form react-chartjs-2 chart.js
-npm install react-hook-form @tailwindcss/forms
-npm install react-datepicker
 
 // education-management-system/package.json
 echo '{
