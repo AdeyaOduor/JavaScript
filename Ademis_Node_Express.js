@@ -28,7 +28,6 @@ mkdir backend frontend
 cd backend
 npm install express pg sequelize cors dotenv bcryptjs jsonwebtoken
 npm install --save-dev nodemon morgan
-
 npm init -y
 
 2. Database Setup (SQL) in client or sql_stored_procedure inside the directory but run with the apprppriate command in linux
@@ -39,9 +38,9 @@ cd ../frontend
 npm install -g create-vite 
 npm create vite@latest Ademis-app -- --template react 
 follow prompts
+
 cd Ademis-app 
 npm install -D tailwindcss postcss autoprefixer
-
 npm install axios react-router-dom react-hook-form react-chartjs-2 chart.js
 npm install react-hook-form @tailwindcss/forms
 npm install react-datepicker
