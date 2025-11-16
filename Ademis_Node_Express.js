@@ -48,7 +48,8 @@ npm init -y
 
 // npx tailwindcss init -p
 
-touch server.js .env file
+touch server.js 
+touch .env file
 
 // Install Concurrently for running both servers, and Run both frontend and backend simultaneously:
 bash
