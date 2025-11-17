@@ -161,7 +161,7 @@ module.exports = {
 @tailwind utilities;
 
 
-// User registration form
+// UserRegistrationForm.jsx
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { roles, institutionTypes, institutionCategories } from '../constants';
