@@ -938,7 +938,7 @@ const InstitutionStatusForm = ({ institution, onSubmit }) => {
 export default InstitutionStatusForm;
 
 
-// Learner Registration
+// LearnerRegistration.jsx
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import DatePicker from 'react-datepicker';
