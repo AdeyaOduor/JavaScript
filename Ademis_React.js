@@ -598,7 +598,7 @@ const PasswordResetForm = ({ onSubmit }) => {
 export default PasswordResetForm;
 
 
-// Institution Registration
+// institutionRegistration.jsx
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { uploadDocuments } from '../services/documentService';
