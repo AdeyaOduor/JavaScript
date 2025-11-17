@@ -516,7 +516,7 @@ const UserRegistrationForm = ({ onSubmit }) => {
 export default UserRegistrationForm;
 
 
-// Password reset form
+// PasswordResetForm.jsx
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
