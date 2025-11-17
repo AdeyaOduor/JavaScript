@@ -876,7 +876,7 @@ const InstitutionRegistrationForm = ({ onSubmit }) => {
 export default InstitutionRegistrationForm;
 
 
-// Institution status update form
+// institutionStatusUpdateForm.jsx
 import { useForm } from 'react-hook-form';
 
 const InstitutionStatusForm = ({ institution, onSubmit }) => {
