@@ -2580,9 +2580,6 @@ router.post(
   learnerController.registerLearner
 );
 
-module.exports = router;
-
-
 // Initiate M-Pesa payment
 router.post('/payments/mpesa', validatePayment, feeController.initiateMpesaPayment);
 
