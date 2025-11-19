@@ -2559,6 +2559,9 @@ const parentController = require('../controllers/parentController');
 const learnerController = require('../controllers/learnerController');
 const authenticate = require('../middleware/authenticate');
 const checkRole = require('../middleware/roleMiddleware');
+const feeController = require('../controllers/feeController');
+const { validatePayment } = require('../validators/feeValidator');
+
 const {
   validateParent,
   validateForeignLearner,
@@ -2579,12 +2582,6 @@ router.post(
 
 module.exports = router;
 
-
-// routes/feeRoutes.js
-const express = require('express');
-const router = express.Router();
-const feeController = require('../controllers/feeController');
-const { validatePayment } = require('../validators/feeValidator');
 
 // Initiate M-Pesa payment
 router.post('/payments/mpesa', validatePayment, feeController.initiateMpesaPayment);
