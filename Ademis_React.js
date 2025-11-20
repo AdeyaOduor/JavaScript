@@ -1258,7 +1258,7 @@ const LearnerRegistrationForm = ({ institutionId, onSubmit }) => {
 export default LearnerRegistrationForm;
 
 
-// Learner Progress
+// LearnerProgress.jsx
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { recordLearnerProgress } from '../services/progressService';
