@@ -1926,7 +1926,7 @@ const ProcurementOrderForm = ({ institutionId, onSubmit }) => {
 
 export default ProcurementOrderForm;
 
-// ProcurementStatusForm
+// ProcurementStatusForm.jsx
 import { useForm } from 'react-hook-form';
 
 const ProcurementStatusForm = ({ order, onSubmit }) => {
@@ -2008,7 +2008,7 @@ const ProcurementStatusForm = ({ order, onSubmit }) => {
 export default ProcurementStatusForm;
 
 
-// LearnerSearchForm
+// LearnerSearchForm.jsx
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
