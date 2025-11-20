@@ -1536,7 +1536,7 @@ const LearnerTransferForm = ({ learner, institutions, onSubmit }) => {
 export default LearnerTransferForm;
 
 
-// FInancial Records
+// FInancialRecords.jsx
 import { useForm } from 'react-hook-form';
 
 const FinancialRecordForm = ({ institutionId, onSubmit }) => {
