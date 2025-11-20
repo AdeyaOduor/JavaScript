@@ -1660,7 +1660,7 @@ const FinancialRecordForm = ({ institutionId, onSubmit }) => {
 
 export default FinancialRecordForm;
 
-// FInancial Report Filters
+// FinancialReportFilters.jsx
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
