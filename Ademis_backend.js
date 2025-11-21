@@ -30,7 +30,9 @@ npm install express pg sequelize cors dotenv bcryptjs jsonwebtoken
 npm install --save-dev nodemon morgan
 npm init -y
 
-2. Database Setup (SQL) in client or sql_stored_procedure inside the directory but run with the apprppriate command in linux
+2.src/components/database_setup.sql, 
+  execute stored_procedure with the following linux cmd: mysql -u root -p < database_setup.sql
+  or run in MySql client directly
 
 3.Frontend Setup (React + Bootstrap 5)
 
