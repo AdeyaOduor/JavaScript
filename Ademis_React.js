@@ -1755,7 +1755,7 @@ const FinancialReportFilterForm = ({ onSubmit }) => {
 
 export default FinancialReportFilterForm;
 
-// ProcurementOrderForm
+// ProcurementOrderForm.jsx
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -2153,7 +2153,7 @@ const LearnerSearchForm = ({ onSubmit }) => {
 
 export default LearnerSearchForm;
 
-// OTPVerificationForm
+// OTPVerificationForm.jsx
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -2454,7 +2454,7 @@ const Dashboard = () => {
 export default Dashboard;
 
   
-// src/components/GradeChart.js
+// src/components/GradeChart.jsx
 import React from 'react';
 import {
   Chart as ChartJS,
