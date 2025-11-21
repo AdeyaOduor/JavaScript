@@ -22,7 +22,8 @@ npm run dev
 
 */
 
-// src/components/database_setup.sql and execute stored_procedure with the following linux cmd: mysql -u root -p < database_setup.sql
+// src/components/database_setup.sql 
+// execute stored_procedure with the following linux cmd: mysql -u root -p < database_setup.sql
 // or run in MySql client directly
 -- Create database and tables
 CREATE DATABASE IF NOT EXISTS animal_quiz;
