@@ -41,14 +41,13 @@ npm install -g create-vite
 npm create vite@latest Ademis-app -- --template react 
 follow prompts
 
-cd Ademis-app 
+npx tailwindcss init -p
 npm install -D tailwindcss postcss autoprefixer
 npm install axios react-router-dom react-hook-form react-chartjs-2 chart.js
 npm install react-hook-form @tailwindcss/forms
 npm install react-datepicker
 npm init -y
 
-// npx tailwindcss init -p
 
 touch server.js 
 touch .env file
