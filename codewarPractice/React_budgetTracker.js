@@ -22,9 +22,9 @@ npm --version
 Step 1: Set Up Your React Application;
 npx create-react-app budget-tracker
 cd budget-tracker
-touch index.js 
-npm init -y 
 npm install axios react-bootstrap bootstrap react-chartjs-2 chart.js nodemon
+npm init -y 
+touch index.js 
 
 include "type":"module", inside package.json file to adopt ES6  
 place "start": "nodemon index.js", inside package.json file under the scripts before "tests".
