@@ -5,19 +5,12 @@ Linux CLI Setup for Full-Stack Development (React, Node.js, Express, MySQL, Boot
 sudo npm install -g n
 sudo n lts
 node --version 
+npm --version
      OR
+sudo apt install -y build-essential curl git
 sudo apt update && sudo apt upgrade -y
 
 //install essential build tools
-sudo apt install -y build-essential curl git
-
-// install nodesource repository latest version
-curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-sudo apt install -y nodejs
-
-// verify installation
-node --version
-npm --version
 
 Step 1: Set Up Your React Application;
 npx create-react-app budget-tracker
