@@ -13,14 +13,20 @@ sudo apt update && sudo apt upgrade -y
 //install essential build tools
 
 Step 1: Set Up Your React Application;
-npx create-react-app budget-tracker
-cd budget-tracker
-npm install axios react-bootstrap bootstrap react-chartjs-2 chart.js nodemon
+mkdir budgetTracker
+cd budgetTracker
+mkdir backend frontend
+cd backend
+npm install express pg sequelize cors dotenv bcryptjs jsonwebtoken 
+npm install --save-dev nodemon morgan
 npm init -y 
-touch index.js 
-
 include "type":"module", inside package.json file to adopt ES6  
 place "start": "nodemon index.js", inside package.json file under the scripts before "tests".
+
+touch index.js 
+
+cd frontend
+npm install axios react-bootstrap bootstrap react-chartjs-2 chart.js nodemon
 
 snap --version
 sudo snap install postman
