@@ -7,6 +7,8 @@ sudo n lts
 node --version 
 npm --version
      OR
+snap --version
+sudo snap install postman
 sudo apt install -y build-essential curl git
 sudo apt update && sudo apt upgrade -y
 
@@ -17,13 +19,10 @@ mkdir budgetTracker
 cd budgetTracker
 mkdir backend frontend
 cd backend
-npm install express pg sequelize cors dotenv bcryptjs jsonwebtoken 
+
+npm install express pg body-parser sequelize cors dotenv  bcryptjs helmet jsonwebtoken  mysql2 cors express-rate-limit
 npm install --save-dev nodemon morgan
 npm init -y 
-include "type":"module", inside package.json file to adopt ES6  
-place "start": "nodemon index.js", inside package.json file under the scripts before "tests".
-snap --version
-sudo snap install postman
 
 touch server.js 
 touch .env file
@@ -36,12 +35,13 @@ follow prompts
 npm install axios react-router-dom react-bootstrap bootstrap  react-hook-form react-chartjs-2 chart.js nodemon
 npm install react-datepicker
 npm init -y
+include "type":"module", inside package.json file to adopt ES6  
+place "start": "nodemon index.js", inside package.json file under the scripts before "tests".
+
 touch index.js 
 
 Step 2: Create the MySQL Database Connection, Server with Express, and models;
 In the root of your project, create a folder named backend. 
-cd backend
-npm install express body-parser bcryptjs helmet jsonwebtoken sequelize mysql2 cors express-rate-limit
 
 Inside backend folder, create files: db.js, User.js, server.js, and Expense.js;
 
