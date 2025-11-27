@@ -22,14 +22,21 @@ npm install --save-dev nodemon morgan
 npm init -y 
 include "type":"module", inside package.json file to adopt ES6  
 place "start": "nodemon index.js", inside package.json file under the scripts before "tests".
-
-touch index.js 
-
-cd frontend
-npm install axios react-bootstrap bootstrap react-chartjs-2 chart.js nodemon
-
 snap --version
 sudo snap install postman
+
+touch server.js 
+touch .env file
+
+cd ../frontend
+npm install -g create-vite 
+npm create vite@latest Ademis-app -- --template react 
+follow prompts
+
+npm install axios react-router-dom react-bootstrap bootstrap  react-hook-form react-chartjs-2 chart.js nodemon
+npm install react-datepicker
+npm init -y
+touch index.js 
 
 Step 2: Create the MySQL Database Connection, Server with Express, and models;
 In the root of your project, create a folder named backend. 
