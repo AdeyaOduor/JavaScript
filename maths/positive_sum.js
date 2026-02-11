@@ -79,3 +79,16 @@ const totalPositiveCashFlow = positiveSum(
 );
 
 console.log(`The client's total positive cash flow for the next 10 years is: $${totalPositiveCashFlow}`); // $385000
+
+
+// --------------------------------------------------------------------------------------------------------------------------
+
+function sum_digits(n) {
+  /* Given n, take the sum of the digits of n. If that value has more than one digit, continue reducing in 
+     this way until a single-digit number is produced. The input will be a non-negative integer.*/
+ 
+if (n < 10) return n;  return digital_root(
+    n.toString().split('').reduce((acc, d) => {
+      return acc + +d;
+    },0));
+}
