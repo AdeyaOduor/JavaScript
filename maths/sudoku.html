@@ -115,6 +115,26 @@
             background-color: #f0fff0;
         }
         
+        .cell.random-generated {
+            color: #ff8c00;
+            background-color: #fff4e0;
+        }
+        
+        .cell.conflict {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 2px solid #c62828;
+            position: relative;
+        }
+        
+        .cell.conflict::after {
+            content: "⚠️";
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            font-size: 12px;
+        }
+        
         .cell:nth-child(3n):not(:nth-child(9n)) {
             border-right: 2px solid #777;
         }
@@ -168,9 +188,49 @@
             color: white;
         }
         
-        .example-btn {
+        .random-btn {
             background: linear-gradient(to right, #8e2de2, #4a00e0);
             color: white;
+        }
+        
+        .difficulty-selector {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .difficulty-selector label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            color: #ddd;
+        }
+        
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            background: white;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #00b09b, #96c93d);
+            transition: width 0.3s ease;
+            border-radius: 10px;
         }
         
         .status-panel {
@@ -202,6 +262,10 @@
             color: #ff6b6b;
         }
         
+        .warning {
+            color: #ffcc00;
+        }
+        
         .instructions {
             background: rgba(0, 0, 0, 0.5);
             border-radius: 10px;
@@ -229,6 +293,14 @@
             background-color: rgba(255, 204, 0, 0.2);
             padding: 2px 5px;
             border-radius: 4px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #aaa;
         }
         
         @media (max-width: 768px) {
@@ -266,7 +338,26 @@
                 
                 <div class="button-group">
                     <button class="clear-btn" id="clear-btn">Clear Board</button>
-                    <button class="example-btn" id="example-btn">Load Example</button>
+                    <button class="random-btn" id="random-btn">Generate Valid Puzzle</button>
+                </div>
+                
+                <div class="difficulty-selector">
+                    <label for="difficulty">Difficulty Level:</label>
+                    <select id="difficulty">
+                        <option value="easy">Easy (36-40 numbers)</option>
+                        <option value="medium" selected>Medium (30-35 numbers)</option>
+                        <option value="hard">Hard (24-29 numbers)</option>
+                        <option value="expert">Expert (18-23 numbers)</option>
+                    </select>
+                </div>
+                
+                <div class="progress-bar" id="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+                
+                <div class="stats">
+                    <span>Filled: <span id="filled-count">0</span>/81</span>
+                    <span>Valid: <span id="valid-status" class="valid">✓</span></span>
                 </div>
             </div>
             
@@ -281,20 +372,21 @@
                         <h2>Solution Status</h2>
                     </div>
                     <div class="status-content" id="status-content">
-                        Enter a Sudoku puzzle to get started. Click "Solve Puzzle" to find the solution or "Validate Solution" to check your work.
+                        Click "Generate Valid Puzzle" to create a new Sudoku puzzle with no conflicts.
                     </div>
                 </div>
                 
                 <div class="instructions">
                     <h2>How to Use</h2>
                     <ul>
-                        <li><span class="highlight">Click on any cell</span> to enter a number (1-9)</li>
-                        <li>Press <span class="highlight">"Solve Puzzle"</span> to automatically solve the Sudoku</li>
-                        <li>Press <span class="highlight">"Validate Solution"</span> to check if your solution is correct</li>
-                        <li>Use <span class="highlight">"Clear Board"</span> to reset the puzzle</li>
-                        <li>Use <span class="highlight">"Load Example"</span> to try a sample puzzle</li>
+                        <li><span class="highlight">"Generate Valid Puzzle"</span> - Creates a random puzzle with no conflicts</li>
+                        <li><span class="highlight">Choose difficulty</span> - Controls how many numbers appear</li>
+                        <li><span class="highlight">"Solve Puzzle"</span> - Automatically solves the Sudoku, but first attempt before clicking This</li>
+                        <li><span class="highlight">"Validate Solution"</span> - Checks if your solution is correct</li>
+                        <li><span class="highlight">"Clear Board"</span> - Resets the puzzle</li>
+                        <li><span class="highlight">Click cells</span> - Enter numbers manually</li>
                     </ul>
-                    <p>Note: Empty cells should be left blank. The solver will fill them with the correct solution.</p>
+                    <p>The generator ensures all pre-filled numbers follow Sudoku rules (no conflicts in rows, columns, or 3x3 boxes).</p>
                 </div>
             </div>
         </div>
@@ -322,7 +414,9 @@
                         e.target.value = '';
                     }
                     updateCellClass(e.target);
-                    statusContent.textContent = "Puzzle updated. Click 'Solve Puzzle' or 'Validate Solution' to proceed.";
+                    checkForConflicts();
+                    updateStats();
+                    statusContent.textContent = "Puzzle updated. Click 'Validate Solution' to check your work.";
                 });
                 
                 board.appendChild(cell);
@@ -332,15 +426,114 @@
             document.getElementById('solve-btn').addEventListener('click', solvePuzzle);
             document.getElementById('validate-btn').addEventListener('click', validateSolution);
             document.getElementById('clear-btn').addEventListener('click', clearBoard);
-            document.getElementById('example-btn').addEventListener('click', loadExample);
+            document.getElementById('random-btn').addEventListener('click', generateValidPuzzle);
+            
+            // Initialize stats
+            updateStats();
         });
         
         // Update cell class based on content
         function updateCellClass(cell) {
-            cell.classList.remove('user-input', 'solved');
+            cell.classList.remove('user-input', 'solved', 'random-generated', 'conflict');
             if (cell.value) {
                 cell.classList.add('user-input');
             }
+        }
+        
+        // Check for conflicts in the entire board
+        function checkForConflicts() {
+            const cells = document.querySelectorAll('.cell');
+            let hasConflicts = false;
+            
+            // Clear all conflict classes first
+            cells.forEach(cell => {
+                cell.classList.remove('conflict');
+            });
+            
+            // Check each filled cell for conflicts
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    const index = i * 9 + j;
+                    const cell = cells[index];
+                    
+                    if (cell.value) {
+                        const num = parseInt(cell.value);
+                        
+                        // Check row
+                        for (let k = 0; k < 9; k++) {
+                            if (k !== j) {
+                                const otherIndex = i * 9 + k;
+                                const otherCell = cells[otherIndex];
+                                if (otherCell.value && parseInt(otherCell.value) === num) {
+                                    cell.classList.add('conflict');
+                                    otherCell.classList.add('conflict');
+                                    hasConflicts = true;
+                                }
+                            }
+                        }
+                        
+                        // Check column
+                        for (let k = 0; k < 9; k++) {
+                            if (k !== i) {
+                                const otherIndex = k * 9 + j;
+                                const otherCell = cells[otherIndex];
+                                if (otherCell.value && parseInt(otherCell.value) === num) {
+                                    cell.classList.add('conflict');
+                                    otherCell.classList.add('conflict');
+                                    hasConflicts = true;
+                                }
+                            }
+                        }
+                        
+                        // Check 3x3 box
+                        const boxRow = Math.floor(i / 3) * 3;
+                        const boxCol = Math.floor(j / 3) * 3;
+                        for (let r = boxRow; r < boxRow + 3; r++) {
+                            for (let c = boxCol; c < boxCol + 3; c++) {
+                                if (r !== i || c !== j) {
+                                    const otherIndex = r * 9 + c;
+                                    const otherCell = cells[otherIndex];
+                                    if (otherCell.value && parseInt(otherCell.value) === num) {
+                                        cell.classList.add('conflict');
+                                        otherCell.classList.add('conflict');
+                                        hasConflicts = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Update valid status indicator
+            const validStatus = document.getElementById('valid-status');
+            if (hasConflicts) {
+                validStatus.textContent = '✗';
+                validStatus.className = 'invalid';
+            } else {
+                validStatus.textContent = '✓';
+                validStatus.className = 'valid';
+            }
+            
+            return !hasConflicts;
+        }
+        
+        // Update statistics
+        function updateStats() {
+            const cells = document.querySelectorAll('.cell');
+            let filledCount = 0;
+            
+            cells.forEach(cell => {
+                if (cell.value) {
+                    filledCount++;
+                }
+            });
+            
+            document.getElementById('filled-count').textContent = filledCount;
+            
+            // Update progress bar
+            const progressPercent = (filledCount / 81) * 100;
+            document.getElementById('progress-fill').style.width = `${progressPercent}%`;
         }
         
         // Get current board state
@@ -362,7 +555,7 @@
         }
         
         // Set board state
-        function setBoardState(board, solved = false) {
+        function setBoardState(board, solved = false, random = false) {
             const cells = document.querySelectorAll('.cell');
             
             for (let i = 0; i < 9; i++) {
@@ -370,35 +563,258 @@
                     const index = i * 9 + j;
                     cells[index].value = board[i][j] !== 0 ? board[i][j] : '';
                     
+                    cells[index].classList.remove('user-input', 'solved', 'random-generated', 'conflict');
+                    
                     if (solved && board[i][j] !== 0) {
                         cells[index].classList.add('solved');
-                    } else {
-                        updateCellClass(cells[index]);
+                    } else if (random && board[i][j] !== 0) {
+                        cells[index].classList.add('random-generated');
+                    } else if (board[i][j] !== 0) {
+                        cells[index].classList.add('user-input');
                     }
                 }
             }
+            
+            checkForConflicts();
+            updateStats();
+        }
+        
+        // Check if a number is valid at a specific position
+        function isValidMove(board, row, col, num) {
+            // Check row
+            for (let j = 0; j < 9; j++) {
+                if (j !== col && board[row][j] === num) {
+                    return false;
+                }
+            }
+            
+            // Check column
+            for (let i = 0; i < 9; i++) {
+                if (i !== row && board[i][col] === num) {
+                    return false;
+                }
+            }
+            
+            // Check 3x3 box
+            const boxRow = Math.floor(row / 3) * 3;
+            const boxCol = Math.floor(col / 3) * 3;
+            for (let i = boxRow; i < boxRow + 3; i++) {
+                for (let j = boxCol; j < boxCol + 3; j++) {
+                    if (i !== row && j !== col && board[i][j] === num) {
+                        return false;
+                    }
+                }
+            }
+            
+            return true;
+        }
+        
+        // Generate a valid Sudoku puzzle
+        function generateValidPuzzle() {
+            const difficulty = document.getElementById('difficulty').value;
+            
+            // Determine target fill count based on difficulty
+            let targetCount;
+            switch(difficulty) {
+                case 'easy':
+                    targetCount = Math.floor(Math.random() * 5) + 36; // 36-40
+                    break;
+                case 'medium':
+                    targetCount = Math.floor(Math.random() * 6) + 30; // 30-35
+                    break;
+                case 'hard':
+                    targetCount = Math.floor(Math.random() * 6) + 24; // 24-29
+                    break;
+                case 'expert':
+                    targetCount = Math.floor(Math.random() * 6) + 18; // 18-23
+                    break;
+                default:
+                    targetCount = 30;
+            }
+            
+            // Create empty board
+            const board = Array(9).fill().map(() => Array(9).fill(0));
+            
+            // First, generate a solved puzzle as a base
+            const solvedBoard = generateSolvedBoard();
+            
+            // Then remove numbers to create the puzzle
+            const puzzle = createPuzzleFromSolved(solvedBoard, targetCount);
+            
+            setBoardState(puzzle, false, true);
+            
+            const difficultyNames = {
+                'easy': 'Easy',
+                'medium': 'Medium',
+                'hard': 'Hard',
+                'expert': 'Expert'
+            };
+            
+            document.getElementById('status-content').innerHTML = 
+                `<span class="valid">✓ ${difficultyNames[difficulty]} puzzle generated with ${targetCount} valid numbers.</span> ` +
+                `All pre-filled numbers follow Sudoku rules.`;
+        }
+        
+        // Generate a completely solved valid Sudoku board
+        function generateSolvedBoard() {
+            const board = Array(9).fill().map(() => Array(9).fill(0));
+            
+            // Fill diagonal 3x3 boxes first (they don't conflict with each other)
+            for (let box = 0; box < 9; box += 3) {
+                fillBox(board, box, box);
+            }
+            
+            // Fill the rest using backtracking
+            solveSudoku(board);
+            
+            return board;
+        }
+        
+        // Fill a 3x3 box with random numbers 1-9
+        function fillBox(board, startRow, startCol) {
+            const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            shuffleArray(nums);
+            
+            let index = 0;
+            for (let i = startRow; i < startRow + 3; i++) {
+                for (let j = startCol; j < startCol + 3; j++) {
+                    board[i][j] = nums[index++];
+                }
+            }
+        }
+        
+        // Shuffle array (Fisher-Yates algorithm)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+        
+        // Backtracking Sudoku solver for filling the board
+        function solveSudoku(board) {
+            const emptyCell = findEmptyCell(board);
+            if (!emptyCell) return true;
+            
+            const [row, col] = emptyCell;
+            const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            shuffleArray(nums); // Randomize for varied puzzles
+            
+            for (const num of nums) {
+                if (isValidMove(board, row, col, num)) {
+                    board[row][col] = num;
+                    
+                    if (solveSudoku(board)) {
+                        return true;
+                    }
+                    
+                    board[row][col] = 0;
+                }
+            }
+            
+            return false;
+        }
+        
+        // Find an empty cell (with value 0)
+        function findEmptyCell(board) {
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    if (board[i][j] === 0) {
+                        return [i, j];
+                    }
+                }
+            }
+            return null;
+        }
+        
+        // Create puzzle from solved board by removing numbers
+        function createPuzzleFromSolved(solvedBoard, targetCount) {
+            // Create a copy of the solved board
+            const puzzle = solvedBoard.map(row => [...row]);
+            
+            // Track cells to remove
+            const cells = [];
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    cells.push([i, j]);
+                }
+            }
+            
+            // Shuffle cells to remove in random order
+            shuffleArray(cells);
+            
+            // Remove numbers until we reach target count
+            let currentCount = 81;
+            
+            for (const [row, col] of cells) {
+                if (currentCount <= targetCount) break;
+                
+                const temp = puzzle[row][col];
+                puzzle[row][col] = 0;
+                
+                // Optional: Check if puzzle still has unique solution
+                // For simplicity, we'll just remove numbers
+                // You could add a uniqueness check here for better puzzles
+                
+                currentCount--;
+            }
+            
+            return puzzle;
         }
         
         // Solve the puzzle
         function solvePuzzle() {
             const board = getBoardState();
+            
+            // Check if board is empty
+            const isEmpty = board.every(row => row.every(cell => cell === 0));
+            if (isEmpty) {
+                document.getElementById('status-content').innerHTML = 
+                    '<span class="invalid">Board is empty. Generate a puzzle or enter numbers first.</span>';
+                return;
+            }
+            
+            // Check for conflicts before solving
+            const hasConflicts = !checkForConflicts();
+            if (hasConflicts) {
+                document.getElementById('status-content').innerHTML = 
+                    '<span class="invalid">Cannot solve: Board has conflicts.</span> Please fix the highlighted cells.';
+                return;
+            }
+            
             const solvedBoard = sudokuSolver([...board.map(row => [...row])]);
-            setBoardState(solvedBoard, true);
-            document.getElementById('status-content').innerHTML = 
-                '<span class="valid">Puzzle solved successfully!</span> The solution has been filled in.';
+            
+            // Verify the solved board is valid
+            if (validSolution(solvedBoard)) {
+                setBoardState(solvedBoard, true);
+                document.getElementById('status-content').innerHTML = 
+                    '<span class="valid">✓ Puzzle solved successfully!</span> The solution has been filled in.';
+            } else {
+                document.getElementById('status-content').innerHTML = 
+                    '<span class="invalid">Could not find a valid solution.</span> The puzzle might be unsolvable.';
+            }
         }
         
         // Validate the solution
         function validateSolution() {
             const board = getBoardState();
+            
+            // First check for empty cells
+            const hasEmpty = board.some(row => row.some(cell => cell === 0));
+            if (hasEmpty) {
+                document.getElementById('status-content').innerHTML = 
+                    '<span class="warning">⚠️ Board has empty cells.</span> Fill all cells first.';
+                return;
+            }
+            
             const isValid = validSolution([...board.map(row => [...row])]);
             
             if (isValid) {
                 document.getElementById('status-content').innerHTML = 
-                    '<span class="valid">Congratulations! Your solution is valid.</span>';
+                    '<span class="valid">✓ Congratulations! Your solution is valid.</span>';
             } else {
                 document.getElementById('status-content').innerHTML = 
-                    '<span class="invalid">Solution is invalid.</span> Please check for errors.';
+                    '<span class="invalid">✗ Solution is invalid.</span> Check for conflicts in highlighted cells.';
             }
         }
         
@@ -406,95 +822,14 @@
         function clearBoard() {
             const board = Array(9).fill().map(() => Array(9).fill(0));
             setBoardState(board);
-            document.getElementById('status-content').textContent = 
-                "Board cleared. Enter a new puzzle or load an example.";
+            document.getElementById('status-content').innerHTML = 
+                "Board cleared. Click 'Generate Valid Puzzle' to create a new puzzle.";
         }
         
-        // Load example puzzle
-        function loadExample() {
-            const exampleBoard = [
-                [5, 3, 0, 0, 7, 0, 0, 0, 0],
-                [6, 0, 0, 1, 9, 5, 0, 0, 0],
-                [0, 9, 8, 0, 0, 0, 0, 6, 0],
-                [8, 0, 0, 0, 6, 0, 0, 0, 3],
-                [4, 0, 0, 8, 0, 3, 0, 0, 1],
-                [7, 0, 0, 0, 2, 0, 0, 0, 6],
-                [0, 6, 0, 0, 0, 0, 2, 8, 0],
-                [0, 0, 0, 4, 1, 9, 0, 0, 5],
-                [0, 0, 0, 0, 8, 0, 0, 7, 9]
-            ];
-            
-            setBoardState(exampleBoard);
-            document.getElementById('status-content').textContent = 
-                "Example puzzle loaded. Click 'Solve Puzzle' to see the solution or 'Validate Solution' after filling it.";
-        }
-        
-        // Sudoku Solver Implementation
-        function sudokuSolver(puzzle) {
-            const spots = {};
-            
-            // Initialize spots (empty cells)
-            for (let row = 0; row < 9; row++) {
-                for (let col = 0; col < 9; col++) {
-                    if (puzzle[row][col] === 0) {
-                        spots[`${row},${col}`] = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-                    }
-                }
-            }
-            
-            while (Object.keys(spots).length > 0) {
-                let progressMade = false;
-                
-                // Update possibilities for each spot
-                for (const key in spots) {
-                    const [row, col] = key.split(',').map(Number);
-                    const r = Math.floor(row / 3) * 3;
-                    const c = Math.floor(col / 3) * 3;
-                    
-                    // Get the 3x3 square
-                    const square = [];
-                    for (let i = r; i < r + 3; i++) {
-                        for (let j = c; j < c + 3; j++) {
-                            square.push(puzzle[i][j]);
-                        }
-                    }
-                    
-                    // Get the column
-                    const column = [];
-                    for (let i = 0; i < 9; i++) {
-                        column.push(puzzle[i][col]);
-                    }
-                    
-                    // Update possibilities based on row, column, and square
-                    updatePossibilities(spots, key, puzzle[row]);
-                    updatePossibilities(spots, key, column);
-                    updatePossibilities(spots, key, square);
-                    
-                    // If only one possibility remains, assign it
-                    if (spots[key].size === 1) {
-                        const value = spots[key].values().next().value;
-                        puzzle[row][col] = value;
-                        delete spots[key];
-                        progressMade = true;
-                    }
-                }
-                
-                // If no progress was made, break to avoid infinite loop
-                if (!progressMade) break;
-            }
-            
-            return puzzle;
-        }
-        
-        // Update possibilities for a cell
-        function updatePossibilities(spots, key, values) {
-            if (spots[key]) {
-                values.forEach(val => {
-                    if (val !== 0) {
-                        spots[key].delete(val);
-                    }
-                });
-            }
+        // Sudoku Solver Implementation (backtracking)
+        function sudokuSolver(board) {
+            solveSudoku(board);
+            return board;
         }
         
         // Sudoku Validator Implementation
@@ -535,6 +870,25 @@
             }
             
             return true;
+        }
+
+        for (const el of candidates) {
+            // Normalize text content (trim, collapse spaces)
+            const text = (el.textContent || el.value || '').replace(/\s+/g, ' ').trim();
+            if (text === 'Solve Puzzle') {
+                // Disable element if possible
+                try {
+                    if ('disabled' in el) el.disabled = true;
+                    // Add aria-disabled for accessibility
+                    el.setAttribute('aria-disabled', 'true');
+                    // Add a CSS class to show disabled styling (optional)
+                    el.classList.add('disabled-solve-button');
+                    // Prevent clicks for anchors/role=button
+                    el.addEventListener('click', (e) => e.preventDefault(), { capture: true });
+                } catch (err) {
+                    // ignore
+                }
+            }
         }
     </script>
 </body>
