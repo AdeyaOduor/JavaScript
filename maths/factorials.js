@@ -113,3 +113,39 @@ const numbersToChoose = 6;
 const possibleCombinations = combinations(totalNumbers, numbersToChoose);
 
 console.log(`Possible combinations of choosing ${numbersToChoose} from ${totalNumbers}: ${possibleCombinations}`);
+// -----------------------------------------------------------------------------------------------------------------------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factorial Calculator</title>
+</head>
+<body>
+    <h1>Factorial Calculator</h1>
+    <input type="number" id="numberInput" placeholder="Enter a number" />
+    <button id="calculateButton">Calculate Factorial</button>
+    <p id="result"></p>
+
+    <script>
+       function factorial(x) {
+    if (x < 0) {
+        throw new Error('Negative numbers are not allowed.');
+    }
+    return x === 0 ? 1 : x * factorial(x - 1);
+}
+
+document.getElementById('calculateButton').addEventListener('click', () => {
+    const number = parseInt(document.getElementById('numberInput').value, 10);
+    
+    if (isNaN(number) || number < 0) {
+        document.getElementById('result').innerText = 'Please enter a non-negative integer.';
+    } else {
+        const result = factorial(number);
+        document.getElementById('result').innerText = `Factorial of ${number} is ${result}.`;
+    }
+});
+    </script>
+</body>
+</html>
