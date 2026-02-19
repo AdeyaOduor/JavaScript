@@ -180,6 +180,7 @@ as follows:
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Network Management Automation</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -196,7 +197,7 @@ as follows:
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
         
@@ -221,7 +222,7 @@ as follows:
         
         .dashboard {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(2, 1fr);
             gap: 20px;
         }
         
@@ -250,14 +251,14 @@ as follows:
             gap: 15px;
         }
         
-        input, button {
+        input, button, select {
             padding: 12px;
             border-radius: 5px;
             border: none;
             font-size: 1rem;
         }
         
-        input {
+        input, select {
             background-color: #334155;
             color: #e2e8f0;
             border: 1px solid #475569;
@@ -284,6 +285,57 @@ as follows:
             font-size: 1.2rem;
         }
         
+        .result.success {
+            background-color: #065f46;
+            border-left: 4px solid #10b981;
+        }
+        
+        .result.error {
+            background-color: #7f1d1d;
+            border-left: 4px solid #ef4444;
+        }
+        
+        .current-ip-panel {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .current-ip-label {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .current-ip-value {
+            font-family: monospace;
+            font-size: 1.3rem;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .status-active {
+            background-color: #10b981;
+            color: #064e3b;
+        }
+        
+        .status-inactive {
+            background-color: #ef4444;
+            color: #7f1d1d;
+        }
+        
         table {
             width: 100%;
             border-collapse: collapse;
@@ -305,10 +357,19 @@ as follows:
             background-color: #2d3748;
         }
         
-        .log-entry {
+        .log-container {
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: #0f172a;
+            border-radius: 5px;
             padding: 10px;
+        }
+        
+        .log-entry {
+            padding: 8px;
             border-bottom: 1px solid #334155;
             font-family: monospace;
+            font-size: 0.9rem;
         }
         
         .log-time {
@@ -321,42 +382,41 @@ as follows:
             font-weight: bold;
         }
         
-        .visualization {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            height: 200px;
+        .chart-container {
+            position: relative;
+            height: 300px;
             margin-top: 20px;
         }
         
-        .node {
-            width: 50px;
-            height: 50px;
-            background-color: #3b82f6;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
             font-weight: bold;
-            position: relative;
+            margin-top: 5px;
         }
         
-        .connection {
-            height: 2px;
-            background: linear-gradient(90deg, #3b82f6 0%, transparent 100%);
-            position: absolute;
-            transform-origin: left center;
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
         }
         
-        .highlight {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
         }
         
         @media (max-width: 768px) {
@@ -370,34 +430,63 @@ as follows:
     <div class="container">
         <header>
             <h1>Network Management Automation</h1>
-            <p class="subtitle">32-bit Integer to IP Address Conversion & Network Monitoring</p>
+            <p class="subtitle">32-bit Integer to IP Address Conversion & Real-time Network Monitoring</p>
         </header>
         
         <div class="dashboard">
             <div class="card">
                 <h2>IP Address Converter</h2>
                 <div class="converter">
-                    <input type="number" id="intInput" placeholder="Enter 32-bit integer (e.g., 3232235777)" min="0" max="4294967295">
+                    <input type="number" id="intInput" placeholder="Enter 32-bit integer (e.g., 3232235777)" min="0" max="4294967295" value="3232235777">
                     <button onclick="convertToIp()">Convert to IP</button>
-                    <div class="result" id="conversionResult">IP Address: </div>
+                    <div class="result" id="conversionResult">IP Address: 192.168.1.1</div>
                 </div>
                 
                 <div class="converter" style="margin-top: 20px;">
-                    <input type="text" id="ipInput" placeholder="Enter IP address (e.g., 192.168.1.1)">
+                    <input type="text" id="ipInput" placeholder="Enter IP address (e.g., 192.168.1.1)" value="192.168.1.1">
                     <button onclick="convertToInt()">Convert to Integer</button>
-                    <div class="result" id="conversionResult2">32-bit Integer: </div>
+                    <div class="result" id="conversionResult2">32-bit Integer: 3232235777</div>
                 </div>
             </div>
             
             <div class="card">
-                <h2>Network Connections</h2>
-                <p>Active connections in the network:</p>
+                <h2>Connection Status</h2>
+                <div class="current-ip-panel">
+                    <span class="current-ip-label">Selected IP:</span>
+                    <span class="current-ip-value" id="currentSelectedIp">192.168.1.1</span>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Connections</div>
+                        <div class="stat-value" id="totalConnections">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Active</div>
+                        <div class="stat-value" id="activeConnections">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Inactive</div>
+                        <div class="stat-value" id="inactiveConnections">0</div>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <select id="statusFilter" onchange="filterConnections()">
+                        <option value="all">All Connections</option>
+                        <option value="active">Active Only</option>
+                        <option value="inactive">Inactive Only</option>
+                    </select>
+                    <button onclick="checkConnectionStatus()" style="flex: 1;">Check Status</button>
+                </div>
+                
                 <table>
                     <thead>
                         <tr>
                             <th>Source IP</th>
                             <th>Destination IP</th>
                             <th>Status</th>
+                            <th>Connection</th>
                         </tr>
                     </thead>
                     <tbody id="connectionsTable">
@@ -407,15 +496,34 @@ as follows:
             </div>
             
             <div class="card card-full">
-                <h2>Network Activity Log</h2>
-                <div id="activityLog">
-                    <!-- Will be populated by JavaScript -->
+                <h2>Network Activity & Performance</h2>
+                <div class="chart-container">
+                    <canvas id="networkChart"></canvas>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Avg Response Time</div>
+                        <div class="stat-value" id="avgResponseTime">45ms</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Peak Traffic</div>
+                        <div class="stat-value" id="peakTraffic">156</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Packet Loss</div>
+                        <div class="stat-value" id="packetLoss">0.3%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Bandwidth</div>
+                        <div class="stat-value" id="bandwidth">100</div>
+                    </div>
                 </div>
             </div>
             
             <div class="card card-full">
-                <h2>Network Visualization</h2>
-                <div class="visualization" id="networkVisualization">
+                <h2>Network Activity Log</h2>
+                <div class="log-container" id="activityLog">
                     <!-- Will be populated by JavaScript -->
                 </div>
             </div>
@@ -423,6 +531,38 @@ as follows:
     </div>
 
     <script>
+        // Chart instance
+        let networkChart;
+        
+        // Network connections data
+        const connections = [
+            { src: 3232235521, dest: 3232235776, status: 'Active', latency: 23, packets: 45 },
+            { src: 16777343, dest: 167772160, status: 'Active', latency: 45, packets: 78 },
+            { src: 2886732670, dest: 2886732671, status: 'Inactive', latency: 0, packets: 0 },
+            { src: 16885952, dest: 16885953, status: 'Active', latency: 67, packets: 112 },
+            { src: 3232235777, dest: 3232235522, status: 'Active', latency: 34, packets: 89 }
+        ];
+        
+        // Historical data for chart
+        const historicalData = [
+            { time: '00:00', active: 4, inactive: 1, latency: 45 },
+            { time: '01:00', active: 3, inactive: 2, latency: 52 },
+            { time: '02:00', active: 2, inactive: 3, latency: 38 },
+            { time: '03:00', active: 2, inactive: 3, latency: 41 },
+            { time: '04:00', active: 1, inactive: 4, latency: 35 },
+            { time: '05:00', active: 3, inactive: 2, latency: 44 },
+            { time: '06:00', active: 4, inactive: 1, latency: 48 },
+            { time: '07:00', active: 5, inactive: 0, latency: 32 },
+            { time: '08:00', active: 4, inactive: 1, latency: 39 },
+            { time: '09:00', active: 3, inactive: 2, latency: 43 },
+            { time: '10:00', active: 4, inactive: 1, latency: 51 },
+            { time: '11:00', active: 4, inactive: 1, latency: 47 }
+        ];
+        
+        // Current selected IP (integer and string)
+        let currentSelectedInt = 3232235777;
+        let currentSelectedIp = '192.168.1.1';
+        
         // IP conversion functions
         function int32ToIp(num) {
             return (num >>> 24 & 0xFF) + '.' +
@@ -435,6 +575,22 @@ as follows:
             return ip.split('.').reduce((acc, octet) => (acc << 8) + parseInt(octet, 10), 0) >>> 0;
         }
         
+        // Update current selected IP
+        function updateCurrentSelectedIp(ip, intValue) {
+            currentSelectedIp = ip;
+            currentSelectedInt = intValue;
+            document.getElementById('currentSelectedIp').textContent = ip;
+            
+            // Update chart to highlight connections for this IP
+            updateChart();
+            
+            // Filter connections based on current IP
+            filterConnections();
+            
+            // Log the selection
+            addLogEntry(`Selected IP changed to ${ip} (${intValue})`);
+        }
+        
         // DOM manipulation functions
         function convertToIp() {
             const intInput = document.getElementById('intInput');
@@ -442,18 +598,31 @@ as follows:
             
             if (!intInput.value) {
                 resultDiv.textContent = 'IP Address: Please enter a value';
+                resultDiv.className = 'result error';
                 return;
             }
             
             const num = parseInt(intInput.value);
             if (isNaN(num) || num < 0 || num > 4294967295) {
                 resultDiv.textContent = 'IP Address: Please enter a valid 32-bit integer (0-4294967295)';
+                resultDiv.className = 'result error';
                 return;
             }
             
             const ip = int32ToIp(num);
             resultDiv.textContent = `IP Address: ${ip}`;
+            resultDiv.className = 'result success';
+            
+            // Automatically update the selected IP
+            updateCurrentSelectedIp(ip, num);
+            
+            // Update the IP input field
+            document.getElementById('ipInput').value = ip;
+            
             addLogEntry(`Converted integer ${num} to IP ${ip}`);
+            
+            // Check connection status for this IP
+            setTimeout(() => checkConnectionStatus(), 100);
         }
         
         function convertToInt() {
@@ -462,47 +631,290 @@ as follows:
             
             if (!ipInput.value) {
                 resultDiv.textContent = '32-bit Integer: Please enter a value';
+                resultDiv.className = 'result error';
                 return;
             }
             
             const ipRegex = /^(\d{1,3}\.){3}\d{1,3}$/;
             if (!ipRegex.test(ipInput.value)) {
                 resultDiv.textContent = '32-bit Integer: Please enter a valid IP address';
+                resultDiv.className = 'result error';
                 return;
+            }
+            
+            const parts = ipInput.value.split('.');
+            for (let part of parts) {
+                if (parseInt(part) < 0 || parseInt(part) > 255) {
+                    resultDiv.textContent = '32-bit Integer: Each octet must be between 0 and 255';
+                    resultDiv.className = 'result error';
+                    return;
+                }
             }
             
             const intValue = ipToInt32(ipInput.value);
             resultDiv.textContent = `32-bit Integer: ${intValue}`;
+            resultDiv.className = 'result success';
+            
+            // Automatically update the selected IP
+            updateCurrentSelectedIp(ipInput.value, intValue);
+            
+            // Update the integer input field
+            document.getElementById('intInput').value = intValue;
+            
             addLogEntry(`Converted IP ${ipInput.value} to integer ${intValue}`);
+            
+            // Check connection status for this IP
+            setTimeout(() => checkConnectionStatus(), 100);
         }
         
-        // Network connections data
-        const connections = [
-            { src: 3232235521, dest: 3232235776, status: 'Active' },
-            { src: 16777343, dest: 167772160, status: 'Active' },
-            { src: 2886732670, dest: 2886732671, status: 'Inactive' },
-            { src: 16885952, dest: 16885953, status: 'Active' },
-            { src: 3232235777, dest: 3232235522, status: 'Active' }
-        ];
+        // Check connection status for current IP
+        function checkConnectionStatus() {
+            addLogEntry(`Checking connection status for ${currentSelectedIp}...`);
+            
+            // Find connections involving the current IP
+            const relevantConnections = connections.filter(conn => 
+                conn.src === currentSelectedInt || conn.dest === currentSelectedInt
+            );
+            
+            if (relevantConnections.length === 0) {
+                addLogEntry(`No connections found for ${currentSelectedIp}`);
+            } else {
+                relevantConnections.forEach(conn => {
+                    const srcIp = int32ToIp(conn.src);
+                    const destIp = int32ToIp(conn.dest);
+                    const direction = conn.src === currentSelectedInt ? 'source' : 'destination';
+                    addLogEntry(`Connection: ${srcIp} → ${destIp} (${conn.status}, latency: ${conn.latency}ms)`);
+                });
+            }
+            
+            // Update the display
+            filterConnections();
+        }
+        
+        // Filter connections based on current IP and status filter
+        function filterConnections() {
+            const filterValue = document.getElementById('statusFilter').value;
+            
+            // Filter connections that involve the current IP
+            let filteredConnections = connections.filter(conn => 
+                conn.src === currentSelectedInt || conn.dest === currentSelectedInt
+            );
+            
+            // Apply status filter
+            if (filterValue !== 'all') {
+                filteredConnections = filteredConnections.filter(conn => 
+                    conn.status.toLowerCase() === filterValue.toLowerCase()
+                );
+            }
+            
+            populateConnectionsTable(filteredConnections);
+            
+            // Update statistics
+            updateStatistics(filteredConnections);
+        }
         
         // Populate connections table
-        function populateConnectionsTable() {
+        function populateConnectionsTable(connectionsToShow = connections) {
             const tableBody = document.getElementById('connectionsTable');
             tableBody.innerHTML = '';
             
-            connections.forEach(conn => {
+            connectionsToShow.forEach(conn => {
                 const srcIp = int32ToIp(conn.src);
                 const destIp = int32ToIp(conn.dest);
                 
+                // Check if this connection involves the current IP
+                const isCurrentIp = conn.src === currentSelectedInt || conn.dest === currentSelectedInt;
+                const connectionType = conn.src === currentSelectedInt ? 'Outgoing' : 
+                                     (conn.dest === currentSelectedInt ? 'Incoming' : '');
+                
                 const row = document.createElement('tr');
+                row.style.backgroundColor = isCurrentIp ? 'rgba(59, 130, 246, 0.3)' : '';
                 row.innerHTML = `
-                    <td>${srcIp}</td>
-                    <td>${destIp}</td>
-                    <td>${conn.status}</td>
+                    <td>${srcIp} ${conn.src === currentSelectedInt ? '← (Current)' : ''}</td>
+                    <td>${destIp} ${conn.dest === currentSelectedInt ? '← (Current)' : ''}</td>
+                    <td><span class="status-badge ${conn.status === 'Active' ? 'status-active' : 'status-inactive'}">${conn.status}</span></td>
+                    <td>${connectionType}</td>
                 `;
                 
                 tableBody.appendChild(row);
             });
+        }
+        
+        // Update statistics
+        function updateStatistics(filteredConnections) {
+            const totalConnections = connections.length;
+            const activeConnections = connections.filter(c => c.status === 'Active').length;
+            const inactiveConnections = totalConnections - activeConnections;
+            
+            const filteredActive = filteredConnections.filter(c => c.status === 'Active').length;
+            
+            document.getElementById('totalConnections').textContent = filteredConnections.length;
+            document.getElementById('activeConnections').textContent = filteredActive;
+            document.getElementById('inactiveConnections').textContent = filteredConnections.length - filteredActive;
+            
+            // Calculate average stats from historical data
+            const avgLatency = Math.round(historicalData.reduce((sum, d) => sum + d.latency, 0) / historicalData.length);
+            const peakTraffic = Math.max(...historicalData.map(d => d.active * 25 + 20));
+            
+            document.getElementById('avgResponseTime').textContent = `${avgLatency}ms`;
+            document.getElementById('peakTraffic').textContent = peakTraffic;
+            document.getElementById('packetLoss').textContent = '0.3%';
+            document.getElementById('bandwidth').textContent = '100 Mbps';
+        }
+        
+        // Create/update chart
+        function createChart() {
+            const ctx = document.getElementById('networkChart').getContext('2d');
+            
+            if (networkChart) {
+                networkChart.destroy();
+            }
+            
+            networkChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: historicalData.map(d => d.time),
+                    datasets: [
+                        {
+                            label: 'Active Connections',
+                            data: historicalData.map(d => d.active),
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: true,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Latency (ms)',
+                            data: historicalData.map(d => d.latency),
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: true,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#e2e8f0'
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        if (context.dataset.label === 'Active Connections') {
+                                            label += context.parsed.y + ' connections';
+                                        } else {
+                                            label += context.parsed.y + ' ms';
+                                        }
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#e2e8f0'
+                            }
+                        },
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Connections',
+                                color: '#10b981'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#e2e8f0',
+                                callback: function(value) {
+                                    return value + ' conn';
+                                }
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Latency (ms)',
+                                color: '#3b82f6'
+                            },
+                            grid: {
+                                drawOnChartArea: false,
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#e2e8f0',
+                                callback: function(value) {
+                                    return value + ' ms';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Update chart to highlight current IP
+        function updateChart() {
+            // Add a new data point for current time
+            const now = new Date();
+            const timeString = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes());
+            
+            // Get current stats
+            const currentActive = connections.filter(c => 
+                (c.src === currentSelectedInt || c.dest === currentSelectedInt) && c.status === 'Active'
+            ).length;
+            
+            const currentLatency = connections
+                .filter(c => c.src === currentSelectedInt || c.dest === currentSelectedInt)
+                .reduce((sum, c) => sum + (c.latency || 0), 0) / 
+                Math.max(1, connections.filter(c => c.src === currentSelectedInt || c.dest === currentSelectedInt).length);
+            
+            // Update chart data
+            if (networkChart) {
+                networkChart.data.labels.push(timeString);
+                networkChart.data.datasets[0].data.push(currentActive);
+                networkChart.data.datasets[1].data.push(Math.round(currentLatency));
+                
+                // Remove oldest data point if too many
+                if (networkChart.data.labels.length > 15) {
+                    networkChart.data.labels.shift();
+                    networkChart.data.datasets[0].data.shift();
+                    networkChart.data.datasets[1].data.shift();
+                }
+                
+                networkChart.update();
+            }
         }
         
         // Activity log
@@ -517,87 +929,68 @@ as follows:
             logEntry.innerHTML = `<span class="log-time">[${timeString}]</span> ${message}`;
             logContainer.appendChild(logEntry);
             logContainer.scrollTop = logContainer.scrollHeight;
+            
+            // Keep only last 50 entries
+            while (logContainer.children.length > 50) {
+                logContainer.removeChild(logContainer.firstChild);
+            }
         }
         
-        // Network visualization
-        function createNetworkVisualization() {
-            const visualization = document.getElementById('networkVisualization');
-            visualization.innerHTML = '';
-            
-            // Create nodes for each unique IP
-            const uniqueIps = new Set();
-            connections.forEach(conn => {
-                uniqueIps.add(conn.src);
-                uniqueIps.add(conn.dest);
-            });
-            
-            const ipArray = Array.from(uniqueIps);
-            const nodes = [];
-            
-            // Create node elements
-            ipArray.forEach((ip, index) => {
-                const node = document.createElement('div');
-                node.className = 'node';
-                node.textContent = index + 1;
-                node.style.left = `${20 + (index * 15)}%`;
-                nodes.push({ element: node, ip: ip });
-                visualization.appendChild(node);
-            });
-            
-            // Create connections
-            connections.forEach(conn => {
-                const srcIndex = ipArray.indexOf(conn.src);
-                const destIndex = ipArray.indexOf(conn.dest);
+        // Generate random network events
+        function simulateNetworkActivity() {
+            setInterval(() => {
+                // Randomly update a connection status
+                const randomIndex = Math.floor(Math.random() * connections.length);
+                const connection = connections[randomIndex];
                 
-                if (srcIndex !== -1 && destIndex !== -1) {
-                    const srcNode = nodes[srcIndex].element;
-                    const destNode = nodes[destIndex].element;
+                if (Math.random() > 0.7) {
+                    const newStatus = connection.status === 'Active' ? 'Inactive' : 'Active';
+                    connection.status = newStatus;
                     
-                    const srcRect = srcNode.getBoundingClientRect();
-                    const destRect = destNode.getBoundingClientRect();
+                    const srcIp = int32ToIp(connection.src);
+                    const destIp = int32ToIp(connection.dest);
                     
-                    const visualizationRect = visualization.getBoundingClientRect();
+                    addLogEntry(`Connection ${srcIp} → ${destIp} changed to ${newStatus}`);
                     
-                    const srcX = srcRect.left + srcRect.width/2 - visualizationRect.left;
-                    const srcY = srcRect.top + srcRect.height/2 - visualizationRect.top;
-                    const destX = destRect.left + destRect.width/2 - visualizationRect.left;
-                    const destY = destRect.top + destRect.height/2 - visualizationRect.top;
-                    
-                    const length = Math.sqrt(Math.pow(destX - srcX, 2) + Math.pow(destY - srcY, 2));
-                    const angle = Math.atan2(destY - srcY, destX - srcX) * 180 / Math.PI;
-                    
-                    const connection = document.createElement('div');
-                    connection.className = 'connection';
-                    connection.style.width = `${length}px`;
-                    connection.style.left = `${srcX}px`;
-                    connection.style.top = `${srcY}px`;
-                    connection.style.transform = `rotate(${angle}deg)`;
-                    
-                    visualization.appendChild(connection);
+                    // Update chart if this involves current IP
+                    if (connection.src === currentSelectedInt || connection.dest === currentSelectedInt) {
+                        filterConnections();
+                        updateChart();
+                    }
                 }
-            });
-            
-            // Bring nodes to front
-            nodes.forEach(node => {
-                visualization.appendChild(node.element);
-            });
+                
+                // Update latency randomly
+                if (connection.status === 'Active') {
+                    connection.latency = Math.floor(Math.random() * 50) + 20;
+                    connection.packets = Math.floor(Math.random() * 150) + 30;
+                }
+                
+            }, 5000); // Every 5 seconds
         }
         
         // Initialize the dashboard
         function initDashboard() {
+            // Set initial values
+            document.getElementById('intInput').value = currentSelectedInt;
+            document.getElementById('ipInput').value = currentSelectedIp;
+            document.getElementById('currentSelectedIp').textContent = currentSelectedIp;
+            
             populateConnectionsTable();
-            createNetworkVisualization();
+            createChart();
+            updateStatistics(connections);
             
             // Add initial log entries
             addLogEntry('System initialized');
             addLogEntry('Network monitoring started');
+            addLogEntry(`Current selected IP: ${currentSelectedIp} (${currentSelectedInt})`);
+            
             connections.forEach(conn => {
                 const srcIp = int32ToIp(conn.src);
                 const destIp = int32ToIp(conn.dest);
                 addLogEntry(`Connection detected: ${srcIp} → ${destIp} (${conn.status})`);
             });
             
-            // Add event listener for Enter key
+            // Add event listeners for Enter key
             document.getElementById('intInput').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') convertToIp();
             });
@@ -605,6 +998,9 @@ as follows:
             document.getElementById('ipInput').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') convertToInt();
             });
+            
+            // Start simulation
+            simulateNetworkActivity();
         }
         
         // Run initialization when page loads
