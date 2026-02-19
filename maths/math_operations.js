@@ -596,3 +596,11 @@ the odd numbers from a dataset for further processing.
 
 d. Optimization problems: In some optimization problems, you might need to work with only the odd numbers in a dataset, such as when trying to find 
 the optimal arrangement of objects with odd dimensions.*/
+
+
+// return the two oldest ages within the array of ages passed in.
+function twoOldestAges(ages){
+  //return ages.sort((a, b) => a-b).slice(-2)
+  return ages.sort((a, b) => b-a).splice(0,2).reverse();
+    
+}
