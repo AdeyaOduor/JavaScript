@@ -6,122 +6,132 @@
     <title>Card Game</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-         * {
-    box-sizing: border-box;
-}
+        * {
+            box-sizing: border-box;
+        }
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-image: url('your-background-image.jpg'); /* Replace with your image URL */
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('your-background-image.jpg'); /* Replace with your image URL */
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-.card {
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    width: 300px;
-}
+        .card {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 300px;
+        }
 
-h1 {
-    color: #333;
-}
+        h1 {
+            color: #333;
+        }
 
-button {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-}
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-button:hover {
-    background-color: #218838;
-}
+        button:hover {
+            background-color: #218838;
+        }
 
-input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        /* Added styles for feedback and instructions */
+        .instructions {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        #result {
+            margin-top: 15px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="card">
             <h1>Card Counting Game</h1>
-            <p>Enter a card value (2-10, J, Q, K, A):</p>
+            <p class="instructions">Enter a card value (2-10, J, Q, K, A):</p>
             <input type="text" id="UserInput" placeholder="Enter card value" />
             <button id="Submit" onclick="updateCount()">Submit</button>
             <p id="result"></p>
         </div>
     </div>
-    <script src="script.js">
+    <script>
         let count = 0;
 
-function updateCount() {
-    const userInput = document.getElementById('UserInput').value.trim();
-    let card;
+        function updateCount() {
+            const userInput = document.getElementById('UserInput').value.trim();
+            let card;
 
-    // Map input to appropriate card values
-    switch (userInput.toUpperCase()) {
-        case 'J':
-        case 'Q':
-        case 'K':
-        case 'A':
-            card = 10; // Treat face cards as 10 for counting
-            break;
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-        case '10':
-            card = parseInt(userInput, 10);
-            break;
-        default:
-            alert("Please enter a valid card value (2-10, J, Q, K, A).");
-            return; // Exit if invalid input
-    }
+            // Map input to appropriate card values
+            switch (userInput.toUpperCase()) {
+                case 'J':
+                case 'Q':
+                case 'K':
+                case 'A':
+                    card = 10; // Treat face cards as 10 for counting
+                    break;
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                case '10':
+                    card = parseInt(userInput, 10);
+                    break;
+                default:
+                    alert("Please enter a valid card value (2-10, J, Q, K, A).");
+                    return; // Exit if invalid input
+            }
 
-    // Call the card counting function
-    cc(card);
-}
+            // Call the card counting function
+            cc(card);
+        }
 
-function cc(card) {
-    var regex = /[JQKA]/;
+        function cc(card) {
+            const regex = /[JQKA]/;
 
-    if (card >= 2 && card <= 6) {
-        count++;
-    } else if (card === 10 || regex.test(card)) {
-        count--;
-    }
+            if (card >= 2 && card <= 6) {
+                count++;
+            } else if (card === 10 || regex.test(card)) {
+                count--;
+            }
 
-    const resultText = count > 0 ? `${count} Bet` : `${count} Hold`;
-    document.getElementById('result').textContent = resultText;
-}
-
-        
-        </script>
+            const resultText = count > 0 ? `${count} Bet` : `${count} Hold`;
+            document.getElementById('result').textContent = resultText;
+        }
+    </script>
 </body>
 </html>
