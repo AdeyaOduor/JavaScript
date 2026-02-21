@@ -1,28 +1,24 @@
-// count card game
-let count = 0;
-
-function cc(card) {
-  var regex = /[JQKA]/;
-
-  if (card >= 2 && card <= 6) {
-    count++;
-  } else if (card === 10 || regex.test(card)) {
-    count--;
-  }
-
-  if (count > 0) {
-    return count + " Bet";
-  } else {
-    return count + " Hold";
-  }
-}
-
-console.log(cc(2));
-console.log(cc(3));
-console.log(cc(7));
-console.log(cc('K'));
-console.log(cc('A'));
-----------------------------------------------------------------------
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guess a Number Game</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Card Counting Game</h1>
+            <p>Enter a card value (2-10, J, Q, K, A):</p>
+            <input type="text" id="UserInput" placeholder="Enter card value" />
+            <button id="Submit" onclick="updateCount()">Submit</button>
+            <p id="result"></p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
 
   // count card game 2
 let count = 0;
