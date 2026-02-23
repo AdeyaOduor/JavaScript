@@ -1,12 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset=utf-8 />
-<title>Guess a number</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guess a Number Game</title>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <input type="number" id="UserInput">
-       <button id="Submit" onclick="randomNumberr()">Submit</button>
-    <script src="random.js"></script> 
+    <div class="container">
+        <div class="card">
+            <h1>Guess a Number</h1>
+            <p>Can you guess the number between 1 and 100?</p>
+            <input type="number" id="UserInput" placeholder="Enter your guess" min="1" max="100">
+            <button id="Submit" onclick="randomNumber()">Submit</button>
+            <p id="result"></p>
+        </div>
+    </div>
+    <script src="random.js"></script>
 </body>
 </html>
