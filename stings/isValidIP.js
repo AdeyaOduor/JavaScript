@@ -80,15 +80,15 @@ This application allows users to enter an IP address, and it validates the input
 
 </body>
 </html>
---------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------------------
    /* Example 2
    Implementing API input validation for an IP address using Node.js and Express. 
    This application includes an endpoint where users can submit an IP address, which is then validated using the isValidIP funct
    
    mkdir ip-validator-api
-cd ip-validator-api
-npm init -y
-npm install express 
+   cd ip-validator-api
+   npm init -y
+   npm install express 
 */
 
 const express = require('express');
