@@ -265,66 +265,58 @@ In order management systems, sorting orders by date and status can help in track
 In educational applications, student records might need to be sorted by GPA and then by last name.
 */
 
-const orderBy = (arr, props, orders) =>
-  [...arr].sort((a, b) =>
-    props.reduce((acc, prop, i) => {
-      if (acc === 0) {
-        const [p1, p2] = orders && orders[i] === 'desc' ? [b[prop], a[prop]] : [a[prop], b[prop]];
-        acc = p1 > p2 ? 1 : p1 < p2 ? -1 : 0;
-      }
-      return acc;
-    }, 0)
-  );
-const users = [{ name: 'Peter', age: 43 }, { name: 'David', age: 41 }, { name: 'Margaret', age: 54 }];
+const orderBy = (arr, props, orders) => 
+  [...arr].sort((a, b) => {
+    return props.reduce((acc, prop, i) => {
+      // Stop if there's already a difference
+      if (acc !== 0) return acc;
 
-console.log(orderBy(users, ['name', 'age'], ['asc', 'desc'])); 
-console.log(orderBy(users, ['name', 'age']));
+      // Determine the sorting order
+      const [p1, p2] = orders && orders[i] === 'desc' ? [b[prop], a[prop]] : [a[prop], b[prop]];
+      acc = p1 > p2 ? 1 : p1 < p2 ? -1 : 0;
+      return acc;
+    }, 0);
+  });
 
 const users = [
+  { name: 'Peter', age: 43 },
+  { name: 'David', age: 41 },
+  { name: 'Margaret', age: 54 }
+];
+
+// Display sorted users
+console.log(orderBy(users, ['name', 'age'], ['asc', 'desc']));
+console.log(orderBy(users, ['name', 'age']));
+
+const moreUsers = [
   { name: 'Alice', age: 30, registrationDate: '2023-01-15' },
   { name: 'Bob', age: 25, registrationDate: '2023-02-10' },
   { name: 'Charlie', age: 35, registrationDate: '2023-01-20' }
 ];
 
-const sortedUsers = orderBy(users, ['age', 'registrationDate'], ['asc', 'desc']);
+const sortedUsers = orderBy(moreUsers, ['age', 'registrationDate'], ['asc', 'desc']);
 console.log(sortedUsers);
-/*
-Output:
-[
-  { name: 'Bob', age: 25, registrationDate: '2023-02-10' },
-  { name: 'Alice', age: 30, registrationDate: '2023-01-15' },
-  { name: 'Charlie', age: 35, registrationDate: '2023-01-20' }
-]
-*/
-// ----------------------------------------------------------------------------------------------------------------------------
 
 const products = [
   { id: 1, name: 'Product A', price: 10, category: 'Electronics' },
   { id: 2, name: 'Product B', price: 20, category: 'Clothing' },
   { id: 3, name: 'Product C', price: 15, category: 'Electronics' },
-  { id: 4, name: 'Product D', price: 25, category: 'Clothing' },
+  { id: 4, name: 'Product D', price: 25, category: 'Clothing' }
 ];
 
-// Sort products by price in ascending order, then by category in descending order
-const sortedProducts = orderBy(products, ['price', 'category'], ['asc', 'desc']);
-// --------------------------------------------------------------------------------------
-const products = [
+// Sort products by price (asc) and category (desc)
+const sortedProducts1 = orderBy(products, ['price', 'category'], ['asc', 'desc']);
+console.log(sortedProducts1);
+
+const moreProducts = [
   { name: 'Laptop', price: 999, rating: 4.5 },
   { name: 'Phone', price: 699, rating: 4.7 },
   { name: 'Tablet', price: 499, rating: 4.3 }
 ];
 
-const sortedProducts = orderBy(products, ['price', 'rating'], ['asc', 'desc']);
-console.log(sortedProducts);
-/*
-Output:
-[
-  { name: 'Tablet', price: 499, rating: 4.3 },
-  { name: 'Phone', price: 699, rating: 4.7 },
-  { name: 'Laptop', price: 999, rating: 4.5 }
-]
-*/
-// ----------------------------------------------------------------------------------------------------------------------------------------
+// Sort products by price (asc) and rating (desc)
+const sortedProducts2 = orderBy(moreProducts, ['price', 'rating'], ['asc', 'desc']);
+console.log(sortedProducts2);
 
 const orders = [
   { id: 1, date: '2023-03-01', status: 'shipped' },
@@ -332,43 +324,28 @@ const orders = [
   { id: 3, date: '2023-03-02', status: 'delivered' }
 ];
 
+// Sort orders by date (asc) and status (desc)
 const sortedOrders = orderBy(orders, ['date', 'status'], ['asc', 'desc']);
 console.log(sortedOrders);
-/*
-Output:
-[
-  { id: 2, date: '2023-02-28', status: 'pending' },
-  { id: 1, date: '2023-03-01', status: 'shipped' },
-  { id: 3, date: '2023-03-02', status: 'delivered' }
-]
-*/
-// ----------------------------------------------------------------------------------------
 
-cconst students = [
+const students = [
   { name: 'John Doe', gpa: 3.5 },
   { name: 'Jane Smith', gpa: 3.8 },
   { name: 'Alice Johnson', gpa: 3.5 }
 ];
 
+// Sort students by GPA (desc) and name (asc)
 const sortedStudents = orderBy(students, ['gpa', 'name'], ['desc', 'asc']);
 console.log(sortedStudents);
-/*
-Output:
-[
-  { name: 'Jane Smith', gpa: 3.8 },
-  { name: 'Alice Johnson', gpa: 3.5 },
-  { name: 'John Doe', gpa: 3.5 }
-]
-*/
-// ---------------------------------------------------------------------------------------------
 
 const flights = [
   { id: 1, from: 'New York', to: 'Los Angeles', duration: 6, price: 400 },
   { id: 2, from: 'London', to: 'Paris', duration: 1.5, price: 150 },
   { id: 3, from: 'Tokyo', to: 'Seoul', duration: 2.5, price: 300 },
-  { id: 4, from: 'Sydney', to: 'Melbourne', duration: 1, price: 80 },
+  { id: 4, from: 'Sydney', to: 'Melbourne', duration: 1, price: 80 }
 ];
 
-// Sort flights by price in ascending order, then by duration in descending order
+// Sort flights by price (asc) and duration (desc)
 const sortedFlights = orderBy(flights, ['price', 'duration'], ['asc', 'desc']);
+console.log(sortedFlights);
 
