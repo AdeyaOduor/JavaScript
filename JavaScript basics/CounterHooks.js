@@ -30,7 +30,8 @@ export default function App() {
   }
 // =====================================================================================================================
 
-/*
+/* npx create-react-app counter-app
+cd counter-app
 */
 
 // Counter.js
@@ -139,3 +140,8 @@ export default App;
     color: #666;
     text-align: center;
   }
+
+/*npm start
+  npm run build
+  npm test
+  */
