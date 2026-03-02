@@ -147,3 +147,22 @@ const flattenedPreferences = steamrollArray(userPreferences);
 console.log(flattenedPreferences); 
 // Output: ["notifications", "email", "sms", "push", "language", "English", "Spanish", "French"]
 
+/* Write function smaller(arr) that given an array arr, you have to return the amount of numbers that are smaller than arr[i] to the right. 
+For example: smaller([5, 4, 3, 2, 1]) === [4, 3, 2, 1, 0] smaller([1, 2, 0]) === [1, 1, 0]
+*/
+function smaller(arr) {
+  let res = new Array(arr.length), i, d, n, counts = [new Uint16Array(new ArrayBuffer(4096)),
+    new Uint16Array(new ArrayBuffer(2048)), new Uint16Array(new ArrayBuffer(1024)),
+    new Uint16Array(new ArrayBuffer(512)), new Uint16Array(new ArrayBuffer(256)),
+    new Uint16Array(new ArrayBuffer(128)), new Uint16Array(new ArrayBuffer(64)),
+    new Uint16Array(new ArrayBuffer(32)), new Uint16Array(new ArrayBuffer(16)),
+    new Uint16Array(new ArrayBuffer(8)), new Uint16Array(new ArrayBuffer(4))];
+  for (i = arr.length - 1; i > -1; i -= 1) {
+    res[i] = 0;
+    for (d = 0, n = arr[i] + 1024; d < 11; d += 1, n >>= 1) {
+      counts[d][n] += 1;
+      if (n & 1) res[i] += counts[d][n-1];
+    }
+  }
+  return res;
+}
