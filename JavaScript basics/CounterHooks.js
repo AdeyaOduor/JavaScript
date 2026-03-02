@@ -71,3 +71,71 @@ function Counter() {
 }
 
 export default Counter;
+
+// App.js
+import React from 'react';
+import Counter from './Counter';
+
+function App() {
+  return (
+    <div>
+      <Counter />
+    </div>
+  );
+}
+
+export default App;
+
+// counter.css
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .title {
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+  
+  .counterContainer {
+    display: flex;
+    align-items: center;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    font-size: 1.5em;
+    margin: 0 10px;
+    cursor: pointer;
+    border: 2px solid #007bff;
+    background-color: #fff;
+    color: #007bff;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .btn:hover:not(:disabled) {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .counter {
+    font-size: 2em;
+    margin: 0 20px;
+  }
+  
+  .instructions {
+    margin-top: 20px;
+    color: #666;
+    text-align: center;
+  }
