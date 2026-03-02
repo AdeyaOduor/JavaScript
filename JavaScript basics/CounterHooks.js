@@ -30,8 +30,12 @@ export default function App() {
   }
 // =====================================================================================================================
 
+/*
+*/
+
+// Counter.js
 import React, { useState } from 'react';
-import styles from './YourStyles.module.css'; // Adjust the import based on your file structure
+import styles from './counter.css'; // Make sure to create and point to your CSS file
 
 function Counter() {
   const [counter, setCounter] = useState(0); // Initialize counter state
@@ -48,9 +52,9 @@ function Counter() {
   }
 
   return (
-    <>
-      <h1>Exercise 3</h1>
-      <div>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Counter App</h1>
+      <div className={styles.counterContainer}>
         <button className={styles.btn} onClick={decrement} disabled={counter <= 0}>
           -
         </button>
@@ -59,8 +63,11 @@ function Counter() {
           +
         </button>
       </div>
-    </>
+      <p className={styles.instructions}>
+        Click the buttons to increment or decrement the counter. The counter cannot go below zero.
+      </p>
+    </div>
   );
 }
 
-export default Counter; // Don't forget to export your component
+export default Counter;
