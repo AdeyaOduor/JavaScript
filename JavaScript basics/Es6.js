@@ -38,17 +38,15 @@ const stats = {
 
 const half = ({max, min}) => ((max + min) / 2.0);
 console.log(half(stats)); // Output: 28.015
-// --------------------------------------------------------------------------------------------------------------------------------
-    
-// create-strings-using-template-literals.
-/*Use template literal syntax with backticks to create an array of list element (li) strings. Each list element's text should be 
-one of the array elements from the failure property on the result object and have a class attribute with the value text-warning. 
-The makeList function should return the array of list item strings in non-module environment. 
+
+/*
+    This code generates an HTML list from an array, using template literals.
+    Real-world application: You often need to dynamically create lists of items in a web app based on API responses, and template literals can help keep the code clean and readable.
+
 */
 const result = {
   success: ["max-length", "no-amd", "prefer-arrow-functions"],
-  failure: ["no-var", "var-on-top", "linebreak"],
-  skipped: ["no-extra-semi", "no-dup-keys"]
+  failure: ["no-var", "var-on-top", "linebreak"]
 };
 
 function makeList(arr) {
@@ -57,13 +55,26 @@ function makeList(arr) {
 
 const failuresList = makeList(result.failure);
 
-const uppercaseString = (string) => {
-  return string.toUpperCase();
-}
+/* 
+    This sets up a promise to simulate a server request. It resolves or rejects based on a condition.
+    Real-world application: Promises are foundational for handling asynchronous operations like API calls, ensuring that your app can respond to data when it arrives.
 
-const lowercaseString = (string) => {
-  return string.toLowerCase();
-}
+*/
+const makeServerRequest = new Promise((resolve, reject) => {
+  let responseFromServer = true;
+	
+  if(responseFromServer) {
+    resolve("We got the data");
+  } else {
+    reject("Data not received");
+  }
+});
+
+makeServerRequest.then(result => {
+  console.log(result);
+}).catch(error => {
+  console.log(error);
+});
 
 // Example in data transformation from a csv file to uppercase
 const fs = require('fs');
