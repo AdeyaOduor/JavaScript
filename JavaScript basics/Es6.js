@@ -159,30 +159,19 @@ export function lowercaseString(string) {
 </body>
 </html>
 
-// ---------------------------------------------------------------------------------------------------------------------------------
+/*
 
-// getters_setters
+    This class utilizes getters and setters to abstract temperature conversion.
+    Real-world application: Useful for creating cleaner APIs where users can interact with data without knowing internal conversion logic.
+
+*/ 
 class Thermostat {
   constructor(fahrenheit) {
-    this._tempInCelsius = 5/9 * (fahrenheit - 32);
+    this._tempInCelsius = this.convertFahrenheitToCelsius(fahrenheit);
   }
-  get temperature(){
-    return this._tempInCelsius;
-  }
-  set temperature(newTemp){
-    this._tempInCelsius = newTemp;
-  }
-}
-
-const thermos = new Thermostat(76); 
-let temp = thermos.temperature; 
-thermos.temperature = 26;
-temp = thermos.temperature; // Output 26 in Celsius
-
-// Example 1
-class Thermostat {
-  constructor(fahrenheit) {
-    this._tempInCelsius = (5 / 9) * (fahrenheit - 32);
+  
+  convertFahrenheitToCelsius(fahrenheit) {
+    return (5 / 9) * (fahrenheit - 32);
   }
 
   get temperature() {
@@ -200,14 +189,19 @@ const fahrenheitInput = prompt("Enter the temperature in Fahrenheit:");
 // Convert the user input to a number
 const fahrenheit = parseFloat(fahrenheitInput);
 
-// Create a new instance of the Thermostat class
-const thermos = new Thermostat(fahrenheit);
+// Validate user input
+if (isNaN(fahrenheit)) {
+  console.log("Invalid input. Please enter a valid number.");
+} else {
+  // Create a new instance of the Thermostat class
+  const thermos = new Thermostat(fahrenheit);
 
-// Retrieve the temperature in Celsius
-const celsius = thermos.temperature;
+  // Retrieve the temperature in Celsius
+  const celsius = thermos.temperature;
 
-// Display the converted temperature to the user
-console.log(`Temperature in Celsius: ${celsius.toFixed(2)}`);
+  // Display the converted temperature to the user
+  console.log(`Temperature in Celsius: ${celsius.toFixed(2)}`);
+}
 
 /* Use the class keyword to create a Thermostat class. The constructor accepts a Fahrenheit temperature.
 
@@ -224,99 +218,28 @@ of which one you track.
 In other words, you are abstracting implementation details from the user. */
 // -------------------------------------------------------------------------------------------------------------------------------------------------------
 
-/* Create a new promise called makeServerRequest. 
-Pass in a function with resolve and reject parameters to the constructor, and Handle a Fulfilled Promise with then. */
-
-const makeServerRequest = new Promise((resolve, reject) => {
-  // responseFromServer is set to true to represent a successful response from a server
-  let responseFromServer = true;
-	
-  if(responseFromServer) {
-    resolve("We got the data");
-  } else {	
-    reject("Data not received");
-  }
-});
-
-makeServerRequest.then(result => {
-  console.log(result);
-});
-
-// -------------------------------------------------------------------------------------------------------------------------
-// Handle a Rejected Promise with catch
-
-const makeServerRequest = new Promise((resolve, reject) => {
-  // responseFromServer is set to false to represent an unsuccessful response from a server
-  let responseFromServer = false;
-	
-  if(responseFromServer) {
-    resolve("We got the data");
-  } else {	
-    reject("Data not received");
-  }
-});
-
-makeServerRequest.then(result => {
-  console.log(result);
-});
-
-makeServerRequest.catch(error => {
-  console.log(error);
-});
-
-// combined version of the code that handles both successful and unsuccessful server responses using Promises:
-const makeServerRequest = (responseFromServer) => {
-  return new Promise((resolve, reject) => {
-    if (responseFromServer) {
-      resolve("We got the data");
-    } else {
-      reject("Data not received");
-    }
-  });
-};
-
-makeServerRequest(true)
-  .then(result => {
-    console.log(result);
-  })
-  .catch(error => {
-    console.log(error);
-  });
-
-makeServerRequest(false)
-  .then(result => {
-    console.log(result);
-  })
-  .catch(error => {
-    console.log(error);
-  });
-// --------------------------------------------------------------------------------------------------------------------
-
-// Es6 spread operators
-
+/* 
+    The spread operator (...) is used to create a shallow copy of each array object.
+    Real-world application: Useful for scenarios where you need to maintain immutability 
+	(like in state management) or cloning data for handling in functions.
+*/ 
 function copyMachine(arr, num) {
   let newArr = [];
   while (num >= 1) {
-    newArr.push(arr.slice());
+    newArr.push([...arr]); // Using spread
     num--;
   }
   return newArr;
 }
 
-// Sample student data
 const studentData = [
   { name: 'John', age: 18 },
   { name: 'Emily', age: 19 },
   { name: 'Michael', age: 20 }
 ];
 
-// Create 1000 copies of the student data
 const testData = copyMachine(studentData, 1000);
-
-// Use the generated test data for testing or simulations
-console.log(testData.length); // Output: 1000
-console.log(testData[0]); // Output: { name: 'John', age: 18 }
-// ------------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 function spreadOut() {
   let fragment = ['to', 'code'];
