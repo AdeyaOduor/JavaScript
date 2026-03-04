@@ -644,3 +644,30 @@ function decompose(n, n2=n*n, i=n, prev) {
   while(n2>0 && i-->1) if (prev = decompose(n, n2-i*i, i)) return prev.concat([i]);
   return (n2 == 0) ? [] : null;
 }
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+/* Function Description Complete the getSecondLargest function. getSecondLargest has the following parameters: int nums[n]: an array of integers Returns int: the second largest number in Input Format The first line contains an integer, , the size of the array. The second 
+line contains space-separated numbers that describe the elements in . Constraints , where is the number at index . The numbers in may not be distinct.
+*/
+
+function getSecondLargest(nums) {
+ let largestNum = Math.max(...nums);
+    let filteredNums = [];
+    let secondLargest;
+
+    for(let i = 0; i < nums.length; i++) {
+        if (nums[i] !== largestNum) {
+            filteredNums.push(nums[i]);
+        }
+    }
+
+    return Math.max(...filteredNums);
+}
+
+// OR
+function getSecondLargest(nums) {
+const max=Math.max(...nums);
+return Math.max(...nums.filter(x=>x!==max))
+}
