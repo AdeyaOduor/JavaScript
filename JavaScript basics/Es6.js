@@ -1,6 +1,9 @@
 /* ES6, released in 2015, added many powerful new features to the language including arrow functions, 
-destructuring, classes, promises, spread operators, and modules.*/
-// destructuring-via-rest-elements.
+destructuring, classes, promises, spread operators, and modules.
+
+ Destructuring allows unpacking values from arrays (or properties from objects) into distinct variables.
+Here, the first two values are ignored (using commas), and the rest of the array is captured into shorterList.
+*/ 
 function removeFirstTwo(list) {
   const [, , ...shorterList] = list;
   return shorterList;
@@ -9,7 +12,10 @@ function removeFirstTwo(list) {
 const source = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const sourceWithoutFirstTwo = removeFirstTwo(source) // Output [3, 4, 5, 6, 7, 8, 9, 10].
 
-// use-destructuring-assignment-to-assign-variables-from-arrays.txt
+/* 
+    This code swaps the values of a and b using array destructuring.
+    Real-world application: Swapping values is common in algorithms, such as sorting or rearranging data.
+*/ 
 let a = 8, b = 6;
 
  [a,b] = [b,a];
@@ -17,7 +23,10 @@ let a = 8, b = 6;
 console.log(a); // should be 6
 console.log(b); // should be 8
 
-// use-destructuring-assignment-to-pass-an-object-as-a-functions-parameters.txt
+/* 
+    The half function uses destructuring to directly get max and min from an object.
+    Real-world application: This is useful when you have a config object and only need a few specific properties.
+*/
 const stats = {
   max: 56.78,
   standard_deviation: 4.34,
@@ -27,10 +36,8 @@ const stats = {
   average: 35.85
 };
 
-const half = ({max, min}) => ((max + min) / 2.0); // use function argument destructurung
-
-console.log(stats); // should be object
-console.log(half(stats)); // should be 28.015
+const half = ({max, min}) => ((max + min) / 2.0);
+console.log(half(stats)); // Output: 28.015
 // --------------------------------------------------------------------------------------------------------------------------------
     
 // create-strings-using-template-literals.
