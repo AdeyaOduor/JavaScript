@@ -23,3 +23,42 @@ export async function getGifs(query) {
   });
   return response.data.data.map(gif => gif.images.original.mp4); // Return the mp4 URLs
 }
+
+// App/js
+import React, { useEffect, useState } from "react";
+import { getGifs } from "./giphy";
+
+export default function App() {
+  const [gifs, setGifs] = useState([]);
+  const [query, setQuery] = useState("programming");
+
+  useEffect(() => {
+    async function fetchGifs() {
+      const fetchedGifs = await getGifs(query);
+      setGifs(fetchedGifs);
+    }
+
+    fetchGifs();
+  }, [query]);
+
+  function changeQuery(event) {
+    setQuery(event.target.value);
+  }
+
+  return (
+    <div>
+      <h1>GIF Search App</h1>
+      <input 
+        type="text" 
+        placeholder="Search for GIFs..." 
+        value={query} 
+        onChange={changeQuery} 
+      />
+      <div>
+        {gifs.map((gif, index) => (
+          <video key={index} autoPlay loop src={gif} style={{ width: '300px', margin: '10px' }} />
+        ))}
+      </div>
+    </div>
+  );
+}
