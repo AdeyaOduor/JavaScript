@@ -88,4 +88,19 @@ Key Features of the Application
     User Input: The user can type in the search box to change the GIFs being displayed.
     GIF Display: Displays GIFs as videos that autoplay and loop.
 
+Handling the Error in Your Application
+
+You can handle the errors when calling getGifs in your main application. Here's an example of how you would call this function with error handling:
+javascript
+
+(async () => {
+  try {
+    const gifs = await getGifs('funny cats');
+    console.log(gifs);
+  } catch (error) {
+    console.error(error.message); // Display user-friendly error message
+  }
+})();
+
+
 */
