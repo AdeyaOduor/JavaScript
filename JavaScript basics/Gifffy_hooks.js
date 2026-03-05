@@ -5,23 +5,38 @@ npm install axios
 */
 
 // src/giphy.js
+// src/giphy.js
 import axios from 'axios';
 
 const API_KEY = 'YOUR_GIPHY_API_KEY'; // Replace with your Giphy API key
 const API_URL = 'https://api.giphy.com/v1/gifs/search';
 
 export async function getGifs(query) {
-  const response = await axios.get(API_URL, {
-    params: {
-      api_key: API_KEY,
-      q: query,
-      limit: 10, // You can adjust the limit as needed
-      offset: 0,
-      rating: 'G',
-      lang: 'en'
+  try {
+    const response = await axios.get(API_URL, {
+      params: {
+        api_key: API_KEY,
+        q: query,
+        limit: 10, // You can adjust the limit as needed
+        offset: 0,
+        rating: 'G',
+        lang: 'en'
+      }
+    });
+
+    if (response.status === 200) {
+      // Successfully got the response
+      return response.data.data.map(gif => gif.images.original.mp4); // Return the mp4 URLs
+    } else {
+      // Handle the case where the response status is not 200
+      console.error('Error fetching GIFs:', response.statusText);
+      throw new Error('Failed to fetch GIFs');
     }
-  });
-  return response.data.data.map(gif => gif.images.original.mp4); // Return the mp4 URLs
+  } catch (error) {
+    // Handle any errors that occurred during the request
+    console.error('API request failed:', error);
+    throw new Error('API request failed. Please try again later.');
+  }
 }
 
 // App/js
