@@ -106,7 +106,8 @@ function transformData(row) {
   }
   return transformedRow;
 }
-// ----------------------------------------------------------------------------------------------------------------------------------
+
+
 /*Use object property shorthand with object literals to create and return an object 
 with name, age and gender properties. */
 const createPerson = (name, age, gender) => {
@@ -114,6 +115,7 @@ const createPerson = (name, age, gender) => {
 };
 
 console.log(createPerson("Zodiac Hasbro", 56, "male")); // returns a proper object
+
 // ----------------------------------------------------------------------------------------------------------------------------------
 
 // Imports and exports
@@ -160,7 +162,6 @@ export function lowercaseString(string) {
 </html>
 
 /*
-
     This class utilizes getters and setters to abstract temperature conversion.
     Real-world application: Useful for creating cleaner APIs where users can interact with data without knowing internal conversion logic.
 
@@ -172,6 +173,10 @@ class Thermostat {
   
   convertFahrenheitToCelsius(fahrenheit) {
     return (5 / 9) * (fahrenheit - 32);
+  }
+
+  convertCelsiusToFahrenheit(celsius) {
+    return (celsius * 9 / 5) + 32;
   }
 
   get temperature() {
@@ -189,7 +194,7 @@ const fahrenheitInput = prompt("Enter the temperature in Fahrenheit:");
 // Convert the user input to a number
 const fahrenheit = parseFloat(fahrenheitInput);
 
-// Validate user input
+// Validate the user input
 if (isNaN(fahrenheit)) {
   console.log("Invalid input. Please enter a valid number.");
 } else {
@@ -201,6 +206,10 @@ if (isNaN(fahrenheit)) {
 
   // Display the converted temperature to the user
   console.log(`Temperature in Celsius: ${celsius.toFixed(2)}`);
+
+  // Convert Celsius back to Fahrenheit
+  const fahrenheitConverted = thermos.convertCelsiusToFahrenheit(celsius);
+  console.log(`Converted back to Fahrenheit: ${fahrenheitConverted.toFixed(2)}`);
 }
 
 /* Use the class keyword to create a Thermostat class. The constructor accepts a Fahrenheit temperature.
