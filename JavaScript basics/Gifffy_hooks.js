@@ -62,3 +62,15 @@ export default function App() {
     </div>
   );
 }
+
+/*
+npm start
+
+Key Features of the Application
+
+    State Management: Uses useState to manage the current GIFs and the search query.
+    Side Effects: Uses useEffect to fetch GIFs whenever the search query changes.
+    User Input: The user can type in the search box to change the GIFs being displayed.
+    GIF Display: Displays GIFs as videos that autoplay and loop.
+
+*/
