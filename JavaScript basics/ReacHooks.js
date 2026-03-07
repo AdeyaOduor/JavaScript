@@ -5,7 +5,6 @@ npm install axios
 */
 
 // src/giphy.js
-// src/giphy.js
 import axios from 'axios';
 
 const API_KEY = 'YOUR_GIPHY_API_KEY'; // Replace with your Giphy API key
@@ -39,7 +38,7 @@ export async function getGifs(query) {
   }
 }
 
-// App/js
+// App.js
 import React, { useEffect, useState } from "react";
 import { getGifs } from "./giphy";
 
@@ -104,7 +103,7 @@ javascript
 
 
 */
-// ===================================C  ounter Hooks============================================================
+// =================================== Counter Hooks ============================================================
 
 /* npx create-react-app counter-app
 cd counter-app
@@ -112,7 +111,7 @@ cd counter-app
 
 // Counter.js
 import React, { useState } from 'react';
-import styles from './counter.css'; // Make sure to create and point to your CSS file
+import styles from './App.css'; // Make sure to create and point to your CSS file
 
 function Counter() {
   const [counter, setCounter] = useState(0); // Initialize counter state
@@ -163,7 +162,7 @@ function App() {
 
 export default App;
 
-// counter.css
+// App.css
 .container {
     display: flex;
     flex-direction: column;
@@ -223,7 +222,7 @@ export default App;
   */
 
 // =============================== Derived Hooks ======================================================================
-// App.js
+// Derived.js
 import React, { useState } from "react";
 import './App.css';  // Importing CSS for styles
 
@@ -247,6 +246,22 @@ export default function App() {
     </div>
   );
 }
+
+// App.js
+import React from 'react';
+import Counter from './Counter';
+
+function App() {
+  return (
+    <div>
+      <Counter />
+    </div>
+  );
+}
+
+export default App;
+
+
 // App.css
 body {
     font-family: Arial, sans-serif;
