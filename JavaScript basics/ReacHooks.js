@@ -28,7 +28,7 @@ export default function App() {
       </div>
     );
   }
-// =====================================================================================================================
+// ===================================C  ounter Hooks============================================================
 
 /* npx create-react-app counter-app
 cd counter-app
@@ -145,3 +145,83 @@ export default App;
   npm run build
   npm test
   */
+
+// =============================== Derived Hooks ======================================================================
+// App.js
+import React, { useState } from "react";
+import './App.css';  // Importing CSS for styles
+
+export default function App() {
+  const [counter, setCounter] = useState(0);
+  
+  const isEven = counter % 2 === 0;
+
+  return (
+    <div className={`app ${isEven ? 'even' : 'odd'}`}>
+      <h1>Counter App</h1>
+      <div className="counter-container">
+        <button className="btn" onClick={() => setCounter(counter - 1)}>
+          -
+        </button>
+        <span className="counter">{counter}</span>
+        <button className="btn" onClick={() => setCounter(counter + 1)}>
+          +
+        </button>
+      </div>
+    </div>
+  );
+}
+// App.css
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    transition: background-color 0.5s;
+}
+
+.even {
+    background-color: blue; /* Background for even */
+    color: white; /* Text color for better contrast */
+}
+
+.odd {
+    background-color: yellow; /* Background for odd */
+    color: black; /* Text color for better contrast */
+}
+
+.counter-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 15px;
+    margin: 0 10px;
+    font-size: 1.5em;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+.counter {
+    font-size: 2em;
+    padding: 0 20px;
+}
