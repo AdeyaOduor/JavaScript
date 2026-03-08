@@ -125,9 +125,11 @@ console.log(JSON.stringify(ratings));
 {"title":"The Dark Knight","rating":"9.0"},
 {"title":"Batman Begins","rating":"8.3"},
 {"title":"Avatar","rating":"7.9"}]*/
-// ---------------------------------------------------------------------------------------------------------------------
-// Array.prototype.map method in JavaScript. 
-// This method is used to create a new array populated with the results of applying a provided callback function to each element in the original array.
+
+
+/* Array.prototype.map method in JavaScript. 
+This method is used to create a new array populated with the results of applying a provided callback function to each element in the original array.
+*/  
 Array.prototype.Map = function (callback) {
   const newArray = [];
 
@@ -326,9 +328,9 @@ const filteredList = watchList
   .map(({ Title: title, imdbRating: rating }) => ({ title, rating }));
 
 console.log(filteredList);
-// -------------------------------------------------------------------------------------------
-// filter method on prototype
-  /* 
+
+/*  filter method on prototype
+
     Array.prototype.myFilter adds the myFilter method to the Array prototype. This means that all arrays in your JavaScript code will have access to this method.
 
     The myFilter method takes a single parameter, callback, which is a function. This callback function will be applied to each element in the array during the filtering process.
@@ -366,9 +368,8 @@ const products = [
 
 const filteredProducts = products.myFilter(product => product.price > 15 && product.category === 'A');
 
-console.log(filteredProducts); /* [
-  { name: 'Product 3', price: 15, category: 'A' }
-]*/
+console.log(filteredProducts); // [ { name: 'Product 3', price: 15, category: 'A' }]
+
 // ---------------------------------------------------------------------------------------------------------------------------------
 /* slice method in the sliceArray function to return part of the anim array given the provided beginSlice and endSlice indices*/
 function sliceArray(anim, beginSlice, endSlice) {
@@ -379,7 +380,8 @@ const inputAnim = ["Cat", "Dog", "Tiger", "Zebra", "Ant"];
 const slicedArray = sliceArray(inputAnim, 1, 4);
 
 console.log(slicedArray); // [ 'Dog', 'Tiger', 'Zebra' ]
-// ------------------------------------------------------------------------------
+
+
 /* Given the array arr, iterate through and remove each element 
 starting from the first element (the 0 index) until the function 
  returns true when the iterated element is passed through it.
