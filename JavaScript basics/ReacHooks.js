@@ -249,12 +249,12 @@ export default function App() {
 
 // App.js
 import React from 'react';
-import Counter from './Counter';
+import Counter from './Derived';
 
 function App() {
   return (
     <div>
-      <Counter />
+      <Derived />
     </div>
   );
 }
