@@ -74,14 +74,42 @@ let students = [
 
 grades(students);
 // ------------------------------------------------------------------------------------------------------------------------------
-    // Capture inputs from a csv file and compute averages
+    /*mkdir ExamGradeUploads
+     cd ExamGradeUploads
+     npm init -y
+     npm install express multer csv-parser xlsx
+    
+    */ 
 
+const express = require('express');
+const multer = require('multer');
 const fs = require('fs');
 const csv = require('csv-parser');
+const xlsx = require('xlsx');
 
+const app = express();
+const upload = multer({ dest: 'uploads/' }); // Directory to temporarily store uploaded files
+
+app.use(express.static('public')); // Serve static files from the public directory
+
+// Endpoint to upload files
+app.post('/upload', upload.single('file'), (req, res) => {
+  const filePath = req.file.path;
+
+  if (req.file.mimetype === 'text/csv') {
+    gradesFromCSV(filePath);
+  } else if (req.file.mimetype === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+    gradesFromExcel(filePath);
+  } else {
+    return res.status(400).send('Unsupported file type');
+  }
+
+  res.send('File processed successfully.');
+});
+
+// Function to read grades from CSV file
 function gradesFromCSV(csvFilePath) {
   const students = [];
-
   fs.createReadStream(csvFilePath)
     .pipe(csv())
     .on('data', (row) => {
@@ -96,42 +124,53 @@ function gradesFromCSV(csvFilePath) {
     });
 }
 
-function parseGrades(row) {
-  const grades = [];
-  Object.keys(row).forEach((key) => {
-    if (key !== 'name') {
-      grades.push(parseFloat(row[key]));
-    }
+// Function to read grades from Excel file
+function gradesFromExcel(excelFilePath) {
+  const workbook = xlsx.readFile(excelFilePath);
+  const sheetName = workbook.SheetNames[0];
+  const sheet = workbook.Sheets[sheetName];
+  const jsonData = xlsx.utils.sheet_to_json(sheet);
+  const students = jsonData.map(row => {
+    return {
+      name: row.name,
+      grades: parseGrades(row),
+    };
   });
+
+  calculateGrades(students);
+}
+
+// Function to parse grades from row data
+function parseGrades(row) {
+  const grades = Object.keys(row)
+    .filter(key => key !== 'name')
+    .map(key => parseFloat(row[key]));
+    
   return grades;
 }
 
+// Function to calculate average grades and assign letter grades
 function calculateGrades(students) {
-  students.forEach(function(student) {
-    let avg = (student.grades.reduce((acc, cur) => acc + cur)) / student.grades.length;
-    let grade = "";
-
-    if (avg <= 30) {
-      grade = "E";
-    } else if (avg <= 40) {
-      grade = "D";
-    } else if (avg <= 50) {
-      grade = "C";
-    } else if (avg <= 59) {
-      grade = "B-";
-    } else if (avg <= 65) {
-      grade = "B";
-    } else if (avg <= 75) {
-      grade = "B+";
-    } else if (avg <= 85) {
-      grade = "A-";
-    } else if (avg <= 100) {
-      grade = "A";
-    }
-
+  students.forEach(student => {
+    let avg = student.grades.reduce((acc, cur) => acc + cur, 0) / student.grades.length;
+    let grade = getLetterGrade(avg);
     console.log(`student: ${student.name}, average score: ${Math.round(avg)}, grade: ${grade}`);
   });
 }
 
-const csvFilePath = 'students.csv';
-gradesFromCSV(csvFilePath);
+// Function to get letter grade based on average
+function getLetterGrade(avg) {
+  if (avg <= 30) return "E";
+  if (avg <= 40) return "D";
+  if (avg <= 50) return "C";
+  if (avg <= 59) return "B-";
+  if (avg <= 65) return "B";
+  if (avg <= 75) return "B+";
+  if (avg <= 85) return "A-";
+  return "A";
+}
+
+// Start the server
+app.listen(3000, () => {
+  console.log('Server is running on http://localhost:3000');
+});
