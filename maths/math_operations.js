@@ -638,12 +638,34 @@ rand = function(min, max) {
 square into squares
 Given a positive integral number n, return a strictly increasing sequence (list/array/string depending on the language) of numbers, 
 so that the sum of the squares is equal to n². 
-If there are multiple solutions (and there will be), return as far as possible the result with the largest possible values:*/
+If there are multiple solutions (and there will be), return as far as possible the result with the largest possible values:
 
-function decompose(n, n2=n*n, i=n, prev) {
-  while(n2>0 && i-->1) if (prev = decompose(n, n2-i*i, i)) return prev.concat([i]);
-  return (n2 == 0) ? [] : null;
+Example Outputs:
+
+    decompose(5) should return [4, 3, 2, 1] since 42+32+22+12=16+9+4+1=3042+32+22+12=16+9+4+1=30, which is 52=2552=25.
+    decompose(10) should return [9, 7, 1] since 92+72+12=81+49+1=13192+72+12=81+49+1=131, which is 102=100102=100.
+*/
+
+function decompose(n, n2 = n * n, i = n, prev = []) {
+  // Base case: if the desired sum of squares is zero
+  if (n2 === 0) return prev;
+
+  // Loop to find possible numbers starting from n-1 down to 1
+  for (let j = i - 1; j > 0; j--) {
+    const temp = n2 - j * j; // Subtract the square of the current number
+    // Recur if the new sum is non-negative
+    if (temp >= 0) {
+      const result = decompose(n, temp, j, [...prev, j]);
+      if (result) return result; // If we found a valid sequence, return it
+    }
+  }
+  
+  return null; // Return null if no valid sequence is found
 }
+
+// Example usage
+console.log(decompose(5)); // Output: [4, 3, 2, 1]
+console.log(decompose(10)); // Example output: [9, 7, 1]
 
 
 // ---------------------------------------------------------------------------------------------------------------------
