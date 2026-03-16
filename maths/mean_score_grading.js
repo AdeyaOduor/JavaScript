@@ -78,6 +78,9 @@ grades(students);
      cd ExamGradeUploads
      npm init -y
      npm install express multer csv-parser xlsx 
+     
+Run the server with the command: node server.js.
+Open http://localhost:3000 in your browser to access the upload interface.
     */ 
 
 // server.js
@@ -231,8 +234,3 @@ app.listen(3000, () => {
     </form>
 </body>
 </html>
-
-/*
-Run the server with the command: node server.js.
-Open http://localhost:3000 in your browser to access the upload interface.
-*/
