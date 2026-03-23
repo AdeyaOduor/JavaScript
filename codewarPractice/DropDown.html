@@ -1,0 +1,171 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> my button</title>
+  <style>
+
+/* Dropdown Button */
+.dropbtn {
+  background-color: pink;
+  color: white;
+  padding: 12px 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  left: 0;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: #111;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover,
+.dropdown-content a:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Show the dropdown menu on hover (mouse) */
+.dropdown:hover .dropdown-content { display: block; }
+
+/* Also show on focus-within for keyboard users */
+.dropdown:focus-within .dropdown-content { display: block; }
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn,
+.dropdown:focus-within .dropbtn {
+  background-color: #3e8e41;
+  color: white;
+}
+
+/* Visible focus indicator for accessibility */
+.dropbtn:focus {
+  outline: 3px solid rgba(62,142,65,0.4);
+  outline-offset: 2px;
+}
+   </style>
+</head>
+
+<body>
+
+<nav class="dropdown" aria-label="Main navigation">
+
+<button class="dropbtn" aria-haspopup="true" aria-expanded="false" id="menuButton">Home</button>
+
+<div class="dropdown-content" role="menu" aria-labelledby="menuButton">
+
+<a href="#" role="menuitem">About us</a>
+
+<a href="#" role="menuitem">Gallery</a>
+
+<a href="#" role="menuitem">Contacts</a>
+
+</div>
+
+</nav>
+
+<script>
+
+// Improve accessibility: toggle aria-expanded when button is clicked (useful on touch)
+
+(function () {
+
+const menuButton = document.getElementById('menuButton');
+
+const menu = menuButton.nextElementSibling;
+
+function closeMenu() {
+
+menu.style.display = '';
+
+menuButton.setAttribute('aria-expanded', 'false');
+
+}
+
+function openMenu() {
+
+menu.style.display = 'block';
+
+menuButton.setAttribute('aria-expanded', 'true');
+
+}
+
+// Toggle on click (for touch devices)
+
+menuButton.addEventListener('click', function (e) {
+
+const expanded = menuButton.getAttribute('aria-expanded') === 'true';
+
+if (expanded) closeMenu();
+
+else openMenu();
+
+});
+
+// Close when clicking outside
+
+document.addEventListener('click', function (e) {
+
+if (!menu.contains(e.target) && e.target !== menuButton) {
+
+closeMenu();
+
+}
+
+});
+
+// Close on Escape
+
+document.addEventListener('keydown', function (e) {
+
+if (e.key === 'Escape') closeMenu();
+
+});
+
+// Ensure proper aria-expanded on focus/blur
+
+menuButton.addEventListener('blur', function () {
+
+// small timeout to allow click on menu items
+
+setTimeout(() => {
+
+if (!menu.contains(document.activeElement)) closeMenu();
+
+}, 100);
+
+});
+
+})();
+
+</script>
+
+</body>
+
+</html>
